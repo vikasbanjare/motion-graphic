@@ -26,25 +26,32 @@ for (const w of ["400", "500", "600", "700"]) {
 }
 loadFont({ family: F.mono, url: staticFile("fonts/JetBrainsMono-500.woff2"), weight: "500" });
 
-// Warm ink + ivory, one coral accent per scene.
+// Anthropic public palette: cream paper, ink type, clay accent (+ blue/green support).
 export const C = {
-  ink: "#0D0C0A",
-  ink2: "#1A1815",
-  ivory: "#F3EEE4",
-  muted: "#9A9387",
-  dim: "#5E594F",
-  faint: "#2B2823",
-  coral: "#E47B55",
-  coralSoft: "#F4B89C",
-  sand: "#D8C3A2",
-  slate: "#4A463F",
+  paper: "#FAF9F5",
+  paper2: "#F0EEE6",
+  line: "#E8E6DC",
+  white: "#FFFFFF",
+  ink: "#141413",
+  ink2: "#3D3D3A",
+  muted: "#73726C",
+  mid: "#B0AEA5",
+  clay: "#D97757",
+  claySoft: "#F3DDD3",
+  blue: "#6A9BCC",
+  green: "#788C5D",
+  greenSoft: "#E4EAD9",
+  redSoft: "#F6E0DA",
 };
+
+export const shadow = "0 1px 2px rgba(20,20,19,0.06), 0 12px 40px rgba(20,20,19,0.08), 0 40px 90px rgba(20,20,19,0.06)";
 
 export const ease = {
   out: Easing.bezier(0.16, 1, 0.3, 1),
   inOut: Easing.bezier(0.65, 0, 0.35, 1),
   in: Easing.bezier(0.7, 0, 0.84, 0),
   back: Easing.bezier(0.34, 1.45, 0.64, 1),
+  soft: Easing.bezier(0.22, 1, 0.36, 1),
 };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;

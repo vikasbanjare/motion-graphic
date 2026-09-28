@@ -2,19 +2,21 @@ import { Audio } from "@remotion/media";
 import { AbsoluteFill, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Backdrop } from "./components";
 import { Availability, EndCard } from "./scenes/Closing";
-import { Coding, Efficiency, Intelligence, Safety } from "./scenes/Facts";
-import { Tease, Title } from "./scenes/Opening";
+import { Efficiency, Safety } from "./scenes/Facts";
+import { Prompt, Title } from "./scenes/Opening";
+import { Agent, ComputerUse, Knowledge } from "./scenes/Product";
 import { ramp, sec } from "./theme";
 
 export const SCENES = [
-  { id: "Tease", component: Tease, durationInFrames: sec(2.9) },
-  { id: "Title", component: Title, durationInFrames: sec(4.2) },
-  { id: "Intelligence", component: Intelligence, durationInFrames: sec(4.8) },
-  { id: "Coding", component: Coding, durationInFrames: sec(4.6) },
-  { id: "Efficiency", component: Efficiency, durationInFrames: sec(5.0) },
-  { id: "Safety", component: Safety, durationInFrames: sec(5.0) },
-  { id: "Availability", component: Availability, durationInFrames: sec(3.8) },
-  { id: "EndCard", component: EndCard, durationInFrames: sec(5.0) },
+  { id: "Prompt", component: Prompt, durationInFrames: sec(4.2) },
+  { id: "Title", component: Title, durationInFrames: sec(3.8) },
+  { id: "Agent", component: Agent, durationInFrames: sec(7.0) },
+  { id: "ComputerUse", component: ComputerUse, durationInFrames: sec(5.6) },
+  { id: "Knowledge", component: Knowledge, durationInFrames: sec(5.6) },
+  { id: "Efficiency", component: Efficiency, durationInFrames: sec(4.8) },
+  { id: "Safety", component: Safety, durationInFrames: sec(4.8) },
+  { id: "Availability", component: Availability, durationInFrames: sec(4.2) },
+  { id: "EndCard", component: EndCard, durationInFrames: sec(4.6) },
 ] as const;
 
 // Scenes overlap so each exit blurs into the next entrance.

@@ -1,26 +1,28 @@
 # Claude Opus 5.5 — launch motion graphic
 
 An original, launch-style motion piece (unofficial motion study) built in Remotion.
-1920×1080 · 60 fps · ~34.5 s · original synthesized score.
+1920×1080 · 60 fps · ~43.7 s · original synthesized score.
 
-All copy paraphrases the figures in Anthropic's 22 Sep 2026 Opus 5.5 announcement;
-no footage, logos or frames from the official video are used.
+All copy paraphrases the figures in Anthropic's 22 Sep 2026 Opus 5.5 announcement.
+Product UI is illustrative mock-up, not screenshots; no footage or logos are used.
 
 ## Structure
 
 | # | Scene | Beat |
 |---|-------|------|
-| 1 | Tease | "Smarter. Faster. Cheaper." |
+| 1 | Prompt | "What would you hand off?" + a real ask typed and sent |
 | 2 | Title | Introducing Claude Opus 5.5 over the orbit motif |
-| 3 | Intelligence | Fable 5.1-level on most work (Opus 5 → Fable 5.1 scale) |
-| 4 | Coding | Terminal-Bench 4.0: 52.3% → 66.4% |
-| 5 | Efficiency | 40% lower cost · 30% faster output |
-| 6 | Safety | Behavioral audit + 85% fewer boundary-circumvention attempts (100 → 15 dots) |
-| 7 | Availability | Claude Platform · AWS · Google Cloud · Microsoft Azure |
-| 8 | End card | Title lock-up, Sonnet/Haiku 5.5 coming |
+| 3 | Agent | Coding agent mock: task log, live diff, test runner; Terminal-Bench 66.4% vs 52.3% |
+| 4 | ComputerUse | Browser mock: pointer fills a purchase order and submits it |
+| 5 | Knowledge | Doc mock: brief, chart and callout build; GDPval-AA 1846 Elo |
+| 6 | Efficiency | 40% lower cost · 30% faster output cards |
+| 7 | Safety | Behavioral audit + 85% fewer boundary-circumvention attempts (100 → 15 dots) |
+| 8 | Availability | Platform chips + `model: "claude-opus-5-5"` snippet |
+| 9 | End card | Title lock-up, Sonnet/Haiku 5.5 coming |
 
-Design system lives in `src/theme.ts`: warm ink background, ivory type, one coral accent;
-Instrument Serif (display), Inter Tight (UI), JetBrains Mono (labels). Fonts are vendored in
+Design system lives in `src/theme.ts`, using Anthropic's public palette: cream `#FAF9F5`,
+ink `#141413`, clay `#D97757`, with blue `#6A9BCC` and green `#788C5D` as support.
+Instrument Serif (display), Inter Tight (UI), JetBrains Mono (code). Fonts are vendored in
 `public/fonts` so renders work offline.
 
 ## Commands

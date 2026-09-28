@@ -13,7 +13,7 @@ import numpy as np
 
 SR = 48000
 FPS = 60
-SCENE_SECS = [2.9, 4.2, 4.8, 4.6, 5.0, 5.0, 3.8, 5.0]
+SCENE_SECS = [4.2, 3.8, 7.0, 5.6, 5.6, 4.8, 4.8, 4.2, 4.6]
 OVERLAP = round(0.12 * FPS)
 
 frames = [round(s * FPS) for s in SCENE_SECS]
@@ -156,7 +156,7 @@ Dmaj9 = [38, 45, 54, 61, 64, 69]
 Bm9 = [35, 42, 50, 57, 61, 66]
 Gmaj9 = [43, 50, 59, 66, 69]
 Asus = [45, 52, 59, 62, 66, 71]
-chords = [None, Dmaj9, Bm9, Gmaj9, Asus, Bm9, Gmaj9, Dmaj9]
+chords = [None, Dmaj9, Bm9, Gmaj9, Asus, Bm9, Gmaj9, Asus, Dmaj9]
 
 mix = np.zeros((2, N))
 
@@ -172,9 +172,13 @@ for i in range(1, len(cuts)):
     place(mix, cuts[i] - 0.15, pad(chords[i], dur, gain=0.075))
     place(mix, cuts[i] + 0.4, shimmer(chords[i], dur))
 
-# Plucks on the three cold-open words (they rise ~0.1s after their start).
-for k, m in enumerate([69, 74, 78]):
-    place(mix, 0.25 + k * 0.55 + 0.12, pluck(m))
+# Cold open: a soft pluck as the headline lands, key ticks while the ask types, a chime on send.
+place(mix, 0.2, pluck(69, gain=0.12))
+for k in range(26):
+    tick = pluck(96 + (k % 3), gain=0.025)
+    tick[:, int(0.08 * SR):] = 0
+    place(mix, 0.8 + k * (2.0 / 26), tick)
+place(mix, 3.05, pluck(78, gain=0.1))
 
 # Riser into the title, then a low hit when "Claude Opus 5.5" lands.
 r, at = riser(cuts[1] + 0.45)
