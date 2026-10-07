@@ -10,8 +10,10 @@
     "check": "node scripts/check.mjs",
     "preview": "node scripts/preview.mjs",
     "voice": "node scripts/voice.mjs",
+    "music": "node scripts/music.mjs",
     "make": "node scripts/make.mjs",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "test": "node --test tests/*.test.mjs"
   },
   "sideEffects": [
     "*.css"

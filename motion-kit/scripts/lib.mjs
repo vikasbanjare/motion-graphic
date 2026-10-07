@@ -27,7 +27,8 @@ export const engine = async () => {
   const formats = await import("../src/engine/formats.ts");
   const rich = await import("../src/engine/rich.ts");
   const voice = await import("../src/engine/voice.ts");
-  return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice };
+  const music = await import("../src/engine/music.ts");
+  return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice, ...music };
 };
 
 /** Parse args like: specs/x.json --theme neon --format square --all-formats */
@@ -72,14 +73,36 @@ export const readSpec = (file) => {
   }
 };
 
-/** Inline the word-timing file (audio.timing) so Node-side planning matches the render. */
+/**
+ * Inline the word-timing file (audio.timing) and the music beat grid
+ * (audio.beats) so Node-side planning matches the render.
+ */
 export const withTimingFile = (spec) => {
-  const file = spec.audio?.timing;
-  if (!file || spec.audio?.words?.length) return spec;
-  const abs = path.join(ROOT, "public", file);
-  if (!fs.existsSync(abs)) return spec;
-  const data = JSON.parse(fs.readFileSync(abs, "utf8"));
-  return { ...spec, audio: { ...spec.audio, words: Array.isArray(data) ? data : data.words } };
+  let out = spec;
+  const read = (file) => {
+    const abs = path.join(ROOT, "public", file);
+    return fs.existsSync(abs) ? JSON.parse(fs.readFileSync(abs, "utf8")) : null;
+  };
+  if (out.audio?.timing && !out.audio.words?.length) {
+    const data = read(out.audio.timing);
+    if (data) out = { ...out, audio: { ...out.audio, words: Array.isArray(data) ? data : data.words } };
+  }
+  if (out.audio?.beats && !out.audio.beatGrid?.length) {
+    const data = read(out.audio.beats);
+    // Same mapping as beatFields() in src/engine/music.ts.
+    if (data)
+      out = {
+        ...out,
+        audio: {
+          ...out.audio,
+          beatGrid: Array.isArray(data.beats) ? data.beats : [],
+          downbeatGrid: Array.isArray(data.downbeats) ? data.downbeats : [],
+          ...(typeof data.durationMs === "number" ? { musicDuration: data.durationMs / 1000 } : {}),
+          ...(Number.isFinite(data.lufs) ? { musicLufs: data.lufs } : {}),
+        },
+      };
+  }
+  return out;
 };
 
 /** On-screen text of a scene (everything except narration and settings). */

@@ -270,9 +270,24 @@ export const videoSchema = z.object({
   audio: z
     .object({
       sfx: z.boolean().optional(),
-      /** Music file inside public/ or https URL. Royalty-free only. */
+      /** Music file inside public/ or https URL. Licensed tracks only; the kit never generates music. */
       music: z.string().optional(),
       musicVolume: z.number().min(0).max(1).optional(),
+      /** Seconds into the music file where the video starts (picked by `npm run music`). Loops from here if the track is short. */
+      musicStart: z.number().min(0).optional(),
+      /**
+       * Beat grid JSON inside public/ (written by `npm run music`). Loaded
+       * automatically; transitions then land on the beat.
+       */
+      beats: z.string().optional(),
+      /** Beat times inline, ms from the start of the music file (filled from `beats`). */
+      beatGrid: z.array(z.number().min(0)).optional(),
+      /** Downbeats (bar starts) inline, ms from the start of the music file (filled from `beats`). */
+      downbeatGrid: z.array(z.number().min(0)).optional(),
+      /** Length of the music file in seconds (filled from `beats`), so the grid follows a looped track. */
+      musicDuration: z.number().min(0).optional(),
+      /** Integrated loudness of the music file (filled from `beats`); the level is matched to −14 LUFS. */
+      musicLufs: z.number().optional(),
       /** Voice-over file inside public/ or https URL. */
       voiceover: z.string().optional(),
       /**

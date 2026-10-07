@@ -86,12 +86,15 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     if (s.type === "logo" && s.src) media.push([`scenes.${i}.src`, s.src]);
   });
   if (spec.audio?.music) media.push(["audio.music", spec.audio.music]);
+  if (spec.audio?.beats) media.push(["audio.beats", spec.audio.beats]);
   if (spec.audio?.voiceover) media.push(["audio.voiceover", spec.audio.voiceover]);
   for (const [where, src] of media) {
     if (/^(https?:|data:)/.test(src)) continue;
     if (!fs.existsSync(path.join(ROOT, "public", src))) errors.push(`${where}: file "public/${src}" does not exist. Put the file in motion-kit/public/ and use a path relative to it.`);
   }
   if (spec.audio?.music) warnings.push("Music: only use tracks you have a licence for (YouTube Audio Library, Pixabay Music, Mixkit, or bought). Business accounts can't use trending sounds.");
+  if (spec.audio?.music && spec.audio.musicStart !== undefined && spec.audio.musicDuration !== undefined && spec.audio.musicStart > spec.audio.musicDuration - 1)
+    errors.push(`audio.musicStart is ${spec.audio.musicStart}s but the track is only ${spec.audio.musicDuration.toFixed(1)}s long. Pick an earlier start, or re-run: npm run music -- <spec> --track ${spec.audio.music}`);
 
   // --- per-scene rules -----------------------------------------------------
   const display = (s, i, field, text, maxWords = 7, maxChars = 36) => {
@@ -197,6 +200,13 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
           E.plainText(text).slice(0, 56),
       );
     }
+    const music = plan.music;
+    if (music?.beats.length > 1) {
+      const gaps = music.beats.slice(1).map((b, i) => b - music.beats[i]).sort((x, y) => x - y);
+      const onBeat = plan.scenes.filter((s) => s.onBeat !== undefined).length;
+      console.log(c.dim(`  Music: ~${Math.round((60 * fps) / gaps[gaps.length >> 1])} BPM from ${sec(music.startFrame)} · ${onBeat}/${plan.scenes.length - 1} cuts on the beat`));
+    } else if (music && spec.audio.beatGrid) console.log(c.dim(`  Music: from ${sec(music.startFrame)}, no steady beat in this track — cuts are timed without it.`));
+    else if (music) console.log(c.dim(`  Music: no beat grid yet — npm run music -- <spec> --track ${spec.audio.music} lands cuts on the beat.`));
   }
   return { errors, warnings, plan };
 };

@@ -95,6 +95,7 @@ or `link` (quiet "Try X →" with a drawn underline). Defaults to the theme.
   "transition": "auto | push | whip | fade | zoom | blur | cut",
   "brand": { "name": "", "accent": "#RRGGBB", "accent2": "#RRGGBB", "handle": "@x", "watermark": true },
   "audio": { "sfx": true, "music": "music/track.mp3", "musicVolume": 0.2,
+             "musicStart": 20.3, "beats": "music/track.beats.json",   // both written by npm run music
              "voiceover": "voice/x.mp3", "timing": "voice/x.timing.json" },
   "progressBar": false,
   "scenes": [ ... ]
