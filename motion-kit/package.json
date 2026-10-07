@@ -1,0 +1,46 @@
+{
+  "name": "motion-kit",
+  "version": "1.0.0",
+  "description": "Storyboard-driven motion graphics: write a JSON spec, get a polished video.",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "check": "node scripts/check.mjs",
+    "preview": "node scripts/preview.mjs",
+    "voice": "node scripts/voice.mjs",
+    "make": "node scripts/make.mjs",
+    "lint": "eslint src && tsc"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "dependencies": {
+    "@remotion/bundler": "4.0.534",
+    "@remotion/captions": "4.0.534",
+    "@remotion/cli": "4.0.534",
+    "@remotion/fonts": "4.0.534",
+    "@remotion/install-whisper-cpp": "4.0.534",
+    "@remotion/layout-utils": "4.0.534",
+    "@remotion/media": "4.0.534",
+    "@remotion/renderer": "4.0.534",
+    "@remotion/transitions": "4.0.534",
+    "@remotion/zod-types": "4.0.534",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.534",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.534",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
