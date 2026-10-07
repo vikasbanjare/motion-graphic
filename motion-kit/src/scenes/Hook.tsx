@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentFrame } from "remotion";
+import { interpolateColors, useCurrentFrame } from "remotion";
 import type { BeatsFor } from "../engine/plan.ts";
 import type { SceneOf } from "../engine/schema.ts";
 import { useEnv } from "../engine/context.ts";
@@ -23,6 +23,7 @@ export const Hook: React.FC<{ scene: SceneOf<"hook"> }> = ({ scene }) => {
     <Stage gap={36}>
       {scene.setup ? (
         <FitText
+          label="setup"
           text={scene.setup}
           start={b.setup}
           font="body"
@@ -35,12 +36,14 @@ export const Hook: React.FC<{ scene: SceneOf<"hook"> }> = ({ scene }) => {
         />
       ) : null}
       {scene.strike ? (
-        <div style={{ transform: `translate3d(${shake.toFixed(2)}px, 0, 0)`, opacity: 1 - dim * 0.45 }}>
+        <div style={{ transform: `translate3d(${shake.toFixed(2)}px, 0, 0)` }}>
         <div style={{ position: "relative", ...pop(frame, b.strike, m, 0.5) }}>
           <FitText
+            label="strike"
             text={scene.strike}
             start={b.strike}
-            color={c.accent}
+            // Struck out = steps back to muted, which stays readable (the joke needs the number).
+            color={interpolateColors(dim, [0, 1], [c.accent, c.muted])}
             animate="none"
             shrinkWrap
             maxWidth={box.width}
@@ -66,6 +69,7 @@ export const Hook: React.FC<{ scene: SceneOf<"hook"> }> = ({ scene }) => {
         </div>
       ) : null}
       <FitText
+        label="punch"
         text={scene.punch}
         start={b.punch[0]}
         starts={b.punch}

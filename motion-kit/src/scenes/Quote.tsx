@@ -10,7 +10,7 @@ import { FitText } from "../engine/text.tsx";
 /** Testimonial / review with optional star rating. */
 export const Quote: React.FC<{ scene: SceneOf<"quote"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan, landscape } = useEnv();
+  const { box, u, m, c, theme, scene: plan, landscape, floor } = useEnv();
   const b = plan.beats as BeatsFor<"quote">;
   const f = theme.fonts;
   // Condensed all-caps poster faces shout; quotes read better in the body face for those themes.
@@ -31,6 +31,7 @@ export const Quote: React.FC<{ scene: SceneOf<"quote"> }> = ({ scene }) => {
         “
       </div>
       <FitText
+        label="quote"
         text={scene.quote}
         start={b.quote}
         font={font}
@@ -53,9 +54,13 @@ export const Quote: React.FC<{ scene: SceneOf<"quote"> }> = ({ scene }) => {
             ))}
           </div>
         ) : null}
-        <div style={{ fontFamily: f.body, fontWeight: f.bodyStrongWeight, fontSize: 44 * u, color: c.text }}>— {scene.author}</div>
+        <div data-mk="text" data-mk-label="author" style={{ fontFamily: f.body, fontWeight: f.bodyStrongWeight, fontSize: Math.max(44 * u, floor.comfortable * 1.15), color: c.text }}>
+          — {scene.author}
+        </div>
         {scene.role ? (
-          <div style={{ fontFamily: f.body, fontWeight: f.bodyWeight, fontSize: 34 * u, color: c.muted }}>{scene.role}</div>
+          <div data-mk="text" data-mk-label="role" style={{ fontFamily: f.body, fontWeight: f.bodyWeight, fontSize: Math.max(34 * u, floor.comfortable), color: c.muted }}>
+            {scene.role}
+          </div>
         ) : null}
       </div>
     </Stage>

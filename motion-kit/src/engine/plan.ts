@@ -605,3 +605,13 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
 
   return { spec, theme, format, motion, transitionFrames: T, scenes, cues, durationInFrames, voice };
 };
+
+/**
+ * Absolute frame where scene `i` has fully landed and is still on screen
+ * (before its exit transition). Contact sheets and `npm run qa` judge this frame.
+ */
+export const settledFrame = (plan: VideoPlan, i: number) => {
+  const s = plan.scenes[i];
+  const content = s.duration - (i === plan.scenes.length - 1 ? LAST_HOLD : plan.transitionFrames);
+  return Math.min(s.from + content - 4, s.from + content - s.readable + 8);
+};

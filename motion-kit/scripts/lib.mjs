@@ -47,7 +47,7 @@ export const parseArgs = (argv) => {
 
 export const readSpec = (file) => {
   if (!file) {
-    console.error("Usage: npm run <check|preview|make> -- specs/your-video.json");
+    console.error("Usage: npm run <check|qa|preview|make> -- specs/your-video.json");
     process.exit(1);
   }
   const abs = path.resolve(process.cwd(), file);
@@ -98,8 +98,44 @@ export const applyOverrides = (spec, args) => ({
   ...(args.pace ? { pace: args.pace } : {}),
 });
 
-const browserArgs = () =>
-  process.env.REMOTION_BROWSER_EXECUTABLE ? [`--browser-executable=${process.env.REMOTION_BROWSER_EXECUTABLE}`] : [];
+/**
+ * The Chrome that renders frames. REMOTION_BROWSER_EXECUTABLE wins; otherwise
+ * reuse a Playwright-installed Chromium (sandboxes and CI images often have one
+ * and block Remotion's own download). null = let Remotion fetch its own.
+ */
+export const findBrowser = () => {
+  const env = process.env.REMOTION_BROWSER_EXECUTABLE;
+  if (env) return { executable: env, mode: process.env.REMOTION_CHROME_MODE ?? "headless-shell" };
+  const roots = [...new Set([process.env.PLAYWRIGHT_BROWSERS_PATH, "/opt/pw-browsers"].filter(Boolean))];
+  const look = (prefix, bins, mode) => {
+    for (const root of roots) {
+      let dirs = [];
+      try {
+        dirs = fs.readdirSync(root).filter((d) => d.startsWith(prefix));
+      } catch {
+        continue;
+      }
+      // Newest revision first.
+      dirs.sort((a, b) => Number(b.split("-").pop()) - Number(a.split("-").pop()));
+      for (const d of dirs)
+        for (const bin of bins) {
+          const exe = path.join(root, d, bin);
+          if (fs.existsSync(exe)) return { executable: exe, mode };
+        }
+    }
+    return null;
+  };
+  return (
+    look("chromium_headless_shell-", ["chrome-linux/headless_shell", "chrome-headless-shell-linux64/chrome-headless-shell"], "headless-shell") ??
+    look("chromium-", ["chrome-linux/chrome", "chrome-linux64/chrome"], "chrome-for-testing")
+  );
+};
+
+const browserArgs = () => {
+  const b = findBrowser();
+  if (!b) return [];
+  return [`--browser-executable=${b.executable}`, ...(b.mode === "chrome-for-testing" ? ["--chrome-mode=chrome-for-testing"] : [])];
+};
 
 export const remotion = (args) => {
   const r = spawnSync("npx", ["remotion", ...args, ...browserArgs(), "--log=error"], { cwd: ROOT, stdio: "inherit" });

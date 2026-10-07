@@ -60,5 +60,13 @@ export const contentBox = (f: Format) => ({
   height: f.height - f.safe.top - f.safe.bottom,
 });
 
+/**
+ * Readable type on a phone, in canvas px. Below `min` text is too small to
+ * read (a QA error); below `comfortable` it strains (a QA warning). Landscape
+ * video plays at roughly half the size of a vertical one on a phone, so it
+ * needs bigger type.
+ */
+export const textFloor = (f: Format) => (f.width > f.height ? { min: 40, comfortable: 48 } : { min: 30, comfortable: 36 });
+
 /** Typography scale unit: 1 at 1080px on the short side. */
 export const unit = (f: Format) => Math.min(f.width, f.height) / 1080;

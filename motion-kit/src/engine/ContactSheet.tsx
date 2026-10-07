@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Freeze, type CalculateMetadataFunction } from "remotion";
 import { FORMATS } from "./formats.ts";
-import { planVideo } from "./plan.ts";
+import { planVideo, settledFrame } from "./plan.ts";
 import { videoSchema, type VideoSpec } from "./schema.ts";
 import { Video, withTimings } from "./Video.tsx";
 
@@ -18,12 +18,9 @@ const LABEL = 54;
 
 export const sheetFrames = (spec: VideoSpec) => {
   const plan = planVideo(spec);
-  const T = plan.transitionFrames;
   const shots = [{ frame: 0, label: "0.0s · first frame" }];
   plan.scenes.forEach((s, i) => {
-    const last = i === plan.scenes.length - 1;
-    const content = s.duration - (last ? 24 : T);
-    const settled = Math.min(s.from + content - 4, s.from + content - s.readable + 8);
+    const settled = settledFrame(plan, i);
     shots.push({ frame: settled, label: `${(settled / 30).toFixed(1)}s · ${i + 1}. ${s.scene.type}` });
   });
   return { plan, shots };
@@ -70,7 +67,7 @@ export const ContactSheet: React.FC<SheetProps> = ({ spec, qa = true }) => {
             <div style={{ position: "relative", width: w, height: h, overflow: "hidden", borderRadius: 10, outline: "1px solid #2a2d33" }}>
               <div style={{ position: "absolute", width: f.width, height: f.height, transform: `scale(${scale})`, transformOrigin: "0 0" }}>
                 <Freeze frame={s.frame}>
-                  <Video {...parsed.data} _qa={qa} _silent />
+                  <Video {...parsed.data} _qa={qa} _probe={false} _silent />
                 </Freeze>
               </div>
             </div>

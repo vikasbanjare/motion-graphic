@@ -21,7 +21,8 @@ Read before the first video in a session:
    the existing scenes, say so and offer the closest option; do not hand-write a composition.
 2. **Only verified facts.** Prices, numbers, dates, features and reviews come from the user.
    Put anything missing as `[NEEDS INPUT]` in your storyboard, never in a rendered video.
-3. **`npm run check` before anything renders**, and fix every ✖ and ⚠ (or explain why a ⚠ stays).
+3. **`npm run check` and `npm run qa` before anything renders**, and fix every ✖ and ⚠ (or
+   explain why a ⚠ stays). QA writes no files, so run it without asking.
 4. **Render nothing the user did not ask for.** Previews (`npm run preview`) and videos
    (`npm run make`) create files and cost time; offer them, run them on request.
 5. **Spend nothing without approval.** ElevenLabs / Google Flow cost credits: show the
@@ -64,6 +65,19 @@ Fix and re-run until clean. Common fixes: split long headlines, shorten kickers
 (labels ≤ 26 chars), add words to a `say` that is too short for its scene, move detail
 into `sub`.
 
+### 4b. Visual QA
+```bash
+npm run qa -- specs/<name>.json            # add --format landscape / --theme all to sweep variants
+```
+Renders the key frames in memory (thumbnail, every scene once landed, every
+transition, the last frame) and checks what is really on screen: text under
+platform UI or off canvas, overlapping text, text too long for its slot, cut off or
+spilling out of its card, type too small for a phone (30 px vertical / 40 px
+landscape; warns under 36 / 48), contrast under 3:1 (4.5:1 for small text), and a
+blank thumbnail. Each finding names the scene, time and field with a fix
+(e.g. "shorten headline to ≤6 words or move detail to sub"). Apply the fix to the
+spec and re-run until it passes. `--json` gives machine-readable output.
+
 ### 5. Preview (on request)
 `npm run preview -- specs/<name>.json` writes `out/<name>.sheet.jpg`: one settled frame
 per scene with platform-UI zones tinted red. Look at it: nothing important in red,
@@ -85,9 +99,10 @@ Use real assets first. For gaps, write one-line Google Flow / Veo prompts from
 
 ### 8. Final render (on request)
 `npm run make -- specs/<name>.json` → `out/<name>.mp4` + `out/<name>-cover.jpg`
-(`--all-formats` for reel + square + landscape). Report exactly what you ran and what
+(`--all-formats` for reel + square + landscape). It runs QA first and stops on errors
+(`--skip-qa` only if the user accepts a known issue). Report exactly what you ran and what
 the user still needs to review (pronunciation, pacing, facts).
 
 ## Revisions
 Change the spec, never the engine. If the spoken words change, re-align the voice;
-if only styling changes, reuse the existing voice timing. Re-run `check` every time.
+if only styling changes, reuse the existing voice timing. Re-run `check` and `qa` every time.

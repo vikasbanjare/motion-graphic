@@ -18,16 +18,17 @@ import { Cursor, Shimmer, Waveform } from "../engine/visuals.tsx";
  */
 export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan } = useEnv();
+  const { box, u, m, c, theme, scene: plan, floor } = useEnv();
   const b = plan.beats as BeatsFor<"prompt">;
   const f = theme.fonts;
   const level = useSpeechLevel();
 
   const cardW = Math.min(box.width, 1100 * u);
   const pad = 40 * u;
-  const labelSize = 34 * u;
+  const labelSize = Math.max(34 * u, floor.comfortable);
   const inputPad = 30 * u;
   const lh = 1.3;
+  const promptMax = Math.max(50 * u, floor.comfortable);
   const layout = useMemo(
     () =>
       fitText({
@@ -35,17 +36,23 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
         fontFamily: f.body,
         fontWeight: f.bodyWeight,
         maxWidth: cardW - pad * 2 - inputPad * 2,
-        maxHeight: 3 * 50 * u * lh,
-        maxSize: 50 * u,
-        minSize: 34 * u,
+        maxHeight: 3 * promptMax * lh,
+        maxSize: promptMax,
+        minSize: Math.max(34 * u, floor.min),
         lineHeight: lh,
       }),
-    [scene.prompt, f, cardW, pad, inputPad, u],
+    [scene.prompt, f, cardW, pad, inputPad, u, promptMax, floor],
   );
   const inputH = layout.height + inputPad * 2;
-  const btnH = 88 * u;
+  const btnSize = Math.max(34 * u, floor.comfortable);
+  const btnH = Math.max(88 * u, btnSize * 1.9);
   const btnLabel = scene.button ?? "Generate";
-  const btnW = Math.max(240 * u, btnLabel.length * 26 * u + 90 * u);
+  // Wide enough for the label and for "Generating…" that replaces it.
+  const btnW = useMemo(() => {
+    const width = (text: string) =>
+      fitText({ words: [{ text }], fontFamily: f.body, fontWeight: f.bodyStrongWeight, maxWidth: 1e4, maxHeight: 1e4, maxSize: btnSize, minSize: btnSize, lineHeight: 1.2, maxLines: 1 }).width;
+    return Math.max(240 * u, Math.max(width(btnLabel), width("Generating…")) + 90 * u);
+  }, [btnLabel, btnSize, f, u]);
   const resultH = scene.result ? (scene.resultKind === "audio" ? 120 * u : 150 * u) : 0;
   const cardH = pad + labelSize * 1.6 + inputH + 28 * u + btnH + pad;
   const btnX = cardW - pad - btnW / 2;
@@ -80,6 +87,9 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
   return (
     <Stage gap={36}>
       <div
+        data-mk="card"
+        data-mk-label="prompt card"
+        data-mk-bg={c.surface}
         style={{
           ...rise(frame, b.card, m, u, 0.7),
           position: "relative",
@@ -92,6 +102,8 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
         }}
       >
         <div
+          data-mk="text"
+          data-mk-label="label"
           style={{
             position: "absolute",
             left: pad,
@@ -122,6 +134,10 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
             lineHeight: lh,
             color: c.text,
           }}
+          data-mk="text"
+          data-mk-label="prompt"
+          data-mk-bg={c.bg}
+          data-mk-overflow={layout.overflow ? "1" : undefined}
         >
           {lines.map((l, i) => (
             <div key={i} style={{ whiteSpace: "pre", height: layout.fontSize * lh }}>
@@ -144,6 +160,9 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
         </div>
         {/* Button */}
         <div
+          data-mk="text"
+          data-mk-label="button"
+          data-mk-bg={c.text}
           style={{
             position: "absolute",
             left: btnX - btnW / 2,
@@ -160,7 +179,7 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
             justifyContent: "center",
             fontFamily: f.body,
             fontWeight: f.bodyStrongWeight,
-            fontSize: 34 * u,
+            fontSize: btnSize,
           }}
         >
           {generating ? <Shimmer text="Generating…" frame={frame} start={b.click} color={c.muted} highlight={c.bg} /> : btnLabel}
@@ -187,6 +206,9 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
       </div>
       {scene.result ? (
         <div
+          data-mk="card"
+          data-mk-label="result card"
+          data-mk-bg={c.surface}
           style={{
             ...rise(frame, b.result, m, u, 0.5),
             width: cardW,
@@ -227,7 +249,7 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
                 />
               </div>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 * u }}>
-                <div style={{ fontFamily: f.body, fontWeight: f.bodyStrongWeight, fontSize: 32 * u, color: c.text }}>
+                <div data-mk="text" data-mk-label="result" style={{ fontFamily: f.body, fontWeight: f.bodyStrongWeight, fontSize: Math.max(32 * u, floor.comfortable), color: c.text }}>
                   {plainText(scene.result)}
                 </div>
                 <Waveform
@@ -243,6 +265,7 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
             </>
           ) : (
             <FitText
+              label="result"
               text={scene.result}
               start={b.result + 2}
               font="body"
@@ -250,8 +273,8 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
               align="left"
               maxWidth={cardW - pad * 2}
               maxHeight={resultH}
-              maxSize={46 * u}
-              minSize={34 * u}
+              maxSize={Math.max(46 * u, floor.comfortable)}
+              minSize={Math.max(34 * u, floor.min)}
             />
           )}
         </div>

@@ -12,6 +12,7 @@ export const Title: React.FC<{ scene: SceneOf<"title"> }> = ({ scene }) => {
     <Stage gap={44}>
       {scene.kicker ? <Kicker text={scene.kicker} start={b.kicker} /> : null}
       <FitText
+        label="headline"
         text={scene.headline}
         start={b.words[0]}
         starts={b.words}
@@ -21,6 +22,7 @@ export const Title: React.FC<{ scene: SceneOf<"title"> }> = ({ scene }) => {
       />
       {scene.sub ? (
         <FitText
+          label="sub"
           text={scene.sub}
           start={b.sub}
           font="body"

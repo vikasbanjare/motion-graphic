@@ -9,6 +9,7 @@
     "dev": "remotion studio",
     "check": "node scripts/check.mjs",
     "preview": "node scripts/preview.mjs",
+    "qa": "node scripts/qa.mjs",
     "voice": "node scripts/voice.mjs",
     "make": "node scripts/make.mjs",
     "lint": "eslint src && tsc"

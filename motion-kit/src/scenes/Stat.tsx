@@ -30,6 +30,7 @@ export const Stat: React.FC<{ scene: SceneOf<"stat"> }> = ({ scene }) => {
         maxSize: (landscape ? 300 : 360) * u,
         maxLines: 1,
         lineHeight: 1,
+        tabular: true,
       }).fontSize,
     [scene.value, f, box, u, landscape],
   );
@@ -42,6 +43,8 @@ export const Stat: React.FC<{ scene: SceneOf<"stat"> }> = ({ scene }) => {
     <Stage gap={36}>
       {scene.kicker ? <Kicker text={scene.kicker} start={b.kicker} /> : null}
       <div
+        data-mk="text"
+        data-mk-label="value"
         style={{
           ...pop(frame, b.count, m, 0.7),
           fontFamily: f.display,
@@ -71,6 +74,7 @@ export const Stat: React.FC<{ scene: SceneOf<"stat"> }> = ({ scene }) => {
         <div style={{ width: `${(p * pct * 100).toFixed(2)}%`, height: "100%", borderRadius: 99, background: c.accent }} />
       </div>
       <FitText
+        label="label"
         text={scene.label}
         start={b.label}
         font="body"
