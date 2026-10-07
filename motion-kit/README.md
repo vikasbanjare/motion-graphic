@@ -20,11 +20,9 @@ Needs Node.js 22.18+ and (for voice, music and loudness) ffmpeg.
 ```bash
 cd motion-kit
 npm install
-npm run new     -- my-video                  # specs/my-video.json from a recipe
 npm run check   -- specs/claude-reel.json    # validate + lint, prints the timeline
-npm run qa      -- specs/claude-reel.json    # visual QA of the real frames (in memory, writes nothing)
 npm run preview -- specs/claude-reel.json    # one-image contact sheet of every scene
-npm run make    -- specs/claude-reel.json    # QA, then out/claude-reel.mp4 + cover image
+npm run make    -- specs/claude-reel.json    # out/claude-reel.mp4 + cover image
 npm run dev                                  # Remotion Studio, live preview
 ```
 
@@ -35,19 +33,25 @@ With Claude Code, just describe the video; the `motion-director` skill
 
 | Command | What it does |
 |---|---|
-| `npm run new -- <name> [--recipe <recipe>]` | Creates `specs/<name>.json` from a recipe in `specs/recipes/`. |
-| `npm run check -- specs/x.json [--theme t] [--format f]` | Validates the spec and lints it against the timing, copy and contrast rules; prints the timeline. Exit 1 on errors. |
-| `npm run qa -- specs/x.json [--theme t] [--format f] [--json]` | Renders the key frames in memory and checks what is really on screen. Writes no files. Exit 1 on errors. |
+| `npm run new -- <name> [--recipe <recipe>]` | Creates `specs/<name>.json` from a recipe in `specs/recipes/` ([Recipes](#recipes)). |
+| `npm run check -- specs/x.json [--theme t] [--format f]` | Validates the spec and lints it against the timing, copy and contrast rules; prints the timeline. Instant, no browser. Exit 1 on errors. |
+| `npm run qa -- specs/x.json [--theme t] [--format f] [--json]` | Renders the key frames in memory and checks what is really on screen; writes no files. Exit 1 on errors ([Visual QA](#visual-qa)). |
 | `npm run preview -- specs/x.json [--theme t] [--format f]` | `out/x.sheet.jpg`: one settled frame per scene, platform-UI zones tinted red. |
 | `npm run voice -- specs/x.json [...]` | Narration script, ElevenLabs TTS, or alignment of your own recording ([Voice sync](#voice-sync-say--show)). |
-| `npm run music -- specs/x.json --track music/song.mp3 [--start 12.5]` | Fits your licensed track to the video ([Music](#music-your-licensed-track)). |
-| `npm run brand -- <logo file> [--spec specs/x.json]` | Brand palette from a logo ([Brand colours](#brand-colours)). |
-| `npm run make -- specs/x.json [--format f] [--all-formats] [--crf 22] [--skip-qa]` | Runs QA, stops on errors, then renders `out/x.mp4` + `out/x-cover.jpg`. |
-| `npm run scaffold -- <folder> [--no-install]` | Copies this engine (everything except `node_modules/` and `out/`) into a new folder and runs `npm install` there. |
+| `npm run music -- specs/x.json --track music/song.mp3 [--start 12.5]` | Fits a licensed track you supply: beats, start point, ducking ([Music](#music-your-licensed-track)). |
+| `npm run brand -- <logo file> [--spec specs/x.json]` | Palette from a logo, recommended theme; `--spec` writes the brand colours ([Brand colours](#brand-colours)). |
+| `npm run make -- specs/x.json [--format f] [--all-formats] [--crf 22] [--skip-qa]` | Runs QA and stops on errors, then renders `out/x.mp4` + `out/x-cover.jpg`. |
+| `npm run scaffold -- <folder> [--no-install]` | A new project with this engine in another folder ([A new project anywhere](#a-new-project-anywhere)). |
 | `npm run dev` | Remotion Studio with every example spec. |
 | `npm run lint` | ESLint + TypeScript. |
 
 `--theme` and `--format` try another look without editing the spec.
+
+`qa`, `preview` and `make` drive a Chromium. Remotion downloads its own on the first
+render; where that is blocked, set `REMOTION_BROWSER_EXECUTABLE` to an installed
+Chromium headless shell (plus `REMOTION_CHROME_MODE=chrome-for-testing` for a full
+Chromium). The repository's SessionStart hook (`../scripts/session-start.sh`) does this
+in Claude Code on the web, and `remotion.config.ts` passes it on to Studio.
 
 ## A spec
 
@@ -71,23 +75,6 @@ With Claude Code, just describe the video; the `motion-director` skill
 - **4 motion personalities**: snappy, smooth, bouncy, calm.
 - Inline marks: `*accent*`, `==highlight==`, `~~strike~~`.
 
-## Checks before rendering
-
-`npm run check` is instant and needs no browser: schema errors with the field path,
-hook length and payoff time, scene length, words per line, kicker length, narration
-coverage, media files that don't exist, and brand-colour contrast.
-
-`npm run qa` renders the frames that matter in memory (the thumbnail, every scene once
-it has landed, the transitions, the last frame) and measures what the browser actually
-laid out: text under platform UI or off the canvas, overlapping text, text too long for
-its slot, type too small for a phone, low contrast and a blank thumbnail. Each finding
-names the scene, time and field with a fix. `--json` is machine-readable; exit code 1 on
-errors. `npm run make` runs it first and stops on errors (`--skip-qa` to override).
-
-QA and renders need a Chromium. Remotion downloads its own on the first render; where
-that is blocked, set `REMOTION_BROWSER_EXECUTABLE` to an installed Chromium headless
-shell (the repository's SessionStart hook does this in Claude Code on the web).
-
 ## Voice sync (say / show)
 
 Each scene's `say` is the narration; the on-screen fields are the "show". Without a
@@ -103,32 +90,6 @@ npm run voice -- specs/x.json --import subs.srt       # existing subtitles
 
 Scenes then cut on the spoken beat and words reveal as they are said.
 
-## Music (your licensed track)
-
-The kit never generates music. Bring a track you hold a licence for (YouTube Audio
-Library, Pixabay Music, Mixkit, or bought), put it in `public/music/`, then:
-
-```bash
-npm run music -- specs/x.json --track music/song.mp3                # analyse + pick the start
-npm run music -- specs/x.json --track music/song.mp3 --start 12.5   # or choose the start
-```
-
-It analyses tempo, beats and loudness, picks a start offset, writes
-`public/music/song.beats.json` and sets `audio.music`, `audio.musicStart` and
-`audio.beats` in the spec. With `audio.beats` present the planner snaps cuts to the
-beat, and music is ducked under narration automatically.
-
-## Brand colours
-
-```bash
-npm run brand -- public/brand/logo.png                         # palette + recommended theme
-npm run brand -- public/brand/logo.png --spec specs/x.json      # also writes it into the spec
-```
-
-Extracts the logo's palette and recommends a theme; with `--spec` it writes
-`brand.accent`, `brand.accent2` (and `brand.logo`). A brand accent that would fail
-contrast on the chosen theme is adjusted automatically instead of rejected.
-
 ## Footage
 
 Put clips in `public/clips/` and use `clip` scenes (`trim`, `area`, `generated: true`
@@ -141,24 +102,26 @@ npm run scaffold -- ~/videos/brand-x            # copy + npm install
 npm run scaffold -- ../brand-y --no-install     # copy only
 ```
 
-The new folder is a complete motion-kit: same scenes, fonts, sounds and example specs,
-same commands. The target must be a new or empty folder outside this one. The Claude
-Code plugin runs this script from its own copy the first time it is used in a folder.
+Copies this engine (everything except `node_modules/` and `out/`) into a new or empty
+folder outside this one and runs `npm install` there: same scenes, fonts, sounds,
+recipes and example specs, same commands. The Claude Code plugin runs this script from
+its own copy the first time it is used in a folder.
 
 ## What's inside
 
 ```
 src/engine/   schema, planner (timing), voice alignment, auto-fit text, motion tokens,
               themes, backgrounds, transitions, orb/waveform visuals, contact sheet
-src/scenes/   one file per scene template (how to add one: ../docs/ADDING-SCENES.md)
-specs/        example specs; specs/recipes/ holds the starting points for `npm run new`
-scripts/      check · qa · preview · voice · music · brand · make · new · scaffold
+src/scenes/   one file per scene template
+scripts/      check · preview · voice · make
 public/       fonts (SIL OFL, Latin + Devanagari), synthesised SFX, grain texture
 tools/        gen-assets.py — regenerates the SFX and grain (no third-party licences)
 ```
 
-CI (`.github/workflows/ci.yml`) runs `tsc`, ESLint, `check` on every spec and the unit
-tests on each pull request. Nothing is rendered in CI.
+How to add a scene template safely: [`../docs/ADDING-SCENES.md`](../docs/ADDING-SCENES.md).
+CI (`../.github/workflows/ci.yml`) runs `tsc`, ESLint, `check` on every spec, the unit
+tests (`node --test`) and the plugin validator on each pull request. Nothing is rendered
+in CI.
 
 ## Licences
 

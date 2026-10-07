@@ -10,3 +10,10 @@ Config.setCodec("h264");
 Config.setCrf(20);
 Config.setPixelFormat("yuv420p");
 Config.setEntryPoint("src/index.ts");
+// Where Remotion can't download its own browser (cloud sandboxes), Studio and
+// `npx remotion` use the Chromium found by the repository's SessionStart hook
+// (../scripts/session-start.sh). The npm scripts pass it themselves.
+if (process.env.REMOTION_BROWSER_EXECUTABLE) {
+  Config.setBrowserExecutable(process.env.REMOTION_BROWSER_EXECUTABLE);
+  if (process.env.REMOTION_CHROME_MODE === "chrome-for-testing") Config.setChromeMode("chrome-for-testing");
+}

@@ -41,7 +41,7 @@ Team, or Enterprise with a Claude Code seat).
 3. In the repository picker choose **your-name/motion-graphic**. Keep the **Default** cloud
    environment (its network access, "Trusted", lets the setup download what it needs).
 4. Type what you want (see [What to type](#what-to-type)) and press Enter.
-   The first time, you'll see "Setting up motion-kit" for about a minute while the engine
+   The first time, you'll see "Setting up motion-kit" for up to a minute while the engine
    installs itself. Later sessions start instantly.
 5. Answer Claude's short questions, approve the storyboard, then ask for the final video.
 6. To download it, ask: *"Save the MP4 and the cover image to my GitHub."* Claude commits them
@@ -53,24 +53,29 @@ Team, or Enterprise with a Claude Code seat).
 1. Install **Node.js 22.18 or newer** from [nodejs.org](https://nodejs.org) (choose the LTS
    download). Optional: install **ffmpeg** for voice-overs and music (see
    [Troubleshooting](#troubleshooting)).
-2. Start Claude Code and type these two lines, one at a time:
+2. Start Claude Code (in a terminal, type `claude`; if it isn't installed yet, follow the
+   [quickstart](https://code.claude.com/docs/en/quickstart)) and type these two lines, one at
+   a time:
    ```
    /plugin marketplace add vikasbanjare/motion-graphic
    /plugin install motion-kit@motion-graphic
    ```
    Choose **Install for you**. The plugin works in every folder from now on.
-   Desktop app: add the plugin the same way from a terminal once
-   (`claude plugin marketplace add vikasbanjare/motion-graphic`, then
-   `claude plugin install motion-kit@motion-graphic`), or manage it under **+ > Plugins**.
+   Desktop app: if `/plugin` doesn't open the plugin manager there, run the same two steps
+   once in a terminal: `claude plugin marketplace add vikasbanjare/motion-graphic`, then
+   `claude plugin install motion-kit@motion-graphic`.
 3. Open an empty folder for your videos in Claude Code and type what you want. The first
    time, Claude sets up a `motion-kit/` folder there (about a minute).
 
-Videos land in `motion-kit/out/` inside that folder. To get updates later:
-`/plugin marketplace update motion-graphic`.
+Videos land in `motion-kit/out/` inside that folder. To get a newer version later, type
+`/plugin`, open **Installed > motion-kit** and choose **Update now** (or run
+`claude plugin update motion-kit@motion-graphic` in a terminal), then restart Claude Code.
+Folders you set up earlier keep the engine they were made with, so their videos render exactly
+as before; new folders get the new one.
 
-No terminal at all? Download this repository (**Code > Download ZIP** on GitHub), unzip it and
-open the folder in the desktop app's **Code** tab as a local session. It sets itself up the same
-way as option A, and the videos land in `motion-kit/out/`.
+No terminal at all? Install Node.js (step 1), download this repository (**Code > Download ZIP**
+on GitHub), unzip it and open the folder in the desktop app's **Code** tab as a local session.
+It sets itself up the same way as option A, and the videos land in `motion-kit/out/`.
 
 ### C. By hand, without Claude (npm)
 
@@ -159,7 +164,7 @@ Then reply in plain words: "make the hook shorter", "try the neon look", "square
 | Hindi letters look broken | Keep Hindi on screen in Devanagari script; Hinglish in English letters is fine too. |
 | Words appear before or after they're spoken | The recording must say exactly the storyboard's words. Ask Claude to re-align the voice-over. |
 | Windows: the skill isn't found when you open this repo | Git on Windows may not create the skill's shortcut (a symlink). Use option B, or enable symlinks (`git config --global core.symlinks true` with Windows Developer Mode) and clone again. |
-| The plugin didn't pick up a new version | `/plugin marketplace update motion-graphic`, then `/reload-plugins`. |
+| The plugin didn't pick up a new version | `/plugin` > **Marketplaces** > motion-graphic > **Update marketplace**, then **Installed** > motion-kit > **Update now**, and restart Claude Code. |
 
 ## What's in this repository
 
@@ -169,7 +174,8 @@ Then reply in plain words: "make the hook shorter", "try the neon look", "square
   QA, voice and render. `.claude/skills/motion-director` links to it for people who open this
   repo directly.
 - **`.claude-plugin/`**: makes the repository installable as a Claude Code plugin
-  (`motion-kit@motion-graphic`).
+  (`motion-kit@motion-graphic`). Plugin users receive a change only after `version` in
+  `.claude-plugin/plugin.json` goes up, so raise it with every release.
 - **`scripts/session-start.sh`**: the setup that runs when a Claude Code session starts here.
 - **`docs/ADDING-SCENES.md`**: how to add a new scene template safely.
 - **`ai-motion-reel/`**: the original hand-coded reel, kept for reference.

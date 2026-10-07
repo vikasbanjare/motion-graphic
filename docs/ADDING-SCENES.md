@@ -180,9 +180,15 @@ npx tsc -p .
 npx eslint src
 for s in specs/*.json; do node scripts/check.mjs "$s" || break; done
 npm run qa -- specs/all-scenes.json
-npm test   # if the package defines tests
+node --test   # every unit test, as CI runs them
 ```
 
 Look at it in Remotion Studio (`npm run dev`, Examples > all-scenes) with long and short
 copy, Hindi copy, every format and at least one light and one dark theme. CI runs the
-type check, lint, spec checks and unit tests on every pull request; it does not render.
+type check, lint, spec checks, unit tests and the plugin validator on every pull request;
+it does not render.
+
+People who use the Claude Code plugin get the new scene only once the plugin's `version`
+in `.claude-plugin/plugin.json` goes up (Claude Code caches each version), so raise it
+when the change is released. Projects they set up earlier keep their own copy of the
+engine and are not affected.
