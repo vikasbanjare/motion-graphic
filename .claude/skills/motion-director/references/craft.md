@@ -56,7 +56,9 @@ that pass first time.
   - accent2: the brand's, held to 3:1 on the background and under button-text glyphs; if missing it is
     derived with the theme's own pairing — analogous (desi, corporate), a quarter turn (midnight, clean, pop),
     complementary (neon, editorial, studio, studio-dark), grey (mono);
-  - highlighter (`==mark==`, text on it ≥ 4.5:1) and orb colours: the theme's tints re-aimed at the brand hue;
+  - highlighter (`==mark==`, text on it ≥ 4.5:1) and orb colours: the theme's tints re-aimed at the brand hue,
+    at the theme's lightness and as strong as the brand is vivid (a yellow brand on `clean` gets a pale butter
+    highlighter, not beige and not neon; a muted brand gets muted tints);
   - text, background, surface, lines and muted text never change.
 - `npm run check` prints an ℹ line per adjustment, e.g. "brand accent #FFE14D darkened to #A48D00 for
   contrast … To keep it exactly, use theme midnight / neon / desi …". Light brand colours (yellow, lime,

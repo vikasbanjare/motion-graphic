@@ -70,6 +70,23 @@ test("out-of-gamut OKLCH keeps lightness and hue, loses chroma", () => {
   assert.equal(T.oklchToHex({ l: -1, c: 0.2, h: 10 }), "#000000");
 });
 
+test("maxChroma finds the sRGB gamut edge; vividness is chroma as a share of it", () => {
+  // sRGB red is a gamut corner: all of its chroma is the most its L and hue allow.
+  const red = T.hexToOklch("#FF0000");
+  close(T.maxChroma(red.l, red.h), red.c, 1e-3, "red sits on the edge");
+  close(T.vividness(red), 1, 0.01, "red is fully vivid");
+  for (const [l, h] of [[0.3, 20], [0.6, 140], [0.9, 260], [0.95, 100]]) {
+    const edge = T.maxChroma(l, h);
+    const lab = (c) => [l, c * Math.cos((h * Math.PI) / 180), c * Math.sin((h * Math.PI) / 180)];
+    assert.ok(T.oklabToRgb(lab(edge * 0.99)).every((v) => v >= -0.5 && v <= 255.5), `inside at L${l} h${h}`);
+    assert.ok(T.oklabToRgb(lab(edge * 1.05 + 0.002)).some((v) => v < -0.5 || v > 255.5), `outside at L${l} h${h}`);
+  }
+  // Pale yellow has far more room than pale blue: why raw chroma can't compare hues.
+  assert.ok(T.maxChroma(0.9, 100) > 3 * T.maxChroma(0.9, 265));
+  close(T.vividness(T.hexToOklch("#808080")), 0, 1e-3, "grey");
+  assert.equal(T.vividness({ l: 1, c: 0, h: 0 }), 0);
+});
+
 test("WCAG contrast and hue helpers", () => {
   close(T.contrast("#FFFFFF", "#000000"), 21, 1e-9);
   assert.equal(T.contrast("#FF9933", "#0A0E1A"), T.contrast("#0A0E1A", "#FF9933"));
@@ -222,6 +239,19 @@ test("highlighter and orb are re-tinted from the brand at the theme's lightness"
     close(T.hexToOklch(o).l, T.hexToOklch(theme.orb[i]).l, 0.02, `orb ${i} lightness`);
   });
   close(T.hueDelta(T.hexToOklch(r.theme.colors.mark).h, red), 0, 25, "mark hue");
+  // Pale tints of warm brands stay pale but clearly the brand's hue: richer
+  // than the theme's pale blue (no beige), short of the gamut edge (no neon).
+  const paleBlue = T.hexToOklch(T.THEMES.clean.colors.mark);
+  for (const brand of ["#FFE14D", "#00A86B", "#C6FF3D"]) {
+    const mark = T.hexToOklch(T.resolveBrand(T.THEMES.clean, { accent: brand }).theme.colors.mark);
+    close(T.hueDelta(mark.h, T.hexToOklch(brand).h), 0, 25, `${brand} mark hue`);
+    assert.ok(mark.c > paleBlue.c * 1.3, `${brand} mark chroma ${mark.c} not beige`);
+    assert.ok(T.vividness(mark) < 0.8, `${brand} mark vividness ${T.vividness(mark)} not neon`);
+  }
+  // A muted brand gets muted tints; re-aiming at the same colour changes nothing.
+  const slate = T.resolveBrand(T.THEMES.studio, { accent: "#5B6770" }).theme;
+  for (const o of [...slate.orb, slate.colors.mark]) assert.ok(T.vividness(T.hexToOklch(o)) < 0.3, `slate tint ${o}`);
+  assert.equal(T.reaim("#DCE5FF", "#2F5BEA", "#2f5bea"), "#DCE5FF");
   // Neutral parts of a theme stay neutral.
   const mono = T.resolveBrand(T.THEMES.mono, { accent: "#0A5CFF" });
   assert.equal(mono.theme.orb[0], "#0A5CFF");

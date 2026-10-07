@@ -499,20 +499,33 @@ export const hexToOklch = (hex: string): Lch => {
 const lchToLab = ({ l, c, h }: Lch): Lab => [l, c * Math.cos((h * Math.PI) / 180), c * Math.sin((h * Math.PI) / 180)];
 const inGamut = (rgb: Rgb) => rgb.every((v) => v >= -0.02 && v <= 255.02);
 
+/** The most chroma sRGB can show at this OKLCH lightness and hue (searched up to `upTo`). */
+export const maxChroma = (l: number, h: number, upTo = 0.4) => {
+  let lo = 0;
+  let hi = upTo;
+  for (let i = 0; i < 22; i++) {
+    const mid = (lo + hi) / 2;
+    if (inGamut(oklabToRgb(lchToLab({ l, c: mid, h })))) lo = mid;
+    else hi = mid;
+  }
+  return lo;
+};
+
+/**
+ * How vivid a colour is for its lightness and hue: chroma as a share (0-1) of
+ * the most sRGB allows there. Raw chroma can't compare hues: a full-strength
+ * pale yellow has three times the chroma of a full-strength pale blue.
+ */
+export const vividness = ({ l, c, h }: Lch) => {
+  const most = maxChroma(l, h);
+  return most < 1e-4 ? 0 : clamp(c / most, 0, 1);
+};
+
 /** OKLCH -> hex. Out-of-gamut colours keep L and hue and lose chroma until they fit. */
 export const oklchToHex = (lch: Lch) => {
   const l = clamp(lch.l, 0, 1);
   let c = Math.max(0, lch.c);
-  if (!inGamut(oklabToRgb(lchToLab({ l, c, h: lch.h })))) {
-    let lo = 0;
-    let hi = c;
-    for (let i = 0; i < 22; i++) {
-      const mid = (lo + hi) / 2;
-      if (inGamut(oklabToRgb(lchToLab({ l, c: mid, h: lch.h })))) lo = mid;
-      else hi = mid;
-    }
-    c = lo;
-  }
+  if (!inGamut(oklabToRgb(lchToLab({ l, c, h: lch.h })))) c = maxChroma(l, lch.h, c);
   return rgbToHex(oklabToRgb(lchToLab({ l, c, h: lch.h })));
 };
 
@@ -575,29 +588,36 @@ export const harmonyOf = (theme: Theme): { rule: HarmonyRule; step: number } => 
   return { rule: size <= 70 ? "analogous" : size < 120 ? "square" : "complementary", step };
 };
 
-/** The theme's accent2, re-aimed at a brand accent (see harmonyOf). */
-export const harmonize = (theme: Theme, accent: string) => {
-  const { rule, step } = harmonyOf(theme);
-  if (rule === "neutral") return theme.colors.accent2;
-  const from = hexToOklch(theme.colors.accent);
-  const to = hexToOklch(accent);
-  const second = hexToOklch(theme.colors.accent2);
-  return oklchToHex({ l: second.l, c: second.c * clamp(to.c / Math.max(from.c, 0.01), 0, 3), h: to.h + step });
+/**
+ * Move a theme colour that was built from `from` (one of the theme's accents)
+ * over to `to` (a brand colour): its hue turns by the same step as from -> to,
+ * its lightness stays the theme's, and its chroma scales by how vivid the brand
+ * is next to the theme's accent (a muted brand gets muted tints).
+ * Pale tints have far more room in some hues than others (a pale yellow can
+ * carry 4x the chroma of a pale blue), so the chroma also grows with the square
+ * root of the extra room: halfway between keeping the chroma (pale yellows go
+ * beige) and keeping the share of the room (pastels go neon).
+ */
+export const reaim = (color: string, from: string, to: string) => {
+  if (from.toUpperCase() === to.toUpperCase()) return color;
+  const [c, f, t] = [color, from, to].map(hexToOklch);
+  const h = c.h + hueDelta(f.h, t.h);
+  const strength = clamp(vividness(t) / Math.max(vividness(f), 0.01), 0, 3);
+  const room = Math.sqrt(maxChroma(c.l, h) / Math.max(maxChroma(c.l, c.h), 1e-4));
+  return oklchToHex({ l: c.l, c: c.c * strength * room, h });
 };
 
+/** The theme's accent2, re-aimed at a brand accent (see harmonyOf). */
+export const harmonize = (theme: Theme, accent: string) =>
+  harmonyOf(theme).rule === "neutral" ? theme.colors.accent2 : reaim(theme.colors.accent2, theme.colors.accent, accent);
+
 /**
- * Re-tint a theme colour that was derived from `from` (the theme's accent or
- * accent2) so it derives from `to` instead: same hue step and chroma ratio,
- * the theme's own lightness. A colour that *is* `from` becomes `same` (the
+ * Re-tint a theme colour built from `from` so it is built from the brand's
+ * `to` instead (see reaim). A colour that *is* `from` becomes `same` (the
  * brand colour as used on screen, i.e. after any contrast fix).
  */
-const retint = (color: string, from: string, to: string, same: string) => {
-  if (deltaE(color, from) < 0.02) return same;
-  const c = hexToOklch(color);
-  const f = hexToOklch(from);
-  const t = hexToOklch(to);
-  return oklchToHex({ l: c.l, c: c.c * clamp(t.c / Math.max(f.c, 0.01), 0, 3), h: c.h + hueDelta(f.h, t.h) });
-};
+const retint = (color: string, from: string, to: string, same: string) =>
+  deltaE(color, from) < 0.02 ? same : reaim(color, from, to);
 
 export type BrandChange = {
   field: "accent" | "accent2";
