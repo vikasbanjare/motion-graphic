@@ -14,7 +14,7 @@
 // the music ducks under narration.
 import fs from "node:fs";
 import path from "node:path";
-import { SR, analysePcm, decode, loudness, pickStart } from "./beats.mjs";
+import { SR, analysePcm, decode, loudness, pickStart, renderDuration } from "./beats.mjs";
 import { ROOT, c, engine, parseArgs, readSpec, withTimingFile } from "./lib.mjs";
 
 const args = parseArgs(process.argv.slice(2));
@@ -61,6 +61,10 @@ try {
 if (pcm.length < SR * 2) fail("The track is shorter than 2 seconds — is it the full file?");
 const a = analysePcm(pcm);
 const lufs = loudness(file);
+// The renderer loops the track after its own reading of the length; use that
+// so the beat grid stays on the music across loops.
+const played = await renderDuration(file);
+const durationMs = played === null ? a.durationMs : Math.round(played);
 // Free-time music (ambient, drones, rubato) has no grid worth cutting on.
 const rhythmic = a.rhythmic;
 
@@ -69,7 +73,7 @@ const E = await engine();
 const withMusic = (startMs, beats) => {
   const audio = { ...(spec.audio ?? {}), music: rel, musicStart: Math.round(startMs) / 1000 };
   for (const k of ["beats", "beatGrid", "downbeatGrid", "musicDuration", "musicLufs"]) delete audio[k];
-  if (beats) Object.assign(audio, { beatGrid: beats.beats, downbeatGrid: beats.downbeats, musicDuration: a.durationMs / 1000, ...(lufs !== null ? { musicLufs: lufs } : {}) });
+  if (beats) Object.assign(audio, { beatGrid: beats.beats, downbeatGrid: beats.downbeats, musicDuration: durationMs / 1000, ...(lufs !== null ? { musicLufs: lufs } : {}) });
   if (volume !== undefined) audio.musicVolume = volume;
   return { ...spec, audio };
 };
@@ -113,12 +117,12 @@ let sectionMs = 0;
 const chosen = args.start !== undefined && args.start !== true;
 if (chosen) {
   startMs = Number(args.start) * 1000;
-  if (!(startMs >= 0 && startMs < a.durationMs - 1000)) fail(`--start ${args.start} is outside the track (${(a.durationMs / 1000).toFixed(1)}s long).`);
+  if (!(startMs >= 0 && startMs < durationMs - 1000)) fail(`--start ${args.start} is outside the track (${(durationMs / 1000).toFixed(1)}s long).`);
 } else {
   // Snapped cuts change the length slightly; settle start and length together.
   for (let k = 0; k < 2; k++) {
     const grid = rhythmic ? { downbeatsMs: a.downbeats, beatsMs: a.beats } : { downbeatsMs: [], beatsMs: [] };
-    sectionMs = pickStart({ rms: a.rms, ...grid, durationMs: a.durationMs, needMs }).startMs;
+    sectionMs = pickStart({ rms: a.rms, ...grid, durationMs, needMs }).startMs;
     if (!rhythmic) break;
     const len = msOf(planOf(withMusic(sectionMs, a))) + MARGIN;
     if (len <= needMs) break;
@@ -136,7 +140,7 @@ const data = {
   beats: rhythmic ? a.beats : [],
   downbeats: rhythmic ? a.downbeats : [],
   startMs: Math.round(startMs),
-  durationMs: a.durationMs,
+  durationMs,
   lufs,
 };
 // One key per line, arrays inline: small diffs, still readable.
@@ -151,7 +155,7 @@ fs.writeFileSync(specPath, JSON.stringify(updated, null, 2) + "\n");
 // --- report ------------------------------------------------------------------------
 const plan = planOf(updated);
 const videoMs = msOf(plan);
-const leftMs = a.durationMs - startMs;
+const leftMs = durationMs - startMs;
 const clock = (ms) => `${Math.floor(ms / 60000)}:${((ms % 60000) / 1000).toFixed(1).padStart(4, "0")}`;
 const cuts = plan.scenes.length - 1;
 const snapped = plan.scenes.filter((s) => s.onBeat !== undefined).length;
@@ -162,7 +166,8 @@ if (rhythmic) {
 } else {
   console.log(c.yellow("⚠ ") + "No steady beat found (ambient / free-time track?). Music plays, but cuts are timed without it.");
 }
-const bar = rhythmic ? a.downbeats.findIndex((d) => d >= startMs - 30) : -1;
+// Starts sit on whole video frames, so a bar up to one frame before the start still opens the video.
+const bar = rhythmic ? a.downbeats.findIndex((d) => d >= startMs - 40) : -1;
 const pickup = bar >= 0 ? a.downbeats[bar] - startMs : 0;
 console.log(
   c.green("✔ ") +
@@ -189,6 +194,9 @@ if (lufs !== null) {
   console.log(c.green("✔ ") + `Loudness ${lufs.toFixed(1)} LUFS (${note}); music level ${plan.spec.audio.musicVolume}.`);
 }
 if (plan.voice && plan.spec.audio.voiceover) console.log(c.green("✔ ") + `Ducks to ${Math.round(E.DUCKING.depth * 100)}% while the narration speaks.`);
+// The renderer's decoder could not open the file, or it is AAC (Chrome decodes it, not every Chromium build does).
+if (played === null || /\.(m4a|aac)$/i.test(rel))
+  console.log(c.yellow("⚠ ") + `This format may not play in every renderer; MP3 or WAV always do (ffmpeg -i public/${rel} public/music/${base}.wav, then re-run).`);
 const specRel = path.relative(process.cwd(), specPath);
 const shown = specRel.startsWith("..") ? specPath : specRel;
 console.log(c.green("✔ ") + `Wrote public/${beatsRel}; updated ${shown} (audio.music, audio.musicStart, audio.beats).`);

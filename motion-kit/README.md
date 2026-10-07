@@ -65,7 +65,7 @@ Scenes then cut on the spoken beat and words reveal as they are said.
 
 ## Music (your licensed track)
 
-The kit never generates music. Bring an instrumental track you hold a licence for
+The kit never generates music. Bring an instrumental track (MP3 or WAV) you hold a licence for
 (YouTube Audio Library, Pixabay Music, Mixkit, or Artlist / Epidemic Sound if bought):
 
 ```bash

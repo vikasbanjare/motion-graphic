@@ -27,7 +27,8 @@ Voice-prep prompt for the user's own tools:
 The kit never makes music. The user brings an instrumental track they hold a licence
 for; the engine fits it to the video.
 
-1. Get the track (sources below) and put it in `public/music/` (any path works; it is copied there).
+1. Get the track (sources below) as MP3 or WAV (AAC/M4A does not decode in every renderer browser)
+   and put it in `public/music/` (any path works; it is copied there).
 2. Run it after the voice step, so the video's final length is known:
    ```bash
    npm run music -- specs/x.json --track music/song.mp3               # analyse + pick the start

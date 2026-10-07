@@ -1,7 +1,8 @@
 // Tempo, beat, downbeat and loudness analysis for music the user supplies.
 // The kit never generates music; this only measures a licensed track so cuts
-// can land on its beats. ffmpeg decodes, the DSP below is dependency-free and
-// deterministic (same file in, same beat grid out), so it is unit-testable.
+// can land on its beats. ffmpeg decodes, mediabunny (the renderer's demuxer)
+// reads the length; the DSP below is dependency-free and deterministic (same
+// file in, same beat grid out), so it is unit-testable.
 import { spawnSync } from "node:child_process";
 
 /** Analysis sample rate: plenty for rhythm, half the work of 44.1 kHz. */
@@ -18,12 +19,23 @@ const run = (args, opts = {}) => {
 };
 
 /**
+ * MP3 needs its priming and padding kept. An encoder writes ~25 ms of silence
+ * (encoder + decoder delay, 1105 samples for LAME) before the music, and pads
+ * the last frame. ffmpeg trims both using the LAME header; the renderer
+ * (@remotion/media, via mediabunny + WebCodecs) plays them. Analysing what the
+ * renderer plays keeps beat times and the loop length on the frames we hear.
+ * Other formats agree already (MP4/M4A edit lists are honoured by both).
+ */
+const untrimmed = (file) => (/\.mp3$/i.test(file) ? ["-flags2", "+skip_manual"] : []);
+
+/**
  * Decode audio to mono float PCM entirely in memory (ffmpeg writes raw f32 to
  * stdout; no temp files). `input` is a file path or raw ffmpeg input args,
  * e.g. ["-f", "lavfi", "-i", "aevalsrc=..."] for synthetic test signals.
+ * Times in the result are on the renderer's timeline (see `untrimmed`).
  */
 export const decode = (input, { sampleRate = SR } = {}) => {
-  const inputArgs = Array.isArray(input) ? input : ["-i", input];
+  const inputArgs = Array.isArray(input) ? input : [...untrimmed(input), "-i", input];
   const r = run(["-v", "error", "-nostdin", ...inputArgs, "-vn", "-ac", "1", "-ar", String(sampleRate), "-f", "f32le", "-"]);
   if (r.status !== 0) throw new Error(`ffmpeg could not decode the track: ${String(r.stderr).trim().split("\n").pop()}`);
   const buf = r.stdout;
@@ -31,6 +43,29 @@ export const decode = (input, { sampleRate = SR } = {}) => {
   const pcm = new Float32Array(buf.length >> 2);
   new Uint8Array(pcm.buffer).set(buf.subarray(0, pcm.length * 4));
   return pcm;
+};
+
+/**
+ * Length of the track as the renderer sees it (ms). @remotion/media loops a
+ * track after the duration mediabunny reports, which can differ from the
+ * decoded length by a few ms (Ogg/Opus pre-skip, AAC priming, MP3 padding);
+ * repeated over loops that would drift the beat grid. Null when mediabunny
+ * cannot open the file, i.e. the renderer could not play it either.
+ */
+export const renderDuration = async (file) => {
+  try {
+    const { ALL_FORMATS, FilePathSource, Input } = await import("mediabunny");
+    const input = new Input({ source: new FilePathSource(file), formats: ALL_FORMATS });
+    try {
+      // The same lookup @remotion/media makes before looping.
+      const s = (await input.getDurationFromMetadata(undefined, { skipLiveWait: true })) ?? (await input.computeDuration(undefined, { skipLiveWait: true }));
+      return Number.isFinite(s) && s > 0 ? s * 1000 : null;
+    } finally {
+      input.dispose();
+    }
+  } catch {
+    return null;
+  }
 };
 
 /** Integrated loudness (EBU R128, LUFS) via ffmpeg's ebur128 filter. */

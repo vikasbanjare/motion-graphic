@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { analysePcm, decode, loudness, pickStart } from "../scripts/beats.mjs";
+import { analysePcm, decode, loudness, pickStart, renderDuration } from "../scripts/beats.mjs";
 import { withTimingFile } from "../scripts/lib.mjs";
 import { planVideo } from "../src/engine/plan.ts";
 import { videoSchema } from "../src/engine/schema.ts";
@@ -107,6 +107,40 @@ test("free-time music (pads, drones, noise) reports no beat; a kick buried under
   const buried = analysePcm(decode(lav(`aevalsrc=exprs='${pad}+0.1*${kick}':s=22050:d=30`)));
   assert.equal(buried.rhythmic, true, `pulse ${buried.pulse}`);
   assert.ok(Math.abs(buried.bpm - 120) <= 1, `got ${buried.bpm} BPM`);
+});
+
+test("MP3 keeps its encoder delay and padding, as the renderer plays them; loops use the renderer's length", { skip }, async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "motion-kit-music-"));
+  try {
+    const src = drums({ bpm: 120, offset: 0.137, seconds: 12 });
+    const mp3 = path.join(tmp, "t.mp3");
+    const ogg = path.join(tmp, "t.ogg");
+    const wav = path.join(tmp, "t.wav");
+    const encode = (out, codec, rate = 44100) => spawnSync("ffmpeg", ["-v", "error", "-y", ...src, "-ar", String(rate), ...codec, out]).status === 0;
+    assert.ok(encode(wav, []));
+    const ref = analysePcm(decode(wav));
+    assert.equal(await renderDuration(wav), 12000);
+
+    if (encode(mp3, ["-c:a", "libmp3lame", "-b:a", "192k"])) {
+      // LAME: 576 samples encoder delay + 529 decoder delay ahead of the music.
+      const delayMs = (1105 / 44100) * 1000;
+      const a = analysePcm(decode(mp3));
+      const shifts = a.beats.map((b) => b - ref.beats.reduce((best, r) => (Math.abs(r - b) < Math.abs(best - b) ? r : best))).sort((x, y) => x - y);
+      const shift = shifts[shifts.length >> 1];
+      assert.ok(Math.abs(shift - delayMs) < 3, `MP3 beats are ${shift.toFixed(1)} ms after the WAV's (expected ${delayMs.toFixed(1)})`);
+      const played = await renderDuration(mp3);
+      assert.ok(played > 12000 + delayMs, `renderer length ${played} ms includes the priming and padding`);
+      assert.ok(Math.abs(played - a.durationMs) <= 1, `decoded ${a.durationMs} ms vs renderer ${played} ms`);
+    }
+    // Ogg/Opus: mediabunny's length (what the renderer loops on) is ~13 ms longer than ffmpeg's decode.
+    if (encode(ogg, ["-c:a", "libopus"], 48000)) {
+      const played = await renderDuration(ogg);
+      assert.ok(played !== null && Math.abs(played - 12000) < 40, `Ogg length ${played} ms`);
+    }
+    assert.equal(await renderDuration(path.join(tmp, "missing.mp3")), null);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
 
 test("npm run music refuses to run without a track", () => {
