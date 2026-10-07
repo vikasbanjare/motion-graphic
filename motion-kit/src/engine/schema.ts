@@ -260,8 +260,14 @@ export const videoSchema = z.object({
   brand: z
     .object({
       name: z.string().optional(),
+      /**
+       * Brand colours (`npm run brand -- <logo>` extracts them from a logo). A
+       * colour that would not read on the theme is lightened/darkened just enough.
+       */
       accent: hex.optional(),
       accent2: hex.optional(),
+      /** Logo file inside public/ (e.g. "brand/logo.png"). "logo" scenes without a src use it. */
+      logo: z.string().optional(),
       handle: z.string().optional(),
       /** Show the handle small in a corner for the whole video. */
       watermark: z.boolean().optional(),

@@ -37,7 +37,30 @@ that pass first time.
 | `mono` | Swiss minimal (black, white, one red) |
 | `studio` / `studio-dark` | launch films in the calm ElevenLabs-style: light type, orb, blur dissolves, "Try X →" endings |
 
-Brand accent overrides the theme accent; the checker rejects accents under 3:1 contrast.
+### Brand colours (they always match, and always read)
+- **From a logo**: put it in `public/brand/`, then
+  `npm run brand -- public/brand/logo.png --spec specs/<name>.json` (PNG, JPG, WebP, GIF, SVG; `--json` for data).
+  The logo is decoded in memory (nothing written but the spec). Transparent, near-white and
+  near-black pixels (background, lettering) and anti-aliased blends are ignored; the rest is
+  clustered (k-means, k=5, OKLab). It writes `brand.accent` (the most saturated colour covering
+  ≥ 5 % of the logo's colour), `brand.accent2` (the next clearly different one; dropped for
+  one-colour logos) and `brand.logo` (`logo` scenes without `src` show it). It prints every
+  colour's contrast, light vs dark base, and ranks the 10 themes: keeping the brand colours
+  true counts most, then the base, then a theme built around a similar hue. Choose among the
+  top 3 by vibe. A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
+- **From hex codes** the user gives: write them to `brand.accent` / `brand.accent2` directly.
+- **Never rejected, never unreadable** (`withBrand` in `src/engine/themes.ts`):
+  - accent stays exactly as given if it reaches 3:1 on the background and some button text reaches
+    4.5:1 on it; otherwise only its lightness moves (OKLCH, hue and chroma kept) to the nearest value that passes;
+  - button text: the theme's own if it reads, else white or the theme's dark ink, whichever reads better;
+  - accent2: the brand's, held to 3:1 on the background and under button-text glyphs; if missing it is
+    derived with the theme's own pairing — analogous (desi, corporate), a quarter turn (midnight, clean, pop),
+    complementary (neon, editorial, studio, studio-dark), grey (mono);
+  - highlighter (`==mark==`, text on it ≥ 4.5:1) and orb colours: the theme's tints re-aimed at the brand hue;
+  - text, background, surface, lines and muted text never change.
+- `npm run check` prints an ℹ line per adjustment, e.g. "brand accent #FFE14D darkened to #A48D00 for
+  contrast … To keep it exactly, use theme midnight / neon / desi …". Light brand colours (yellow, lime,
+  pastels) belong on dark themes; deep ones (navy, maroon) on light themes.
 
 ## Motion personalities
 - `snappy` — mask reveals, 2-frame stagger, push transitions. Creator energy.

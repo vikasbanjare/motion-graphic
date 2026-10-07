@@ -11,6 +11,8 @@
     "preview": "node scripts/preview.mjs",
     "voice": "node scripts/voice.mjs",
     "make": "node scripts/make.mjs",
+    "brand": "node scripts/brand.mjs",
+    "test": "node --test scripts/test-*.mjs",
     "lint": "eslint src && tsc"
   },
   "sideEffects": [

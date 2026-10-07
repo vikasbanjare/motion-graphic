@@ -10,6 +10,8 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
   const rawSpec = withTimingFile(inputSpec);
   const errors = [];
   const warnings = [];
+  /** Information, not problems (e.g. how brand colours were adjusted). */
+  const notes = [];
   const parsed = E.videoSchema.safeParse(rawSpec);
   if (!parsed.success) {
     for (const i of parsed.error.issues) {
@@ -20,7 +22,7 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
       }
       errors.push(`${where}: ${hint}`);
     }
-    return { errors, warnings, plan: null };
+    return { errors, warnings, notes, plan: null };
   }
 
   const spec = parsed.data;
@@ -71,12 +73,20 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     if (run === 3) warnings.push(`Scenes ${i - 1}-${i + 1} are all "${spec.scenes[i].type}". Vary scene types to keep attention.`);
   }
 
-  // --- brand colour contrast ----------------------------------------------
-  if (spec.brand?.accent) {
-    const k = E.contrast(theme.colors.accent, theme.colors.bg);
-    if (k < 3) errors.push(`brand.accent ${spec.brand.accent} has ${k.toFixed(2)}:1 contrast on the ${theme.name} background (needs 3:1). Pick a ${E.luminance(theme.colors.bg) > 0.5 ? "darker" : "brighter"} accent or another theme.`);
-    const b = E.contrast(theme.colors.onAccent, theme.colors.accent);
-    if (b < 3) warnings.push(`Button text on brand.accent only reaches ${b.toFixed(2)}:1. It may be hard to read.`);
+  // --- brand colours --------------------------------------------------------
+  // withBrand() already moved any brand colour that would not read (lightness
+  // only, hue kept); say what changed. Only an impossible fix is an error.
+  if (spec.brand?.accent || spec.brand?.accent2) {
+    const report = E.resolveBrand(E.THEMES[theme.name], spec.brand);
+    for (const ch of report.changes) {
+      let note = ch.message;
+      if (ch.field === "accent" && ch.kind === "adjusted" && E.deltaE(ch.from, ch.to) > 0.08) {
+        const keep = E.THEME_NAMES.filter((n) => E.resolveBrand(E.THEMES[n], { accent: ch.from }).theme.colors.accent === ch.from);
+        if (keep.length) note += ` To keep it exactly, use theme ${keep.join(" / ")}.`;
+      }
+      notes.push(note);
+    }
+    errors.push(...report.errors);
   }
 
   // --- media files ---------------------------------------------------------
@@ -87,6 +97,7 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
   });
   if (spec.audio?.music) media.push(["audio.music", spec.audio.music]);
   if (spec.audio?.voiceover) media.push(["audio.voiceover", spec.audio.voiceover]);
+  if (spec.brand?.logo) media.push(["brand.logo", spec.brand.logo]);
   for (const [where, src] of media) {
     if (/^(https?:|data:)/.test(src)) continue;
     if (!fs.existsSync(path.join(ROOT, "public", src))) errors.push(`${where}: file "public/${src}" does not exist. Put the file in motion-kit/public/ and use a path relative to it.`);
@@ -197,8 +208,9 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
           E.plainText(text).slice(0, 56),
       );
     }
+    for (const n of notes) console.log(c.dim("  ℹ ") + n);
   }
-  return { errors, warnings, plan };
+  return { errors, warnings, notes, plan };
 };
 
 const isMain = import.meta.url === pathToFileURL(process.argv[1]).href;

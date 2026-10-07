@@ -82,7 +82,7 @@ Rich text fields accept `*accent*`, `==highlight box==`, `~~strike~~`. Use one p
 
 **cta** — `kicker`, `action` (1-3 words), `sub`, `handle`. `style`: `button` (big pulsing pill)
 or `link` (quiet "Try X →" with a drawn underline). Defaults to the theme.
-**logo** — `name`, `tagline`, optional `src` (logo file). Usually silent, after the CTA.
+**logo** — `name`, `tagline`, optional `src` (logo file; defaults to `brand.logo`). Usually silent, after the CTA.
 
 ## Video-level fields
 
@@ -93,7 +93,7 @@ or `link` (quiet "Try X →" with a drawn underline). Defaults to the theme.
   "motion": "snappy | smooth | bouncy | calm",      // optional, theme default
   "pace": "relaxed | normal | fast",               // reading pace when not narrated
   "transition": "auto | push | whip | fade | zoom | blur | cut",
-  "brand": { "name": "", "accent": "#RRGGBB", "accent2": "#RRGGBB", "handle": "@x", "watermark": true },
+  "brand": { "name": "", "accent": "#RRGGBB", "accent2": "#RRGGBB", "logo": "brand/logo.png", "handle": "@x", "watermark": true },
   "audio": { "sfx": true, "music": "music/track.mp3", "musicVolume": 0.2,
              "voiceover": "voice/x.mp3", "timing": "voice/x.timing.json" },
   "progressBar": false,

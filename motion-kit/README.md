@@ -20,6 +20,7 @@ npm install
 npm run check   -- specs/claude-reel.json    # validate + lint, prints the timeline
 npm run preview -- specs/claude-reel.json    # one-image contact sheet of every scene
 npm run make    -- specs/claude-reel.json    # out/claude-reel.mp4 + cover image
+npm run brand   -- public/brand/logo.png --spec specs/claude-reel.json   # brand colours from a logo
 npm run dev                                  # Remotion Studio, live preview
 ```
 
@@ -63,6 +64,15 @@ npm run voice -- specs/x.json --import subs.srt       # existing subtitles
 
 Scenes then cut on the spoken beat and words reveal as they are said.
 
+## Brand colours
+
+`npm run brand -- public/brand/logo.png` reads a logo in memory, finds its colours (k-means),
+prints them with contrast numbers and ranks the 10 themes for them; `--spec specs/x.json`
+writes `brand.accent`, `brand.accent2` and `brand.logo`. A brand colour is never rejected: if
+it would not read on the chosen theme, only its lightness moves until it does (hue kept), and
+`npm run check` says what changed. Missing accent2, highlighter and orb colours are derived
+from the brand. Rules: `.claude/skills/motion-director/references/craft.md` → Brand colours.
+
 ## Footage
 
 Put clips in `public/clips/` and use `clip` scenes (`trim`, `area`, `generated: true`
@@ -74,7 +84,7 @@ for AI footage). Prompts for Google Flow / Veo: `references/production.md`.
 src/engine/   schema, planner (timing), voice alignment, auto-fit text, motion tokens,
               themes, backgrounds, transitions, orb/waveform visuals, contact sheet
 src/scenes/   one file per scene template
-scripts/      check · preview · voice · make
+scripts/      check · preview · voice · make · brand (+ test-*.mjs, run with npm test)
 public/       fonts (SIL OFL, Latin + Devanagari), synthesised SFX, grain texture
 tools/        gen-assets.py — regenerates the SFX and grain (no third-party licences)
 ```
