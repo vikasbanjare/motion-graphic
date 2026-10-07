@@ -1,0 +1,82 @@
+{
+  "_recipe": {
+    "title": "Event promo",
+    "when": "Fill seats for a workshop, meetup, concert, webinar, sale day or launch party: Reels, Stories, Shorts.",
+    "beats": [
+      "Hook: city + date slammed in, then the reason to care.",
+      "What: the event name, type and one-line promise.",
+      "What's inside: four tiles (speakers, sessions, music, food, networking).",
+      "Social proof: last edition's turnout or a headline name.",
+      "When + where: date, time and venue on a full-colour background (the screenshot frame).",
+      "Price: regular price struck out, early-bird price lands.",
+      "CTA: book now + where (link in bio / site) + handle."
+    ],
+    "copyTips": [
+      "Date, time, venue, prices, speaker names and past turnout must come from the organiser.",
+      "Write the date the way locals read it (\"Sat, 12 Oct\" / \"12 Oct, Saturday\") and keep it identical on every beat.",
+      "Free event? Replace beat 6 with a title: \"Entry *free*\" + \"Register to get a pass\".",
+      "Pop + bouncy suits fun, community and food events. Tech meetups / hackathons: --theme neon. Conferences / B2B: --theme corporate.",
+      "Online event: put the platform (\"Live on Zoom\") where the venue goes."
+    ]
+  },
+  "format": "reel",
+  "theme": "pop",
+  "motion": "bouncy",
+  "pace": "fast",
+  "brand": { "name": "[EVENT NAME]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "say": "[CITY]. [DATE]. Don't miss this one.",
+      "lines": ["[CITY].", "[DATE].", "Don't *miss this.*"]
+    },
+    {
+      "type": "title",
+      "say": "[EVENT TYPE]: [EVENT NAME]. [THE ONE-LINE PROMISE].",
+      "kicker": "[EVENT TYPE]",
+      "headline": "*[EVENT NAME]*",
+      "sub": "[THE ONE-LINE PROMISE]"
+    },
+    {
+      "type": "grid",
+      "say": "What's inside? [HIGHLIGHT ONE], [HIGHLIGHT TWO], [HIGHLIGHT THREE] and [HIGHLIGHT FOUR].",
+      "title": "What's inside",
+      "items": [
+        { "icon": "🎤", "label": "[HIGHLIGHT ONE]" },
+        { "icon": "🛠️", "label": "[HIGHLIGHT TWO]" },
+        { "icon": "🎶", "label": "[HIGHLIGHT THREE]" },
+        { "icon": "🍕", "label": "[HIGHLIGHT FOUR]" }
+      ]
+    },
+    {
+      "type": "stat",
+      "say": "Last time, [FIVE HUNDRED] people showed up.",
+      "kicker": "Last time",
+      "value": "[500]+",
+      "label": "people *showed up*"
+    },
+    {
+      "type": "title",
+      "say": "Save the date: [DATE], [TIME], at [VENUE]. Be there.",
+      "kicker": "Save the date",
+      "headline": "[DATE] · [TIME]",
+      "sub": "[VENUE]",
+      "bg": "accent"
+    },
+    {
+      "type": "hook",
+      "say": "Tickets are [REGULAR PRICE]. Early bird? Just [EARLY PRICE].",
+      "setup": "Tickets:",
+      "strike": "₹[999]",
+      "punch": "Early bird *₹[499]*"
+    },
+    {
+      "type": "cta",
+      "say": "Grab your seat now, link in bio.",
+      "kicker": "Grab your seat",
+      "action": "Book now",
+      "sub": "Link in bio",
+      "handle": "@[HANDLE]"
+    }
+  ]
+}

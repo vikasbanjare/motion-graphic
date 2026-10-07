@@ -8,7 +8,8 @@ that pass first time.
 - Narrated videos cut on the spoken beat; words reveal ~0.1 s before they are spoken, never after.
 - A scene on screen past ~7 s loses viewers: split it. Fewer than ~1.3 s cannot be read.
 - Hook: something on screen at frame 0 (it is the thumbnail), payoff inside 3 s.
-- Reels: 15-35 s. Launch films (16:9, ElevenLabs/Apple style): 35-50 s, 10-14 beats.
+- Reels: 15-35 s, 5-9 beats. Launch films (16:9, ElevenLabs/Apple style): 35-50 s, ~9 beats
+  (recipe `launch-film-16x9`). Per-platform guide: `copy.md` → Length by platform.
 
 ## Copy
 - One idea per beat. Big type ≤ 7 words / ~32 characters. Body ≤ 16-20 words.
@@ -20,9 +21,10 @@ that pass first time.
 ## Hooks that work
 - Price/time shock with strike-through (`hook` with `strike`).
 - Question the viewer silently asks ("Motion video chahiye?").
-- Demonstration first (`prompt`/`chat` typing in the first beat).
+- Demonstration right after a one-line hook (`title`, then `prompt`/`chat`).
 - Common mistake ("You're editing reels the hard way").
 - "Meet X." + orb for launches.
+- 25 formulas with English and Hinglish examples: `copy.md`.
 
 ## Themes (pick by vibe, then let the theme decide fonts, colours, motion)
 | Theme | Use for |
@@ -37,7 +39,9 @@ that pass first time.
 | `mono` | Swiss minimal (black, white, one red) |
 | `studio` / `studio-dark` | launch films in the calm ElevenLabs-style: light type, orb, blur dissolves, "Try X →" endings |
 
-Brand accent overrides the theme accent; the checker rejects accents under 3:1 contrast.
+Brand accent overrides the theme accent. Got a logo? `npm run brand -- <logo> --spec specs/x.json`
+extracts the palette, writes `brand.accent` / `brand.accent2` / `brand.logo` and recommends a theme;
+an accent that would be unreadable on the theme is adjusted automatically.
 
 ## Motion personalities
 - `snappy` — mask reveals, 2-frame stagger, push transitions. Creator energy.
@@ -58,4 +62,6 @@ Brand accent overrides the theme accent; the checker rejects accents under 3:1 c
 ## Sound
 - Synthesised whooshes on cuts, pops/clicks on reveals, impact on hook punches — automatic.
 - With a voice-over, SFX drop ~4 dB and music to 0.08; final mix is normalised to −14 LUFS.
-- Music must be licensed (YouTube Audio Library, Pixabay, Mixkit, bought). Business accounts can't use trending sounds.
+- Music is never generated: only tracks the user supplies and has a licence for (YouTube Audio Library,
+  Pixabay, Mixkit, bought). Business accounts can't use trending sounds.
+- `npm run music` finds the beats: cuts snap to them and the music ducks under narration automatically.

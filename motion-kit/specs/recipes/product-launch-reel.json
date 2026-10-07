@@ -1,0 +1,82 @@
+{
+  "_recipe": {
+    "title": "Product launch reel",
+    "when": "A new product, gadget, feature or app goes live and you want a punchy 9:16 announcement for Reels, Shorts and TikTok.",
+    "beats": [
+      "Hook: time shock. The old way is struck out and the new way lands by ~2s.",
+      "Reveal: the name, then the one-line promise.",
+      "Features: three tiles, 1-3 words each. Only what the product really does.",
+      "Proof: one real number (beta result, speed, users) that counts up.",
+      "Why switch: the old way vs your product, two rows each, spoken in the same order.",
+      "Offer: launch discount or code with a deadline (the highlight box = urgency).",
+      "CTA: one action, where to do it, your handle."
+    ],
+    "copyTips": [
+      "Replace every [CAPS] slot with the user's facts. Never invent the proof number, the price or the deadline: ask once, or delete that beat.",
+      "Digits on screen (\"[2] HRS\"), words in say (\"two hours\"). Keep say and show in the same order so each line appears as it is spoken.",
+      "Neon + snappy + fast suits tech, gadgets and apps. Beauty / D2C: --theme pop. Calm premium launch: --theme clean (or use launch-film-16x9).",
+      "Feature tiles take 1-3 words; put detail in a tile's \"sub\" or cut it.",
+      "No launch offer? Delete beat 6; the CTA's \"Available now\" carries the urgency."
+    ]
+  },
+  "format": "reel",
+  "theme": "neon",
+  "motion": "snappy",
+  "pace": "fast",
+  "brand": { "name": "[PRODUCT]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "It took [TWO HOURS]. Now? [TEN SECONDS].",
+      "setup": "It took:",
+      "strike": "[2] HRS",
+      "punch": "Now? *[10] sec.*"
+    },
+    {
+      "type": "title",
+      "say": "Introducing [PRODUCT]. [THE ONE-LINE PROMISE].",
+      "kicker": "Introducing",
+      "headline": "*[PRODUCT]*",
+      "sub": "[THE ONE-LINE PROMISE]"
+    },
+    {
+      "type": "grid",
+      "say": "What it does: [FEATURE ONE], [FEATURE TWO], [FEATURE THREE].",
+      "title": "What it does",
+      "items": [
+        { "icon": "⚡", "label": "[FEATURE ONE]" },
+        { "icon": "🎯", "label": "[FEATURE TWO]" },
+        { "icon": "🔒", "label": "[FEATURE THREE]" }
+      ]
+    },
+    {
+      "type": "stat",
+      "say": "Early users finish [THREE] times faster than before.",
+      "kicker": "Early users",
+      "value": "[3]x",
+      "label": "*faster* than before"
+    },
+    {
+      "type": "compare",
+      "say": "Why switch? [OLD WAY] means [PAIN ONE] and [PAIN TWO]. [PRODUCT] means [GAIN ONE] and [GAIN TWO].",
+      "title": "Why switch?",
+      "left": { "label": "[OLD WAY]", "items": ["[PAIN ONE]", "[PAIN TWO]"] },
+      "right": { "label": "[PRODUCT]", "items": ["[GAIN ONE]", "[GAIN TWO]"] }
+    },
+    {
+      "type": "title",
+      "say": "Launch offer: [TWENTY] percent off. Code [CODE], till [DATE].",
+      "kicker": "Launch offer",
+      "headline": "==[20]% off==",
+      "sub": "Code [CODE] · till [DATE]"
+    },
+    {
+      "type": "cta",
+      "say": "Tap the link in bio and get yours today.",
+      "kicker": "Available now",
+      "action": "Get it now",
+      "sub": "Link in bio",
+      "handle": "@[HANDLE]"
+    }
+  ]
+}

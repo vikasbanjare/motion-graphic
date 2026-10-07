@@ -1,0 +1,77 @@
+{
+  "_recipe": {
+    "title": "Testimonial proof",
+    "when": "Turn real customer reviews into a trust-building feed ad or post (1:1): D2C brands, clinics, coaches, agencies, local services.",
+    "beats": [
+      "Hook: the headline proof number (customers, rating, orders) counts up.",
+      "Review 1: the most specific review, with name, city and stars.",
+      "Review 2: a different benefit, a different kind of customer.",
+      "Before / after: what changed for customers, in their words.",
+      "Why people trust you: four facts as tiles (rating, delivery, returns, payments).",
+      "CTA: one action, the offer, where to go."
+    ],
+    "copyTips": [
+      "Only real reviews, quoted word for word (trim, never rewrite meaning), with the customer's permission. Stars only if the review had them.",
+      "Pick reviews that name a concrete result (\"faded in three weeks\") over generic praise (\"great product\").",
+      "Use first name + initial and city (\"Priya S., Pune\") unless the customer agreed to their full name.",
+      "Clean + smooth + relaxed gives reviews time to be read. Food / kids brands: --theme pop. Luxury: --theme editorial.",
+      "For Reels / Stories use --format reel; for feed ads keep square or use --format portrait."
+    ]
+  },
+  "format": "square",
+  "theme": "clean",
+  "motion": "smooth",
+  "pace": "relaxed",
+  "brand": { "name": "[BRAND]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "stat",
+      "say": "[TEN THOUSAND] happy customers. Here's what they say.",
+      "kicker": "[BRAND]",
+      "value": "[10,000]+",
+      "label": "happy customers. *Here's what they say.*"
+    },
+    {
+      "type": "quote",
+      "say": "[THE MOST SPECIFIC REVIEW, WITH THE RESULT.] [NAME] from [CITY], [FIVE] stars.",
+      "quote": "[THE MOST SPECIFIC REVIEW, WITH THE *RESULT*.]",
+      "author": "[NAME]",
+      "role": "Customer, [CITY]",
+      "rating": 5
+    },
+    {
+      "type": "quote",
+      "say": "[A SECOND REVIEW ABOUT ANOTHER BENEFIT.] [NAME] from [CITY], [FIVE] stars.",
+      "quote": "[A SECOND REVIEW ABOUT *ANOTHER BENEFIT*.]",
+      "author": "[NAME]",
+      "role": "Customer, [CITY]",
+      "rating": 5
+    },
+    {
+      "type": "compare",
+      "say": "Before [BRAND]: [PROBLEM ONE], [PROBLEM TWO]. After: [RESULT ONE], [RESULT TWO].",
+      "title": "What changed",
+      "left": { "label": "Before", "items": ["[PROBLEM ONE]", "[PROBLEM TWO]"] },
+      "right": { "label": "After", "items": ["[RESULT ONE]", "[RESULT TWO]"] }
+    },
+    {
+      "type": "grid",
+      "say": "Why people trust us: a [FOUR POINT EIGHT] rating, [DELIVERY], [RETURNS] and [PAYMENTS].",
+      "title": "Why people trust us",
+      "items": [
+        { "icon": "⭐", "label": "[4.8] rating" },
+        { "icon": "🚚", "label": "[DELIVERY]" },
+        { "icon": "↩️", "label": "[RETURNS]" },
+        { "icon": "🔒", "label": "[PAYMENTS]" }
+      ]
+    },
+    {
+      "type": "cta",
+      "say": "Join them today. [OFFER] at [WEBSITE].",
+      "kicker": "Join them",
+      "action": "Shop now",
+      "sub": "[OFFER]",
+      "handle": "[WEBSITE]"
+    }
+  ]
+}

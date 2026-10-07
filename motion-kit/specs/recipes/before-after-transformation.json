@@ -1,0 +1,72 @@
+{
+  "_recipe": {
+    "title": "Before / after transformation",
+    "when": "Show a result: fitness, skincare, home makeover, cleaning, a website redesign, a client's growth, a bill that dropped. Reels, Shorts, TikTok.",
+    "beats": [
+      "Hook: the before number struck out, the after number lands by ~2s.",
+      "What changed: before vs after, two rows each.",
+      "How: three numbered steps that got the result.",
+      "The headline result as a counting number on a full-colour background.",
+      "Proof: the client / customer in their own words.",
+      "CTA: \"want this too?\" + one action."
+    ],
+    "copyTips": [
+      "Only real results with the person's permission; give the time frame (\"in 8 weeks\") so the claim is honest.",
+      "Health, fitness, skincare or money results: add \"Results vary\" to the CTA sub. Never promise a result.",
+      "Have before / after photos? Add two \"image\" scenes after beat 1 (files in public/images/, \"fit\": \"cover\", captions \"Before\" / \"After\").",
+      "The strike value is one number or word (\"₹8,000\", \"92 kg\", \"2 leads\"); the punch is the after value.",
+      "Pop + bouncy is upbeat and friendly. Premium services: --theme editorial. Bold creator style: --theme midnight."
+    ]
+  },
+  "format": "reel",
+  "theme": "pop",
+  "motion": "bouncy",
+  "pace": "fast",
+  "brand": { "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "Before: [BEFORE]. After [TIME]: [AFTER].",
+      "setup": "Before:",
+      "strike": "[BEFORE]",
+      "punch": "After: *[AFTER]*"
+    },
+    {
+      "type": "compare",
+      "say": "Before: [PROBLEM ONE], [PROBLEM TWO]. After: [RESULT ONE], [RESULT TWO].",
+      "title": "What changed",
+      "left": { "label": "Before", "items": ["[PROBLEM ONE]", "[PROBLEM TWO]"] },
+      "right": { "label": "After", "items": ["[RESULT ONE]", "[RESULT TWO]"] }
+    },
+    {
+      "type": "list",
+      "say": "How we did it: [STEP ONE], [STEP TWO], and [STEP THREE].",
+      "title": "How we did it",
+      "items": ["[STEP ONE]", "[STEP TWO]", "*[STEP THREE]*"],
+      "style": "numbers"
+    },
+    {
+      "type": "stat",
+      "say": "In just [TIME], [THREE] times the [METRIC]. That's the result.",
+      "kicker": "In [TIME]",
+      "value": "[3]x",
+      "label": "[METRIC]",
+      "bg": "accent"
+    },
+    {
+      "type": "quote",
+      "say": "[THE CLIENT'S OWN WORDS ABOUT THE CHANGE.] [NAME], [CITY].",
+      "quote": "[THE CLIENT'S OWN WORDS ABOUT *THE CHANGE*.]",
+      "author": "[NAME]",
+      "role": "[CITY]"
+    },
+    {
+      "type": "cta",
+      "say": "Want this too? DM us [KEYWORD] to start.",
+      "kicker": "Want this too?",
+      "action": "DM “[KEYWORD]”",
+      "sub": "[OFFER OR NEXT STEP]",
+      "handle": "@[HANDLE]"
+    }
+  ]
+}

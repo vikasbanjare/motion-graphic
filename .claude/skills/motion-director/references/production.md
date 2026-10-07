@@ -1,4 +1,7 @@
-# Production: voice, footage, budgets, delivery
+# Production: voice, music, footage, budgets, delivery
+
+Order of work: spec → `npm run check` → `npm run qa` → voice → music → `npm run make`.
+Re-run check + qa after every change to the spec, the voice or the music.
 
 ## Voice-over
 
@@ -15,12 +18,25 @@
      (uses ElevenLabs forced alignment if a key is set, otherwise local whisper.cpp).
      Check the duration first — a 1-second file is a partial download.
    - **Subtitles you already have**: `--import file.srt` (or a captions/Scribe JSON).
-3. Re-run `npm run check`. Coverage under 70 % means the audio and `say` lines differ.
+3. Re-run `npm run check` and `npm run qa`. Coverage under 70 % means the audio and `say` lines differ.
 
 Voice-prep prompt for the user's own tools:
 > Prepare narration for [PROJECT] in [LANGUAGE] for [AUDIENCE]. Use the approved storyboard
 > exactly, [CALM / WARM / ENERGETIC] tone, natural [ACCENT], about [N] seconds. Numbers as
 > spoken words. Flag pronunciation risks (brand names, Hindi words) and give a 1-line test first.
+
+## Music (user-supplied tracks only)
+
+The kit never generates or downloads music. Ask the user for a track they have a licence for
+(YouTube Audio Library, Pixabay Music, Mixkit, or bought); business accounts can't use
+platform "trending sounds".
+
+1. Save it as `motion-kit/public/music/<song>.mp3`.
+2. `npm run music -- specs/x.json --track music/<song>.mp3` analyses tempo, beats and loudness,
+   picks a start offset (override with `--start 12.5` seconds), writes
+   `public/music/<song>.beats.json` and sets `audio.music`, `audio.musicStart`, `audio.beats`.
+3. Cuts now snap to the beat and the music ducks under the narration automatically; `make`
+   normalises the final mix to about −14 LUFS.
 
 ## Footage (Google Flow / Veo)
 
@@ -44,6 +60,7 @@ Revision allowance: [N] retries inside the cap
 ```
 
 ## Delivery checklist
+- `npm run check` and `npm run qa` clean (`make` runs QA itself and stops on errors; never `--skip-qa` past one).
 - Frame 0 shows the topic; hook payoff inside 3 s.
 - Every on-screen line matches the narration and sits outside the red UI zones.
 - No clipped text, Devanagari marks or logos; handoffs between beats are clean.
@@ -60,3 +77,5 @@ Revision allowance: [N] retries inside the cap
 | Hindi glyphs look wrong | keep Hindi on screen in Devanagari; Latin-script Hinglish is fine too |
 | clip has unwanted words | regenerate "no text", overlay words with the engine |
 | file too large | `npm run make -- specs/x.json --crf 23` (default 20; higher = smaller) |
+| QA error | read which scene it names: shorten that text, split the beat, or fix the file path; re-run qa |
+| `[CAPS]` slot still in the spec | ask the user for that fact, or delete the beat; never render a placeholder |
