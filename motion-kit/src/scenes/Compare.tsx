@@ -23,7 +23,8 @@ export const Compare: React.FC<{ scene: SceneOf<"compare"> }> = ({ scene }) => {
   const gap = 28 * u;
   const cardW = side ? (box.width - gap) / 2 : box.width;
   const cardH = side ? box.height - titleH - 40 * u : (box.height - titleH - 40 * u - gap) / 2;
-  const pad = 34 * u;
+  // Narrow side-by-side cards (square) give padding back to the text so rows keep readable type.
+  const pad = Math.min(34 * u, cardW * 0.07);
   const border = 4 * u;
   const rows = Math.max(scene.left.items.length, scene.right.items.length);
   const labelSize = Math.max(36 * u, floor.comfortable);
