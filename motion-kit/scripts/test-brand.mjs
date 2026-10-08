@@ -420,6 +420,14 @@ test("base: opaque backgrounds, ink colour and accent lightness decide light vs 
   assert.equal(B.decideBase(clear, "#C6FF3D").base, "dark");
   assert.equal(B.decideBase(clear, "#1D3557").base, "light");
   assert.equal(B.decideBase(clear, "#E4002B").base, null);
+  // What the logo file itself shows is firm (with the reason the other base fails); accent lightness is a hint.
+  for (const st of [{ ...stats, borderLum: 0.95 }, { ...stats, borderLum: 0.01 }, { ...clear, white: 20 }, { ...clear, black: 20 }]) {
+    const d = B.decideBase(st, "#C6FF3D");
+    assert.ok(d.firm && d.clash, JSON.stringify(d));
+  }
+  assert.match(B.decideBase({ ...clear, black: 20 }, null).clash, /dark lettering would vanish on a dark background: use a light-on-dark version/);
+  assert.match(B.decideBase({ ...stats, borderLum: 0.95 }, null).clash, /background would show as a box/);
+  assert.deepEqual(B.decideBase(clear, "#C6FF3D"), { base: "dark", why: "its main colour #C6FF3D is light and glows on dark", firm: false, clash: null });
 });
 
 test("theme recommendation: keeps the brand colour true and matches the base", () => {
@@ -435,6 +443,48 @@ test("theme recommendation: keeps the brand colour true and matches the base", (
   // Pale yellow cannot stay itself on a light theme: dark themes win.
   const pale = B.recommendThemes({ accent: "#FFE14D", accent2: null, base: null });
   assert.ok(T.luminance(T.THEMES[pale[0].name].colors.bg) < 0.5, pale[0].name);
+  // A mild base (from the accent alone) only nudges: nothing is ruled out.
+  assert.ok(B.recommendThemes({ accent: "#1D3557", accent2: null, base: "light" }).every((t) => t.clash === null));
+});
+
+const isLightTheme = (name) => T.luminance(T.THEMES[name].colors.bg) > 0.5;
+/** Transparent logo: a coloured mark plus a wordmark in `ink`. */
+const markAndWordmark = (mark, ink) => {
+  const { px, box, w, h } = canvas(96, 48);
+  box(4, 4, 30, 30, rgba(mark));
+  box(40, 12, 50, 16, rgba(ink));
+  return B.analyse(B.samplePixels(px, w, h));
+};
+
+test("theme recommendation: the logo's own base outranks colour fidelity", () => {
+  // Black wordmark + yellow mark: yellow stays truest on dark themes, but the
+  // wordmark would vanish there (#111111 on midnight is ~1.05:1).
+  const ink = markAndWordmark("#FFC20E", "#111111");
+  assert.equal(ink.accent, "#FFC20E");
+  assert.equal(ink.base, "light");
+  assert.ok(ink.baseFirm);
+  assert.deepEqual(ink.themes.slice(0, 5).map((t) => isLightTheme(t.name)), [true, true, true, true, true], ink.themes.map((t) => t.name).join());
+  for (const t of ink.themes.slice(0, 5)) assert.equal(t.clash, null, t.name);
+  for (const t of ink.themes.slice(5)) {
+    assert.ok(!isLightTheme(t.name), t.name);
+    assert.match(t.clash, /dark lettering would vanish on a dark background: use a light-on-dark version of the logo/, t.name);
+  }
+  // The yellow is darkened to read on the light winner, never left unreadable.
+  assert.ok(T.contrast(ink.themes[0].accent, ink.themes[0].bg) >= 3);
+
+  // White wordmark + deep blue mark: the mirror case.
+  const white = markAndWordmark("#0D23A9", "#FFFFFF");
+  assert.equal(white.base, "dark");
+  assert.ok(white.themes.slice(0, 5).every((t) => !isLightTheme(t.name) && t.clash === null), white.themes.map((t) => t.name).join());
+  for (const t of white.themes.slice(5)) assert.match(t.clash, /white lettering would vanish on a light background/, t.name);
+
+  // An opaque white backdrop (e.g. a JPG logo) would be a white box on dark themes.
+  const { px, box, w, h } = canvas(96, 48, rgba("#FFFFFF"));
+  box(20, 10, 56, 28, rgba("#C6FF3D"));
+  const boxed = B.analyse(B.samplePixels(px, w, h));
+  assert.equal(boxed.base, "light");
+  assert.ok(isLightTheme(boxed.themes[0].name), boxed.themes[0].name);
+  assert.match(boxed.themes[9].clash, /show as a box/);
 });
 
 // --- SVG text -----------------------------------------------------------------------
@@ -577,6 +627,24 @@ test("CLI: a monochrome logo leaves a spec without a brand block untouched", () 
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /brand already up to date/);
     assert.equal(fs.readFileSync(spec, "utf8"), text);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("CLI: a spec theme the logo cannot sit on gets a warning and light alternatives", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "brand-test-"));
+  try {
+    const spec = path.join(dir, "x.json");
+    fs.writeFileSync(spec, `{\n  "theme": "midnight",\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"><rect width="30" height="30" fill="#FFC20E"/><path d="M40 10h50v10H40z" fill="#111"/></svg>`;
+    const r = cli(["-", "--spec", spec], svg);
+    assert.equal(r.status, 0, r.stderr);
+    const best = [...r.stdout.matchAll(/^\s+\d\. (?:\x1b\[\d+m)?([\w-]+)/gm)].map((m) => m[1]);
+    assert.equal(best.length, 3, r.stdout);
+    for (const name of best) assert.ok(isLightTheme(name), name);
+    assert.match(r.stdout, /Not with this logo file: midnight/);
+    assert.match(r.stdout, /Theme midnight: the logo's dark lettering would vanish on a dark background: use a light-on-dark version of the logo, or switch to theme "clean"/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

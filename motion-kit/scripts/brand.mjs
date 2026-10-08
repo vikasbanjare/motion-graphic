@@ -352,21 +352,34 @@ export const pickBrandColours = (palette) => {
   return { accent: accent?.hex ?? null, accent2: accent2?.hex ?? null };
 };
 
-/** Light or dark video background for this logo, and why (null = either works). */
+/**
+ * Light or dark video background for this logo, and why (null = either works).
+ * `firm`: the logo file itself demands it. The "logo" scene draws the file as
+ * is, straight on the theme background, so its own backdrop or its black /
+ * white lettering decides; `clash` says what goes wrong on the other base.
+ * Otherwise the accent's lightness gives a mild preference only.
+ */
 export const decideBase = (stats, accent) => {
+  const firm = (base, why, clash) => ({ base, why, firm: true, clash });
+  const boxed = (tone) => `the logo's own ${tone} background would show as a box: use a transparent PNG or SVG of the logo`;
   if (stats.border && stats.borderOpaque / stats.border > 0.9) {
-    if (stats.borderLum > 0.4) return { base: "light", why: "the logo sits on a light background" };
-    if (stats.borderLum < 0.1) return { base: "dark", why: "the logo sits on a dark background" };
+    if (stats.borderLum > 0.4) return firm("light", "the logo sits on a light background", boxed("light"));
+    if (stats.borderLum < 0.1) return firm("dark", "the logo sits on a dark background", boxed("dark"));
   }
   const opaque = stats.pixels - stats.transparent;
-  if (stats.black > stats.white * 2 && stats.black >= opaque * 0.05) return { base: "light", why: "its dark lettering is drawn for light backgrounds" };
-  if (stats.white > stats.black * 2 && stats.white >= opaque * 0.05) return { base: "dark", why: "its white lettering is drawn for dark backgrounds" };
+  if (stats.black > stats.white * 2 && stats.black >= opaque * 0.05) {
+    return firm("light", "its dark lettering is drawn for light backgrounds", "the logo's dark lettering would vanish on a dark background: use a light-on-dark version of the logo");
+  }
+  if (stats.white > stats.black * 2 && stats.white >= opaque * 0.05) {
+    return firm("dark", "its white lettering is drawn for dark backgrounds", "the logo's white lettering would vanish on a light background: use a dark-on-light version of the logo");
+  }
+  const mild = (base, why) => ({ base, why, firm: false, clash: null });
   if (accent) {
     const y = T.luminance(accent);
-    if (y >= 0.4) return { base: "dark", why: `its main colour ${accent} is light and glows on dark` };
-    if (y <= 0.1) return { base: "light", why: `its main colour ${accent} is deep and needs a light page` };
+    if (y >= 0.4) return mild("dark", `its main colour ${accent} is light and glows on dark`);
+    if (y <= 0.1) return mild("light", `its main colour ${accent} is deep and needs a light page`);
   }
-  return { base: null, why: "its colours work on light and dark" };
+  return mild(null, "its colours work on light and dark");
 };
 
 // --- theme recommendation ----------------------------------------------------------
@@ -377,11 +390,14 @@ const isLight = (theme) => T.luminance(theme.colors.bg) > 0.5;
 const QUIET = ["mono", "clean", "studio", "studio-dark", "corporate", "editorial"];
 
 /**
- * Score every theme for these brand colours. Most weight goes to keeping the
- * brand colours true (how far withBrand would have to move them), then to the
- * light/dark base the logo wants, then to a theme built around a similar hue.
+ * Rank every theme for this logo. A firm base (the logo file only reads on
+ * light, or on dark) is a constraint: themes on the other base go last, each
+ * with a `clash` saying why, however well they keep the colours. Within that,
+ * most weight goes to keeping the brand colours true (how far withBrand would
+ * have to move them), then to a mild base preference (from the accent's
+ * lightness), then to a theme built around a similar hue.
  */
-export const recommendThemes = ({ accent, accent2, base }) =>
+export const recommendThemes = ({ accent, accent2, base, firm = false, clash = null }) =>
   T.THEME_NAMES.map((name) => {
     const theme = T.THEMES[name];
     const light = isLight(theme);
@@ -410,19 +426,21 @@ export const recommendThemes = ({ accent, accent2, base }) =>
       score += 0.3;
       reasons.push("a restrained palette suits a monochrome logo");
     }
+    const fits = !base || (base === "light") === light;
     if (base) {
-      score += (base === "light") === light ? 0.3 : -0.3;
-      if ((base === "light") === light) reasons.push(`${base} base like the logo`);
+      score += fits ? 0.3 : -0.3;
+      if (fits) reasons.push(`${base} base like the logo`);
     }
-    return { name, score, reasons, accent: colors.accent, accent2: colors.accent2, onAccent: colors.onAccent, bg: colors.bg };
-  }).sort((a, b) => b.score - a.score || T.THEME_NAMES.indexOf(a.name) - T.THEME_NAMES.indexOf(b.name));
+    const conflict = firm && !fits ? (clash ?? `the logo is drawn for a ${base} background`) : null;
+    return { name, score, reasons, clash: conflict, accent: colors.accent, accent2: colors.accent2, onAccent: colors.onAccent, bg: colors.bg };
+  }).sort((a, b) => Number(Boolean(a.clash)) - Number(Boolean(b.clash)) || b.score - a.score || T.THEME_NAMES.indexOf(a.name) - T.THEME_NAMES.indexOf(b.name));
 
 /** Everything the CLI prints, from decoded pixels or SVG paint weights. */
 export const analyse = ({ colours, stats }) => {
   const palette = extractPalette(colours);
   const { accent, accent2 } = pickBrandColours(palette);
-  const { base, why } = decideBase(stats, accent);
-  return { stats, palette, accent, accent2, base, baseWhy: why, themes: recommendThemes({ accent, accent2, base }) };
+  const { base, why, firm, clash } = decideBase(stats, accent);
+  return { stats, palette, accent, accent2, base, baseWhy: why, baseFirm: firm, themes: recommendThemes({ accent, accent2, base, firm, clash }) };
 };
 
 // --- writing the spec ------------------------------------------------------------
@@ -601,13 +619,18 @@ if (isMain) {
       );
     }
     if (!result.accent) console.log(c.yellow("  Monochrome logo: no brand accent; themes keep their own accent colours."));
-    console.log(c.bold("\nBase  ") + (result.base ?? "light or dark") + c.dim(` — ${result.baseWhy}.`));
+    console.log(c.bold("\nBase  ") + (result.base ?? "light or dark") + c.dim(` — ${result.baseWhy}${result.baseFirm ? `, so ${result.base} themes come first` : ""}.`));
     console.log(c.bold("\nBest themes"));
     result.themes.slice(0, 3).forEach((t, i) => {
       console.log(`  ${i + 1}. ${c.bold(t.name.padEnd(11))} ${t.reasons.join("; ")}.`);
+      if (t.clash) console.log(c.yellow(`     ⚠ ${t.clash}.`));
       console.log(c.dim(`     ${T.THEMES[t.name].description}`) + (result.accent ? c.dim(` Accent ${t.accent} · button text ${t.onAccent} · accent2 ${t.accent2}.`) : ""));
     });
-    console.log(c.dim(`  Then: ${result.themes.slice(3).map((t) => t.name).join(", ")}.`));
+    const rest = result.themes.slice(3);
+    const then = rest.filter((t) => !t.clash).map((t) => t.name);
+    const clashing = rest.filter((t) => t.clash);
+    if (then.length) console.log(c.dim(`  Then: ${then.join(", ")}.`));
+    if (clashing.length) console.log(c.yellow(`  Not with this logo file: ${clashing.map((t) => t.name).join(", ")}`) + c.dim(` — ${clashing[0].clash}.`));
   }
 
   if (args.spec) {
@@ -624,7 +647,10 @@ if (isMain) {
     if (T.THEMES[name]) {
       for (const ch of T.resolveBrand(T.THEMES[name], brand).changes) say(c.dim(`  ℹ With theme ${name}: `) + ch.message);
       const rank = result.themes.findIndex((t) => t.name === name);
-      if (rank > 2) say(c.dim(`  Theme ${name} ranks ${rank + 1}/10 for this logo; consider "${result.themes[0].name}".`));
+      const top = result.themes.slice(0, 3).map((t) => `"${t.name}"`).join(" / ");
+      const { clash } = result.themes[rank];
+      if (clash) say(c.yellow(`  ⚠ Theme ${name}: ${clash}, or switch to theme ${top}.`));
+      else if (rank > 2) say(c.dim(`  Theme ${name} ranks ${rank + 1}/10 for this logo; consider ${top}.`));
     }
   } else if (!args.json) {
     console.log(c.dim(`\nWrite these into a spec: npm run brand -- ${logo.abs ? logo.label : "<logo>"} --spec specs/<name>.json`));

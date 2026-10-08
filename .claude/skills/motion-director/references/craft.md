@@ -45,9 +45,17 @@ that pass first time.
   clustered (k-means, k=5, OKLab). It writes `brand.accent` (the most saturated colour covering
   ≥ 5 % of the logo's colour), `brand.accent2` (the next clearly different one; dropped for
   one-colour logos) and `brand.logo` (`logo` scenes without `src` show it). It prints every
-  colour's contrast, light vs dark base, and ranks the 10 themes: keeping the brand colours
-  true counts most, then the base, then a theme built around a similar hue. Choose among the
-  top 3 by vibe. A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
+  colour's contrast, light vs dark base, and ranks the 10 themes. Choose among the top 3 by vibe.
+  - **The logo file's base is a rule**: `logo` scenes draw the file as is, straight on the theme
+    background (no plate). Black lettering (or an opaque light backdrop) needs a light theme; white
+    lettering (or an opaque dark backdrop) needs a dark one. Themes on the other base are listed
+    last under "Not with this logo file", and with `--spec` a spec theme among them gets a ⚠
+    warning. So a yellow mark with a black wordmark gets `clean` / `studio` / `corporate` (the
+    yellow darkened to read), not `midnight`; to keep yellow on dark, get a light-on-dark version of
+    the logo from the brand and run the tool on that file.
+  - Then keeping the brand colours true counts most, then the accent's lightness (a mild hint),
+    then a theme built around a similar hue.
+  - A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
 - **From hex codes** the user gives: write them to `brand.accent` / `brand.accent2` directly.
 - **Never rejected, never unreadable** (`withBrand` in `src/engine/themes.ts`):
   - accent stays exactly as given if it reaches 3:1 on the background and on cards (surface: kicker pills,
@@ -63,7 +71,8 @@ that pass first time.
   - text, background, surface, lines and muted text never change.
 - `npm run check` prints an ℹ line per adjustment, e.g. "brand accent #FFE14D darkened to #A48D00 for
   contrast … To keep it exactly, use theme midnight / neon / desi …". Light brand colours (yellow, lime,
-  pastels) belong on dark themes; deep ones (navy, maroon) on light themes.
+  pastels) belong on dark themes; deep ones (navy, maroon) on light themes — unless the logo's own
+  lettering needs the other base (above): a readable logo beats an exact accent.
 
 ## Motion personalities
 - `snappy` — mask reveals, 2-frame stagger, push transitions. Creator energy.
