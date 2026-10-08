@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "remotion studio",
+    "new": "node scripts/new.mjs",
     "check": "node scripts/check.mjs",
     "scaffold": "node scripts/scaffold.mjs",
     "preview": "node scripts/preview.mjs",

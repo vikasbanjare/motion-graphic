@@ -1,0 +1,69 @@
+{
+  "_recipe": {
+    "title": "Tips listicle",
+    "when": "\"3 tips nobody tells you\": a saveable advice post for coaches, consultants, creators.",
+    "beats": [
+      "Hook: the count + the topic + the curiosity gap, two kinetic lines.",
+      "Tip 1: the tip as a headline (≤ 7 words), the why as a sub line.",
+      "Tip 2: do vs don't, as a compare.",
+      "Tip 3: on a full-colour accent background so the strongest tip stands apart; the frame itself is the accent, so the headline carries no *mark*.",
+      "Recap: all three as checks; this is the frame people screenshot.",
+      "CTA: a quiet \"Follow @handle →\" link (save + follow)."
+    ],
+    "copyTips": [
+      "Write each tip as an instruction that starts with a verb (\"Post at 7 pm\", \"Cut the intro\").",
+      "Keep the strongest tip for #3; it sits on the accent background right before the recap.",
+      "The recap items should be the 2-4 word short forms of tips 1-3, in the same order.",
+      "Mono is Swiss-poster minimal: one red accent, uppercase display. Warmer brands: --theme editorial; playful: --theme pop.",
+      "For Reels / Shorts use --format reel; the copy already fits."
+    ]
+  },
+  "format": "portrait",
+  "theme": "mono",
+  "motion": "snappy",
+  "pace": "normal",
+  "brand": { "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "say": "Three [TOPIC] tips nobody tells you.",
+      "lines": ["3 [TOPIC] tips", "nobody *tells you*."]
+    },
+    {
+      "type": "title",
+      "say": "Tip one: [TIP ONE]. [WHY IT WORKS].",
+      "kicker": "Tip 1",
+      "headline": "*[TIP ONE]*",
+      "sub": "[WHY IT WORKS]"
+    },
+    {
+      "type": "compare",
+      "say": "Tip two: don't [THE MISTAKE]. Do [THE FIX] instead.",
+      "title": "Tip 2",
+      "left": { "label": "Don't", "items": ["[THE MISTAKE]"] },
+      "right": { "label": "Do", "items": ["[THE FIX]"] }
+    },
+    {
+      "type": "title",
+      "say": "Tip three, the big one: [TIP THREE]. [WHY IT MATTERS].",
+      "kicker": "Tip 3",
+      "headline": "[TIP THREE]",
+      "sub": "[WHY IT MATTERS]",
+      "bg": "accent"
+    },
+    {
+      "type": "list",
+      "say": "Save this: [SHORT TIP ONE], [SHORT TIP TWO], [SHORT TIP THREE].",
+      "title": "Save this",
+      "items": ["[SHORT TIP ONE]", "[SHORT TIP TWO]", "[SHORT TIP THREE]"],
+      "style": "checks"
+    },
+    {
+      "type": "cta",
+      "say": "Useful? Follow for more [TOPIC] tips like this.",
+      "kicker": "Useful?",
+      "action": "Follow @[HANDLE]",
+      "sub": "More [TOPIC] tips like this"
+    }
+  ]
+}

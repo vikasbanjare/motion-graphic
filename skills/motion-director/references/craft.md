@@ -8,7 +8,8 @@ that pass first time.
 - Narrated videos cut on the spoken beat; words reveal ~0.1 s before they are spoken, never after.
 - A scene on screen past ~7 s loses viewers: split it. Fewer than ~1.3 s cannot be read.
 - Hook: something on screen at frame 0 (it is the thumbnail), payoff inside 3 s.
-- Reels: 15-35 s. Launch films (16:9, ElevenLabs/Apple style): 35-50 s, 10-14 beats.
+- Reels: 15-35 s, 5-9 beats. Launch films (16:9, ElevenLabs/Apple style): 35-50 s, ~9 beats
+  (recipe `launch-film-16x9`). Per-platform guide: `copy.md` → Length by platform.
 
 ## Copy
 - One idea per beat. Big type ≤ 7 words / ~32 characters. Body ≤ 16-20 words.
@@ -20,9 +21,10 @@ that pass first time.
 ## Hooks that work
 - Price/time shock with strike-through (`hook` with `strike`).
 - Question the viewer silently asks ("Motion video chahiye?").
-- Demonstration first (`prompt`/`chat` typing in the first beat).
+- Demonstration right after a one-line hook (`title`, then `prompt`/`chat`).
 - Common mistake ("You're editing reels the hard way").
 - "Meet X." + orb for launches.
+- 25 formulas with English and Hinglish examples: `copy.md`.
 
 ## Themes (pick by vibe, then let the theme decide fonts, colours, motion)
 | Theme | Use for |

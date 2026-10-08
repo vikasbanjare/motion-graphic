@@ -1,5 +1,8 @@
 # Production: voice, music, footage, budgets, delivery
 
+Order of work: spec → `npm run check` → `npm run qa` → voice → music → `npm run make`.
+Re-run check + qa after every change to the spec, the voice or the music.
+
 ## Voice-over
 
 1. `npm run voice -- specs/x.json` → paste-ready narration (one paragraph per beat), character count.
@@ -15,7 +18,7 @@
      (uses ElevenLabs forced alignment if a key is set, otherwise local whisper.cpp).
      Check the duration first — a 1-second file is a partial download.
    - **Subtitles you already have**: `--import file.srt` (or a captions/Scribe JSON).
-3. Re-run `npm run check`. Coverage under 70 % means the audio and `say` lines differ.
+3. Re-run `npm run check` and `npm run qa`. Coverage under 70 % means the audio and `say` lines differ.
 
 Voice-prep prompt for the user's own tools:
 > Prepare narration for [PROJECT] in [LANGUAGE] for [AUDIENCE]. Use the approved storyboard
@@ -108,6 +111,7 @@ Revision allowance: [N] retries inside the cap
 ```
 
 ## Delivery checklist
+- `npm run check` and `npm run qa` clean (`make` runs QA itself and stops on errors; never `--skip-qa` past one).
 - Frame 0 shows the topic; hook payoff inside 3 s.
 - Every on-screen line matches the narration and sits outside the red UI zones.
 - No clipped text, Devanagari marks or logos; handoffs between beats are clean.
@@ -128,3 +132,5 @@ Revision allowance: [N] retries inside the cap
 | cuts don't feel on the beat | re-run `npm run music` (after the voice); try `--start` on a clear bar; check prints the hits |
 | "audio.musicStart … track is only …s long" | re-run `npm run music` on the track, or pick an earlier `--start` |
 | file too large | `npm run make -- specs/x.json --crf 23` (default 20; higher = smaller) |
+| QA error | read which scene it names: shorten that text, split the beat, or fix the file path; re-run qa |
+| `[CAPS]` slot or recipe sample number (bar value, `rating`) still in the spec | ask the user for that fact, or delete the beat; never render a placeholder |

@@ -76,6 +76,24 @@ in Claude Code on the web, and `remotion.config.ts` passes it on to Studio.
 - **4 motion personalities**: snappy, smooth, bouncy, calm.
 - Inline marks: `*accent*`, `==highlight==`, `~~strike~~`.
 
+## Recipes
+
+`specs/recipes/` holds 12 production-ready storyboards: product launch reel, launch film
+16:9, app demo, Hinglish creator explainer, tips listicle, festive local offer, testimonials,
+event promo, hiring, before/after, stats report, real estate / food. Each one has a hook,
+5-9 beats, a CTA, a deliberate theme / motion / pace, and a `_recipe` block with the purpose
+of every beat and copy tips. Facts are `[CAPS]` slots to fill in; chart values have to be
+numbers, so the stats recipe's bars are samples to replace.
+
+```bash
+npm run new                                                   # list the recipes
+npm run new -- diwali-sale --recipe local-offer-festive       # → specs/diwali-sale.json
+npm run new -- launch --recipe launch-film-16x9 --format reel --theme studio-dark
+```
+
+`npm run new` never overwrites a spec; it prints the beats and every slot and sample number to
+fill.
+
 ## Voice sync (say / show)
 
 Each scene's `say` is the narration; the on-screen fields are the "show". Without a
