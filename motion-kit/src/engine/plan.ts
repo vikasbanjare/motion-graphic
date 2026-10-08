@@ -515,14 +515,23 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
   const syncFor = (i: number): Pick<Ctx, "at" | "words"> => {
     if (!voice) return noSync;
     const from = froms[i];
+    // Scene 1's opening text (the first text its planner asks `at` for;
+    // planners ask in reveal order) is the thumbnail. When the narration only
+    // reaches those words later ("You are still editing by hand?" under
+    // "Still editing by hand?"), it keeps its reading-paced timing instead of
+    // leaving frame 0 empty until they are said. Karaoke (wave) never asks
+    // `at`, so its words stay on the voice.
+    let opener: string | undefined;
     return {
       at: (text, fallback) => {
         if (!text) return fallback;
+        if (i === 0) opener ??= text;
         const first = showTimes(voice, i, text).find((t) => t !== undefined);
         if (first === undefined) return fallback;
         const f = toFrame(first) - from - REVEAL_LEAD;
         // Scene 1 must show something on frame 0.
-        return i === 0 && f < 15 ? leadOf(0) : f;
+        if (i === 0 && f < 15) return leadOf(0);
+        return text === opener ? Math.min(f, fallback) : f;
       },
       words: (text, start, gap) => {
         const count = headlineWords(text);
@@ -537,7 +546,8 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
           const prev = k === 0 ? start - gap : out[k - 1];
           out.push(k === 0 && spoken !== undefined && i === 0 ? spoken : Math.max(k === 0 ? start : prev + 1, spoken ?? prev + gap));
         }
-        return out;
+        // Opening text said late: each word arrives on its cascade, or when spoken if that is sooner.
+        return text === opener && out[0] > start ? out.map((f, k) => Math.min(f, start + k * gap)) : out;
       },
     };
   };
@@ -614,4 +624,40 @@ export const settledFrame = (plan: VideoPlan, i: number) => {
   const s = plan.scenes[i];
   const content = s.duration - (i === plan.scenes.length - 1 ? LAST_HOLD : plan.transitionFrames);
   return Math.min(s.from + content - 4, s.from + content - s.readable + 8);
+};
+
+/** Each scene type's words in reveal order: [field, text, frame its entrance starts]. */
+const OPENERS: { [K in SceneType]: (s: SceneOf<K>, b: BeatsFor<K>) => [string, string | undefined, number | undefined][] } = {
+  title: (s, b) => [["kicker", s.kicker, b.kicker], ["headline", s.headline, b.words[0]]],
+  hook: (s, b) => [["setup", s.setup, b.setup], ["strike", s.strike, b.strike], ["punch", s.punch, b.punch[0]]],
+  kinetic: (s, b) => [["line 1", s.lines[0], b.lines[0]?.start]],
+  stat: (s, b) => [["kicker", s.kicker, b.kicker], ["value", s.value, b.count]],
+  list: (s, b) => [["title", s.title, b.title], ["item 1", s.items[0], b.items[0]]],
+  compare: (s, b) => [["title", s.title, b.title], ["left label", s.left.label, b.leftLabel]],
+  quote: (s, b) => [["quote", s.quote, b.quote]],
+  chat: (s, b) => [["label", s.label ?? "Prompt", b.box], ["prompt", s.prompt, b.typeStart]],
+  bars: (s, b) => [["title", s.title, b.title], ["bar 1 label", s.bars[0]?.label, b.bars[0]]],
+  grid: (s, b) => [["title", s.title, b.title], ["tile 1 label", s.items[0]?.label, b.items[0]]],
+  image: (s, b) => [["kicker", s.kicker, b.kicker], ["caption", s.caption, b.caption]],
+  clip: (s, b) => [["kicker", s.kicker, b.kicker], ["caption", s.caption, b.caption]],
+  orb: (s, b) => [["kicker", s.kicker, b.kicker], ["headline", s.headline, b.words[0]]],
+  wave: (s, b) => [["label", s.label, b.label], ["text", s.text ?? s.say, b.words[0]]],
+  prompt: (s, b) => [["label", s.label ?? "Prompt", b.card], ["prompt", s.prompt, b.typeStart]],
+  cta: (s, b) => [["kicker", s.kicker, b.kicker], ["action", s.action, b.action]],
+  logo: (s, b) => [["name", s.name, b.name]],
+};
+
+/**
+ * Scene 1's first words on screen: the field, its text and the frame its
+ * entrance starts (frame 0 is the thumbnail). null when scene 1 has no words.
+ * `npm run qa` uses it to say why a thumbnail is blank.
+ */
+export const openingText = (plan: VideoPlan): { field: string; text: string; at: number } | null => {
+  const { scene, beats } = plan.scenes[0];
+  const fields = (OPENERS[scene.type] as (s: Scene, b: unknown) => [string, string | undefined, number | undefined][])(scene, beats);
+  let best: { field: string; text: string; at: number } | null = null;
+  for (const [field, text, at] of fields) {
+    if (text && at !== undefined && (!best || at < best.at)) best = { field, text: plainText(text), at };
+  }
+  return best;
 };

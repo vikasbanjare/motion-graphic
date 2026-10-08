@@ -10,7 +10,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT, applyOverrides, c, engine, findBrowser, parseArgs, readSpec, withTimingFile } from "./lib.mjs";
+import { ROOT, applyOverrides, blankThumbnail, c, engine, findBrowser, parseArgs, readSpec, withTimingFile } from "./lib.mjs";
 
 const FPS = 30;
 const PREFIX = "[mk-qa] ";
@@ -373,8 +373,12 @@ export const judge = (plan, shots, E) => {
 
     if (shot.kinds.has("thumbnail")) {
       const readable = visible.some(({ t, boxes }) => READABLE.test(t.text) && !poke(extents(boxes), canvas));
-      if (!readable)
-        add("error", "thumbnail", shot, { scene: 0, label: "frame 0", text: "" }, "shows no readable text, so the thumbnail is blank", "open with a hook, title or kinetic scene: its first words must be on screen at 0.0s");
+      if (!readable) {
+        // Scene 1's words can be there but pushed off the frame: that finding comes first.
+        const blocker = issues.find((i) => i.frame === shot.frame && i.scene === 0 && i.check === "canvas");
+        const { why, fix } = blankThumbnail(plan, E.openingText(plan), blocker);
+        add("error", "thumbnail", shot, { scene: 0, label: "frame 0", text: "" }, `shows no readable text, so the thumbnail is blank: ${why}`, fix);
+      }
     }
   }
 

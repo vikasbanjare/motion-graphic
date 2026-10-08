@@ -59,7 +59,7 @@ Revision allowance: [N] retries inside the cap
 | QA ✖ safe-zone / overflow / spill | shorten the named field (the → hint gives a word budget) or split the scene |
 | QA ⚠ type too small | fewer words in that field so it can be set larger; landscape needs bigger type than reels |
 | QA ✖ contrast | another theme, a darker/brighter `brand.accent`, or drop the scene's `bg` override |
-| QA ✖ blank thumbnail | open with a hook, title or kinetic scene whose words are on screen at 0.0s |
+| QA ✖ blank thumbnail | the → hint names the field and when it appears. Orb, image, clip, wave or logo-image first: put a hook, title or kinetic scene before it, or (narrated orb / wave) start its `say` with the words it shows. Emoji alone never count |
 | words drift from speech | `say` must match the recording; re-align |
 | Hindi glyphs look wrong | keep Hindi on screen in Devanagari; Latin-script Hinglish is fine too |
 | clip has unwanted words | regenerate "no text", overlay words with the engine |

@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT, applyOverrides, c, engine, parseArgs, readSpec, shownText, withTimingFile } from "./lib.mjs";
+import { ROOT, applyOverrides, blankThumbnail, c, engine, parseArgs, readSpec, shownText, withTimingFile } from "./lib.mjs";
 
 export const check = async (inputSpec, { quiet = false } = {}) => {
   const E = await engine();
@@ -45,6 +45,12 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     const tail = plan.scenes.length > 1 ? plan.transitionFrames : 24;
     const payoff = s0.scene.type === "hook" ? s0.beats.punch[0] : s0.duration - tail - s0.readable - plan.motion.enter;
     if (payoff > 90) warnings.push(`Scene 1's payoff starts at ${(payoff / 30).toFixed(1)}s. The key message should be on screen within 3s — shorten the opening line.`);
+    // Words that have not started entering on frame 0 leave the thumbnail blank (npm run qa makes it an error).
+    const open = E.openingText(plan);
+    if (!open || open.at > 0) {
+      const { why, fix } = blankThumbnail(plan, open);
+      warnings.push(`Frame 0 (the thumbnail) shows no words: ${why}. Fix: ${fix}.`);
+    }
   }
   const last = spec.scenes[spec.scenes.length - 1];
   if (!["cta", "logo"].includes(last.type)) warnings.push(`Video ends on a "${last.type}" scene. End with "cta" (what should viewers do?) or "logo".`);

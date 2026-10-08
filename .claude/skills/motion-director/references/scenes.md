@@ -24,7 +24,9 @@ Rich text fields accept `*accent*`, `==highlight box==`, `~~strike~~`. Use one p
 { "type": "kinetic", "say": "Stop scrolling. Your skin deserves better.",
   "lines": ["Stop scrolling.", "Your skin", "deserves *better*."] }
 ```
-**orb** — calm hero: a soft orb that breathes with the voice, optional headline. Launch-film opener.
+**orb** — calm hero: a soft orb that breathes with the voice, optional headline. Launch-film opener
+when narrated: start its `say` with the headline so it is on screen at 0.0s (silent, the words
+come in after the orb, so open with a hook first).
 ```json
 { "type": "orb", "say": "Meet Lumen. A voice that sounds like you.",
   "headline": "Meet *Lumen*.", "sub": "A voice that sounds like you." }
