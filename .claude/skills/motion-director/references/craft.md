@@ -54,11 +54,15 @@ that pass first time.
     against each theme: when ≥ 10 % of that rim vanishes (below ~2.5:1 contrast, unless its colour
     differs strongly — a vivid yellow mark reads on white at 1.5:1, navy or #333 lettering on
     near-black at 1.6:1 does not), the theme is listed last under "Not with this logo file". An
-    opaque light / dark backdrop (a JPG, an SVG artboard rect) shows as a box wherever it stands
-    out. When most themes of one base fail, the other base comes first. So a yellow mark with a
-    black, charcoal or navy wordmark gets `clean` / `studio` / `corporate` (yellow darkened to read),
-    not `midnight` or `pop`; a red app icon with a white glyph inside fits any theme. To keep yellow
-    on dark, get a light-on-dark version of the logo from the brand and run the tool on that file.
+    opaque backdrop of light or dark paper — white, cream, pale grey, black (a JPG, an SVG artboard
+    rect) — shows as a box wherever it stands out ("use a transparent PNG or SVG"). A full-bleed
+    *colour* is not a backdrop but the mark itself (an app tile): its edge is ink like any other,
+    so it only fails where the theme background swallows that colour. When most themes of one base
+    fail, the other base comes first. So a yellow mark with a black, charcoal or navy wordmark gets `clean` /
+    `studio` / `corporate` (yellow darkened to read), not `midnight` or `pop`; a violet or red app
+    tile with a white glyph fits every theme, a yellow one every theme but `pop`, a navy one the
+    light themes (its edge vanishes on near-black). To keep yellow on dark, get a light-on-dark
+    version of the logo from the brand and run the tool on that file.
   - With `--spec`, a spec theme the logo does not read on gets a ⚠ and alternatives; `npm run check`
     gives the same warning for any `logo` scene's file (path in public/ or data: URL).
   - Then keeping the brand colours true counts most, then the accent's lightness (a mild hint),

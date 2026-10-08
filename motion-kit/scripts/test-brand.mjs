@@ -356,7 +356,7 @@ test("samplePixels drops transparency and counts near-white / near-black separat
   assert.equal(stats.white, 25);
   assert.deepEqual([...colours], [[0xe4002b, 100]]);
   assert.equal(stats.borderOpaque, 0);
-  assert.equal(stats.borderRgb, null);
+  assert.equal(stats.paperRgb, null);
 });
 
 test("samplePixels: the rim is the ink that meets the backdrop, not what the logo encloses", () => {
@@ -366,12 +366,19 @@ test("samplePixels: the rim is the ink that meets the backdrop, not what the log
   box(7, 7, 6, 6, rgba("#FFFFFF"));
   const { stats } = B.samplePixels(px, w, h);
   assert.deepEqual([...stats.rim], [[0xe4002b, 4 * 16 - 4]], "only the red outline touches transparency");
-  // The image edge counts as backdrop too (a tightly cropped logo), and the border is measured.
+  // The image edge counts as backdrop too (a tightly cropped logo), and the border is measured:
+  // opaque all round, but navy is a colour, not paper.
   const full = canvas(10, 4, rgba("#1D3557"));
   const edge = B.samplePixels(full.px, full.w, full.h).stats;
   assert.equal(edge.rim.get(0x1d3557), 2 * 10 + 2 * 2);
   assert.equal(edge.borderOpaque, edge.border);
-  assert.deepEqual(edge.borderRgb, T.hexToRgb("#1D3557"));
+  assert.equal(edge.paper, 0);
+  assert.equal(edge.paperRgb, null);
+  // Cream paper is: its mean colour is measured.
+  const cream = canvas(10, 4, rgba("#FDF6E3"));
+  const sheet = B.samplePixels(cream.px, cream.w, cream.h).stats;
+  assert.equal(sheet.paper, sheet.border);
+  assert.deepEqual(sheet.paperRgb, T.hexToRgb("#FDF6E3"));
 });
 
 /** A two-colour logo on transparency with anti-aliased (blended) edges and dark lettering. */
@@ -570,6 +577,62 @@ test("theme recommendation: ink the logo encloses does not decide the base", () 
   assert.equal(badge.themes[9].name, "pop");
 });
 
+const DARK = ["midnight", "neon", "desi", "mono", "studio-dark"];
+const LIGHT = ["clean", "studio", "corporate", "editorial"];
+/** A full-bleed opaque square in `fill` (no transparency anywhere) with a `glyph` inside it. */
+const fullBleed = (fill, glyph) => {
+  const { px, box, w, h } = canvas(64, 64, rgba(fill));
+  box(20, 14, 24, 36, rgba(glyph));
+  return B.analyse(B.samplePixels(px, w, h));
+};
+const clashOn = (r, name) => r.themes.find((t) => t.name === name).clash;
+
+test("a full-bleed coloured tile is the mark (an app icon), not a box around the logo", () => {
+  for (const fill of ["#612BD3", "#1D3557", "#FFC20E"]) {
+    const tile = fullBleed(fill, "#FFFFFF");
+    assert.equal(tile.accent, fill);
+    assert.doesNotMatch(tile.baseWhy, /sits on/, fill);
+    for (const t of tile.themes) assert.doesNotMatch(t.clash ?? "", /box|transparent PNG/, `${fill} on ${t.name}`);
+    // The best themes never carry a warning: there is always a theme this logo file reads on.
+    for (const t of tile.themes.slice(0, 3)) assert.equal(t.clash, null, `${fill}: ${t.name}`);
+  }
+  // Violet reads on every background, the near-black, violet-glow and indigo dark ones included.
+  const violet = fullBleed("#612BD3", "#FFFFFF");
+  assert.ok(violet.themes.every((t) => t.clash === null), violet.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  assert.equal(violet.baseFirm, false);
+  // Yellow reads on dark and light themes; only pop's yellow swallows the tile.
+  const yellow = fullBleed("#FFC20E", "#FFFFFF");
+  for (const n of [...DARK, ...LIGHT]) assert.equal(clashOn(yellow, n), null, n);
+  assert.match(clashOn(yellow, "pop"), /the logo's #FFC20E parts would vanish on a light background/);
+  // Navy reads on light themes; on near-black ones the tile's edge is what vanishes (1.6:1),
+  // so light themes come first: a fixable warning, not "use a transparent PNG".
+  const navy = fullBleed("#1D3557", "#FFFFFF");
+  for (const n of LIGHT) assert.equal(clashOn(navy, n), null, n);
+  for (const n of DARK) assert.match(clashOn(navy, n), /the logo's #1D3557 parts would vanish on a dark background/, n);
+  assert.deepEqual([navy.base, navy.baseFirm], ["light", true]);
+});
+
+test("a white, cream or black full-bleed backdrop is paper: it shows as a box where it stands out", () => {
+  for (const paper of ["#FFFFFF", "#FDF6E3", "#F5F5DC"]) {
+    const sheet = fullBleed(paper, "#612BD3");
+    assert.deepEqual([sheet.base, sheet.baseFirm, sheet.baseWhy], ["light", true, "the logo sits on a light background"], paper);
+    for (const n of DARK) assert.equal(clashOn(sheet, n), `the logo's own light background (${paper}) would show as a box: use a transparent PNG or SVG of the logo`, `${paper} on ${n}`);
+    for (const n of LIGHT) assert.equal(clashOn(sheet, n), null, `${paper} on ${n}`);
+  }
+  const black = fullBleed("#111111", "#FFC20E");
+  assert.deepEqual([black.base, black.baseFirm], ["dark", true]);
+  for (const n of LIGHT) assert.match(clashOn(black, n), /own dark background \(#111111\) would show as a box/, n);
+  // JPEG noise and a coloured mark touching part of the edge do not turn paper into a colour.
+  const r = rng(3);
+  const { px, box, w, h } = canvas(64, 64);
+  for (let i = 0; i < w * h; i++) px.set([255, 255, 255].map((v) => v - Math.floor(r() * 6)).concat(255), i * 4);
+  box(0, 20, 64, 24, rgba("#612BD3")); // a band bleeding off both sides: 48 of 252 border pixels
+  const jpg = B.analyse(B.samplePixels(px, w, h));
+  assert.equal(jpg.accent, "#612BD3");
+  // The box is named by the paper's own colour, not tinted by the band.
+  for (const n of DARK) assert.match(clashOn(jpg, n), /own light background \(#F[CD]F[CD]F[CD]\) would show as a box/, n);
+});
+
 // --- SVG text -----------------------------------------------------------------------
 
 test("parseColour reads hex, short hex, rgb() and names", () => {
@@ -629,6 +692,13 @@ test("svgColors: a rect covering the whole drawing is the logo's backdrop", () =
   assert.equal(backdrop(`<rect width="150" height="100" fill="#fff"/>`), null, "part of it only");
   assert.equal(backdrop(`<g transform="scale(0.5)"><rect width="200" height="100" fill="#fff"/></g>`), null, "scaled down");
   assert.equal(backdrop(`<rect width="200" height="100" fill="url(#g)"/>`), null, "not a solid colour");
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#FDF6E3"/>`), "#FDF6E3", "cream paper");
+  // A coloured artboard is the mark itself (an app tile), not a background.
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#612BD3"/>`), null, "violet tile");
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#FFC20E"/>`), null, "yellow tile");
+  // The topmost covering rect decides: a tile drawn over white paper hides it.
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#fff"/><rect width="200" height="100" fill="#1D3557"/>`), null);
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#612BD3"/><rect width="200" height="100" fill="#fff"/>`), "#FFFFFF");
 });
 
 test("svgViewBox / svgSize read the root's viewBox and width / height", () => {
@@ -656,6 +726,22 @@ test("an SVG read as text: area-weighted colours, its artboard rect as a backdro
   assert.equal(r.baseFirm, false);
   assert.ok(r.themes.every((t) => t.clash === null));
   assert.equal(B.svgTextSamples(`<svg viewBox="0 0 10 10"><path d="M0 0" fill="none"/></svg>`), null);
+});
+
+/** An app-icon logo: a full 260×260 violet artboard with a white mark (the shape of postiz/assets/logo.svg). */
+const APP_TILE = `<svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="260" height="260" fill="#612BD3"/><path d="M80 78h100v112H80z" fill="white"/><path d="M100 96h60v20h-60z" fill="#131019"/></svg>`;
+
+test("an SVG read as text: a coloured artboard rect is the mark, not a backdrop", () => {
+  const tile = B.analyse(B.svgTextSamples(APP_TILE));
+  assert.equal(tile.accent, "#612BD3");
+  assert.equal(tile.stats.paperRgb, null);
+  assert.equal(tile.baseFirm, false);
+  assert.doesNotMatch(tile.baseWhy, /sits on/);
+  assert.ok(tile.themes.every((t) => t.clash === null), tile.themes.map((t) => t.clash).join());
+  // The same drawing on a cream artboard is a box on dark themes.
+  const sheet = B.analyse(B.svgTextSamples(APP_TILE.replace(`fill="#612BD3"/>`, `fill="#FDF6E3"/><circle cx="40" cy="40" r="20" fill="#612BD3"/>`)));
+  assert.equal(sheet.base, "light");
+  for (const n of DARK) assert.match(clashOn(sheet, n), /own light background \(#FDF6E3\) would show as a box/, n);
 });
 
 // --- writing the spec --------------------------------------------------------------
@@ -892,6 +978,13 @@ test("decodeImage rasterises SVG bytes from a pipe, at their aspect ratio, colou
   assert.match(boxed.baseWhy, /sits on a light background/);
   assert.match(boxed.themes.find((t) => t.name === "midnight").clash, /would show as a box/);
   assert.equal(boxed.themes.find((t) => t.name === "clean").clash, null);
+  // A coloured artboard is the app tile itself: it reads on every theme.
+  const pixels = B.samplesOf(Buffer.from(APP_TILE));
+  assert.equal(pixels.text, false, "rasterised");
+  const tile = B.analyse(pixels);
+  assert.equal(tile.accent, "#612BD3");
+  assert.ok(tile.fitChecked);
+  assert.ok(tile.themes.every((t) => t.clash === null), tile.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
 });
 
 test("analyseLogo reads a data: URL in memory and skips remote URLs", { skip: !hasFfmpeg && "ffmpeg not installed" }, () => {
@@ -914,6 +1007,12 @@ test("check: a logo scene whose file would not read on the theme gets a warning"
   const note = clean.notes.find((n) => n.startsWith("brand accent #FFE14D darkened"));
   assert.match(note, /It stays exact only on theme midnight \/ neon \/ desi \/ mono \/ studio-dark, where brand\.logo would not read\.$/);
   assert.doesNotMatch(note, /To keep it exactly/);
+  // An app-tile logo (full-bleed violet artboard) is not a box on any theme: no warning to fix.
+  const tile = `data:image/svg+xml;base64,${Buffer.from(APP_TILE).toString("base64")}`;
+  for (const theme of ["midnight", "neon", "clean", "studio-dark"]) {
+    const r = await check({ theme, brand: { accent: "#612BD3", logo: tile }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] }, { quiet: true });
+    assert.ok(!r.warnings.some((w) => w.startsWith("Logo ")), `${theme}: ${r.warnings.join("\n")}`);
+  }
 });
 
 test("sniff recognises formats by content", () => {

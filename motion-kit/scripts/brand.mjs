@@ -25,6 +25,12 @@ const BLEND_MAX = 0.12;
 const pack = ([r, g, b]) => (r << 16) | (g << 8) | b;
 const unpack = (n) => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 const chroma = (lab) => Math.hypot(lab[1], lab[2]);
+/**
+ * White, cream, grey or black: the paper a logo can be printed on. A logo's
+ * full-bleed backdrop only counts as one (a box around the logo) when it is
+ * paper; a saturated full-bleed colour is the mark itself (an app tile).
+ */
+const isPaper = (rgb) => chroma(T.rgbToOklab(rgb)) < GREY;
 
 // --- decoding ----------------------------------------------------------------
 
@@ -360,8 +366,10 @@ const shapeGeometry = (name, a, [, , vw, vh], fontSize, text) => {
  * Paint colours of an SVG read as text, weighted by the area they cover
  * (fills: the shape's area; strokes: outline length × stroke width; gradients
  * split across their stops). Honours inheritance from groups, style="",
- * <style> class rules and scale transforms. `backdrop`: the solid fill of a
- * rect covering the whole drawing (the logo's own background), else null.
+ * <style> class rules and scale transforms. `backdrop`: the solid fill of the
+ * topmost rect covering the whole drawing when it is paper (white, cream, grey,
+ * black: the logo's own background), else null. A coloured one is the mark
+ * itself (an app tile), drawn like any other shape.
  */
 export const svgColors = (svg) => {
   const weights = new Map();
@@ -430,10 +438,14 @@ export const svgColors = (svg) => {
       const { area, length } = shapeGeometry(name, a, vb, fontSize, text);
       paint(node.fill, area * node.scale);
       paint(node.stroke, length * (lengthOf(node.strokeWidth, 1) ?? 1) * node.scale);
-      // A rect over the whole drawing is the logo's own background, as an opaque image border is.
+      // A rect over the whole drawing is the logo's own background when it is
+      // paper, as an opaque image border is; the topmost one with a paint decides.
       const [x, y, w, h] = ["x", "y", "width", "height"].map((k, i) => lengthOf(a[k], vb[2 + (i % 2)]) ?? 0);
-      const solid = parseColour(node.fill ?? "");
-      if (name === "rect" && solid && node.scale === 1 && x <= vb[0] + 0.01 * vb[2] && y <= vb[1] + 0.01 * vb[3] && x + w >= vb[0] + 0.99 * vb[2] && y + h >= vb[1] + 0.99 * vb[3]) backdrop = solid;
+      if (name === "rect" && node.scale === 1 && x <= vb[0] + 0.01 * vb[2] && y <= vb[1] + 0.01 * vb[3] && x + w >= vb[0] + 0.99 * vb[2] && y + h >= vb[1] + 0.99 * vb[3]) {
+        const solid = parseColour(node.fill ?? "");
+        if (solid) backdrop = isPaper(T.hexToRgb(solid)) ? solid : null;
+        else if (/^url\(/i.test(node.fill ?? "")) backdrop = null;
+      }
     }
     if (!selfClosing) stack.push(node);
   }
@@ -466,11 +478,13 @@ export const separate = (weights) => {
 
 /**
  * Sort decoded RGBA pixels: transparent pixels (alpha < 128) are dropped, the
- * rest are counted per exact colour. Also measures the image border (does the
- * logo carry its own background?) and the rim: opaque pixels next to a
- * transparent one or the image edge. The rim is the logo's ink that meets the
- * video background; anything it encloses (a white glyph inside a red app icon,
- * black text on a yellow badge) sits on the logo's own colour instead.
+ * rest are counted per exact colour. Also measures the image border: how much
+ * of it is opaque, and how much of that is paper (`paper`, `paperRgb`: their
+ * count and mean colour), so does the logo carry its own background? And the
+ * rim: opaque pixels next to a transparent one or the image edge. The rim is
+ * the logo's ink that meets the video background; anything it encloses (a
+ * white glyph inside a coloured app icon, black text on a yellow badge) sits
+ * on the logo's own colour instead.
  */
 export const samplePixels = (rgba, width, height) => {
   const weights = new Map();
@@ -478,7 +492,8 @@ export const samplePixels = (rgba, width, height) => {
   let transparent = 0;
   let border = 0;
   let borderOpaque = 0;
-  const borderSum = [0, 0, 0];
+  let paper = 0;
+  const paperSum = [0, 0, 0];
   const clear = (x, y) => x < 0 || y < 0 || x >= width || y >= height || rgba[(y * width + x) * 4 + 3] < 128;
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
@@ -489,19 +504,23 @@ export const samplePixels = (rgba, width, height) => {
         transparent++;
         continue;
       }
-      const n = pack([rgba[i], rgba[i + 1], rgba[i + 2]]);
+      const rgb = [rgba[i], rgba[i + 1], rgba[i + 2]];
+      const n = pack(rgb);
       weights.set(n, (weights.get(n) ?? 0) + 1);
       if (clear(x - 1, y) || clear(x + 1, y) || clear(x, y - 1) || clear(x, y + 1)) rim.set(n, (rim.get(n) ?? 0) + 1);
       if (edge) {
         borderOpaque++;
-        for (let k = 0; k < 3; k++) borderSum[k] += rgba[i + k];
+        if (isPaper(rgb)) {
+          paper++;
+          for (let k = 0; k < 3; k++) paperSum[k] += rgb[k];
+        }
       }
     }
   }
   const { colours, white, black } = separate(weights);
   return {
     colours,
-    stats: { pixels: width * height, transparent, white, black, border, borderOpaque, borderRgb: borderOpaque ? borderSum.map((v) => v / borderOpaque) : null, rim },
+    stats: { pixels: width * height, transparent, white, black, border, borderOpaque, paper, paperRgb: paper ? paperSum.map((v) => v / paper) : null, rim },
   };
 };
 
@@ -642,10 +661,16 @@ export const standsOut = (ink, bg) => {
   return (T.contrast(ink, bg) - 1) / (READS_CONTRAST - 1) + Math.hypot(a[1] - b[1], a[2] - b[2]) / READS_COLOUR;
 };
 
-/** "light" / "dark" when the logo carries its own opaque light or dark background, else null. */
+/**
+ * "light" / "dark" when the logo carries its own opaque light or dark paper
+ * (an opaque border, mostly white, cream, grey or black), else null. A
+ * full-bleed colour (a purple, navy or yellow app tile) is not a background
+ * but the mark: its edge is rim like any other ink and only clashes where the
+ * theme background swallows that colour.
+ */
 const backdropTone = (stats) => {
-  if (!stats.border || !stats.borderRgb || stats.borderOpaque / stats.border <= 0.9) return null;
-  const y = T.luminance(T.rgbToHex(stats.borderRgb));
+  if (!stats.border || !stats.paperRgb || stats.borderOpaque / stats.border <= 0.9 || 2 * stats.paper <= stats.borderOpaque) return null;
+  const y = T.luminance(T.rgbToHex(stats.paperRgb));
   return y > 0.4 ? "light" : y < 0.1 ? "dark" : null;
 };
 
@@ -658,8 +683,8 @@ const inkName = (hex) => {
 /**
  * Per theme: { ink, message } saying why this logo file would not read on it,
  * or null if it does. The "logo" scene draws the file as is, straight on the
- * theme background. A logo with its own opaque light / dark backdrop shows as
- * a box wherever that backdrop stands out. Otherwise the rim decides: when a
+ * theme background. A logo on its own opaque light / dark paper shows as a box
+ * wherever that paper stands out. Otherwise the rim decides: when a
  * sizeable share of it vanishes into the background (charcoal or navy lettering
  * on a dark theme, white lettering on a light one, a yellow mark on pop's
  * yellow), that part of the logo is lost. null when it cannot be told (an SVG
@@ -673,7 +698,7 @@ export const logoClashes = (stats) => {
       const bg = T.THEMES[name].colors.bg;
       const light = isLight(T.THEMES[name]);
       if (tone) {
-        const box = T.rgbToHex(stats.borderRgb);
+        const box = T.rgbToHex(stats.paperRgb);
         const message = `the logo's own ${tone} background (${box}) would show as a box: use a transparent PNG or SVG of the logo`;
         return [name, standsOut(box, bg) >= BOX_SHOWS ? { ink: box, message } : null];
       }
@@ -790,15 +815,15 @@ export const analyse = ({ colours, stats }) => {
 /**
  * Colour samples of an SVG read as text (svgColors), shaped like samplePixels'
  * output. Text has no pixels, so there is no rim (whether its lettering reads
- * on a theme is unknown); a rect covering the drawing still counts as the
- * logo's own backdrop. null if it paints nothing.
+ * on a theme is unknown); a paper rect covering the drawing still counts as
+ * the logo's own backdrop. null if it paints nothing.
  */
 export const svgTextSamples = (svg) => {
   const { weights, backdrop } = svgColors(svg);
   const { colours, white, black } = separate(weights);
   const total = [...weights.values()].reduce((a, w) => a + w, 0);
   if (!total) return null;
-  const box = backdrop ? { border: 1, borderOpaque: 1, borderRgb: T.hexToRgb(backdrop) } : { border: 0, borderOpaque: 0, borderRgb: null };
+  const box = backdrop ? { border: 1, borderOpaque: 1, paper: 1, paperRgb: T.hexToRgb(backdrop) } : { border: 0, borderOpaque: 0, paper: 0, paperRgb: null };
   return { colours, stats: { pixels: total, transparent: 0, white, black, ...box, rim: null } };
 };
 
