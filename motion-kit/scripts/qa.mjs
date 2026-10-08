@@ -32,7 +32,7 @@ const bundleInputs = () => {
   return files.filter((f) => fs.existsSync(f)).sort();
 };
 
-/** Drop bundles of older code from this checkout, and anything nobody has used for a day. */
+/** Drop bundles of older code from this checkout or of deleted checkouts, and anything nobody has used for a day. */
 const pruneBundles = (keep) => {
   const day = Date.now() - 24 * 3600 * 1000;
   for (const d of fs.readdirSync(CACHE)) {
@@ -40,8 +40,9 @@ const pruneBundles = (keep) => {
     const dir = path.join(CACHE, d);
     try {
       const marker = path.join(dir, ".mk-root");
-      const mine = fs.existsSync(marker) && fs.readFileSync(marker, "utf8") === ROOT;
-      if (mine || fs.statSync(dir).mtimeMs < day) fs.rmSync(dir, { recursive: true, force: true });
+      const root = fs.existsSync(marker) ? fs.readFileSync(marker, "utf8") : null;
+      const stale = root !== null && (root === ROOT || !fs.existsSync(root));
+      if (stale || fs.statSync(dir).mtimeMs < day) fs.rmSync(dir, { recursive: true, force: true });
     } catch {
       // Another run is using or removing it; leave it.
     }
@@ -69,6 +70,8 @@ export const getBundle = async ({ log = () => {} } = {}) => {
         symlinkPublicDir: true,
         onProgress: () => {},
       });
+      // The bundler copies Remotion's favicon in; QA renders never need it.
+      fs.rmSync(path.join(tmp, "favicon.ico"), { force: true });
       fs.writeFileSync(path.join(tmp, ".mk-root"), ROOT);
       fs.renameSync(tmp, dir);
     } catch (e) {
@@ -162,7 +165,12 @@ export const qaSession = async ({ log = () => {}, concurrency } = {}) => {
           puppeteerInstance: browser,
           chromiumOptions: { enableMultiProcessOnLinux: true },
           onBrowserLog: (l) => {
-            if (l.text.startsWith(PREFIX)) seen.push(JSON.parse(l.text.slice(PREFIX.length)));
+            if (!l.text.startsWith(PREFIX)) return;
+            try {
+              seen.push(JSON.parse(l.text.slice(PREFIX.length)));
+            } catch {
+              seen.push({ frame: shot.frame, error: "the page's measurements arrived incomplete" });
+            }
           },
         });
       } catch (e) {
@@ -296,7 +304,16 @@ export const judge = (plan, shots, E) => {
   for (const shot of shots) {
     const d = shot.data;
     if (!d || d.error) {
-      add("error", "probe", shot, null, `frame could not be measured${d?.error ? `: ${d.error}` : ""}`, "re-run; if it persists, run npm run check and open the frame in npm run dev");
+      // Blame the scene whose media failed to load; mid-transition two scenes are mounted, so only a src match is sure.
+      const media = plan.scenes.findIndex((s) => s.scene.src && d?.error?.includes(s.scene.src));
+      const scene = media >= 0 ? media : inTransition(shot.frame) ? null : shot.scene;
+      const src = media >= 0 ? plan.scenes[media].scene.src : null;
+      const fix = src
+        ? /^https?:/.test(src)
+          ? `check that ${src} opens, or download it into public/ and use that path`
+          : `check that public/${src} exists (src is a path inside public/)`
+        : "re-run; if it persists, run npm run check and open the frame in npm run dev";
+      add("error", "probe", shot, { scene, label: null, text: null }, `frame could not be measured${d?.error ? `: ${d.error}` : ""}`, fix);
       continue;
     }
     const moving = inTransition(shot.frame) && !shot.kinds.has("thumbnail");
@@ -345,12 +362,12 @@ export const judge = (plan, shots, E) => {
         const weak = t.contrast < 3 ? "error" : t.contrast < 4.5 && t.px < 48 ? "warning" : null;
         if (weak) {
           const dark = parseInt(t.bg.slice(1, 3), 16) + parseInt(t.bg.slice(3, 5), 16) + parseInt(t.bg.slice(5, 7), 16) < 384;
-          const fix =
-            t.color === accent
+          // A scene's own bg override is the likelier cause than the palette.
+          const fix = plan.scenes[t.scene]?.scene.bg
+            ? `remove this scene's "bg" override or pick another theme`
+            : t.color === accent
               ? `pick a ${dark ? "brighter" : "darker"} brand.accent or another theme`
-              : plan.scenes[t.scene]?.scene.bg
-                ? `remove this scene's "bg" override or pick another theme`
-                : `pick another theme (or brand.accent) with more contrast`;
+              : `pick another theme (or brand.accent) with more contrast`;
           add(weak, "contrast", shot, t, `contrast ${t.contrast}:1 (${t.color} on ${t.bg}; needs ${weak === "error" ? 3 : 4.5}:1)`, fix, { contrast: t.contrast });
         }
       }
@@ -443,7 +460,8 @@ const toJson = (result, name) => ({
 
 // --- CLI ---------------------------------------------------------------------
 
-const isMain = import.meta.url === pathToFileURL(process.argv[1]).href;
+// Node runs the real file behind a symlinked path, so compare real paths.
+const isMain = Boolean(process.argv[1]) && import.meta.url === pathToFileURL(fs.realpathSync(process.argv[1])).href;
 if (isMain) {
   const args = parseArgs(process.argv.slice(2));
   if (!args._.length) readSpec(undefined);

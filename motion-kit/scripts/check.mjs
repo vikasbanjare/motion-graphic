@@ -207,7 +207,8 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
   return { errors, warnings, plan };
 };
 
-const isMain = import.meta.url === pathToFileURL(process.argv[1]).href;
+// Node runs the real file behind a symlinked path, so compare real paths.
+const isMain = Boolean(process.argv[1]) && import.meta.url === pathToFileURL(fs.realpathSync(process.argv[1])).href;
 if (isMain) {
   const args = parseArgs(process.argv.slice(2));
   const { spec } = readSpec(args._[0]);

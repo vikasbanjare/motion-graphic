@@ -30,6 +30,9 @@ export const engine = async () => {
   return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice };
 };
 
+/** Flags that never take a value, so `--skip-qa specs/x.json` keeps the spec path. */
+const SWITCHES = new Set(["all-formats", "skip-qa", "no-qa", "json", "tts", "yes", "whisper"]);
+
 /** Parse args like: specs/x.json --theme neon --format square --all-formats */
 export const parseArgs = (argv) => {
   const out = { _: [] };
@@ -38,7 +41,7 @@ export const parseArgs = (argv) => {
     if (a.startsWith("--")) {
       const [k, v] = a.slice(2).split("=");
       if (v !== undefined) out[k] = v;
-      else if (argv[i + 1] && !argv[i + 1].startsWith("--")) out[k] = argv[++i];
+      else if (!SWITCHES.has(k) && argv[i + 1] && !argv[i + 1].startsWith("--")) out[k] = argv[++i];
       else out[k] = true;
     } else out._.push(a);
   }
