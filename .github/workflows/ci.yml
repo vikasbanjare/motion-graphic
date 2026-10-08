@@ -42,10 +42,10 @@ jobs:
       - name: Lint
         run: npx eslint src
 
-      - name: Check every spec
+      - name: Check every spec and recipe
         run: |
           failed=0
-          for spec in specs/*.json; do
+          for spec in specs/*.json specs/recipes/*.json; do
             echo "::group::$spec"
             node scripts/check.mjs "$spec" || { failed=1; echo "::error file=motion-kit/$spec::npm run check failed for $spec"; }
             echo "::endgroup::"
