@@ -29,6 +29,26 @@ Read before the first video in a session:
 
 ## Workflow
 
+### 0. Engine (first time in a folder)
+Every command below runs inside a motion-kit project: a folder with `package.json`,
+`scripts/check.mjs` and `src/engine/`. Find or create it before the brief.
+- **`motion-kit/` exists in the current folder** (a clone of this repo, or a project made
+  earlier): use it. If the current folder *is* such a project, run the commands right here
+  and drop the `motion-kit/` prefix. If its `node_modules/` is missing, run `npm install` there.
+- **No project yet** (the plugin, used in a new folder): say you are setting up the engine
+  once (about a minute), then run
+  `node "${CLAUDE_PLUGIN_ROOT}/motion-kit/scripts/scaffold.mjs" motion-kit`
+  It copies the engine into `./motion-kit` and installs it. Needs Node.js 22.18+ (`node -v`);
+  if Node is missing or older, help the user install it from nodejs.org first. If the current
+  folder is an unrelated code project, ask before adding a `motion-kit/` folder to it.
+- If the path in that command starts with a literal `$` (it was not filled in), this skill
+  was loaded from a clone of the motion-graphic repository, not from the plugin: use the
+  `motion-kit/` folder at the repository root.
+
+Renders need a Chromium. Remotion downloads one on the first render; where downloads are
+blocked, point `REMOTION_BROWSER_EXECUTABLE` at an installed Chromium headless shell
+(the repo's SessionStart hook does this for you in Claude Code on the web).
+
 ### 1. Brief (ask only what is missing)
 Fill this from the conversation; ask in one message for the gaps.
 

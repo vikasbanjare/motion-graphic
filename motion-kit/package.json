@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "remotion studio",
     "check": "node scripts/check.mjs",
+    "scaffold": "node scripts/scaffold.mjs",
     "preview": "node scripts/preview.mjs",
     "voice": "node scripts/voice.mjs",
     "music": "node scripts/music.mjs",

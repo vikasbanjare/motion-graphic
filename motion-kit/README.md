@@ -10,9 +10,12 @@ inconsistent motion. Here the AI only writes data. Text is auto-fitted to its
 box, timing comes from reading speed or the voice-over, and a checker rejects
 problems before anything renders.
 
+This is the technical reference. For a non-technical introduction (and the
+Claude Code plugin), see the [repository README](../README.md).
+
 ## Quick start
 
-Needs Node.js 22.18+ and (for voice/loudness) ffmpeg.
+Needs Node.js 22.18+ and (for voice, music and loudness) ffmpeg.
 
 ```bash
 cd motion-kit
@@ -25,7 +28,31 @@ npm run dev                                  # Remotion Studio, live preview
 ```
 
 With Claude Code, just describe the video; the `motion-director` skill
-(`.claude/skills/motion-director`) runs brief → storyboard → spec → check → voice → render.
+(`../skills/motion-director`) runs brief → storyboard → spec → check → QA → voice → render.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `npm run new -- <name> [--recipe <recipe>]` | Creates `specs/<name>.json` from a recipe in `specs/recipes/` ([Recipes](#recipes)). |
+| `npm run check -- specs/x.json [--theme t] [--format f]` | Validates the spec and lints it against the timing, copy and contrast rules; prints the timeline. Instant, no browser. Exit 1 on errors. |
+| `npm run qa -- specs/x.json [--theme t] [--format f] [--json]` | Renders the key frames in memory and checks what is really on screen; writes no files. Exit 1 on errors ([Visual QA](#visual-qa)). |
+| `npm run preview -- specs/x.json [--theme t] [--format f]` | `out/x.sheet.jpg`: one settled frame per scene, platform-UI zones tinted red. |
+| `npm run voice -- specs/x.json [...]` | Narration script, ElevenLabs TTS, or alignment of your own recording ([Voice sync](#voice-sync-say--show)). |
+| `npm run music -- specs/x.json --track music/song.mp3 [--start 12.5]` | Fits a licensed track you supply: beats, start point, ducking ([Music](#music-your-licensed-track)). |
+| `npm run brand -- <logo file> [--spec specs/x.json]` | Palette from a logo, recommended theme; `--spec` writes the brand colours ([Brand colours](#brand-colours)). |
+| `npm run make -- specs/x.json [--format f] [--all-formats] [--crf 22] [--skip-qa]` | Runs QA and stops on errors, then renders `out/x.mp4` + `out/x-cover.jpg`. |
+| `npm run scaffold -- <folder> [--no-install]` | A new project with this engine in another folder ([A new project anywhere](#a-new-project-anywhere)). |
+| `npm run dev` | Remotion Studio with every example spec. |
+| `npm run lint` | ESLint + TypeScript. |
+
+`--theme` and `--format` try another look without editing the spec.
+
+`qa`, `preview` and `make` drive a Chromium. Remotion downloads its own on the first
+render; where that is blocked, set `REMOTION_BROWSER_EXECUTABLE` to an installed
+Chromium headless shell (plus `REMOTION_CHROME_MODE=chrome-for-testing` for a full
+Chromium). The repository's SessionStart hook (`../scripts/session-start.sh`) does this
+in Claude Code on the web, and `remotion.config.ts` passes it on to Studio.
 
 ## A spec
 
@@ -43,7 +70,7 @@ With Claude Code, just describe the video; the `motion-director` skill
 ```
 
 - **17 scenes**: hook, kinetic, orb, title, stat, list, compare, bars, grid, quote, prompt, chat, wave, image, clip, cta, logo.
-  Catalog with every field: `.claude/skills/motion-director/references/scenes.md`.
+  Catalog with every field: `../skills/motion-director/references/scenes.md`.
 - **10 themes**: midnight, clean, neon, editorial, pop, desi, corporate, mono, studio, studio-dark.
 - **4 formats**: reel 9:16, portrait 4:5, square 1:1, landscape 16:9, all with platform safe zones.
 - **4 motion personalities**: snappy, smooth, bouncy, calm.
@@ -93,7 +120,19 @@ Sources and a BPM guide per theme: `references/production.md`.
 ## Footage
 
 Put clips in `public/clips/` and use `clip` scenes (`trim`, `area`, `generated: true`
-for AI footage). Prompts for Google Flow / Veo: `references/production.md`.
+for AI footage). Prompts for Google Flow / Veo: `../skills/motion-director/references/production.md`.
+
+## A new project anywhere
+
+```bash
+npm run scaffold -- ~/videos/brand-x            # copy + npm install
+npm run scaffold -- ../brand-y --no-install     # copy only
+```
+
+Copies this engine (everything except `node_modules/` and `out/`) into a new or empty
+folder outside this one and runs `npm install` there: same scenes, fonts, sounds,
+recipes and example specs, same commands. The Claude Code plugin runs this script from
+its own copy the first time it is used in a folder.
 
 ## What's inside
 
@@ -107,8 +146,14 @@ public/       fonts (SIL OFL, Latin + Devanagari), synthesised SFX, grain textur
 tools/        gen-assets.py — regenerates the SFX and grain (no third-party licences)
 ```
 
+How to add a scene template safely: [`../docs/ADDING-SCENES.md`](../docs/ADDING-SCENES.md).
+CI (`../.github/workflows/ci.yml`) runs `tsc`, ESLint, `check` on every spec, the unit
+tests (`node --test`) and the plugin validator on each pull request. Nothing is rendered
+in CI.
+
 ## Licences
 
 Fonts: SIL Open Font License (`public/fonts/OFL-LICENSES.txt`). Sound effects and
 grain are generated by `tools/gen-assets.py`. Remotion is free for individuals and
 companies of up to 3 people; larger companies need a Remotion company licence.
+Music is always user-supplied and must be licensed by the user.
