@@ -122,6 +122,8 @@ const assertReads = (theme, r, label) => {
   assert.deepEqual(r.errors, [], label);
   for (const f of ["text", "bg", "surface", "line", "muted", "onMark"]) assert.equal(k[f], t[f], `${label}: ${f} must not change`);
   assert.ok(T.contrast(k.accent, k.bg) >= 3, `${label}: accent ${k.accent} on bg ${T.contrast(k.accent, k.bg)}`);
+  // Kicker pills and the Compare hero card draw the accent as text on surface.
+  assert.ok(T.contrast(k.accent, k.surface) >= 3, `${label}: accent ${k.accent} on surface ${T.contrast(k.accent, k.surface)}`);
   assert.ok(T.contrast(k.accent, k.onAccent) >= 4.5, `${label}: onAccent ${k.onAccent} on ${k.accent}`);
   const darkInk = T.luminance(t.text) < T.luminance(t.bg) ? t.text : t.bg;
   assert.ok([t.onAccent, "#FFFFFF", darkInk].includes(k.onAccent), `${label}: onAccent ${k.onAccent} is theme ink or white`);
@@ -156,6 +158,7 @@ test("the themes themselves follow the colour rules brand colours are held to", 
     assert.ok(T.contrast(k.text, k.bg) >= 7, `${name} text`);
     assert.ok(T.contrast(k.muted, k.bg) >= 4.5, `${name} muted`);
     assert.ok(T.contrast(k.accent, k.bg) >= 3, `${name} accent`);
+    assert.ok(T.contrast(k.accent, k.surface) >= 3, `${name} accent on surface`);
     assert.ok(T.contrast(k.accent, k.onAccent) >= 4.5, `${name} onAccent`);
     assert.ok(T.contrast(k.accent2, k.bg) >= 3, `${name} accent2`);
     assert.ok(T.contrast(k.accent2, k.onAccent) >= 3, `${name} glyph on accent2`);
@@ -170,7 +173,7 @@ test("every brand accent on every theme ends up readable, text/bg untouched", ()
       const r = T.resolveBrand(theme, { accent: accent.toLowerCase() });
       assertReads(theme, r, `${name} + ${accent}`);
       // A colour that already reads is kept to the hex.
-      const passes = T.contrast(accent, theme.colors.bg) >= 3 && [theme.colors.onAccent, "#FFFFFF", theme.colors.text, theme.colors.bg].some((x) => T.contrast(accent, x) >= 4.5);
+      const passes = T.contrast(accent, theme.colors.bg) >= 3 && T.contrast(accent, theme.colors.surface) >= 3 && [theme.colors.onAccent, "#FFFFFF", theme.colors.text, theme.colors.bg].some((x) => T.contrast(accent, x) >= 4.5);
       if (passes && T.contrast(accent, theme.colors.onAccent) >= 4.5) assert.equal(r.theme.colors.accent, accent, `${name} keeps ${accent}`);
     }
   }
@@ -186,6 +189,37 @@ test("brand accent + accent2 pairs also read on every theme", () => {
       assertReads(T.THEMES[name], T.resolveBrand(T.THEMES[name], { accent2 }), `${name} + accent2 ${accent2}`);
     }
   }
+});
+
+test("random brand colours (fuzz) read on every theme, alone and in pairs", () => {
+  const r0 = rng(29);
+  const hex = () => T.rgbToHex([r0() * 255, r0() * 255, r0() * 255]);
+  for (const name of T.THEME_NAMES) {
+    const theme = T.THEMES[name];
+    for (let i = 0; i < 150; i++) {
+      const [accent, accent2] = [hex(), hex()];
+      assertReads(theme, T.resolveBrand(theme, { accent }), `${name} + ${accent}`);
+      assertReads(theme, T.resolveBrand(theme, { accent, accent2 }), `${name} + ${accent}/${accent2}`);
+    }
+  }
+});
+
+test("a deep brand accent lifted on a dark theme also reads on its cards", () => {
+  // Navy on dark themes: 3:1 on bg alone left it ~2.6:1 in kicker pills (surface).
+  for (const name of ["midnight", "desi", "studio-dark", "neon", "mono"]) {
+    const theme = T.THEMES[name];
+    const r = T.resolveBrand(theme, { accent: "#0D23A9" });
+    const fixed = r.theme.colors.accent;
+    assertReads(theme, r, `${name} + #0D23A9`);
+    close(T.hueDelta(T.hexToOklch(fixed).h, T.hexToOklch("#0D23A9").h), 0, 6, `${name} navy hue kept`);
+    // Nearest: one step back towards the brand's own lightness fails on surface.
+    const { l, c, h } = T.hexToOklch(fixed);
+    assert.ok(T.contrast(T.oklchToHex({ l: l - 0.004, c, h }), theme.colors.surface) < 3, `${name}: ${fixed} is the nearest`);
+    assert.match(r.changes[0].message, new RegExp(`lightened to ${fixed} .* on the ${name} background and cards, needs 3:1`));
+  }
+  // corporate's surface is darker than its white page, so it binds for pale brands.
+  const corp = T.resolveBrand(T.THEMES.corporate, { accent: "#AA9B94" }).theme.colors;
+  assert.ok(T.contrast(corp.accent, T.THEMES.corporate.colors.surface) >= 3, `corporate ${corp.accent} on surface`);
 });
 
 test("adjustments keep the brand hue and are reported", () => {

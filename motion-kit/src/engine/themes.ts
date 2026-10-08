@@ -7,7 +7,8 @@
  * Rules every theme follows:
  * - One accent colour does the talking; accent2 is used sparingly.
  * - text on bg >= 7:1 contrast, muted on bg >= 4.5:1, onAccent on accent >= 4.5:1.
- * - accent and accent2 on bg >= 3:1, onAccent on accent2 >= 3:1, onMark on mark >= 4.5:1.
+ * - accent on bg and surface >= 3:1 (kicker pills and hero cards put it on surface),
+ *   accent2 on bg >= 3:1, onAccent on accent2 >= 3:1, onMark on mark >= 4.5:1.
  *   Brand colours are held to the same rules (resolveBrand, below).
  * - Display fonts fall back to Teko / Poppins so Hindi (Devanagari) still renders.
  */
@@ -564,7 +565,7 @@ export const nearestPassing = (hex: string, ok: (hex: string) => boolean, prefer
 
 export type Brand = { accent?: string; accent2?: string };
 
-/** Accent (and accent2) against the theme background; WCAG 2.x graphics / large text. */
+/** Accent against the theme background and surface (accent2: background); WCAG 2.x graphics / large text. */
 export const MIN_ACCENT_CONTRAST = 3;
 /** Button text on the accent and text on the highlighter; WCAG 2.x body text. */
 export const MIN_TEXT_CONTRAST = 4.5;
@@ -635,8 +636,9 @@ const ratio = (k: number) => `${k.toFixed(2)}:1`;
 
 /**
  * Apply brand colours to a theme and report what had to change:
- * - accent: kept if it reaches 3:1 on bg and some button text reaches 4.5:1 on
- *   it; otherwise moved to the nearest lightness that does.
+ * - accent: kept if it reaches 3:1 on bg and on surface (kicker pills, hero
+ *   cards) and some button text reaches 4.5:1 on it; otherwise moved to the
+ *   nearest lightness that does.
  * - onAccent: the theme's own if it still reads, else white or the theme's dark
  *   ink, whichever reads better.
  * - accent2: the brand's (3:1 on bg and under button text), or derived from the
@@ -652,8 +654,11 @@ export const resolveBrand = (theme: Theme, brand?: Brand): BrandReport => {
   const away = lightBg ? -1 : 1;
   const darkInk = luminance(t.text) < luminance(t.bg) ? t.text : t.bg;
   const onBg = (x: string) => contrast(x, t.bg);
+  /** The accent is also text on surface (kicker pills, the Compare hero card): the weaker of the two. */
+  const onBack = (x: string) => Math.min(onBg(x), contrast(x, t.surface));
   const verb = (a: string, b: string) => (luminance(b) < luminance(a) ? "darkened" : "lightened");
   const where = `the ${theme.name} background`;
+  const whereAccent = `the ${theme.name} background and cards`;
 
   /** Button text for an accent: the theme's own, else white or dark ink. null if none reads. */
   const textOn = (accent: string) => {
@@ -667,21 +672,21 @@ export const resolveBrand = (theme: Theme, brand?: Brand): BrandReport => {
   let onAccent = t.onAccent;
   const given = brand.accent?.toUpperCase();
   if (given) {
-    const fit = nearestPassing(given, (x) => onBg(x) >= MIN_ACCENT_CONTRAST && textOn(x) !== null, away);
+    const fit = nearestPassing(given, (x) => onBack(x) >= MIN_ACCENT_CONTRAST && textOn(x) !== null, away);
     if (fit) {
       accent = fit;
       onAccent = textOn(fit) as string;
       if (fit !== given) {
         const why =
-          onBg(given) < MIN_ACCENT_CONTRAST
-            ? `${ratio(onBg(given))} → ${ratio(onBg(fit))} on ${where}, needs 3:1`
+          onBack(given) < MIN_ACCENT_CONTRAST
+            ? `${ratio(onBack(given))} → ${ratio(onBack(fit))} on ${whereAccent}, needs 3:1`
             : `button text ${ratio(contrast(given, bestTextOn(given, "#FFFFFF", darkInk)))} → ${ratio(contrast(fit, onAccent))}, needs 4.5:1`;
         changes.push({ field: "accent", kind: "adjusted", from: given, to: fit, message: `brand accent ${given} ${verb(given, fit)} to ${fit} for contrast (${why}).` });
       }
     } else {
       accent = given;
       onAccent = bestTextOn(given, "#FFFFFF", darkInk);
-      errors.push(`brand.accent ${given} cannot reach 3:1 on ${where} with readable button text at any lightness. Pick another theme.`);
+      errors.push(`brand.accent ${given} cannot reach 3:1 on ${whereAccent} with readable button text at any lightness. Pick another theme.`);
     }
   }
 

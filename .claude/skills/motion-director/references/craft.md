@@ -50,8 +50,9 @@ that pass first time.
   top 3 by vibe. A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
 - **From hex codes** the user gives: write them to `brand.accent` / `brand.accent2` directly.
 - **Never rejected, never unreadable** (`withBrand` in `src/engine/themes.ts`):
-  - accent stays exactly as given if it reaches 3:1 on the background and some button text reaches
-    4.5:1 on it; otherwise only its lightness moves (OKLCH, hue and chroma kept) to the nearest value that passes;
+  - accent stays exactly as given if it reaches 3:1 on the background and on cards (surface: kicker pills,
+    the `compare` hero label) and some button text reaches 4.5:1 on it; otherwise only its lightness moves
+    (OKLCH, hue and chroma kept) to the nearest value that passes;
   - button text: the theme's own if it reads, else white or the theme's dark ink, whichever reads better;
   - accent2: the brand's, held to 3:1 on the background and under button-text glyphs; if missing it is
     derived with the theme's own pairing — analogous (desi, corporate), a quarter turn (midnight, clean, pop),
