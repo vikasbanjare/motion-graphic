@@ -11,7 +11,7 @@ import { FitText } from "../engine/text.tsx";
 /** Brand sign-off: logo, name, a line that draws, tagline. */
 export const Logo: React.FC<{ scene: SceneOf<"logo"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan, plan: video, landscape } = useEnv();
+  const { box, u, m, c, theme, scene: plan, plan: video, landscape, floor } = useEnv();
   const b = plan.beats as BeatsFor<"logo">;
   const line = prog(frame, b.name + 8, 20, ease.inOut);
   const src = scene.src ?? video.spec.brand.logo;
@@ -19,11 +19,12 @@ export const Logo: React.FC<{ scene: SceneOf<"logo"> }> = ({ scene }) => {
   return (
     <Stage gap={34}>
       {src ? (
-        <div style={focus(frame, b.logo, m, u)}>
+        <div data-mk="card" data-mk-label="logo image" style={focus(frame, b.logo, m, u)}>
           <Img src={resolveMedia(src)} style={{ height: 220 * u, maxWidth: box.width * 0.7, objectFit: "contain" }} />
         </div>
       ) : null}
       <FitText
+        label="name"
         text={scene.name}
         start={b.name}
         maxWidth={box.width}
@@ -33,11 +34,13 @@ export const Logo: React.FC<{ scene: SceneOf<"logo"> }> = ({ scene }) => {
       <div style={{ width: 260 * u * line, height: 6 * u, borderRadius: 99, background: c.accent }} />
       {scene.tagline ? (
         <div
+          data-mk="text"
+          data-mk-label="tagline"
           style={{
             ...rise(frame, b.tagline, m, u, 0.4),
             fontFamily: theme.fonts.body,
             fontWeight: theme.fonts.bodyWeight,
-            fontSize: 40 * u,
+            fontSize: Math.max(40 * u, floor.comfortable),
             letterSpacing: "0.14em",
             textTransform: "uppercase",
             color: c.muted,

@@ -31,6 +31,9 @@ export const engine = async () => {
   return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice, ...music };
 };
 
+/** Flags that never take a value, so `--skip-qa specs/x.json` keeps the spec path. */
+const SWITCHES = new Set(["all-formats", "skip-qa", "no-qa", "json", "tts", "yes", "whisper"]);
+
 /** Parse args like: specs/x.json --theme neon --format square --all-formats */
 export const parseArgs = (argv) => {
   const out = { _: [] };
@@ -39,7 +42,7 @@ export const parseArgs = (argv) => {
     if (a.startsWith("--")) {
       const [k, v] = a.slice(2).split("=");
       if (v !== undefined) out[k] = v;
-      else if (argv[i + 1] && !argv[i + 1].startsWith("--")) out[k] = argv[++i];
+      else if (!SWITCHES.has(k) && argv[i + 1] && !argv[i + 1].startsWith("--")) out[k] = argv[++i];
       else out[k] = true;
     } else out._.push(a);
   }
@@ -48,7 +51,7 @@ export const parseArgs = (argv) => {
 
 export const readSpec = (file) => {
   if (!file) {
-    console.error("Usage: npm run <check|preview|make> -- specs/your-video.json");
+    console.error("Usage: npm run <check|qa|preview|make> -- specs/your-video.json");
     process.exit(1);
   }
   const abs = path.resolve(process.cwd(), file);
@@ -112,6 +115,42 @@ export const shownText = (scene) =>
     .map(([, v]) => v)
     .join(" ");
 
+/** Scene types that open on a visual and bring their words in after it. */
+const VISUAL_FIRST = { orb: "the orb", image: "the image", clip: "the clip", wave: "the waveform", logo: "the logo" };
+/** Visual-first scenes whose words are on screen at 0.0s when scene 1's narration starts with them. */
+const SAID_FIRST = new Set(["orb", "wave"]);
+const OPENERS = ["hook", "title", "kinetic"];
+
+/**
+ * Why frame 0 (the thumbnail) shows no words and the change that fixes it,
+ * from scene 1's first words (`open` = E.openingText(plan)). `blocker` is a
+ * qa finding on frame 0 that pushes them off the frame. check warns when the
+ * plan alone shows it; qa reports it from the rendered frame.
+ */
+export const blankThumbnail = (plan, open, blocker) => {
+  const s = plan.scenes[0].scene;
+  const visual = VISUAL_FIRST[s.type] && (s.type !== "logo" || s.src || plan.spec.brand?.logo) ? s.type : null;
+  const after = (type) => `make this ${type} scene 2, after a hook, title or kinetic scene (their first words are on screen at 0.0s)`;
+  if (!open) return { why: `scene 1 (${s.type}) has no words`, fix: after(s.type) };
+  const text = open.text.length > 42 ? open.text.slice(0, 41) + "…" : open.text;
+  const late = open.at > 0;
+  const words = /[\p{L}\p{N}]/u.test(open.text);
+  const state = !words ? "has no letters or digits" : late ? `only starts to appear at ${(open.at / 30).toFixed(2)}s (frame ${open.at})` : "is not readable on frame 0";
+  const why = `scene 1's ${open.field} "${text}" ${state}`;
+  if (!words) return { why, fix: `put words in scene 1's ${open.field}: emoji and symbols alone leave the thumbnail blank` };
+  if (!late && blocker) return { why, fix: `fix the ${blocker.check} finding on ${blocker.label} above first: off the frame, it cannot be the thumbnail` };
+  // Narration that reaches the opening words late holds them back; said first, they are on screen at 0.0s.
+  const say = late && plan.voice && (!visual || SAID_FIRST.has(visual)) ? `start scene 1's say with "${open.text}" so it shows at 0.0s` : null;
+  if (visual) {
+    const label = visual === "wave" && !s.label ? "give the wave a label (on screen from 0.0s), or " : "";
+    return { why, fix: say ? `${say}, or ${after(visual)}` : `${visual} scenes bring their words in after ${VISUAL_FIRST[visual]}: ${label}${after(visual)}` };
+  }
+  if (say) return { why, fix: say };
+  // Text-first scenes start their opening words before frame 0 (plan.ts leadOf), so this one is an engine bug.
+  const others = OPENERS.filter((t) => t !== s.type).join(" or ");
+  return { why, fix: `${s.type} scenes should show their ${open.field} on frame 0 (engine bug, please report it with this spec); until it is fixed, open with a ${others} scene` };
+};
+
 /** CLI overrides so one spec can be previewed in any theme / format. */
 export const applyOverrides = (spec, args) => ({
   ...spec,
@@ -121,8 +160,44 @@ export const applyOverrides = (spec, args) => ({
   ...(args.pace ? { pace: args.pace } : {}),
 });
 
-const browserArgs = () =>
-  process.env.REMOTION_BROWSER_EXECUTABLE ? [`--browser-executable=${process.env.REMOTION_BROWSER_EXECUTABLE}`] : [];
+/**
+ * The Chrome that renders frames. REMOTION_BROWSER_EXECUTABLE wins; otherwise
+ * reuse a Playwright-installed Chromium (sandboxes and CI images often have one
+ * and block Remotion's own download). null = let Remotion fetch its own.
+ */
+export const findBrowser = () => {
+  const env = process.env.REMOTION_BROWSER_EXECUTABLE;
+  if (env) return { executable: env, mode: process.env.REMOTION_CHROME_MODE ?? "headless-shell" };
+  const roots = [...new Set([process.env.PLAYWRIGHT_BROWSERS_PATH, "/opt/pw-browsers"].filter(Boolean))];
+  const look = (prefix, bins, mode) => {
+    for (const root of roots) {
+      let dirs = [];
+      try {
+        dirs = fs.readdirSync(root).filter((d) => d.startsWith(prefix));
+      } catch {
+        continue;
+      }
+      // Newest revision first.
+      dirs.sort((a, b) => Number(b.split("-").pop()) - Number(a.split("-").pop()));
+      for (const d of dirs)
+        for (const bin of bins) {
+          const exe = path.join(root, d, bin);
+          if (fs.existsSync(exe)) return { executable: exe, mode };
+        }
+    }
+    return null;
+  };
+  return (
+    look("chromium_headless_shell-", ["chrome-linux/headless_shell", "chrome-headless-shell-linux64/chrome-headless-shell"], "headless-shell") ??
+    look("chromium-", ["chrome-linux/chrome", "chrome-linux64/chrome"], "chrome-for-testing")
+  );
+};
+
+const browserArgs = () => {
+  const b = findBrowser();
+  if (!b) return [];
+  return [`--browser-executable=${b.executable}`, ...(b.mode === "chrome-for-testing" ? ["--chrome-mode=chrome-for-testing"] : [])];
+};
 
 export const remotion = (args) => {
   const r = spawnSync("npx", ["remotion", ...args, ...browserArgs(), "--log=error"], { cwd: ROOT, stdio: "inherit" });

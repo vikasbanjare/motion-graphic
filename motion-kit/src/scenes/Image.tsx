@@ -45,7 +45,7 @@ export const ImageScene: React.FC<{ scene: SceneOf<"image"> }> = ({ scene }) => 
           <Stage align="end" gap={28} still>
             {scene.kicker ? <Kicker text={scene.kicker} start={b.kicker} /> : null}
             {scene.caption ? (
-              <FitText text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.36} maxSize={140 * u} />
+              <FitText label="caption" text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.36} maxSize={140 * u} />
             ) : null}
           </Stage>
         ) : null}
@@ -58,6 +58,8 @@ export const ImageScene: React.FC<{ scene: SceneOf<"image"> }> = ({ scene }) => 
     <Stage gap={40}>
       {scene.kicker ? <Kicker text={scene.kicker} start={b.kicker} /> : null}
       <div
+        data-mk="card"
+        data-mk-label="image"
         style={{
           ...rise(frame, b.image, m, u, 0.6),
           width: box.width,
@@ -74,7 +76,7 @@ export const ImageScene: React.FC<{ scene: SceneOf<"image"> }> = ({ scene }) => 
         />
       </div>
       {scene.caption ? (
-        <FitText text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.24} maxSize={110 * u} />
+        <FitText label="caption" text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.24} maxSize={110 * u} />
       ) : null}
     </Stage>
   );

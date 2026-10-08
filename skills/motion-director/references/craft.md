@@ -76,6 +76,8 @@ that pass first time.
 - `reel` 1080×1920: content stays inside x 96-930, y 260-1340 (Reels/TikTok/Shorts UI).
 - `square` and `portrait` keep text inside the Instagram 3:4 profile-grid crop.
 - `landscape` 1920×1080 for YouTube/X/LinkedIn/web.
+- Readable type: ≥ 36 px on vertical/square (30 px hard floor), ≥ 48 px on landscape
+  (40 px floor) — landscape plays at about half size on a phone. `npm run qa` measures it.
 
 ## Hindi / Hinglish
 - Hinglish in Latin script is fine on screen; Hindi on screen in Devanagari.

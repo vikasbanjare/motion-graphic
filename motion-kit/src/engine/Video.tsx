@@ -1,16 +1,17 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { Audio } from "@remotion/media";
 import { TransitionSeries } from "@remotion/transitions";
 import type { CalculateMetadataFunction } from "remotion";
 import { Background } from "./backgrounds.tsx";
-import { PlanContext, QaContext, SceneContext } from "./context.ts";
+import { PlanContext, QaContext, SceneContext, useEnv, watermarkSpace } from "./context.ts";
 import { SafeZoneOverlay } from "./stage.tsx";
-import { FPS } from "./formats.ts";
+import { FPS, textFloor } from "./formats.ts";
 import { useFontsReady } from "./fonts.ts";
 import { resolveMedia } from "./media.ts";
 import { beatFields, musicCurve } from "./music.ts";
 import { planVideo, type SfxName, type VideoPlan } from "./plan.ts";
+import { QaProbe } from "./qa.tsx";
 import { videoSchema, type Scene, type VideoSpec } from "./schema.ts";
 import { makeTransition, transitionTiming } from "./transitions.tsx";
 import { SCENES } from "../scenes/index.ts";
@@ -47,41 +48,51 @@ export const withTimings = async (spec: VideoSpec, signal?: AbortSignal): Promis
   return out;
 };
 
-export const calculateVideoMetadata: CalculateMetadataFunction<VideoSpec> = async ({ props, abortSignal }) => {
+type RenderFlags = { _qa?: boolean; _silent?: boolean; _probe?: boolean };
+
+export const calculateVideoMetadata: CalculateMetadataFunction<VideoSpec & RenderFlags> = async ({ props, abortSignal }) => {
   const parsed = videoSchema.safeParse(props);
   if (!parsed.success) return { durationInFrames: 90, fps: FPS, width: 1080, height: 1920 };
   const spec = await withTimings(parsed.data, abortSignal);
   const plan = planVideo(spec);
+  // Parsing strips unknown keys; keep the render flags (QA, silent) the caller passed.
+  const { _qa, _silent, _probe } = props;
   return {
     durationInFrames: plan.durationInFrames,
     fps: FPS,
     width: plan.format.width,
     height: plan.format.height,
-    props: spec,
+    props: { ...spec, ...(_qa === undefined ? {} : { _qa }), ...(_silent === undefined ? {} : { _silent }), ...(_probe === undefined ? {} : { _probe }) },
   };
 };
 
-/** The one composition. Everything a video is comes from the spec. */
-export const Video: React.FC<VideoSpec & { _qa?: boolean; _silent?: boolean }> = (props) => {
+/**
+ * The one composition. Everything a video is comes from the spec.
+ * `_qa` draws safe zones and measures every frame for `npm run qa` (`_probe`
+ * switches just the measuring off, e.g. inside the contact sheet); `_silent`
+ * skips audio.
+ */
+export const Video: React.FC<VideoSpec & RenderFlags> = (props) => {
   const parsed = useMemo(() => videoSchema.safeParse(props), [props]);
   if (!parsed.success) {
     return <SpecError issues={parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`)} />;
   }
   return (
     <QaContext.Provider value={Boolean(props._qa)}>
-      <Rendered spec={parsed.data} qa={Boolean(props._qa)} silent={Boolean(props._silent)} />
+      <Rendered spec={parsed.data} qa={Boolean(props._qa)} probe={props._probe ?? Boolean(props._qa)} silent={Boolean(props._silent)} />
     </QaContext.Provider>
   );
 };
 
-const Rendered: React.FC<{ spec: VideoSpec; qa: boolean; silent: boolean }> = ({ spec, qa, silent }) => {
+const Rendered: React.FC<{ spec: VideoSpec; qa: boolean; probe: boolean; silent: boolean }> = ({ spec, qa, probe, silent }) => {
   const plan = useMemo(() => planVideo(spec), [spec]);
   const fontsReady = useFontsReady();
+  const root = useRef<HTMLDivElement>(null);
   const T = plan.transitionFrames;
 
   return (
     <PlanContext.Provider value={plan}>
-      <AbsoluteFill style={{ backgroundColor: plan.theme.colors.bg }}>
+      <AbsoluteFill ref={root} style={{ backgroundColor: plan.theme.colors.bg }}>
         <Background theme={plan.theme} format={plan.format} />
         {fontsReady ? (
           <TransitionSeries>
@@ -108,6 +119,7 @@ const Rendered: React.FC<{ spec: VideoSpec; qa: boolean; silent: boolean }> = ({
         <Overlays plan={plan} />
         {qa ? <SafeZoneOverlay format={plan.format} /> : null}
         {silent ? null : <Sounds plan={plan} />}
+        {probe ? <QaProbe plan={plan} ready={fontsReady} root={root} /> : null}
       </AbsoluteFill>
     </PlanContext.Provider>
   );
@@ -115,7 +127,13 @@ const Rendered: React.FC<{ spec: VideoSpec; qa: boolean; silent: boolean }> = ({
 
 const SceneView: React.FC<{ scene: Scene }> = ({ scene }) => {
   const Component = SCENES[scene.type] as React.FC<{ scene: Scene }>;
-  return <Component scene={scene} />;
+  const { scene: plan, c } = useEnv();
+  // Scene root: QA groups what it measures by scene and reads the scene's background here.
+  return (
+    <AbsoluteFill data-mk-scene={plan.index} data-mk-bg={c.bg}>
+      <Component scene={scene} />
+    </AbsoluteFill>
+  );
 };
 
 const Overlays: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
@@ -139,15 +157,22 @@ const Overlays: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
       ) : null}
       {spec.brand.watermark && spec.brand.handle ? (
         <div
+          data-mk="text"
+          data-mk-label="watermark"
           style={{
+            // Top-left of the safe zone, in the strip scenes leave free (see layoutBox).
             position: "absolute",
             left: format.safe.left,
-            top: Math.max(30 * u, format.safe.top - 80 * u),
+            top: format.safe.top,
+            height: watermarkSpace(format),
+            display: "flex",
+            alignItems: "flex-start",
             fontFamily: theme.fonts.body,
             fontWeight: theme.fonts.bodyStrongWeight,
-            fontSize: 30 * u,
+            fontSize: textFloor(format).comfortable,
+            lineHeight: 1.2,
             color: c.muted,
-            opacity: interpolate(frame, [10, 25], [0, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
+            opacity: interpolate(frame, [10, 25], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
           }}
         >
           {spec.brand.handle}

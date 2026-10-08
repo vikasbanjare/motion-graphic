@@ -11,6 +11,7 @@
     "check": "node scripts/check.mjs",
     "scaffold": "node scripts/scaffold.mjs",
     "preview": "node scripts/preview.mjs",
+    "qa": "node scripts/qa.mjs",
     "voice": "node scripts/voice.mjs",
     "music": "node scripts/music.mjs",
     "make": "node scripts/make.mjs",

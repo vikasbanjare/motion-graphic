@@ -11,7 +11,7 @@ import { FitText } from "../engine/text.tsx";
 /** The ask. One big button-shaped action that pulses, plus who to follow. */
 export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan, landscape } = useEnv();
+  const { box, u, m, c, theme, scene: plan, landscape, floor } = useEnv();
   const b = plan.beats as BeatsFor<"cta">;
   const f = theme.fonts;
 
@@ -43,6 +43,7 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
     <Stage gap={40}>
       {scene.kicker ? (
         <FitText
+          label="kicker"
           text={scene.kicker}
           start={b.kicker}
           font="body"
@@ -55,6 +56,9 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
       ) : null}
       <div style={{ transform: `scale(${pulse.toFixed(4)})` }}>
         <div
+          data-mk="card"
+          data-mk-label="button"
+          data-mk-bg={c.accent}
           style={{
             ...pop(frame, b.action, m, 0.4),
             position: "relative",
@@ -73,7 +77,9 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
             boxShadow: `0 ${24 * u}px ${70 * u}px ${c.accent}59`,
           }}
         >
-          {scene.action}
+          <span data-mk="text" data-mk-label="action">
+            {scene.action}
+          </span>
           <div
             style={{
               position: "absolute",
@@ -89,6 +95,7 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
       </div>
       {scene.sub ? (
         <FitText
+          label="sub"
           text={scene.sub}
           start={b.sub}
           font="body"
@@ -101,12 +108,14 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
       ) : null}
       {scene.handle ? (
         <div
+          data-mk="text"
+          data-mk-label="handle"
           style={{
             ...rise(frame, b.handle, m, u, 0.4),
             marginTop: 20 * u,
             fontFamily: f.body,
             fontWeight: f.bodyStrongWeight,
-            fontSize: 42 * u,
+            fontSize: Math.max(42 * u, floor.comfortable),
             color: c.muted,
             letterSpacing: "0.02em",
           }}
@@ -124,7 +133,7 @@ export const Cta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
  */
 const LinkCta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan, landscape } = useEnv();
+  const { box, u, m, c, theme, scene: plan, landscape, floor } = useEnv();
   const b = plan.beats as BeatsFor<"cta">;
   const f = theme.fonts;
   const underline = prog(frame, b.action + m.enter, 18, ease.inOut);
@@ -133,6 +142,7 @@ const LinkCta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
     <Stage gap={44}>
       {scene.kicker ? (
         <FitText
+          label="kicker"
           text={scene.kicker}
           start={b.kicker}
           maxWidth={box.width}
@@ -142,6 +152,8 @@ const LinkCta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
       ) : null}
       <div style={{ ...rise(frame, b.action, m, u, 0.4), position: "relative", paddingBottom: 14 * u }}>
         <span
+          data-mk="text"
+          data-mk-label="action"
           style={{
             fontFamily: f.body,
             fontWeight: f.bodyStrongWeight,
@@ -169,18 +181,23 @@ const LinkCta: React.FC<{ scene: SceneOf<"cta"> }> = ({ scene }) => {
       </div>
       {scene.sub ? (
         <FitText
+          label="sub"
           text={scene.sub}
           start={b.sub}
           font="body"
           color={c.muted}
           maxWidth={box.width * 0.9}
           maxHeight={box.height * 0.16}
-          maxSize={46 * u}
-          minSize={36 * u}
+          maxSize={Math.max(46 * u, floor.comfortable)}
+          minSize={Math.max(36 * u, floor.min)}
         />
       ) : null}
       {scene.handle ? (
-        <div style={{ ...rise(frame, b.handle, m, u, 0.3), fontFamily: f.body, fontWeight: f.bodyWeight, fontSize: 38 * u, color: c.muted }}>
+        <div
+          data-mk="text"
+          data-mk-label="handle"
+          style={{ ...rise(frame, b.handle, m, u, 0.3), fontFamily: f.body, fontWeight: f.bodyWeight, fontSize: Math.max(38 * u, floor.comfortable), color: c.muted }}
+        >
           {scene.handle}
         </div>
       ) : null}

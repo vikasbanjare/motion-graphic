@@ -12,7 +12,7 @@ import { FitText } from "../engine/text.tsx";
 /** A prompt being typed into a chat box, then an answer bubble. Perfect for AI / app demos. */
 export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan } = useEnv();
+  const { box, u, m, c, theme, scene: plan, floor } = useEnv();
   const b = plan.beats as BeatsFor<"chat">;
   const f = theme.fonts;
   const pad = 40 * u;
@@ -27,11 +27,11 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
         fontWeight: f.bodyWeight,
         maxWidth: innerW,
         maxHeight: box.height * 0.36,
-        maxSize: 52 * u,
-        minSize: 30 * u,
+        maxSize: Math.max(52 * u, floor.comfortable),
+        minSize: floor.min,
         lineHeight: 1.32,
       }),
-    [scene.prompt, f, innerW, box.height, u],
+    [scene.prompt, f, innerW, box.height, u, floor],
   );
 
   const total = scene.prompt.length;
@@ -47,11 +47,14 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
     return part;
   });
   const lastIdx = Math.max(0, lines.findLastIndex((l) => l.length > 0));
-  const labelSize = 36 * u;
+  const labelSize = Math.max(36 * u, floor.comfortable);
 
   return (
     <Stage gap={34}>
       <div
+        data-mk="card"
+        data-mk-label="prompt box"
+        data-mk-bg={c.surface}
         style={{
           ...rise(frame, b.box, m, u, 0.6),
           width: box.width,
@@ -64,6 +67,8 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
         }}
       >
         <div
+          data-mk="text"
+          data-mk-label="label"
           style={{
             fontFamily: f.body,
             fontWeight: f.bodyStrongWeight,
@@ -79,6 +84,9 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
           {scene.label ?? "Prompt"}
         </div>
         <div
+          data-mk="text"
+          data-mk-label="prompt"
+          data-mk-overflow={layout.overflow ? "1" : undefined}
           style={{
             fontFamily: f.body,
             fontWeight: f.bodyWeight,
@@ -110,6 +118,9 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
       </div>
       {scene.reply ? (
         <div
+          data-mk="card"
+          data-mk-label="reply bubble"
+          data-mk-bg={c.accent}
           style={{
             ...pop(frame, b.reply, m, 0.7),
             alignSelf: "flex-end",
@@ -122,6 +133,7 @@ export const Chat: React.FC<{ scene: SceneOf<"chat"> }> = ({ scene }) => {
           }}
         >
           <FitText
+            label="reply"
             text={scene.reply}
             start={b.reply + 2}
             font="body"

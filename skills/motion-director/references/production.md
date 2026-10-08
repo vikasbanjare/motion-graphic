@@ -117,7 +117,7 @@ Revision allowance: [N] retries inside the cap
 - No clipped text, Devanagari marks or logos; handoffs between beats are clean.
 - Voice complete and clear; listen for pronunciation and abrupt ends.
 - Music licensed (source noted), instrumental under narration, sits under the voice, ends on the fade.
-- MP4 reaches the final card, has audio, `check` is clean.
+- MP4 reaches the final card, has audio, `check` and `qa` are clean.
 - Only confirmed facts. Keep `specs/x.json`, `public/voice/x.*`, clips — they re-render any fix.
 
 ## Common fixes
@@ -125,6 +125,10 @@ Revision allowance: [N] retries inside the cap
 |---|---|
 | ⚠ narration too short for animation | add words to that `say`, or trim on-screen text |
 | ⚠ text too long / dashed outline | split the beat or move detail to `sub` |
+| QA ✖ safe-zone / overflow / spill | shorten the named field (the → hint gives a word budget) or split the scene |
+| QA ⚠ type too small | fewer words in that field so it can be set larger; landscape needs bigger type than reels |
+| QA ✖ contrast | another theme, a darker/brighter `brand.accent`, or drop the scene's `bg` override |
+| QA ✖ blank thumbnail | the → hint names the field and when it appears. Orb, image, clip, wave or logo-image first: put a hook, title or kinetic scene before it, or (narrated orb / wave) start its `say` with the words it shows. Emoji alone never count |
 | words drift from speech | `say` must match the recording; re-align |
 | Hindi glyphs look wrong | keep Hindi on screen in Devanagari; Latin-script Hinglish is fine too |
 | clip has unwanted words | regenerate "no text", overlay words with the engine |

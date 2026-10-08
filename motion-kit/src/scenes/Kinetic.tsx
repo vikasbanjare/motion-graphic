@@ -17,7 +17,7 @@ export const Kinetic: React.FC<{ scene: SceneOf<"kinetic"> }> = ({ scene }) => {
         const last = i === b.lines.length - 1;
         return (
           <Sequence key={i} from={l.start} durationInFrames={last ? undefined : Math.max(1, l.end - l.start)} layout="none">
-            <Line text={scene.lines[i]} len={l.end - l.start} last={last} />
+            <Line text={scene.lines[i]} label={`line ${i + 1}`} len={l.end - l.start} last={last} />
           </Sequence>
         );
       })}
@@ -25,7 +25,7 @@ export const Kinetic: React.FC<{ scene: SceneOf<"kinetic"> }> = ({ scene }) => {
   );
 };
 
-const Line: React.FC<{ text: string; len: number; last: boolean }> = ({ text, len, last }) => {
+const Line: React.FC<{ text: string; label: string; len: number; last: boolean }> = ({ text, label, len, last }) => {
   const frame = useCurrentFrame();
   const { box, u, m, landscape } = useEnv();
   const gentle = m.wordStyle === "blur" || m.wordStyle === "rise";
@@ -40,6 +40,7 @@ const Line: React.FC<{ text: string; len: number; last: boolean }> = ({ text, le
     <Stage still>
       <div style={{ transform: `scale(${scale.toFixed(4)})`, opacity: 1 - e, filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined }}>
         <FitText
+          label={label}
           text={text}
           start={0}
           stagger={Math.max(1, m.wordStagger - 1)}

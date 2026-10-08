@@ -19,6 +19,8 @@ export type FitInput = {
   minSize?: number;
   lineHeight: number;
   maxLines?: number;
+  /** Measure digits as rendered when the text uses `fontVariantNumeric: "tabular-nums"` (wider). */
+  tabular?: boolean;
 };
 
 export type FitLine = { words: RichWord[]; width: number };
@@ -42,6 +44,7 @@ const measure = (text: string, i: FitInput) =>
     fontWeight: String(i.fontWeight),
     letterSpacing: i.tracking ? `${i.tracking}em` : undefined,
     textTransform: i.upper ? "uppercase" : "none",
+    fontVariantNumeric: i.tabular ? "tabular-nums" : undefined,
   }).width;
 
 type Measured = { word: RichWord | "\n"; w: number };

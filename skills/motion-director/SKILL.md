@@ -127,6 +127,20 @@ Typical fixes: split a long headline or move detail into `sub`; shorten a kicker
 add words to a `say` that is "too short for its animation"; reorder `say` to match the screen;
 vary three same-type scenes in a row. Re-run both after every fix.
 
+QA (`--format landscape` / `--theme all` sweep the variants) renders the key frames in memory (thumbnail, every scene once landed, every
+transition, the last frame) and checks what is really on screen: text under
+platform UI or off canvas, overlapping text, text too long for its slot, cut off or
+spilling out of its card, type too small for a phone (30 px vertical / 40 px
+landscape; warns under 36 / 48), contrast under 3:1 (4.5:1 for small text), and a
+blank thumbnail. Each finding names the scene, time and field with a fix
+(e.g. "shorten headline to ≤6 words or move detail to sub"). Apply the fix to the
+spec and re-run until it passes. `--json` gives machine-readable output.
+
+Preview (on request): `npm run preview -- specs/<name>.json` writes `out/<name>.sheet.jpg`: one settled frame
+per scene with platform-UI zones tinted red. Look at it: nothing important in red,
+no dashed outlines (text too long), one clear focal point per frame.
+Try another look without editing: `--theme studio --format landscape`.
+
 ### 6. Voice (optional)
 
 `npm run voice -- specs/<name>.json` prints the narration and its character count. Then
@@ -147,7 +161,7 @@ Footage (optional): use real assets first. For gaps, write one-line Google Flow 
 ### 8. Make (when the video was asked for)
 
 `npm run make -- specs/<name>.json` runs QA, then writes `out/<name>.mp4` and
-`out/<name>-cover.jpg`. If QA stops it, fix the spec; never use `--skip-qa` to get past an error.
+`out/<name>-cover.jpg`. If QA stops it, fix the spec; use `--skip-qa` only if the user accepts a known issue.
 Other sizes only on request: `--format square` or `--all-formats`.
 
 ### 9. Hand over

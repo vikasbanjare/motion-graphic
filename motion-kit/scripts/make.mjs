@@ -1,10 +1,11 @@
-// npm run make -- specs/my-video.json [--format square] [--all-formats] [--crf 22]
-// Validates, renders the MP4, a cover image, and loudness-normalises any music/voice-over.
+// npm run make -- specs/my-video.json [--format square] [--all-formats] [--crf 22] [--skip-qa]
+// Validates, runs visual QA, renders the MP4, a cover image, and loudness-normalises any music/voice-over.
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { check } from "./check.mjs";
 import { ROOT, applyOverrides, c, parseArgs, readSpec, remotion, writeTemp } from "./lib.mjs";
+import { printReport, qaSession } from "./qa.mjs";
 
 const args = parseArgs(process.argv.slice(2));
 const { spec: raw, name } = readSpec(args._[0]);
@@ -13,13 +14,36 @@ const formats = args["all-formats"] ? ["reel", "square", "landscape"] : [args.fo
 const hasFfmpeg = spawnSync("ffmpeg", ["-version"], { stdio: "ignore" }).status === 0;
 const made = [];
 
+const variants = [];
 for (const format of formats) {
   const spec = applyOverrides(raw, { ...args, format });
   const { errors, warnings, plan } = await check(spec, { quiet: formats.length > 1 });
   for (const w of warnings) console.log(c.yellow("  ⚠ ") + w);
   for (const e of errors) console.log(c.red("  ✖ ") + e);
   if (errors.length) process.exit(1);
+  variants.push({ format, spec, plan });
+}
 
+// Look at the real frames before spending minutes on a render.
+if (!args["skip-qa"]) {
+  const session = await qaSession({ log: (s) => console.log(s) });
+  let failed = 0;
+  try {
+    for (const v of variants) {
+      const r = await session.run(v.spec);
+      printReport(r, formats.length > 1 ? `${name} · ${v.format}` : name);
+      failed += r.errors;
+    }
+  } finally {
+    await session.close();
+  }
+  if (failed) {
+    console.log(c.red(`\n✖ Not rendering: QA found ${failed} error(s). Fix them (see → hints), or re-run with --skip-qa to render anyway.`));
+    process.exit(1);
+  }
+}
+
+for (const { format, spec, plan } of variants) {
   const base = formats.length > 1 || args.format ? `${name}-${format}` : name;
   const mp4 = path.join("out", `${base}.mp4`);
   const props = writeTemp(`${base}.json`, spec);

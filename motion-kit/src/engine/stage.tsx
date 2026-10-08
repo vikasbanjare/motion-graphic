@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { useEnv } from "./context.ts";
+import { CAMERA_PUSH, useEnv, type SceneEnv } from "./context.ts";
 import { fitText } from "./fit.ts";
 import { prog, rise } from "./motion.ts";
 import { richWords } from "./rich.ts";
@@ -17,21 +17,23 @@ export const Stage: React.FC<{
   still?: boolean;
 }> = ({ children, align = "center", gap = 40, still }) => {
   const frame = useCurrentFrame();
-  const { scene, format, c, u } = useEnv();
+  const { scene, format, c, u, box } = useEnv();
   const push = still
     ? 1
-    : interpolate(frame, [0, scene.duration], [1, 1.035], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    : interpolate(frame, [0, scene.duration], [1, 1 + CAMERA_PUSH], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const fill = scene.scene.bg && scene.scene.bg !== "default";
   return (
     <AbsoluteFill>
       {fill ? <AbsoluteFill style={{ backgroundColor: c.bg }} /> : null}
       <AbsoluteFill
         style={{
+          // Push in around the content's centre: the layout box leaves exactly the room it needs.
           transform: `scale(${push.toFixed(5)})`,
-          paddingTop: format.safe.top,
-          paddingBottom: format.safe.bottom,
-          paddingLeft: format.safe.left,
-          paddingRight: format.safe.right,
+          transformOrigin: `${box.left + box.width / 2}px ${box.top + box.height / 2}px`,
+          paddingTop: box.top,
+          paddingBottom: format.height - box.top - box.height,
+          paddingLeft: box.left,
+          paddingRight: format.width - box.left - box.width,
           display: "flex",
           flexDirection: "column",
           justifyContent: align === "center" ? "center" : align === "start" ? "flex-start" : "flex-end",
@@ -45,18 +47,27 @@ export const Stage: React.FC<{
   );
 };
 
+const kickerMax = (env: Pick<SceneEnv, "u" | "floor">) => Math.max(38 * env.u, env.floor.comfortable);
+
+/** Height a Kicker takes at most (largest size, plus the pill's padding and border): scenes budget around it. */
+export const kickerHeight = (env: Pick<SceneEnv, "u" | "floor" | "theme">, pill?: boolean) => {
+  const size = kickerMax(env);
+  return size * 1.2 + ((pill ?? env.theme.kicker === "pill") ? 0.84 * size + 4 * env.u : 0);
+};
+
 /** Small uppercase label above a headline. */
-export const Kicker: React.FC<{ text: string; start: number; color?: string; pill?: boolean }> = ({
+export const Kicker: React.FC<{ text: string; start: number; color?: string; pill?: boolean; label?: string }> = ({
   text,
   start,
   color,
   pill: pillProp,
+  label = "kicker",
 }) => {
   const frame = useCurrentFrame();
-  const { theme, m, u, c, box } = useEnv();
+  const { theme, m, u, c, box, floor } = useEnv();
   const pill = pillProp ?? theme.kicker === "pill";
   const line = prog(frame, start + 4, 14);
-  const size = useMemo(
+  const fit = useMemo(
     () =>
       fitText({
         words: richWords(text),
@@ -66,20 +77,26 @@ export const Kicker: React.FC<{ text: string; start: number; color?: string; pil
         upper: true,
         maxWidth: box.width - (pill ? 120 * u : 0),
         maxHeight: 100 * u,
-        maxSize: 38 * u,
-        minSize: 28 * u,
+        maxSize: kickerMax({ u, floor }),
+        minSize: floor.min,
         maxLines: 1,
         lineHeight: 1.2,
-      }).fontSize,
-    [text, theme, box.width, pill, u],
+      }),
+    [text, theme, box.width, pill, u, floor],
   );
+  const size = fit.fontSize;
   return (
     <div
+      data-mk="text"
+      data-mk-label={label}
+      data-mk-bg={pill ? c.surface : undefined}
+      data-mk-overflow={fit.overflow ? "1" : undefined}
       style={{
         ...rise(frame, start, m, u, 0.5),
         fontFamily: theme.fonts.body,
         fontWeight: theme.fonts.bodyStrongWeight,
         fontSize: size,
+        lineHeight: 1.2,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
         color: color ?? c.accent,

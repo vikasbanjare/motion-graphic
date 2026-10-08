@@ -43,6 +43,7 @@ Do not invent fields: unknown keys are silently dropped, so the text would never
 ```
 
 **orb**: calm hero. A soft orb that breathes with the voice, optional headline. Launch-film opener.
+As scene 1 with narration, start its `say` with the headline so it is on screen at 0.0s; silent, its words come in after the orb, so open with a hook first.
 
 | Field | Type | Notes |
 |---|---|---|

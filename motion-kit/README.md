@@ -21,8 +21,9 @@ Needs Node.js 22.18+ and (for voice, music and loudness) ffmpeg.
 cd motion-kit
 npm install
 npm run check   -- specs/claude-reel.json    # validate + lint, prints the timeline
+npm run qa      -- specs/claude-reel.json    # visual QA of the real frames (in memory, writes nothing)
 npm run preview -- specs/claude-reel.json    # one-image contact sheet of every scene
-npm run make    -- specs/claude-reel.json    # out/claude-reel.mp4 + cover image
+npm run make    -- specs/claude-reel.json    # QA, then out/claude-reel.mp4 + cover image
 npm run brand   -- public/brand/logo.png --spec specs/claude-reel.json   # brand colours from a logo
 npm run dev                                  # Remotion Studio, live preview
 ```
@@ -94,6 +95,19 @@ npm run new -- launch --recipe launch-film-16x9 --format reel --theme studio-dar
 `npm run new` never overwrites a spec; it prints the beats and every slot and sample number to
 fill.
 
+## Visual QA
+
+`npm run qa -- specs/x.json` renders the key frames in memory (frame 0, every scene
+once it has landed, every transition midpoint, the last frame) and measures what the
+browser actually laid out. It fails on text under platform UI or off the canvas,
+overlapping text, text too long for its slot / cut off / spilling out of its card,
+type below 30 px (vertical) or 40 px (landscape), contrast under 3:1, and a blank
+thumbnail; it warns on type under 36 / 48 px and small text under 4.5:1. Every finding
+names the scene, time and field, with a concrete fix. `--theme all --format reel,landscape`
+sweeps variants, `--json` is machine-readable, exit code 1 on errors. `npm run make`
+runs it first (`--skip-qa` to bypass). The Remotion browser is found automatically
+(`REMOTION_BROWSER_EXECUTABLE`, else a Playwright Chromium under `PLAYWRIGHT_BROWSERS_PATH`).
+
 ## Voice sync (say / show)
 
 Each scene's `say` is the narration; the on-screen fields are the "show". Without a
@@ -158,7 +172,7 @@ its own copy the first time it is used in a folder.
 src/engine/   schema, planner (timing), voice alignment, auto-fit text, motion tokens,
               themes, backgrounds, transitions, orb/waveform visuals, contact sheet
 src/scenes/   one file per scene template
-scripts/      check · preview · voice · music · make · brand
+scripts/      check · qa · preview · voice · music · make · brand · new
 tests/        node --test (npm test): beat tracking, beat-snapping, ducking; scripts/test-*.mjs: brand colours
 public/       fonts (SIL OFL, Latin + Devanagari), synthesised SFX, grain texture
 tools/        gen-assets.py — regenerates the SFX and grain (no third-party licences)

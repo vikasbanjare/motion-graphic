@@ -16,7 +16,7 @@ import { FitText } from "../engine/text.tsx";
  */
 export const Clip: React.FC<{ scene: SceneOf<"clip"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, c, theme, scene: plan, m } = useEnv();
+  const { box, u, c, theme, scene: plan, m, format, floor } = useEnv();
   const b = plan.beats as BeatsFor<"clip">;
   const area = scene.area ?? "bottom";
   const scrim = scene.scrim ?? 0.6;
@@ -48,23 +48,27 @@ export const Clip: React.FC<{ scene: SceneOf<"clip"> }> = ({ scene }) => {
         <Stage align={area === "top" ? "start" : area === "center" ? "center" : "end"} gap={26} still>
           {scene.kicker ? <Kicker text={scene.kicker} start={b.kicker} /> : null}
           {scene.caption ? (
-            <FitText text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.36} maxSize={130 * u} />
+            <FitText label="caption" text={scene.caption} start={b.caption} maxWidth={box.width} maxHeight={box.height * 0.36} maxSize={130 * u} />
           ) : null}
         </Stage>
       ) : null}
       {scene.generated ? (
         <div
+          data-mk="text"
+          data-mk-label="AI-generated tag"
+          data-mk-bg="#000000B3"
           style={{
+            // Inside the safe zone (platform buttons cover the corners), opposite the caption.
             position: "absolute",
-            right: 24 * u,
-            bottom: 24 * u,
-            padding: `${6 * u}px ${12 * u}px`,
-            borderRadius: 8 * u,
-            background: "#00000080",
-            color: "#FFFFFFCC",
+            right: format.width - box.left - box.width,
+            ...(area === "top" ? { bottom: format.height - box.top - box.height } : { top: box.top }),
+            padding: `${6 * u}px ${14 * u}px`,
+            borderRadius: 10 * u,
+            background: "#000000B3",
+            color: "#FFFFFF",
             fontFamily: theme.fonts.body,
             fontWeight: 600,
-            fontSize: 22 * u,
+            fontSize: floor.comfortable,
             letterSpacing: "0.04em",
           }}
         >

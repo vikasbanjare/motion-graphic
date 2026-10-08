@@ -1,9 +1,10 @@
 import React, { useContext, useMemo } from "react";
 import { useCurrentFrame } from "remotion";
 import { QaContext, useEnv } from "./context.ts";
-import { fitText } from "./fit.ts";
+import { fitText, type FitResult } from "./fit.ts";
 import { ease, enterP, prog } from "./motion.ts";
-import { richWords, type RichWord } from "./rich.ts";
+import { plainText, richWords, type RichWord } from "./rich.ts";
+import type { Theme } from "./themes.ts";
 
 type Props = {
   text: string;
@@ -32,6 +33,58 @@ type Props = {
   style?: React.CSSProperties;
   /** Size the box to the text instead of the full max width. */
   shrinkWrap?: boolean;
+  /** Spec field this text comes from ("headline", "item 2"…), named in QA reports. */
+  label?: string;
+};
+
+/** The props that decide how FitText sizes and wraps its text. */
+export type FitOptions = Pick<Props, "maxWidth" | "maxHeight" | "maxSize" | "minSize" | "maxLines" | "font" | "weight" | "lineHeight" | "upper">;
+
+/** Font settings and fitted layout FitText uses for `text` (shared with fitLayout so both always agree). */
+const fitFor = (theme: Theme, text: string, o: FitOptions) => {
+  const f = theme.fonts;
+  const isDisplay = (o.font ?? "display") === "display";
+  const family = isDisplay ? f.display : f.body;
+  const fw = o.weight ?? (isDisplay ? f.displayWeight : f.bodyWeight);
+  const tracking = isDisplay ? f.displayTracking : 0;
+  const caps = o.upper ?? (isDisplay && f.displayUpper);
+  // Devanagari matras sit above and below the line: Latin leading would clip them.
+  const deva = /[\u0900-\u097F]/.test(text);
+  const baseLh = o.lineHeight ?? (isDisplay ? f.displayLineHeight : 1.28);
+  const lh = deva ? Math.max(baseLh, isDisplay ? 1.25 : 1.5) : baseLh;
+  const layout = fitText({
+    words: richWords(text),
+    fontFamily: family,
+    fontWeight: fw,
+    tracking,
+    upper: caps,
+    maxWidth: o.maxWidth,
+    maxHeight: o.maxHeight,
+    maxSize: o.maxSize,
+    minSize: o.minSize,
+    maxLines: o.maxLines,
+    lineHeight: lh,
+  });
+  return { family, fw, tracking, caps, lh, layout };
+};
+
+/**
+ * The layout a FitText with the same props gets. Scenes reserve its real
+ * height instead of the slot's maximum, so a one-line title hands the space
+ * it does not need to the rest of the scene.
+ */
+export const fitLayout = (theme: Theme, text: string, o: FitOptions): FitResult => fitFor(theme, text, o).layout;
+
+/** fitLayout as a hook (null without text). */
+export const useFitLayout = (
+  text: string | undefined,
+  { maxWidth, maxHeight, maxSize, minSize, maxLines, font, weight, lineHeight, upper }: FitOptions,
+): FitResult | null => {
+  const { theme } = useEnv();
+  return useMemo(
+    () => (text ? fitLayout(theme, text, { maxWidth, maxHeight, maxSize, minSize, maxLines, font, weight, lineHeight, upper }) : null),
+    [theme, text, maxWidth, maxHeight, maxSize, minSize, maxLines, font, weight, lineHeight, upper],
+  );
 };
 
 /**
@@ -57,40 +110,18 @@ export const FitText: React.FC<Props> = ({
   style,
   shrinkWrap,
   starts,
+  label,
 }) => {
   const frame = useCurrentFrame();
   const { theme, m, c } = useEnv();
-  const f = theme.fonts;
-  const isDisplay = font === "display";
-  const family = isDisplay ? f.display : f.body;
-  const fw = weight ?? (isDisplay ? f.displayWeight : f.bodyWeight);
-  const tracking = isDisplay ? f.displayTracking : 0;
-  const caps = upper ?? (isDisplay && f.displayUpper);
-  // Devanagari matras sit above and below the line: Latin leading would clip them.
-  const deva = /[\u0900-\u097F]/.test(text);
-  const baseLh = lineHeight ?? (isDisplay ? f.displayLineHeight : 1.28);
-  const lh = deva ? Math.max(baseLh, isDisplay ? 1.25 : 1.5) : baseLh;
-
-  const layout = useMemo(
-    () =>
-      fitText({
-        words: richWords(text),
-        fontFamily: family,
-        fontWeight: fw,
-        tracking,
-        upper: caps,
-        maxWidth,
-        maxHeight,
-        maxSize,
-        minSize,
-        maxLines,
-        lineHeight: lh,
-      }),
-    [text, family, fw, tracking, caps, maxWidth, maxHeight, maxSize, minSize, maxLines, lh],
+  const { family, fw, tracking, caps, lh, layout } = useMemo(
+    () => fitFor(theme, text, { maxWidth, maxHeight, maxSize, minSize, maxLines, font, weight, lineHeight, upper }),
+    [theme, text, maxWidth, maxHeight, maxSize, minSize, maxLines, font, weight, lineHeight, upper],
   );
 
   const qa = useContext(QaContext);
-  if (layout.overflow && typeof console !== "undefined") {
+  // In QA mode the overflow is reported per element (data-mk-overflow) instead.
+  if (layout.overflow && !qa && typeof console !== "undefined") {
     console.warn(`[motion-kit] TEXT TOO LONG: "${text.slice(0, 60)}"`);
   }
   const gap = stagger ?? (animate === "lines" ? Math.max(3, m.wordStagger * 2) : m.wordStagger);
@@ -98,6 +129,10 @@ export const FitText: React.FC<Props> = ({
 
   return (
     <div
+      data-mk="text"
+      data-mk-label={label}
+      data-mk-text={plainText(text)}
+      data-mk-overflow={layout.overflow ? "1" : undefined}
       style={{
         width: shrinkWrap ? Math.ceil(layout.width) + 2 : maxWidth,
         fontFamily: family,
@@ -219,7 +254,10 @@ const Word: React.FC<{
   }
 
   return (
-    <span style={{ position: "relative", display: "inline-block", marginRight, color }}>
+    <span
+      data-mk-bg={word.mark === "mark" && markP > 0.5 ? c.mark : undefined}
+      style={{ position: "relative", display: "inline-block", marginRight, color }}
+    >
       {word.mark === "mark" ? (
         <span
           style={{
