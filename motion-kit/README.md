@@ -54,7 +54,8 @@ With Claude Code, just describe the video; the `motion-director` skill
 16:9, app demo, Hinglish creator explainer, tips listicle, festive local offer, testimonials,
 event promo, hiring, before/after, stats report, real estate / food. Each one has a hook,
 5-9 beats, a CTA, a deliberate theme / motion / pace, and a `_recipe` block with the purpose
-of every beat and copy tips. Facts are `[CAPS]` slots to fill in.
+of every beat and copy tips. Facts are `[CAPS]` slots to fill in; chart values have to be
+numbers, so the stats recipe's bars are samples to replace.
 
 ```bash
 npm run new                                                   # list the recipes
@@ -62,7 +63,8 @@ npm run new -- diwali-sale --recipe local-offer-festive       # → specs/diwali
 npm run new -- launch --recipe launch-film-16x9 --format reel --theme studio-dark
 ```
 
-`npm run new` never overwrites a spec; it prints the beats and every slot to fill.
+`npm run new` never overwrites a spec; it prints the beats and every slot and sample number to
+fill.
 
 ## Voice sync (say / show)
 

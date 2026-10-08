@@ -1,7 +1,8 @@
 // npm run new                                         list the storyboard recipes
 // npm run new -- <name> --recipe <recipe> [--format reel] [--theme desi] [--motion calm] [--pace fast]
 // Starts a video from a recipe in specs/recipes/: copies it to specs/<name>.json (never
-// overwrites), applies the overrides, then prints the beats and every [PLACEHOLDER] to fill in.
+// overwrites), applies the overrides, then prints the beats and every [PLACEHOLDER] and sample
+// number to fill in.
 import fs from "node:fs";
 import path from "node:path";
 import { check } from "./check.mjs";
@@ -11,6 +12,16 @@ const RECIPES = path.join(ROOT, "specs", "recipes");
 
 /** Placeholders are [CAPS] slots ("[PRODUCT]", "₹[999]"); lowercase [tags] are voice tags and stay. */
 const SLOT = /\[[^\]a-z]*[A-Z0-9][^\]a-z]*\]/g;
+
+/**
+ * Facts the schema keeps as numbers, so a recipe can't bracket them: chart values and star
+ * ratings. Whatever a recipe puts there is a sample, and a grep for [CAPS] never finds it, so
+ * list them beside the slots ("bars 0.8 · 1.2 · 1.7 · 2.4", "rating 5").
+ */
+const samples = (scene) => [
+  ...(scene.bars?.length ? [`bars ${scene.bars.map((b) => b.value).join(" · ")}`] : []),
+  ...(scene.rating !== undefined ? [`rating ${scene.rating}`] : []),
+];
 
 const args = parseArgs(process.argv.slice(2));
 const E = await engine();
@@ -146,13 +157,21 @@ const slots = (value) => {
   return [...found];
 };
 const todo = [
-  ["video", slots(Object.fromEntries(Object.entries(spec).filter(([k]) => k !== "scenes" && k !== "_recipe")))],
-  ...spec.scenes.map((s, i) => [`scene ${i + 1}`, slots(s)]),
-].filter(([, found]) => found.length);
+  ["video", slots(Object.fromEntries(Object.entries(spec).filter(([k]) => k !== "scenes" && k !== "_recipe"))), []],
+  ...spec.scenes.map((s, i) => [`scene ${i + 1}`, slots(s), samples(s)]),
+].filter(([, found, sample]) => found.length || sample.length);
 const total = todo.reduce((n, [, found]) => n + found.length, 0);
-if (total) {
-  console.log(c.bold(`\nFill in (${total} slots: real facts only; same words in "say" and on screen)`));
-  for (const [where, found] of todo) console.log(`  ${where.padEnd(10)} ${found.join("  ")}`);
+const sampled = todo.reduce((n, [, , sample]) => n + sample.length, 0);
+if (total || sampled) {
+  const count = [total && `${total} slot${total > 1 ? "s" : ""}`, sampled && `${sampled} sample number${sampled > 1 ? "s" : ""}`].filter(Boolean).join(" + ");
+  console.log(c.bold(`\nFill in (${count}: real facts only; same words in "say" and on screen)`));
+  for (const [where, found, sample] of todo) {
+    if (found.length) console.log(`  ${where.padEnd(10)} ${found.join("  ")}`);
+    for (const x of sample) {
+      const lead = found.length ? " ".repeat(10) : where.padEnd(10);
+      console.log(`  ${lead} ${c.yellow(`sample: ${x}`)}${c.dim("  (no brackets: replace with the user's numbers, or cut the beat)")}`);
+    }
+  }
 }
 if (meta.copyTips?.length) {
   console.log(c.bold("\nCopy tips"));
@@ -165,7 +184,7 @@ for (const w of warnings) console.log(c.yellow("  ⚠ ") + w);
 for (const e of errors) console.log(c.red("  ✖ ") + e);
 if (!errors.length) console.log(c.green("  ✔ Valid") + (warnings.length ? c.yellow(` with ${warnings.length} suggestion(s)`) : "") + c.dim(" (placeholders included)"));
 console.log(c.bold("\nNext"));
-console.log(`  1. Replace every [CAPS] slot in ${rel} (numbers as words in "say", digits on screen).`);
+console.log(`  1. Replace every [CAPS] slot${sampled ? " and sample number" : ""} in ${rel} (numbers as words in "say", digits on screen).`);
 console.log(`  2. npm run check -- ${rel}`);
 console.log(`  3. npm run qa -- ${rel}`);
 console.log(`  4. npm run make -- ${rel}   ${c.dim("(only when the video is wanted)")}`);

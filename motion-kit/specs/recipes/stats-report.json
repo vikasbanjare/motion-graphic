@@ -14,7 +14,7 @@
       "Logo: silent sign-off."
     ],
     "copyTips": [
-      "Every number is the user's: the bar values in this recipe (0.8 / 1.2 / 1.7 / 2.4) are samples. Replace all of them and keep one unit per chart.",
+      "Every number is the user's. The bar values (0.8 / 1.2 / 1.7 / 2.4) are samples with no [brackets], because a chart value must be a number: npm run new lists them under Fill in. Replace all four (or cut the beat) and keep one unit per chart; the periods can be years or months too.",
       "Round for the screen (\"2.4M\", \"98%\") and in say (\"two point four million\"); exact figures belong in the report. Keep each say ≤ ~13 words (years and big numbers take long to say): longer beats run past 7s and check warns.",
       "The bars highlight defaults to the largest value; set \"highlight\" to the latest period if growth is not monotonic.",
       "Corporate + smooth + relaxed lets numbers land. Dark keynote look: --theme studio-dark. Bold internal update: --theme mono.",
@@ -40,10 +40,10 @@
       "title": "Growth by quarter",
       "unit": "M",
       "bars": [
-        { "label": "Q1", "value": 0.8 },
-        { "label": "Q2", "value": 1.2 },
-        { "label": "Q3", "value": 1.7 },
-        { "label": "Q4", "value": 2.4 }
+        { "label": "[Q1]", "value": 0.8 },
+        { "label": "[Q2]", "value": 1.2 },
+        { "label": "[Q3]", "value": 1.7 },
+        { "label": "[Q4]", "value": 2.4 }
       ]
     },
     {

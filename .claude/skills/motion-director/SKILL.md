@@ -25,7 +25,8 @@ Read before the first video of a session:
    existing scenes, say so and offer the closest one.
 2. **Only real facts.** Prices, discounts, dates, times, addresses, phone numbers, numbers,
    results, claims, reviews and names come from the user. Never invent them, and never ship a
-   `[PLACEHOLDER]`: if a fact is missing, ask (step 2) or cut that beat.
+   `[PLACEHOLDER]` or a recipe's sample number (chart values, star ratings): if a fact is
+   missing, ask (step 2) or cut that beat.
 3. **Fix everything.** No voice, music or render until `npm run check` shows no ✖ (every ⚠
    fixed, or explained to the user) and `npm run qa` shows no errors.
 4. **Render only what was asked.** `npm run qa` renders frames in memory and writes no files.
@@ -80,12 +81,17 @@ npm run new -- <name> --recipe <recipe> [--format reel] [--theme desi]
 ```
 
 This copies the recipe to `specs/<name>.json` (it never overwrites), applies the overrides and
-lists every `[CAPS]` slot. Then edit the spec:
+lists every `[CAPS]` slot, plus every sample number: chart `bars` values and a quote's `rating`
+are numbers in the schema, so they can't carry brackets. Then edit the spec:
 - Replace every slot with the user's facts and your copy. Delete beats you have no facts for,
   reorder or swap scene types freely (scenes.md); keep 5-9 beats.
 - `say` and screen text: same words, same order; numbers as words in `say`, digits on screen.
-- When done, delete the `_recipe` block and confirm no slot is left:
-  `grep -n '\[[A-Z0-9]' specs/<name>.json` prints nothing. (Lowercase voice tags like `[whispers]` are fine.)
+- Replace every sample number with the user's figure, or cut that beat. Stars (`rating`) only
+  from a real review that had them, and that quote's `say` names the same number.
+- When done, delete the `_recipe` block and run both checks:
+  `grep -n '\[[A-Z0-9]' specs/<name>.json` prints nothing (lowercase voice tags like `[whispers]`
+  are fine), and `grep -nE '"(value|rating)": *[0-9]' specs/<name>.json` lists only bar values
+  and ratings the user gave you. The first grep can't see numbers, so never skip the second.
 
 The name is taken? Pick another (`<name>-2`); `new` never replaces a spec. No recipe fits? Start
 from the closest one anyway, or write the spec from scratch with scenes.md.

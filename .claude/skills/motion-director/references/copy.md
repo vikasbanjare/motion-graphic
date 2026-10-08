@@ -154,6 +154,6 @@ Run through it before `npm run make`.
 - [ ] `say` sounds natural read aloud and matches the screen word for word, in order.
 - [ ] Hindi stays in one script per line (Devanagari or Latin, not mixed).
 - [ ] The CTA asks for one thing in 1-3 words; the video ends on `cta` (or `cta` + silent `logo`).
-- [ ] No `[CAPS]` placeholders left; every claim confirmed by the user; AI footage tagged `"generated": true`.
+- [ ] No `[CAPS]` placeholders or recipe sample numbers (bar values, star ratings) left; every claim confirmed by the user; AI footage tagged `"generated": true`.
 - [ ] Music is a licensed track the user supplied; nothing else.
 - [ ] `npm run check` and `npm run qa` are both clean.

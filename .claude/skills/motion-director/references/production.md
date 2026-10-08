@@ -78,4 +78,4 @@ Revision allowance: [N] retries inside the cap
 | clip has unwanted words | regenerate "no text", overlay words with the engine |
 | file too large | `npm run make -- specs/x.json --crf 23` (default 20; higher = smaller) |
 | QA error | read which scene it names: shorten that text, split the beat, or fix the file path; re-run qa |
-| `[CAPS]` slot still in the spec | ask the user for that fact, or delete the beat; never render a placeholder |
+| `[CAPS]` slot or recipe sample number (bar value, `rating`) still in the spec | ask the user for that fact, or delete the beat; never render a placeholder |

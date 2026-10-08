@@ -4,14 +4,15 @@
     "when": "Real customer reviews as a trust-building feed ad: D2C, clinics, coaches, local services.",
     "beats": [
       "Hook: the headline proof number (customers, rating, orders) counts up.",
-      "Review 1: the most specific review, with name, city and stars.",
+      "Review 1: the most specific review, with name and city (stars only if the review gave them).",
       "Review 2: a different benefit, a different kind of customer.",
       "Before / after: what changed for customers, in their words.",
       "Why people trust you: four facts as tiles (rating, delivery, returns, payments).",
       "CTA: one action, the offer, where to go."
     ],
     "copyTips": [
-      "Only real reviews, quoted word for word (trim, never rewrite meaning), with the customer's permission. Stars only if the review had them.",
+      "Only real reviews, quoted word for word (trim, never rewrite meaning), with the customer's permission.",
+      "Stars only if the review had them: add \"rating\" (1-5) to that quote and end its say with the same number (\"Priya S., five stars.\"). No stars → no \"rating\" and no stars in say.",
       "Pick reviews that name a concrete result (\"faded in three weeks\") over generic praise (\"great product\"). ≤ 12 words each: a longer review holds its beat past 7s, so trim it with \"…\" (never change the meaning).",
       "Use first name + initial and city (\"Priya S., Pune\") unless the customer agreed to their full name.",
       "Clean + smooth + relaxed gives reviews time to be read. Food / kids brands: --theme pop. Luxury: --theme editorial.",
@@ -33,19 +34,17 @@
     },
     {
       "type": "quote",
-      "say": "[A SPECIFIC REVIEW THAT NAMES THE RESULT, IN THEIR OWN WORDS.] [NAME], [FIVE] stars.",
+      "say": "[A SPECIFIC REVIEW THAT NAMES THE RESULT, IN THEIR OWN WORDS.] [NAME], [CITY].",
       "quote": "[A SPECIFIC REVIEW THAT NAMES THE *RESULT*, IN THEIR OWN WORDS.]",
       "author": "[NAME]",
-      "role": "Customer, [CITY]",
-      "rating": 5
+      "role": "Customer, [CITY]"
     },
     {
       "type": "quote",
-      "say": "[A SECOND REVIEW ABOUT ANOTHER BENEFIT, FROM ANOTHER KIND OF CUSTOMER.] [NAME], [FIVE] stars.",
+      "say": "[A SECOND REVIEW ABOUT ANOTHER BENEFIT, FROM ANOTHER KIND OF CUSTOMER.] [NAME], [CITY].",
       "quote": "[A SECOND REVIEW ABOUT *ANOTHER BENEFIT*, FROM ANOTHER KIND OF CUSTOMER.]",
       "author": "[NAME]",
-      "role": "Customer, [CITY]",
-      "rating": 5
+      "role": "Customer, [CITY]"
     },
     {
       "type": "compare",
