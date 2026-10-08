@@ -40,19 +40,27 @@ that pass first time.
 ### Brand colours (they always match, and always read)
 - **From a logo**: put it in `public/brand/`, then
   `npm run brand -- public/brand/logo.png --spec specs/<name>.json` (PNG, JPG, WebP, GIF, SVG; `--json` for data).
-  The logo is decoded in memory (nothing written but the spec). Transparent, near-white and
-  near-black pixels (background, lettering) and anti-aliased blends are ignored; the rest is
-  clustered (k-means, k=5, OKLab). It writes `brand.accent` (the most saturated colour covering
-  ≥ 5 % of the logo's colour), `brand.accent2` (the next clearly different one; dropped for
-  one-colour logos) and `brand.logo` (`logo` scenes without `src` show it). It prints every
-  colour's contrast, light vs dark base, and ranks the 10 themes. Choose among the top 3 by vibe.
-  - **The logo file's base is a rule**: `logo` scenes draw the file as is, straight on the theme
-    background (no plate). Black lettering (or an opaque light backdrop) needs a light theme; white
-    lettering (or an opaque dark backdrop) needs a dark one. Themes on the other base are listed
-    last under "Not with this logo file", and with `--spec` a spec theme among them gets a ⚠
-    warning. So a yellow mark with a black wordmark gets `clean` / `studio` / `corporate` (the
-    yellow darkened to read), not `midnight`; to keep yellow on dark, get a light-on-dark version of
-    the logo from the brand and run the tool on that file.
+  The logo is decoded in memory (nothing written but the spec; SVG is rasterised by a system
+  ffmpeg built with librsvg, else read as text and its colours weighted by shape area — the tool
+  says so). Transparent, near-white and near-black pixels (background, lettering) and
+  anti-aliased blends are ignored; the rest is clustered (k-means, k=5, OKLab). It writes
+  `brand.accent` (the most saturated colour covering ≥ 5 % of the logo's colour), `brand.accent2`
+  (the next clearly different one; dropped for one-colour logos) and `brand.logo` (`logo` scenes
+  without `src` show it). It prints every colour's contrast, light vs dark base, and ranks the 10
+  themes with each one's accent contrast. Choose among the top 3 by vibe.
+  - **The logo file must read on the theme — a rule, not a score**: `logo` scenes draw the file as
+    is, straight on the theme background (no plate). The tool checks the logo's real ink where it
+    meets the background (pixels next to transparency, not details enclosed inside the logo)
+    against each theme: when ≥ 10 % of that rim vanishes (below ~2.5:1 contrast, unless its colour
+    differs strongly — a vivid yellow mark reads on white at 1.5:1, navy or #333 lettering on
+    near-black at 1.6:1 does not), the theme is listed last under "Not with this logo file". An
+    opaque light / dark backdrop (a JPG, an SVG artboard rect) shows as a box wherever it stands
+    out. When most themes of one base fail, the other base comes first. So a yellow mark with a
+    black, charcoal or navy wordmark gets `clean` / `studio` / `corporate` (yellow darkened to read),
+    not `midnight` or `pop`; a red app icon with a white glyph inside fits any theme. To keep yellow
+    on dark, get a light-on-dark version of the logo from the brand and run the tool on that file.
+  - With `--spec`, a spec theme the logo does not read on gets a ⚠ and alternatives; `npm run check`
+    gives the same warning for any `logo` scene's file (path in public/ or data: URL).
   - Then keeping the brand colours true counts most, then the accent's lightness (a mild hint),
     then a theme built around a similar hue.
   - A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
@@ -70,9 +78,10 @@ that pass first time.
     highlighter, not beige and not neon; a muted brand gets muted tints);
   - text, background, surface, lines and muted text never change.
 - `npm run check` prints an ℹ line per adjustment, e.g. "brand accent #FFE14D darkened to #A48D00 for
-  contrast … To keep it exactly, use theme midnight / neon / desi …". Light brand colours (yellow, lime,
-  pastels) belong on dark themes; deep ones (navy, maroon) on light themes — unless the logo's own
-  lettering needs the other base (above): a readable logo beats an exact accent.
+  contrast … To keep it exactly, use theme midnight / neon / desi …" (only themes `brand.logo` reads on).
+  Light brand colours (yellow, lime, pastels) belong on dark themes; deep ones (navy, maroon) on light
+  themes — unless the logo file itself only reads on the other base (above): a readable logo beats an
+  exact accent.
 
 ## Motion personalities
 - `snappy` — mask reveals, 2-frame stagger, push transitions. Creator energy.

@@ -67,8 +67,9 @@ Scenes then cut on the spoken beat and words reveal as they are said.
 ## Brand colours
 
 `npm run brand -- public/brand/logo.png` reads a logo in memory, finds its colours (k-means),
-prints them with contrast numbers and ranks the 10 themes for them (a logo with black or white
-lettering only gets themes it stays readable on); `--spec specs/x.json`
+prints them with contrast numbers and ranks the 10 themes for them (themes the logo file would
+not read on — dark, charcoal or navy lettering on a dark theme, white on a light one, an opaque
+backdrop showing as a box — are ruled out, and `npm run check` warns about them); `--spec specs/x.json`
 writes `brand.accent`, `brand.accent2` and `brand.logo`. A brand colour is never rejected: if
 it would not read on the chosen theme, only its lightness moves until it does (hue kept), and
 `npm run check` says what changed. Missing accent2, highlighter and orb colours are derived
