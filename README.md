@@ -112,6 +112,17 @@ Say what it's for, who it's for and what people should do at the end. Facts you 
 Then reply in plain words: "make the hook shorter", "try the neon look", "square version too",
 "use my logo" (attach it), "add this voice-over" (attach the MP3).
 
+Planning a bigger film, or making it with AI video tools (Google Flow / Veo, Runway, Kling,
+Higgsfield)? Ask for the plan first:
+
+> Plan a 45-second launch film for our AI voice app: concept, storyboard and the prompts for
+> each shot in Google Flow.
+
+The `motion-creative-director` skill asks only the questions that change the result, then
+gives a full production package: concept, direction, a timed storyboard, a prompt for every
+shot, a continuity bible so shots match, and a quality check. Parts the engine can render
+are handed to `motion-director`.
+
 ## What you get
 
 - **The video**: `motion-kit/out/<name>.mp4`, 1080p, 30 fps, ready to upload. Ask for
@@ -173,6 +184,12 @@ Then reply in plain words: "make the hook shorter", "try the neon look", "square
 - **`skills/motion-director/`**: the Claude Code skill that runs brief, storyboard, spec, check,
   QA, voice and render. `.claude/skills/motion-director` links to it for people who open this
   repo directly.
+- **`skills/motion-creative-director/`**: the planning skill: concepts, storyboards and
+  per-shot prompts for AI video tools. Its `references/` hold the Master SaaS Motion Design
+  System (11 parts plus a condensed digest), 12 format guidelines, prompt templates and a
+  worked example. `.claude/skills/motion-creative-director` links to it.
+- **`docs/research/`**: the evidence behind it: frame-by-frame teardowns of 8 reference
+  films, and catalogues from Superside, Raivcoo, Showreel.design and motion.so.
 - **`.claude-plugin/`**: makes the repository installable as a Claude Code plugin
   (`motion-kit@motion-graphic`). Plugin users receive a change only after `version` in
   `.claude-plugin/plugin.json` goes up, so raise it with every release.

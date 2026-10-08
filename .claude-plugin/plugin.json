@@ -2,7 +2,7 @@
   "name": "motion-kit",
   "displayName": "Motion Kit",
   "version": "1.0.0",
-  "description": "Describe a video in plain English, Hindi or Hinglish and get a finished motion graphic (MP4 + cover image): storyboard, matching colours, voice-synced timing and sound, rendered from tested scene templates. Bundles the motion-kit engine and the motion-director skill.",
+  "description": "Describe a video in plain English, Hindi or Hinglish and get a finished motion graphic (MP4 + cover image): storyboard, matching colours, voice-synced timing and sound, rendered from tested scene templates. Bundles the motion-kit engine, the motion-director skill (text to rendered video) and the motion-creative-director skill (concepts, storyboards and per-shot prompts for AI video tools, from a frame-by-frame study of premium SaaS launch films).",
   "author": {
     "name": "vikasbanjare",
     "url": "https://github.com/vikasbanjare"

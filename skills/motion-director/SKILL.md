@@ -19,6 +19,10 @@ Read before the first video of a session:
 - `references/craft.md`: timing, themes, motion, safe zones, sound.
 - `references/production.md`: voice-over, music, footage, delivery.
 
+If the user wants a concept, a storyboard or prompts for AI video tools (Flow / Veo, Runway, Kling,
+Higgsfield) rather than a rendered video, use the `motion-creative-director` skill instead; it
+hands back here for the parts the engine renders.
+
 ## Hard rules
 
 1. **Data, not code.** Write `motion-kit/specs/<name>.json`. If a look is impossible with the
