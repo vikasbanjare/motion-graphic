@@ -969,7 +969,8 @@ const read = (file) => {
     console.error(c.red(`Could not read ${file} (${why}).`) + " Point at the logo file itself: a PNG, JPG, WebP, GIF or SVG.");
     process.exit(1);
   }
-  const label = abs ? path.relative(process.cwd(), abs) : "stdin";
+  const near = abs && path.relative(process.cwd(), abs);
+  const label = abs ? (near.startsWith("..") ? abs : near) : "stdin";
   const logo = samplesOf(buf, abs);
   if (logo) return { abs, label, ...logo };
   const type = sniff(buf);
