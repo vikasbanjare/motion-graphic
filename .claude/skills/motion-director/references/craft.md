@@ -49,22 +49,36 @@ that pass first time.
   without `src` show it). It prints every colour's contrast, light vs dark base, and ranks the 10
   themes with each one's accent contrast. Choose among the top 3 by vibe.
   - **The logo file must read on the theme — a rule, not a score**: `logo` scenes draw the file as
-    is, straight on the theme background (no plate). The tool checks the logo's real ink where it
-    meets the background (pixels next to transparency, not details enclosed inside the logo)
-    against each theme: when ≥ 10 % of that rim vanishes (below ~2.5:1 contrast, unless its colour
-    differs strongly — a vivid yellow mark reads on white at 1.5:1, navy or #333 lettering on
-    near-black at 1.6:1 does not), the theme is listed last under "Not with this logo file". An
-    opaque backdrop of light or dark paper — white, cream, pale grey, black (a JPG, an SVG artboard
-    rect) — shows as a box wherever it stands out ("use a transparent PNG or SVG"). A full-bleed
-    *colour* is not a backdrop but the mark itself (an app tile): its edge is ink like any other,
-    so it only fails where the theme background swallows that colour. When most themes of one base
-    fail, the other base comes first. So a yellow mark with a black, charcoal or navy wordmark gets `clean` /
-    `studio` / `corporate` (yellow darkened to read), not `midnight` or `pop`; a violet or red app
-    tile with a white glyph fits every theme, a yellow one every theme but `pop`, a navy one the
-    light themes (its edge vanishes on near-black). To keep yellow on dark, get a light-on-dark
-    version of the logo from the brand and run the tool on that file.
-  - With `--spec`, a spec theme the logo does not read on gets a ⚠ and alternatives; `npm run check`
-    gives the same warning for any `logo` scene's file (path in public/ or data: URL).
+    is, straight on the theme background (no plate). The tool judges each opaque part of the logo
+    (each connected shape: a letter, a mark, a tile with its glyph) by its rim, the ink that meets
+    the background (pixels next to transparency), against each theme. Ink vanishes below ~2.5:1
+    contrast unless its colour differs strongly (a vivid yellow mark reads on white at 1.5:1; navy
+    or #333 lettering on near-black at 1.6:1 does not).
+    - A part whose rim vanishes but which holds ink of another colour that reads there — a tile or
+      badge with a glyph (a navy or black app tile's white glyph on a dark theme), an outline around
+      a body (an orange mascot's #111 outline), a ring around a glyph, black text on a yellow badge on
+      `pop` — still reads: only its edge blends in. That is an ℹ note, never a warning and never a
+      reason to rule out a base.
+    - A part with nothing readable inside — wordmark strokes, a plain mark, a tile with its glyph cut
+      out to transparency — is lost with its rim. When that is ≥ 10 % of the logo's rim, the theme is
+      listed last under "Not with this logo file", and messages name the part for what it is
+      (lettering, mark, tile, outline).
+    - The logo's own frame — its biggest part when it spans ≥ 85 % of the image both ways as a solid
+      square (full bleed, rounded corners or a few % of transparent padding: app icons are exported
+      all three ways, and all three get the same verdict) — is a backdrop when it is light or dark
+      paper (white, cream, pale grey, black; a JPG, an SVG artboard rect): it shows as a box wherever
+      it stands out ("use a transparent PNG or SVG"), and decides the base. A full-bleed *colour* is
+      not a backdrop but the mark itself (an app tile), judged as a part like any other.
+    - When most themes of one base fail, the other base comes first. So a yellow mark with a black,
+      charcoal or navy wordmark gets `clean` / `studio` / `corporate` (yellow darkened to read), not
+      `midnight` or `pop`; a violet, red, navy or yellow app tile with a white glyph fits every theme
+      (navy's edge blends into near-black, yellow's into `pop`: a note); a black tile with a white
+      glyph is a dark box on light themes and fits the dark ones, `midnight` included; a white one is
+      the mirror case. To keep yellow on dark, get a light-on-dark version of the logo from the brand
+      and run the tool on that file.
+  - With `--spec`, a spec theme the logo does not read on gets a ⚠ and alternatives (an edge that only
+    blends in, an ℹ); `npm run check` gives the same warning or note for any `logo` scene's file
+    (path in public/ or data: URL).
   - Then keeping the brand colours true counts most, then the accent's lightness (a mild hint),
     then a theme built around a similar hue.
   - A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
