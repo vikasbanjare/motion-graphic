@@ -5,6 +5,7 @@ import type { Scene, SceneOf, SceneType, VideoSpec } from "./schema.ts";
 import { THEMES, withBrand, type Theme, type TransitionName } from "./themes.ts";
 import { MOTION, PACE, type MotionTokens } from "./tokens.ts";
 import { buildVoiceTrack, showTimes, type TimedWord, type VoiceTrack } from "./voice.ts";
+import { SNAP, SNAP_VOICE, loudnessGain, onTimeline, snapToBeat, startFrameOf, type MusicPlan } from "./music.ts";
 
 /**
  * The planner turns a spec into an exact timeline: when every element of
@@ -372,6 +373,11 @@ export type ScenePlan = {
   minReadable: number;
   /** Voice mode: the narration for this beat is too short for its animation. */
   squeezed: boolean;
+  /**
+   * Absolute frame of the music beat this scene's incoming transition is
+   * centred on (its whoosh peaks there). Only when the cut was snapped.
+   */
+  onBeat?: number;
   beats: unknown;
   cues: Cue[];
 };
@@ -379,7 +385,19 @@ export type ScenePlan = {
 export type ResolvedSpec = Required<Pick<VideoSpec, "format" | "theme" | "motion" | "pace" | "progressBar">> & {
   transition: TransitionName;
   brand: NonNullable<VideoSpec["brand"]>;
-  audio: { sfx: boolean; music?: string; musicVolume: number; voiceover?: string; words?: TimedWord[] };
+  audio: {
+    sfx: boolean;
+    music?: string;
+    musicVolume: number;
+    /** Seconds into the music file. */
+    musicStart: number;
+    voiceover?: string;
+    words?: TimedWord[];
+    beatGrid?: number[];
+    downbeatGrid?: number[];
+    musicDuration?: number;
+    musicLufs?: number;
+  };
   scenes: Scene[];
 };
 
@@ -395,6 +413,8 @@ export type VideoPlan = {
   durationInFrames: number;
   /** Present when scenes have `say` lines. `estimated` = no real voice-over timing yet. */
   voice: VoiceTrack | null;
+  /** Present when the spec has music: trim point, level and (with a beat grid) beats on the timeline. */
+  music: MusicPlan | null;
 };
 
 export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
@@ -411,15 +431,24 @@ export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
     audio: {
       sfx: spec.audio?.sfx ?? true,
       music: spec.audio?.music,
-      musicVolume: spec.audio?.musicVolume ?? (spec.audio?.voiceover ? 0.08 : 0.2),
+      // Narrated music is ducked while words are spoken, so its bed can sit
+      // higher between lines; a voice-over without `say` lines gets a flat, low bed.
+      musicVolume: spec.audio?.musicVolume ?? (spec.audio?.voiceover ? (spec.scenes.some((s) => s.say) ? 0.15 : 0.08) : 0.2),
+      musicStart: spec.audio?.musicStart ?? 0,
       voiceover: spec.audio?.voiceover,
       words: spec.audio?.words,
+      beatGrid: spec.audio?.beatGrid,
+      downbeatGrid: spec.audio?.downbeatGrid,
+      musicDuration: spec.audio?.musicDuration,
+      musicLufs: spec.audio?.musicLufs,
     },
     scenes: spec.scenes,
   };
 };
 
 const LAST_HOLD = 24;
+/** No scene is shorter than this (frames), however little it says. */
+const MIN_SCENE = Math.round(1.3 * FPS);
 /** Start an element's entrance this many frames before its word is spoken, so it lands on the word. */
 const REVEAL_LEAD = 3;
 const toFrame = (ms: number) => Math.round((ms / 1000) * FPS);
@@ -459,7 +488,7 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
     const minReadable = Math.max(p.entryEnd + 6, p.readFrom + readTime(p.read, pace.wps)) + holdFrames;
     const content = scene.duration
       ? Math.max(Math.round(scene.duration * FPS), p.entryEnd + 6)
-      : Math.max(minReadable, Math.round(1.3 * FPS));
+      : Math.max(minReadable, MIN_SCENE);
     return { minReadable, content };
   };
 
@@ -471,9 +500,39 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
   const froms: number[] = new Array(n).fill(0);
   const durations: number[] = new Array(n).fill(0);
 
+  // Music beats on the video timeline. Cuts snap to them: each transition's
+  // midpoint (where its whoosh peaks) moves onto the nearest beat in reach,
+  // downbeats first. Scene 1 always starts at frame 0.
+  const musicMs = spec.audio.musicDuration === undefined ? undefined : spec.audio.musicDuration * 1000;
+  // A start past the end of a known track would leave nothing to play (the checker flags it): play from the top.
+  const musicStartFrame = startFrameOf(musicMs !== undefined && spec.audio.musicStart * 1000 > musicMs - 1000 ? 0 : spec.audio.musicStart);
+  const horizon = Math.max(voice ? toFrame(voice.endMs) : 0, baseContent.reduce((a, c) => a + c.content, 0)) + n * 30 + 10 * FPS;
+  const grid =
+    spec.audio.music && spec.audio.beatGrid?.length
+      ? {
+          beats: onTimeline(spec.audio.beatGrid, musicStartFrame, musicMs, horizon),
+          downbeats: onTimeline(spec.audio.downbeatGrid ?? [], musicStartFrame, musicMs, horizon),
+        }
+      : null;
+  const onBeat: (number | undefined)[] = new Array(n).fill(undefined);
+  const mid = Math.round(T / 2);
+
   if (!voice) {
     let from = 0;
     for (let i = 0; i < n; i++) {
+      if (grid && i > 0) {
+        // Moving this cut changes only the previous scene's length (later scenes
+        // follow). An earlier cut may take at most half of the resting hold,
+        // never reading time, and no scene drops under its minimum length.
+        const prev = baseContent[i - 1];
+        const floor = Math.min(prev.content, Math.max(prev.minReadable - Math.floor(holdFrames / 2), base[i - 1].entryEnd + 6, MIN_SCENE));
+        const hit = snapToBeat(from + mid, grid, SNAP, floor - prev.content);
+        if (hit) {
+          from += hit.shift;
+          durations[i - 1] += hit.shift;
+          onBeat[i] = hit.beat;
+        }
+      }
       froms[i] = from;
       durations[i] = baseContent[i].content + (i === n - 1 ? LAST_HOLD : T);
       from += durations[i] - T;
@@ -547,6 +606,18 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
   // later (max 0.3s) instead of cutting away from unread text.
   const plans: Planned<unknown>[] = [];
   for (let i = 0; i < n; i++) {
+    if (voice && grid && i > 0) {
+      // Narrated cuts sit on the spoken word, so they move only a few frames,
+      // never shortening the previous beat below what it needs or crowding the next.
+      const gap = froms[i] - froms[i - 1];
+      const lo = Math.max(T + 15, Math.min(gap, plans[i - 1].entryEnd + 10)) - gap;
+      const hi = i < n - 1 ? froms[i + 1] - froms[i] - (T + 15) : Infinity;
+      const hit = snapToBeat(froms[i] + mid, grid, SNAP_VOICE, lo, hi);
+      if (hit) {
+        froms[i] += hit.shift;
+        onBeat[i] = hit.beat;
+      }
+    }
     const p = voice ? run(i, syncFor(i)) : base[i];
     plans.push(p);
     if (voice && i < n - 1) {
@@ -579,6 +650,7 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
       readable: duration - tail - p.entryEnd,
       minReadable,
       squeezed: Boolean(voice) && duration - tail < p.entryEnd + 6,
+      ...(onBeat[i] !== undefined ? { onBeat: onBeat[i] } : {}),
       beats: p.beats,
       cues:
         spec.audio.sfx && scene.sfx !== false
@@ -592,16 +664,26 @@ export const planVideo = (input: VideoSpec): VideoPlan => {
   const cues: Cue[] = [];
   if (spec.audio.sfx && T > 0) {
     const soft = spec.transition === "fade" || spec.transition === "zoom" || spec.transition === "blur";
-    // Whoosh peaks (~8 frames in) land on the middle of the transition.
+    // Whoosh peaks (~8 frames in) land on the middle of the transition: the music beat when the cut was snapped.
     for (const s of scenes.slice(1)) {
       if (s.scene.sfx === false) continue;
       cues.push({
-        at: Math.max(0, s.from + Math.round(T / 2) - 8),
+        at: Math.max(0, (s.onBeat ?? s.from + Math.round(T / 2)) - 8),
         sfx: soft ? "whoosh-soft" : "whoosh",
         volume: (soft ? 0.5 : 0.4) * sfxScale,
       });
     }
   }
 
-  return { spec, theme, format, motion, transitionFrames: T, scenes, cues, durationInFrames, voice };
+  const music: MusicPlan | null = spec.audio.music
+    ? {
+        src: spec.audio.music,
+        startFrame: musicStartFrame,
+        volume: Math.min(1, spec.audio.musicVolume * loudnessGain(spec.audio.musicLufs)),
+        beats: grid ? grid.beats.filter((b) => b < durationInFrames) : [],
+        downbeats: grid ? grid.downbeats.filter((b) => b < durationInFrames) : [],
+      }
+    : null;
+
+  return { spec, theme, format, motion, transitionFrames: T, scenes, cues, durationInFrames, voice, music };
 };

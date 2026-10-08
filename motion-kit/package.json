@@ -10,10 +10,11 @@
     "check": "node scripts/check.mjs",
     "preview": "node scripts/preview.mjs",
     "voice": "node scripts/voice.mjs",
+    "music": "node scripts/music.mjs",
     "make": "node scripts/make.mjs",
     "brand": "node scripts/brand.mjs",
-    "test": "node --test scripts/test-*.mjs",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "test": "node --test scripts/test-*.mjs tests/*.test.mjs"
   },
   "sideEffects": [
     "*.css"
@@ -29,6 +30,7 @@
     "@remotion/renderer": "4.0.534",
     "@remotion/transitions": "4.0.534",
     "@remotion/zod-types": "4.0.534",
+    "mediabunny": "1.56.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.534",

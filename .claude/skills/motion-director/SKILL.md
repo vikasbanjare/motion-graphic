@@ -13,7 +13,7 @@ script, the beat plan, the scene choices and the words on screen.
 Read before the first video in a session:
 - `references/scenes.md` — the 17 scene types with exact fields (do not invent fields).
 - `references/craft.md` — the timing, hook, typography and copy rules the checker enforces.
-- `references/production.md` — voice-over, footage clips, budgets, delivery.
+- `references/production.md` — voice-over, music, footage clips, budgets, delivery.
 
 ## Hard rules
 
@@ -39,6 +39,7 @@ Format: reel | square | portrait | landscape
 Brand: name, accent colour (hex), handle     Look: theme name or "you choose"
 Assets: logo / screenshots / footage / none  Verified facts: ...
 Voice: none | ElevenLabs (voice + budget) | own recording
+Music: none | their licensed track (file) | "suggest a mood" (you suggest; they download)
 ```
 
 ### 2. Storyboard (get approval before building)
@@ -78,16 +79,25 @@ Then one of:
 - `--import subtitles.srt`.
 Each writes word timings and links them in the spec; re-run `check` (coverage ≥ 70%).
 
-### 7. Footage (optional)
+### 7. Music (optional)
+Never generate music; the user supplies a track they hold a licence for (sources and a
+BPM guide by theme: `references/production.md` → Music). After the voice step:
+`npm run music -- specs/<name>.json --track music/<file>.mp3` (`--start <s>` to choose the
+entry point, `--volume 0.2`). It measures the beat, picks the start, writes the beat grid and
+links it in the spec; cuts then land on the beat and the music ducks under narration. Re-run
+it if the video's length changes by more than a few seconds.
+
+### 8. Footage (optional)
 Use real assets first. For gaps, write one-line Google Flow / Veo prompts from
 `references/production.md`, save clips to `public/clips/`, and use `clip` scenes with
 `"generated": true` for AI footage. Text always comes from the engine, never the clip.
 
-### 8. Final render (on request)
+### 9. Final render (on request)
 `npm run make -- specs/<name>.json` → `out/<name>.mp4` + `out/<name>-cover.jpg`
 (`--all-formats` for reel + square + landscape). Report exactly what you ran and what
 the user still needs to review (pronunciation, pacing, facts).
 
 ## Revisions
 Change the spec, never the engine. If the spoken words change, re-align the voice;
-if only styling changes, reuse the existing voice timing. Re-run `check` every time.
+if only styling changes, reuse the existing voice timing. Re-run `check` every time
+(and `npm run music` when the length changed a lot).

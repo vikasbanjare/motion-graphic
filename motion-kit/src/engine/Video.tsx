@@ -9,6 +9,7 @@ import { SafeZoneOverlay } from "./stage.tsx";
 import { FPS } from "./formats.ts";
 import { useFontsReady } from "./fonts.ts";
 import { resolveMedia } from "./media.ts";
+import { beatFields, musicCurve } from "./music.ts";
 import { planVideo, type SfxName, type VideoPlan } from "./plan.ts";
 import { videoSchema, type Scene, type VideoSpec } from "./schema.ts";
 import { makeTransition, transitionTiming } from "./transitions.tsx";
@@ -19,17 +20,31 @@ export const setSfxUrlResolver = (fn: (name: SfxName) => string) => {
   sfxUrl = fn;
 };
 
-/** Pull word timings from `audio.timing` (a JSON file in public/) into the spec. */
+/**
+ * Pull word timings from `audio.timing` and the music beat grid from
+ * `audio.beats` (JSON files in public/) into the spec.
+ */
 export const withTimings = async (spec: VideoSpec, signal?: AbortSignal): Promise<VideoSpec> => {
-  if (!spec.audio?.timing || spec.audio.words?.length) return spec;
-  try {
-    const res = await fetch(resolveMedia(spec.audio.timing), { signal });
-    const data = await res.json();
-    const words = Array.isArray(data) ? data : data.words;
-    return { ...spec, audio: { ...spec.audio, words } };
-  } catch {
-    return spec;
+  let out = spec;
+  if (out.audio?.timing && !out.audio.words?.length) {
+    try {
+      const res = await fetch(resolveMedia(out.audio.timing), { signal });
+      const data = await res.json();
+      const words = Array.isArray(data) ? data : data.words;
+      out = { ...out, audio: { ...out.audio, words } };
+    } catch {
+      // Missing timing file: the planner estimates timing from the script.
+    }
   }
+  if (out.audio?.beats && !out.audio.beatGrid?.length) {
+    try {
+      const res = await fetch(resolveMedia(out.audio.beats), { signal });
+      out = { ...out, audio: { ...out.audio, ...beatFields(await res.json()) } };
+    } catch {
+      // Missing beats file: cuts are timed without the music.
+    }
+  }
+  return out;
 };
 
 export const calculateVideoMetadata: CalculateMetadataFunction<VideoSpec> = async ({ props, abortSignal }) => {
@@ -144,9 +159,12 @@ const Overlays: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
 
 const Sounds: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
   const { audio } = plan.spec;
+  const { music } = plan;
   const total = plan.durationInFrames;
   const sceneCues = plan.scenes.flatMap((s) => s.cues.map((c) => ({ ...c, at: s.from + c.at })));
   const cues = [...plan.cues, ...sceneCues].filter((c) => c.at < total);
+  // Fades, loudness match and ducking under narration, precomputed per frame.
+  const musicVolume = useMemo(() => musicCurve(plan), [plan]);
   return (
     <>
       {cues.map((c, i) => (
@@ -154,17 +172,10 @@ const Sounds: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
           <Audio src={sfxUrl(c.sfx)} volume={c.volume} loop={Boolean(c.duration && c.duration > 55)} />
         </Sequence>
       ))}
-      {audio.music ? (
-        <Audio
-          src={resolveMedia(audio.music)}
-          loop
-          volume={(f) =>
-            interpolate(f, [0, 12, total - 40, total - 1], [0, audio.musicVolume, audio.musicVolume, 0], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-            })
-          }
-        />
+      {music ? (
+        // Plays from `musicStart`; a track shorter than the video loops from there.
+        // "extend" keeps the volume curve on video frames across loops.
+        <Audio src={resolveMedia(music.src)} trimBefore={music.startFrame} loop loopVolumeCurveBehavior="extend" volume={musicVolume} />
       ) : null}
       {audio.voiceover ? <Audio src={resolveMedia(audio.voiceover)} /> : null}
     </>

@@ -82,5 +82,9 @@ that pass first time.
 
 ## Sound
 - Synthesised whooshes on cuts, pops/clicks on reveals, impact on hook punches — automatic.
-- With a voice-over, SFX drop ~4 dB and music to 0.08; final mix is normalised to −14 LUFS.
+- With a voice-over, SFX drop ~4 dB; final mix is normalised to −14 LUFS.
+- Music (`npm run music`) is level-matched, fades in 0.4 s / out 1.5 s, and with narration
+  sits at 0.15 and ducks to 35 % while words are spoken. Cuts land on its beats (±7 frames,
+  downbeats ±10; narrated ±4), with the whoosh on the beat.
 - Music must be licensed (YouTube Audio Library, Pixabay, Mixkit, bought). Business accounts can't use trending sounds.
+  The kit never generates music.

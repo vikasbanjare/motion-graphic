@@ -73,6 +73,23 @@ it would not read on the chosen theme, only its lightness moves until it does (h
 `npm run check` says what changed. Missing accent2, highlighter and orb colours are derived
 from the brand. Rules: `.claude/skills/motion-director/references/craft.md` → Brand colours.
 
+## Music (your licensed track)
+
+The kit never generates music. Bring an instrumental track (MP3 or WAV) you hold a licence for
+(YouTube Audio Library, Pixabay Music, Mixkit, or Artlist / Epidemic Sound if bought):
+
+```bash
+npm run music -- specs/x.json --track music/song.mp3                # analyse + pick the start
+npm run music -- specs/x.json --track music/song.mp3 --start 12.5   # or choose it
+```
+
+It measures tempo, beats, bars and loudness (ffmpeg + a built-in beat tracker), starts
+the music on the bar that opens its most energetic stretch, and writes
+`public/music/song.beats.json` + `audio.music`, `audio.musicStart`, `audio.beats` into
+the spec. Cuts then land on the beat (whoosh on the beat), the music fades in/out,
+loops if it is short, is level-matched, and ducks under narration.
+Sources and a BPM guide per theme: `references/production.md`.
+
 ## Footage
 
 Put clips in `public/clips/` and use `clip` scenes (`trim`, `area`, `generated: true`
@@ -84,7 +101,8 @@ for AI footage). Prompts for Google Flow / Veo: `references/production.md`.
 src/engine/   schema, planner (timing), voice alignment, auto-fit text, motion tokens,
               themes, backgrounds, transitions, orb/waveform visuals, contact sheet
 src/scenes/   one file per scene template
-scripts/      check · preview · voice · make · brand (+ test-*.mjs, run with npm test)
+scripts/      check · preview · voice · music · make · brand
+tests/        node --test (npm test): beat tracking, beat-snapping, ducking; scripts/test-*.mjs: brand colours
 public/       fonts (SIL OFL, Latin + Devanagari), synthesised SFX, grain texture
 tools/        gen-assets.py — regenerates the SFX and grain (no third-party licences)
 ```
