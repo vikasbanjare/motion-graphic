@@ -1,7 +1,7 @@
 {
   "_recipe": {
     "title": "Creator explainer (Hinglish)",
-    "when": "A creator explains one concept, tool or money/tech topic in Hinglish in ~30s: \"[TOPIC] simple bhaasha mein\". Reels, Shorts, Moj, Josh.",
+    "when": "A creator explains one idea, tool or money / tech topic in Hinglish in ~30s.",
     "beats": [
       "Hook: the topic as a question + the time promise (\"30 second mein samjho\").",
       "Definition: the topic = its meaning in 1-3 words, then an everyday example (chai, cricket, EMI).",

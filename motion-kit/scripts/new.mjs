@@ -23,16 +23,22 @@ const recipes = fs
 
 /** "9:16" for "reel": the aspect ratio at the start of each format's label. */
 const ratio = (format = "reel") => E.FORMATS[format].label.split(" — ")[0];
-/** "9:16 desi": the shape and look a recipe starts with. */
-const describe = (spec) => `${ratio(spec.format)} ${spec.theme ?? "midnight"}`;
+/** "9:16 · desi · fast · ~29s": the shape, look and length a recipe starts with. */
+const describe = (spec) => {
+  const parsed = E.videoSchema.safeParse(spec);
+  if (!parsed.success) return c.red("invalid: run npm run check on it");
+  const plan = E.planVideo(parsed.data);
+  return [ratio(plan.format.name), plan.theme.name, plan.spec.pace, `~${Math.round(plan.durationInFrames / 30)}s`].join(" · ");
+};
 
 const list = () => {
   console.log(c.bold(`\n${recipes.length} storyboard recipes`) + c.dim("  (specs/recipes/)\n"));
   const w = Math.max(...recipes.map((r) => r.id.length)) + 2;
-  // One line per recipe: cut the description to the terminal width.
-  const room = Math.max(40, (process.stdout.columns || 120) - w - 20);
-  const fit = (s) => (s.length <= room ? s : s.slice(0, s.lastIndexOf(" ", room - 1)) + " …");
-  for (const r of recipes) console.log(`  ${r.id.padEnd(w)}${c.dim(describe(r.spec).padEnd(18))}${fit(r.spec._recipe?.when ?? "")}`);
+  // Name and look on one line, the full "when to use it" under it (never cut off).
+  for (const r of recipes) {
+    console.log(`  ${c.bold(r.id.padEnd(w))}${c.dim(describe(r.spec))}`);
+    console.log(`    ${r.spec._recipe?.when ?? ""}`);
+  }
   console.log(c.dim(`\nStart one:  npm run new -- ${args._[0] ?? "<name>"} --recipe <recipe> [--format reel|portrait|square|landscape] [--theme <theme>]`));
 };
 

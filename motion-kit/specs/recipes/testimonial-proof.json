@@ -1,7 +1,7 @@
 {
   "_recipe": {
     "title": "Testimonial proof",
-    "when": "Turn real customer reviews into a trust-building feed ad or post (1:1): D2C brands, clinics, coaches, agencies, local services.",
+    "when": "Real customer reviews as a trust-building feed ad: D2C, clinics, coaches, local services.",
     "beats": [
       "Hook: the headline proof number (customers, rating, orders) counts up.",
       "Review 1: the most specific review, with name, city and stars.",
@@ -12,7 +12,7 @@
     ],
     "copyTips": [
       "Only real reviews, quoted word for word (trim, never rewrite meaning), with the customer's permission. Stars only if the review had them.",
-      "Pick reviews that name a concrete result (\"faded in three weeks\") over generic praise (\"great product\").",
+      "Pick reviews that name a concrete result (\"faded in three weeks\") over generic praise (\"great product\"). ≤ 12 words each: a longer review holds its beat past 7s, so trim it with \"…\" (never change the meaning).",
       "Use first name + initial and city (\"Priya S., Pune\") unless the customer agreed to their full name.",
       "Clean + smooth + relaxed gives reviews time to be read. Food / kids brands: --theme pop. Luxury: --theme editorial.",
       "For Reels / Stories use --format reel; for feed ads keep square or use --format portrait."
@@ -33,16 +33,16 @@
     },
     {
       "type": "quote",
-      "say": "[THE MOST SPECIFIC REVIEW, WITH THE RESULT.] [NAME] from [CITY], [FIVE] stars.",
-      "quote": "[THE MOST SPECIFIC REVIEW, WITH THE *RESULT*.]",
+      "say": "[A SPECIFIC REVIEW THAT NAMES THE RESULT, IN THEIR OWN WORDS.] [NAME], [FIVE] stars.",
+      "quote": "[A SPECIFIC REVIEW THAT NAMES THE *RESULT*, IN THEIR OWN WORDS.]",
       "author": "[NAME]",
       "role": "Customer, [CITY]",
       "rating": 5
     },
     {
       "type": "quote",
-      "say": "[A SECOND REVIEW ABOUT ANOTHER BENEFIT.] [NAME] from [CITY], [FIVE] stars.",
-      "quote": "[A SECOND REVIEW ABOUT *ANOTHER BENEFIT*.]",
+      "say": "[A SECOND REVIEW ABOUT ANOTHER BENEFIT, FROM ANOTHER KIND OF CUSTOMER.] [NAME], [FIVE] stars.",
+      "quote": "[A SECOND REVIEW ABOUT *ANOTHER BENEFIT*, FROM ANOTHER KIND OF CUSTOMER.]",
       "author": "[NAME]",
       "role": "Customer, [CITY]",
       "rating": 5

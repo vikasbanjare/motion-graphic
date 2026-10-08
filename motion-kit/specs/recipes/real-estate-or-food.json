@@ -1,9 +1,9 @@
 {
   "_recipe": {
     "title": "Real estate / food showcase",
-    "when": "A premium place: an apartment, villa, plot, café, restaurant, bakery or boutique stay. Calm, magazine-style 9:16 for Reels and Shorts.",
+    "when": "Calm, magazine-style showcase of a home, plot, café, restaurant or boutique stay.",
     "beats": [
-      "Hook: where it is (kicker) + one evocative line, readable instantly.",
+      "Hook: where it is (kicker, shown but not spoken, so the line lands fast) + one evocative line.",
       "Atmosphere: three sensory details as kinetic lines (light, view, smell, taste).",
       "The details: four facts as tiles (size, rooms, amenity, location / dish, seating, timing).",
       "Price: \"starting at\" with the real number and what it includes.",
@@ -14,7 +14,7 @@
     "copyTips": [
       "Food version: kicker = area, lines = taste / smell / sound, tiles = signature dishes + seating + hours, price = \"for two\", CTA = \"Reserve a table\".",
       "Property: carpet area, configuration, possession date, price and any RERA number must come from the developer or agent. Never round a price down.",
-      "Write the atmosphere lines as images, not adjectives: \"Sunlight till six.\" beats \"Very bright.\"",
+      "Write the atmosphere lines as images, not adjectives: \"Sunlight till six.\" beats \"Very bright.\" Reviews ≤ 12 words, or the beat runs past 7s.",
       "Have photos? Replace beat 2 or 3 with \"image\" scenes (files in public/images/, \"move\": \"in\") and keep the captions to 2-5 words.",
       "Editorial (cream paper, serif) feels premium. Budget / family places: --theme clean. Festive openings: --theme desi."
     ]
@@ -27,7 +27,7 @@
   "scenes": [
     {
       "type": "title",
-      "say": "[AREA], [CITY]. Some places just feel different.",
+      "say": "Some places just feel different.",
       "kicker": "[AREA], [CITY]",
       "headline": "Some places *feel* different."
     },
@@ -56,7 +56,7 @@
     },
     {
       "type": "quote",
-      "say": "[A REAL REVIEW FROM A RESIDENT OR GUEST.] [NAME], [RESIDENT OR GUEST], gave it [FIVE] stars.",
+      "say": "[A REAL REVIEW FROM A RESIDENT OR GUEST.] [NAME], [FIVE] stars.",
       "quote": "[A REAL REVIEW FROM A *RESIDENT OR GUEST*.]",
       "author": "[NAME]",
       "role": "[RESIDENT OR GUEST]",

@@ -1,7 +1,7 @@
 {
   "_recipe": {
     "title": "App demo",
-    "when": "Show an app or SaaS doing its main job in under 30s: the input, the result, the extras, the download. Works for mobile apps, web tools and AI assistants.",
+    "when": "An app, SaaS or AI tool doing its main job: input, result, extras, download. Under 30s.",
     "beats": [
       "Hook: the job and how few steps it takes, on screen at frame 0.",
       "Demo 1: a real input typed into the app; cursor clicks; the result appears.",

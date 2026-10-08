@@ -1,9 +1,9 @@
 {
   "_recipe": {
     "title": "Hiring post",
-    "when": "Announce an open role on LinkedIn / Instagram feed (4:5): startups, agencies, clinics, restaurants, any team that's hiring.",
+    "when": "A \"We're hiring\" post for LinkedIn / Instagram feed: any role, any team.",
     "beats": [
-      "Hook: \"We're hiring\" + the role + location/remote, readable at a glance.",
+      "Hook: \"We're hiring\" + the role, then company · city · work mode, readable at a glance.",
       "Mission: what the team builds and for whom, three short kinetic lines.",
       "The job: three things this person will do, as numbered lines.",
       "Perks: four tiles with the real benefits (pay band first if you can share it).",
@@ -15,7 +15,7 @@
       "Role, location, work mode, salary band, perks and team size come from the hiring manager. Leave a perk out rather than guess.",
       "Use plain job language (\"Build our Android app\"), not buzzwords (\"rockstar ninja\"); inclusive wording widens the pool.",
       "Sharing the pay range in the perks beat gets noticeably more qualified applicants; suggest it.",
-      "The team quote must be real and approved by the person quoted.",
+      "The team quote must be real, approved by the person quoted and ≤ 12 words. Keep every say ≤ ~15 words: past that a beat holds over 7s and check warns.",
       "Corporate + smooth reads trustworthy on LinkedIn. Creative studios: --theme editorial. Restaurants / retail: --theme pop."
     ]
   },
@@ -27,10 +27,10 @@
   "scenes": [
     {
       "type": "title",
-      "say": "We're hiring a [ROLE] at [COMPANY]. [CITY], [WORK MODE].",
+      "say": "We're hiring: [ROLE]. [COMPANY], [CITY], [WORK MODE].",
       "kicker": "We're hiring",
-      "headline": "*[ROLE]* at [COMPANY]",
-      "sub": "[CITY] · [WORK MODE] · [FULL-TIME]"
+      "headline": "*[ROLE]*",
+      "sub": "[COMPANY] · [CITY] · [WORK MODE]"
     },
     {
       "type": "kinetic",

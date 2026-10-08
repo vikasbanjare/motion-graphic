@@ -1,7 +1,7 @@
 {
   "_recipe": {
     "title": "Stats report",
-    "when": "A year / quarter in numbers, an impact report, investor or all-hands update, campaign results. YouTube, LinkedIn, website, presentations (16:9).",
+    "when": "A year or quarter in numbers: impact report, investor / all-hands update, campaign results.",
     "beats": [
       "Hook: the single biggest number, counting up, with the period as the kicker.",
       "Trend: growth over time as bars, the latest period highlighted.",
@@ -15,7 +15,7 @@
     ],
     "copyTips": [
       "Every number is the user's: the bar values in this recipe (0.8 / 1.2 / 1.7 / 2.4) are samples. Replace all of them and keep one unit per chart.",
-      "Round for the screen (\"2.4M\", \"98%\") and give the exact figure in the report, not the video.",
+      "Round for the screen (\"2.4M\", \"98%\") and in say (\"two point four million\"); exact figures belong in the report. Keep each say ≤ ~13 words (years and big numbers take long to say): longer beats run past 7s and check warns.",
       "The bars highlight defaults to the largest value; set \"highlight\" to the latest period if growth is not monotonic.",
       "Corporate + smooth + relaxed lets numbers land. Dark keynote look: --theme studio-dark. Bold internal update: --theme mono.",
       "For LinkedIn feed use --format portrait (keeps under 60s); for a reel cut, drop beats 4 and 6 first."
@@ -59,7 +59,7 @@
     },
     {
       "type": "compare",
-      "say": "Then vs now. In [LAST YEAR]: [THEN ONE] and [THEN TWO]. In [THIS YEAR]: [NOW ONE] and [NOW TWO].",
+      "say": "Then vs now. [LAST YEAR]: [THEN ONE], [THEN TWO]. [THIS YEAR]: [NOW ONE], [NOW TWO].",
       "title": "Then vs now",
       "left": { "label": "[LAST YEAR]", "items": ["[THEN ONE]", "[THEN TWO]"] },
       "right": { "label": "[THIS YEAR]", "items": ["[NOW ONE]", "[NOW TWO]"] }
