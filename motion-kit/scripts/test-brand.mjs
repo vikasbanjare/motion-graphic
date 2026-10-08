@@ -1,6 +1,7 @@
 // npm test  (or: node --test scripts/test-brand.mjs)
 // Brand colours: colour maths, withBrand/resolveBrand guarantees, k-means and
-// palette picking, theme recommendation, spec writing and the CLI's error paths.
+// palette picking, theme recommendation, spec writing, brand.logo in "logo"
+// scenes and the CLI's error paths.
 // Every image here is a synthetic pixel array or SVG text held in memory; no
 // image file is read or written (the CLI test writes one temp spec, then removes it).
 import test from "node:test";
@@ -524,6 +525,34 @@ test("brandChanged ignores key order and treats a missing brand as empty", () =>
   assert.equal(B.brandChanged({ handle: "@x", accent: "#E4002B" }, { accent: "#E4002B", handle: "@x" }), false);
   assert.equal(B.brandChanged(undefined, { logo: "brand/x.png" }), true);
   assert.equal(B.brandChanged({ accent: "#111111", accent2: "#222222" }, { accent: "#111111" }), true);
+});
+
+// --- brand.logo in "logo" scenes ----------------------------------------------------
+
+test("a logo scene showing brand.logo is planned like one with its own src", async () => {
+  const P = await import("../src/engine/plan.ts");
+  const video = (logoScene, brand) => ({
+    theme: "clean",
+    ...(brand ? { brand } : {}),
+    scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme", tagline: "Build more", ...logoScene }],
+  });
+  const own = P.planVideo(video({ src: "brand/logo.png" }));
+  const fromBrand = P.planVideo(video({}, { logo: "brand/logo.png" }));
+  const none = P.planVideo(video({}));
+  const last = (plan) => plan.scenes[plan.scenes.length - 1];
+
+  // The template draws scene.src: the fallback is already resolved into the planned scene.
+  assert.equal(last(fromBrand).scene.src, "brand/logo.png");
+  assert.equal(last(none).scene.src, undefined);
+  // Same image, same timeline: the name waits for the logo, the impact lands with the name.
+  assert.deepEqual(last(fromBrand).beats, last(own).beats);
+  assert.deepEqual(last(fromBrand).cues, last(own).cues);
+  assert.equal(last(fromBrand).duration, last(own).duration);
+  assert.equal(fromBrand.durationInFrames, own.durationInFrames);
+  assert.ok(last(own).beats.name > last(none).beats.name, "with an image the name enters after the logo");
+  // An explicit src still wins over brand.logo.
+  const both = P.planVideo(video({ src: "brand/other.png" }, { logo: "brand/logo.png" }));
+  assert.equal(last(both).scene.src, "brand/other.png");
 });
 
 // --- CLI ---------------------------------------------------------------------------

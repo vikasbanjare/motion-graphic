@@ -221,7 +221,7 @@ const logoScene = z.object({
   type: z.literal("logo"),
   name: z.string().min(1).max(32),
   tagline: z.string().optional(),
-  /** Optional logo image inside public/. */
+  /** Optional logo image inside public/. Defaults to brand.logo. */
   src: z.string().optional(),
   ...common,
 });

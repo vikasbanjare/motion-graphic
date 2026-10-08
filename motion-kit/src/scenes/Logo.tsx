@@ -8,19 +8,18 @@ import { ease, focus, prog, rise } from "../engine/motion.ts";
 import { Stage } from "../engine/stage.tsx";
 import { FitText } from "../engine/text.tsx";
 
-/** Brand sign-off: logo, name, a line that draws, tagline. */
+/** Brand sign-off: logo, name, a line that draws, tagline. `scene.src` already falls back to brand.logo (resolveSpec). */
 export const Logo: React.FC<{ scene: SceneOf<"logo"> }> = ({ scene }) => {
   const frame = useCurrentFrame();
-  const { box, u, m, c, theme, scene: plan, plan: video, landscape } = useEnv();
+  const { box, u, m, c, theme, scene: plan, landscape } = useEnv();
   const b = plan.beats as BeatsFor<"logo">;
   const line = prog(frame, b.name + 8, 20, ease.inOut);
-  const src = scene.src ?? video.spec.brand.logo;
 
   return (
     <Stage gap={34}>
-      {src ? (
+      {scene.src ? (
         <div style={focus(frame, b.logo, m, u)}>
-          <Img src={resolveMedia(src)} style={{ height: 220 * u, maxWidth: box.width * 0.7, objectFit: "contain" }} />
+          <Img src={resolveMedia(scene.src)} style={{ height: 220 * u, maxWidth: box.width * 0.7, objectFit: "contain" }} />
         </div>
       ) : null}
       <FitText

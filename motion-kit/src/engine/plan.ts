@@ -400,6 +400,7 @@ export type VideoPlan = {
 export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
   const theme = THEMES[spec.theme ?? "midnight"];
   const transition = spec.transition && spec.transition !== "auto" ? spec.transition : theme.transition;
+  const brand = spec.brand ?? {};
   return {
     format: spec.format ?? "reel",
     theme: theme.name,
@@ -407,7 +408,7 @@ export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
     pace: spec.pace ?? "normal",
     progressBar: spec.progressBar ?? false,
     transition,
-    brand: spec.brand ?? {},
+    brand,
     audio: {
       sfx: spec.audio?.sfx ?? true,
       music: spec.audio?.music,
@@ -415,7 +416,9 @@ export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
       voiceover: spec.audio?.voiceover,
       words: spec.audio?.words,
     },
-    scenes: spec.scenes,
+    // A "logo" scene without its own src shows brand.logo. Resolved here, once,
+    // so the planner's beats, the template and the checks all see the same image.
+    scenes: spec.scenes.map((s) => (s.type === "logo" && !s.src && brand.logo ? { ...s, src: brand.logo } : s)),
   };
 };
 
