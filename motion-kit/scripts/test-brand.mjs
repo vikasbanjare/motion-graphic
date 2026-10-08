@@ -355,8 +355,9 @@ test("samplePixels drops transparency and counts near-white / near-black separat
   assert.equal(stats.black, 50);
   assert.equal(stats.white, 25);
   assert.deepEqual([...colours], [[0xe4002b, 100]]);
-  assert.equal(stats.borderOpaque, 0);
-  assert.equal(stats.paperRgb, null);
+  assert.equal(stats.backdrop, null);
+  // Four opaque parts, each with its own box; the faint one is not one.
+  assert.deepEqual(stats.parts.map((p) => [p.pixels, p.box]), [[100, [2, 2, 11, 11]], [50, [15, 2, 24, 6]], [25, [30, 2, 34, 6]]]);
 });
 
 test("samplePixels: the rim is the ink that meets the backdrop, not what the logo encloses", () => {
@@ -366,19 +367,38 @@ test("samplePixels: the rim is the ink that meets the backdrop, not what the log
   box(7, 7, 6, 6, rgba("#FFFFFF"));
   const { stats } = B.samplePixels(px, w, h);
   assert.deepEqual([...stats.rim], [[0xe4002b, 4 * 16 - 4]], "only the red outline touches transparency");
-  // The image edge counts as backdrop too (a tightly cropped logo), and the border is measured:
-  // opaque all round, but navy is a colour, not paper.
+  // One part: its rim is red, the white glyph is inside it.
+  assert.equal(stats.parts.length, 1);
+  assert.deepEqual([...stats.parts[0].rim], [[0xe4002b, 60]]);
+  assert.deepEqual([...stats.parts[0].inner].sort(), [[0xe4002b, 16 * 16 - 60 - 36], [0xffffff, 36]].sort());
+  assert.equal(stats.parts[0].outer, 60);
+  // The image edge counts as backdrop too (a tightly cropped logo). A frame that
+  // is a colour (navy) is not paper: no backdrop.
   const full = canvas(10, 4, rgba("#1D3557"));
   const edge = B.samplePixels(full.px, full.w, full.h).stats;
   assert.equal(edge.rim.get(0x1d3557), 2 * 10 + 2 * 2);
-  assert.equal(edge.borderOpaque, edge.border);
-  assert.equal(edge.paper, 0);
-  assert.equal(edge.paperRgb, null);
+  assert.equal(edge.backdrop, null);
   // Cream paper is: its mean colour is measured.
   const cream = canvas(10, 4, rgba("#FDF6E3"));
-  const sheet = B.samplePixels(cream.px, cream.w, cream.h).stats;
-  assert.equal(sheet.paper, sheet.border);
-  assert.deepEqual(sheet.paperRgb, T.hexToRgb("#FDF6E3"));
+  assert.deepEqual(B.samplePixels(cream.px, cream.w, cream.h).stats.backdrop, T.hexToRgb("#FDF6E3"));
+});
+
+test("samplePixels: holes a part encloses, and the parts lying in them", () => {
+  // A white ring with a red square inside its hole, and an "O"-like dark ring beside it.
+  const { px, box, w, h } = canvas(40, 20);
+  box(1, 1, 18, 18, rgba("#FFFFFF"));
+  box(3, 3, 14, 14, [0, 0, 0, 0]);
+  box(7, 7, 6, 6, rgba("#E4002B"));
+  box(24, 4, 10, 10, rgba("#222222"));
+  box(26, 6, 6, 6, [0, 0, 0, 0]);
+  const { parts } = B.samplePixels(px, w, h).stats;
+  const [ring, o, glyph] = parts; // in raster order of their first pixel
+  assert.equal(ring.holes, 14 * 14 - 36);
+  assert.deepEqual([...ring.islands], [[0xe4002b, 36]], "the red square lies in the ring's hole");
+  assert.equal(ring.outer, 4 * 18 - 4, "the outer rim leaves out the hole's edge");
+  assert.equal(glyph.holes, 0);
+  assert.equal(o.holes, 36);
+  assert.equal(o.islands.size, 0);
 });
 
 /** A two-colour logo on transparency with anti-aliased (blended) edges and dark lettering. */
@@ -565,7 +585,8 @@ test("theme recommendation: ink the logo encloses does not decide the base", () 
   );
   assert.equal(icon.baseFirm, false);
   assert.ok(icon.themes.every((t) => t.clash === null), icon.themes.map((t) => t.clash).join());
-  // A yellow badge with black text: fine on dark and light themes; only pop's yellow swallows it.
+  // A yellow badge with black text reads everywhere: on pop's yellow only its
+  // edge blends in, while the black text on it still reads (a note, not a clash).
   const badge = B.analyse(
     logoPixels((box) => {
       box(8, 8, 80, 32, rgba("#FFC20E"));
@@ -573,19 +594,22 @@ test("theme recommendation: ink the logo encloses does not decide the base", () 
     }),
   );
   assert.equal(badge.baseFirm, false);
-  assert.deepEqual(badge.themes.filter((t) => t.clash).map((t) => t.name), ["pop"]);
-  assert.equal(badge.themes[9].name, "pop");
+  assert.ok(badge.themes.every((t) => t.clash === null), badge.themes.map((t) => t.clash).join());
+  assert.deepEqual(badge.themes.filter((t) => t.note).map((t) => t.name), ["pop"]);
+  assert.equal(clashOn(badge, "pop"), null);
+  assert.equal(badge.themes.find((t) => t.name === "pop").note, "the edge of the logo's #FFC20E tile blends into the light background (1.2:1); the #111111 inside it still reads");
 });
 
 const DARK = ["midnight", "neon", "desi", "mono", "studio-dark"];
 const LIGHT = ["clean", "studio", "corporate", "editorial"];
+const clashOn = (r, name) => r.themes.find((t) => t.name === name).clash;
+const noteOn = (r, name) => r.themes.find((t) => t.name === name).note;
 /** A full-bleed opaque square in `fill` (no transparency anywhere) with a `glyph` inside it. */
 const fullBleed = (fill, glyph) => {
   const { px, box, w, h } = canvas(64, 64, rgba(fill));
   box(20, 14, 24, 36, rgba(glyph));
   return B.analyse(B.samplePixels(px, w, h));
 };
-const clashOn = (r, name) => r.themes.find((t) => t.name === name).clash;
 
 test("a full-bleed coloured tile is the mark (an app icon), not a box around the logo", () => {
   for (const fill of ["#612BD3", "#1D3557", "#FFC20E"]) {
@@ -600,16 +624,20 @@ test("a full-bleed coloured tile is the mark (an app icon), not a box around the
   const violet = fullBleed("#612BD3", "#FFFFFF");
   assert.ok(violet.themes.every((t) => t.clash === null), violet.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
   assert.equal(violet.baseFirm, false);
-  // Yellow reads on dark and light themes; only pop's yellow swallows the tile.
+  // Yellow and navy read on every theme too. Where the tile's colour meets its
+  // own (pop's yellow; navy on near-black, 1.6:1) only the tile's edge blends
+  // in: the white glyph on it still reads, so that is a note, never a clash or
+  // a firm base. A tile is never called lettering.
   const yellow = fullBleed("#FFC20E", "#FFFFFF");
-  for (const n of [...DARK, ...LIGHT]) assert.equal(clashOn(yellow, n), null, n);
-  assert.match(clashOn(yellow, "pop"), /the logo's #FFC20E parts would vanish on a light background/);
-  // Navy reads on light themes; on near-black ones the tile's edge is what vanishes (1.6:1),
-  // so light themes come first: a fixable warning, not "use a transparent PNG".
+  assert.ok(yellow.themes.every((t) => t.clash === null), yellow.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  assert.equal(noteOn(yellow, "pop"), "the edge of the logo's #FFC20E tile blends into the light background (1.2:1); the #FFFFFF inside it still reads");
   const navy = fullBleed("#1D3557", "#FFFFFF");
-  for (const n of LIGHT) assert.equal(clashOn(navy, n), null, n);
-  for (const n of DARK) assert.match(clashOn(navy, n), /the logo's #1D3557 parts would vanish on a dark background/, n);
-  assert.deepEqual([navy.base, navy.baseFirm], ["light", true]);
+  assert.ok(navy.themes.every((t) => t.clash === null), navy.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  for (const n of DARK) assert.match(noteOn(navy, n), /^the edge of the logo's #1D3557 tile blends into the dark background \(1\.\d:1\); the #FFFFFF inside it still reads$/, n);
+  for (const n of LIGHT) assert.equal(noteOn(navy, n), null, n);
+  assert.equal(navy.baseFirm, false);
+  // With the base only a mild hint (navy is deep), the themes the whole tile shows on come first.
+  for (const t of navy.themes.slice(0, 3)) assert.ok(isLightTheme(t.name), t.name);
 });
 
 test("a white, cream or black full-bleed backdrop is paper: it shows as a box where it stands out", () => {
@@ -734,7 +762,7 @@ const APP_TILE = `<svg width="260" height="260" viewBox="0 0 260 260" fill="none
 test("an SVG read as text: a coloured artboard rect is the mark, not a backdrop", () => {
   const tile = B.analyse(B.svgTextSamples(APP_TILE));
   assert.equal(tile.accent, "#612BD3");
-  assert.equal(tile.stats.paperRgb, null);
+  assert.equal(tile.stats.backdrop, null);
   assert.equal(tile.baseFirm, false);
   assert.doesNotMatch(tile.baseWhy, /sits on/);
   assert.ok(tile.themes.every((t) => t.clash === null), tile.themes.map((t) => t.clash).join());

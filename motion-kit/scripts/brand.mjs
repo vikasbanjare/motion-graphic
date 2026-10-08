@@ -22,13 +22,24 @@ const SIZEABLE = 0.05;
 /** Blends (anti-aliased edges, gradient steps) are thin: a colour covering more than this is real. */
 const BLEND_MAX = 0.12;
 
+/**
+ * A logo's own frame (its sheet or tile): one opaque part spanning this share
+ * of the image both ways (a full-bleed square, or one with rounded corners or
+ * a few % of transparent padding, as app icons are exported)...
+ */
+const FRAME_SPAN = 0.85;
+/** ...that fills this share of its bounding box (a square or squircle, not a disc, ring or wordmark)... */
+const FRAME_SOLID = 0.85;
+/** ...with at most this share cut out to transparency (more is a knockout: the glyph shows the video through it). */
+const KNOCKOUT = 0.03;
+
 const pack = ([r, g, b]) => (r << 16) | (g << 8) | b;
 const unpack = (n) => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 const chroma = (lab) => Math.hypot(lab[1], lab[2]);
 /**
  * White, cream, grey or black: the paper a logo can be printed on. A logo's
- * full-bleed backdrop only counts as one (a box around the logo) when it is
- * paper; a saturated full-bleed colour is the mark itself (an app tile).
+ * frame only counts as a backdrop (a box around the logo) when it is paper; a
+ * saturated full-bleed colour is the mark itself (an app tile).
  */
 const isPaper = (rgb) => chroma(T.rgbToOklab(rgb)) < GREY;
 
@@ -367,9 +378,10 @@ const shapeGeometry = (name, a, [, , vw, vh], fontSize, text) => {
  * (fills: the shape's area; strokes: outline length × stroke width; gradients
  * split across their stops). Honours inheritance from groups, style="",
  * <style> class rules and scale transforms. `backdrop`: the solid fill of the
- * topmost rect covering the whole drawing when it is paper (white, cream, grey,
- * black: the logo's own background), else null. A coloured one is the mark
- * itself (an app tile), drawn like any other shape.
+ * topmost rect framing the drawing (FRAME_SPAN of it both ways, square or
+ * rounded) when it is paper (white, cream, grey, black: the logo's own
+ * background), else null. A coloured one is the mark itself (an app tile),
+ * drawn like any other shape.
  */
 export const svgColors = (svg) => {
   const weights = new Map();
@@ -438,10 +450,15 @@ export const svgColors = (svg) => {
       const { area, length } = shapeGeometry(name, a, vb, fontSize, text);
       paint(node.fill, area * node.scale);
       paint(node.stroke, length * (lengthOf(node.strokeWidth, 1) ?? 1) * node.scale);
-      // A rect over the whole drawing is the logo's own background when it is
-      // paper, as an opaque image border is; the topmost one with a paint decides.
+      // A rect framing the drawing (FRAME_SPAN of it both ways, square or with
+      // rounded corners) is the logo's own background when it is paper, as an
+      // opaque frame of pixels is; the topmost one with a paint decides.
       const [x, y, w, h] = ["x", "y", "width", "height"].map((k, i) => lengthOf(a[k], vb[2 + (i % 2)]) ?? 0);
-      if (name === "rect" && node.scale === 1 && x <= vb[0] + 0.01 * vb[2] && y <= vb[1] + 0.01 * vb[3] && x + w >= vb[0] + 0.99 * vb[2] && y + h >= vb[1] + 0.99 * vb[3]) {
+      const span = (from, size, at, length) => Math.min(from + size, at + length) - Math.max(from, at);
+      const [rx, ry] = [lengthOf(a.rx, vb[2]), lengthOf(a.ry, vb[3])];
+      const corner = Math.min(rx ?? ry ?? 0, w / 2) * Math.min(ry ?? rx ?? 0, h / 2);
+      const framing = span(x, w, vb[0], vb[2]) >= FRAME_SPAN * vb[2] && span(y, h, vb[1], vb[3]) >= FRAME_SPAN * vb[3] && (4 - Math.PI) * corner <= (1 - FRAME_SOLID) * w * h;
+      if (name === "rect" && node.scale === 1 && framing) {
         const solid = parseColour(node.fill ?? "");
         if (solid) backdrop = isPaper(T.hexToRgb(solid)) ? solid : null;
         else if (/^url\(/i.test(node.fill ?? "")) backdrop = null;
@@ -476,52 +493,142 @@ export const separate = (weights) => {
   return { colours, white, black };
 };
 
+const bump = (map, key, by = 1) => map.set(key, (map.get(key) ?? 0) + by);
+
 /**
  * Sort decoded RGBA pixels: transparent pixels (alpha < 128) are dropped, the
- * rest are counted per exact colour. Also measures the image border: how much
- * of it is opaque, and how much of that is paper (`paper`, `paperRgb`: their
- * count and mean colour), so does the logo carry its own background? And the
- * rim: opaque pixels next to a transparent one or the image edge. The rim is
- * the logo's ink that meets the video background; anything it encloses (a
- * white glyph inside a coloured app icon, black text on a yellow badge) sits
- * on the logo's own colour instead.
+ * rest are counted per exact colour. Also finds:
+ * - the rim: opaque pixels next to a transparent one or the image edge, the
+ *   logo's ink that meets the video background (`rim`, pooled);
+ * - the logo's parts: its opaque connected areas (`parts`), each with its rim,
+ *   the inks inside it (`inner`: a white glyph inside an app tile, the body
+ *   inside an outline; they sit on the logo's own colour, not on the video),
+ *   its bounding box, the transparent holes it encloses and the inks of the
+ *   parts lying in those holes (`islands`: a glyph inside a ring);
+ * - `backdrop`: the mean colour of the logo's own paper, when its biggest part
+ *   is a frame (see FRAME_SPAN; square, rounded or inset alike) whose rim is
+ *   mostly paper (a coloured mark touching part of the edge neither hides nor
+ *   tints it), else null.
  */
 export const samplePixels = (rgba, width, height) => {
+  const n = width * height;
+  const solid = (i) => rgba[i * 4 + 3] >= 128;
+  const clear = (x, y) => x < 0 || y < 0 || x >= width || y >= height || !solid(y * width + x);
+  const colourAt = (i) => (rgba[i * 4] << 16) | (rgba[i * 4 + 1] << 8) | rgba[i * 4 + 2];
   const weights = new Map();
   const rim = new Map();
+  const onRim = new Uint8Array(n);
   let transparent = 0;
-  let border = 0;
-  let borderOpaque = 0;
-  let paper = 0;
-  const paperSum = [0, 0, 0];
-  const clear = (x, y) => x < 0 || y < 0 || x >= width || y >= height || rgba[(y * width + x) * 4 + 3] < 128;
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const i = (y * width + x) * 4;
-      const edge = x === 0 || y === 0 || x === width - 1 || y === height - 1;
-      if (edge) border++;
-      if (rgba[i + 3] < 128) {
+      const i = y * width + x;
+      if (!solid(i)) {
         transparent++;
         continue;
       }
-      const rgb = [rgba[i], rgba[i + 1], rgba[i + 2]];
-      const n = pack(rgb);
-      weights.set(n, (weights.get(n) ?? 0) + 1);
-      if (clear(x - 1, y) || clear(x + 1, y) || clear(x, y - 1) || clear(x, y + 1)) rim.set(n, (rim.get(n) ?? 0) + 1);
-      if (edge) {
-        borderOpaque++;
-        if (isPaper(rgb)) {
-          paper++;
-          for (let k = 0; k < 3; k++) paperSum[k] += rgb[k];
-        }
+      bump(weights, colourAt(i));
+      if (clear(x - 1, y) || clear(x + 1, y) || clear(x, y - 1) || clear(x, y + 1)) {
+        onRim[i] = 1;
+        bump(rim, colourAt(i));
       }
     }
   }
-  const { colours, white, black } = separate(weights);
-  return {
-    colours,
-    stats: { pixels: width * height, transparent, white, black, border, borderOpaque, paper, paperRgb: paper ? paperSum.map((v) => v / paper) : null, rim },
+
+  // Parts: 8-connected, so anti-aliased diagonals hold a stroke together.
+  const label = new Int32Array(n).fill(-1);
+  const parts = [];
+  const stack = [];
+  for (let s = 0; s < n; s++) {
+    if (!solid(s) || label[s] >= 0) continue;
+    const part = { pixels: 0, holes: 0, outer: 0, box: [width, height, -1, -1], rim: new Map(), inner: new Map(), islands: new Map() };
+    label[s] = parts.length;
+    stack.push(s);
+    while (stack.length) {
+      const i = stack.pop();
+      const [x, y] = [i % width, Math.floor(i / width)];
+      part.pixels++;
+      part.box = [Math.min(part.box[0], x), Math.min(part.box[1], y), Math.max(part.box[2], x), Math.max(part.box[3], y)];
+      bump(onRim[i] ? part.rim : part.inner, colourAt(i));
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const [nx, ny] = [x + dx, y + dy];
+          if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+          const j = ny * width + nx;
+          if (label[j] < 0 && solid(j)) {
+            label[j] = parts.length;
+            stack.push(j);
+          }
+        }
+      }
+    }
+    parts.push(part);
+  }
+
+  // Holes: transparent areas the image border cannot reach (4-connected).
+  const seen = new Uint8Array(n);
+  const flood = (seeds) => {
+    let size = 0;
+    const touches = new Set();
+    for (const s of seeds) seen[s] = 1;
+    stack.push(...seeds);
+    while (stack.length) {
+      const i = stack.pop();
+      const [x, y] = [i % width, Math.floor(i / width)];
+      size++;
+      for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) {
+        if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+        const j = ny * width + nx;
+        if (solid(j)) touches.add(label[j]);
+        else if (!seen[j]) {
+          seen[j] = 1;
+          stack.push(j);
+        }
+      }
+    }
+    return { size, touches };
   };
+  const edges = [];
+  for (let x = 0; x < width; x++) edges.push(x, (height - 1) * width + x);
+  for (let y = 1; y < height - 1; y++) edges.push(y * width, y * width + width - 1);
+  flood(edges.filter((i) => !solid(i) && !seen[i]));
+  // Outer rim: the rim along the silhouette, not along holes (how thick the shape is).
+  const outside = (x, y) => x < 0 || y < 0 || x >= width || y >= height || (!solid(y * width + x) && seen[y * width + x]);
+  for (let i = 0; i < n; i++) {
+    const [x, y] = [i % width, Math.floor(i / width)];
+    if (onRim[i] && (outside(x - 1, y) || outside(x + 1, y) || outside(x, y - 1) || outside(x, y + 1))) parts[label[i]].outer++;
+  }
+  for (let s = width; s < n; s++) {
+    if (solid(s) || seen[s]) continue;
+    // A hole's first pixel in raster order sits right below the part around it;
+    // any other part it touches lies inside the hole.
+    const owner = label[s - width];
+    const hole = flood([s]);
+    parts[owner].holes += hole.size;
+    for (const j of hole.touches) if (j !== owner) for (const map of [parts[j].rim, parts[j].inner]) for (const [key, w] of map) bump(parts[owner].islands, key, w);
+  }
+
+  // The logo's own paper: its biggest part, when that is a frame with a mostly paper rim.
+  let backdrop = null;
+  const main = parts.reduce((a, p) => (!a || p.pixels > a.pixels ? p : a), null);
+  if (main) {
+    const [bw, bh] = [main.box[2] - main.box[0] + 1, main.box[3] - main.box[1] + 1];
+    const shape = main.pixels + main.holes;
+    if (bw >= FRAME_SPAN * width && bh >= FRAME_SPAN * height && shape >= FRAME_SOLID * bw * bh && main.holes <= KNOCKOUT * shape) {
+      let [edge, paper] = [0, 0];
+      const sum = [0, 0, 0];
+      for (const [key, w] of main.rim) {
+        edge += w;
+        const rgb = unpack(key);
+        if (!isPaper(rgb)) continue;
+        paper += w;
+        rgb.forEach((v, k) => (sum[k] += v * w));
+      }
+      if (2 * paper > edge) backdrop = sum.map((v) => v / paper);
+    }
+  }
+
+  const { colours, white, black } = separate(weights);
+  return { colours, stats: { pixels: n, transparent, white, black, backdrop, rim, parts } };
 };
 
 // --- k-means -------------------------------------------------------------------
@@ -650,80 +757,168 @@ const READS_COLOUR = 0.18;
 const VANISH_SHARE = 0.1;
 /** An opaque light / dark backdrop shows as a box once it stands out this much. */
 const BOX_SHOWS = 0.4;
+/** Inks this far apart (OKLab ΔE) are clearly different colours. */
+const DIFFERENT = 0.1;
+/** A colour lives inside a part (is held by it) when less than this share of the part's rim is that colour. */
+const HELD_EDGE = 0.2;
+/** Readable ink held inside a part counts once it covers this share of the part, and at least HELD_MIN pixels. */
+const HELD_SHARE = 0.03;
+const HELD_MIN = 6;
+/** A silhouette this many times bigger than its outer rim is a solid block (a plain mark, a tile), not lettering strokes. */
+const BLOCK = 10;
+
+/** Hex, OKLab and luminance of a colour: what the fit check compares. */
+const inkOf = (hex) => ({ hex, lab: T.rgbToOklab(T.hexToRgb(hex)), y: T.luminance(hex) });
+const clarity = (ink, bg) =>
+  ((Math.max(ink.y, bg.y) + 0.05) / (Math.min(ink.y, bg.y) + 0.05) - 1) / (READS_CONTRAST - 1) + Math.hypot(ink.lab[1] - bg.lab[1], ink.lab[2] - bg.lab[2]) / READS_COLOUR;
+const apart = (p, q) => Math.hypot(p.lab[0] - q.lab[0], p.lab[1] - q.lab[1], p.lab[2] - q.lab[2]);
 
 /**
  * How clearly `ink` stands out on `bg`: 1 or more reads. Lightness contrast and
  * colour difference both count, so a vivid yellow mark reads on white at 1.5:1
  * while navy lettering on near-black at 1.6:1 does not.
  */
-export const standsOut = (ink, bg) => {
-  const [a, b] = [T.rgbToOklab(T.hexToRgb(ink)), T.rgbToOklab(T.hexToRgb(bg))];
-  return (T.contrast(ink, bg) - 1) / (READS_CONTRAST - 1) + Math.hypot(a[1] - b[1], a[2] - b[2]) / READS_COLOUR;
-};
+export const standsOut = (ink, bg) => clarity(inkOf(ink), inkOf(bg));
 
 /**
  * "light" / "dark" when the logo carries its own opaque light or dark paper
- * (an opaque border, mostly white, cream, grey or black), else null. A
- * full-bleed colour (a purple, navy or yellow app tile) is not a background
- * but the mark: its edge is rim like any other ink and only clashes where the
- * theme background swallows that colour.
+ * (`backdrop`: a frame that is mostly white, cream, grey or black), else null.
+ * A full-bleed colour (a purple, navy or yellow app tile) is not a background
+ * but the mark: it is judged as a part like any other.
  */
 const backdropTone = (stats) => {
-  if (!stats.border || !stats.paperRgb || stats.borderOpaque / stats.border <= 0.9 || 2 * stats.paper <= stats.borderOpaque) return null;
-  const y = T.luminance(T.rgbToHex(stats.paperRgb));
+  if (!stats.backdrop) return null;
+  const y = T.luminance(T.rgbToHex(stats.backdrop));
   return y > 0.4 ? "light" : y < 0.1 ? "dark" : null;
 };
 
-/** Neutral ink is the lettering; coloured ink is part of the mark. */
-const inkName = (hex) => {
+/**
+ * What one opaque part of the logo is to the fit check: its rim inks, the inks
+ * it holds (colours that live inside it rather than on its edge: the glyph in
+ * a tile, the body inside an outline, the text on a badge, a glyph inside a
+ * ring) and its role, which names it in messages: "outline" (an edge around a
+ * body of another colour, or a ring around a glyph), "tile" / "badge" (a
+ * square / round block holding a glyph, or with the glyph cut out), "block"
+ * (a plain solid mark) or "stroke" (lettering, line work).
+ */
+const describePart = (part, ink) => {
+  const rim = [...part.rim].map(([key, w]) => ({ ...ink(key), w }));
+  const rimTotal = rim.reduce((a, r) => a + r.w, 0);
+  const held = new Map();
+  for (const map of [part.inner, part.islands ?? new Map()]) {
+    for (const [key, w] of map) {
+      const x = ink(key);
+      let edge = 0;
+      for (const r of rim) if (apart(x, r) < DIFFERENT) edge += r.w;
+      if (edge < HELD_EDGE * rimTotal) held.set(key, { ...x, w: (held.get(key)?.w ?? 0) + w });
+    }
+  }
+  const inks = [...held.values()].sort((a, b) => b.w - a.w);
+  const enough = Math.max(HELD_MIN, HELD_SHARE * part.pixels);
+  const own = [...part.inner].reduce((a, [key, w]) => a + (held.has(key) ? w : 0), 0);
+  const filled = part.pixels + part.holes;
+  const block = filled >= BLOCK * part.outer && part.holes <= filled / 2;
+  const square = part.box && filled >= FRAME_SOLID * (part.box[2] - part.box[0] + 1) * (part.box[3] - part.box[1] + 1);
+  const holder = square ? "tile" : "badge";
+  let role = block ? (part.holes >= KNOCKOUT * filled ? holder : "block") : "stroke";
+  if (inks.reduce((a, x) => a + x.w, 0) >= enough) role = own > part.pixels / 2 || part.holes > part.pixels ? "outline" : holder;
+  return { rim, rimTotal, held: inks, enough, role };
+};
+
+/** "dark lettering (#111111)", "#1D3557 tile", "dark outline (#111111)": never "lettering" for a tile or an outline. */
+const partName = (hex, role) => {
   const { l, c: ch } = T.hexToOklch(hex);
-  return ch < GREY ? `${l < 0.5 ? "dark" : l >= 0.94 ? "white" : "light"} lettering (${hex})` : `${hex} parts`;
+  const noun = { outline: "outline", tile: "tile", badge: "badge", block: "mark" }[role] ?? (ch < GREY ? "lettering" : "parts");
+  return ch < GREY ? `${l < 0.5 ? "dark" : l >= 0.94 ? "white" : "light"} ${noun} (${hex})` : `${hex} ${noun}`;
 };
 
 /**
- * Per theme: { ink, message } saying why this logo file would not read on it,
- * or null if it does. The "logo" scene draws the file as is, straight on the
- * theme background. A logo on its own opaque light / dark paper shows as a box
- * wherever that paper stands out. Otherwise the rim decides: when a
- * sizeable share of it vanishes into the background (charcoal or navy lettering
- * on a dark theme, white lettering on a light one, a yellow mark on pop's
- * yellow), that part of the logo is lost. null when it cannot be told (an SVG
- * read as text has no pixels).
+ * Whether this logo file reads on each theme: { [theme]: { clash, note } },
+ * or null when it cannot be told (an SVG read as text has no pixels). The
+ * "logo" scene draws the file as is, straight on the theme background.
+ * - A logo on its own opaque light / dark paper shows as a box wherever that
+ *   paper stands out (`clash`).
+ * - Otherwise each opaque part is judged by its rim, the ink that meets the
+ *   background. A part whose rim vanishes but which holds ink of another
+ *   colour that reads there (a navy app tile's white glyph on near-black, the
+ *   orange body inside a black outline, black text on a yellow badge on pop)
+ *   still reads: only its edge blends in (`note`). A part with nothing
+ *   readable inside (wordmark strokes, a plain mark, a tile with its glyph cut
+ *   out) is lost with its rim; when that is a sizeable share of the logo's
+ *   rim (charcoal or navy lettering on a dark theme, white lettering on a
+ *   light one, a yellow mark on pop's yellow), the theme loses the logo.
+ * clash: { ink, part, message }; note: { ink, message }; either may be null.
  */
-export const logoClashes = (stats) => {
+export const judgeLogo = (stats) => {
   const tone = backdropTone(stats);
   if (!tone && !stats.rim?.size) return null;
+  const inks = new Map();
+  const ink = (key) => inks.get(key) ?? inks.set(key, inkOf(T.rgbToHex(unpack(key)))).get(key);
+  // Stats built without parts (no pixel layout): the pooled rim as one plain part.
+  const parts = tone ? [] : (stats.parts ?? [{ rim: stats.rim, inner: new Map(), pixels: 0, holes: 0, outer: 0, box: null }]).map((p) => describePart(p, ink));
+  const total = parts.reduce((a, p) => a + p.rimTotal, 0);
   return Object.fromEntries(
     T.THEME_NAMES.map((name) => {
-      const bg = T.THEMES[name].colors.bg;
+      const bg = inkOf(T.THEMES[name].colors.bg);
       const light = isLight(T.THEMES[name]);
+      const where = (hex) => `${light ? "light" : "dark"} background (${ratio(T.contrast(hex, bg.hex))})`;
       if (tone) {
-        const box = T.rgbToHex(stats.paperRgb);
+        const box = T.rgbToHex(stats.backdrop);
         const message = `the logo's own ${tone} background (${box}) would show as a box: use a transparent PNG or SVG of the logo`;
-        return [name, standsOut(box, bg) >= BOX_SHOWS ? { ink: box, message } : null];
+        return [name, { clash: clarity(inkOf(box), bg) >= BOX_SHOWS ? { ink: box, part: `${tone} background (${box})`, message } : null, note: null }];
       }
-      let total = 0;
       let lost = 0;
-      let worst = null;
-      for (const [n, w] of stats.rim) {
-        total += w;
-        const hex = T.rgbToHex(unpack(n));
-        if (standsOut(hex, bg) >= 1) continue;
-        lost += w;
-        if (!worst || w > worst.w) worst = { hex, w };
+      const lostBy = new Map(); // hex -> { w, roles: Map(role -> w) }
+      let spared = 0;
+      let biggest = null; // the part with the most edge blending in while what it holds reads
+      for (const part of parts) {
+        const gone = part.rim.filter((r) => clarity(r, bg) < 1);
+        const goneW = gone.reduce((a, r) => a + r.w, 0);
+        if (!goneW) continue;
+        let reads = 0;
+        let shown = null;
+        for (const x of part.held) {
+          if (reads >= part.enough) break;
+          if (clarity(x, bg) < 1 || gone.some((r) => apart(x, r) < DIFFERENT)) continue;
+          reads += x.w;
+          shown ??= x;
+        }
+        if (reads >= part.enough) {
+          spared += goneW;
+          if (!biggest || goneW > biggest.w) biggest = { w: goneW, edge: gone.reduce((a, r) => (r.w > a.w ? r : a)), role: part.role, shown };
+          continue;
+        }
+        lost += goneW;
+        for (const r of gone) {
+          const entry = lostBy.get(r.hex) ?? lostBy.set(r.hex, { w: 0, roles: new Map() }).get(r.hex);
+          entry.w += r.w;
+          bump(entry.roles, part.role, r.w);
+        }
       }
-      if (lost < VANISH_SHARE * total) return [name, null];
-      const where = `on a ${light ? "light" : "dark"} background (${ratio(T.contrast(worst.hex, bg))})`;
-      return [name, { ink: worst.hex, message: `the logo's ${inkName(worst.hex)} would vanish ${where}: use a ${light ? "dark-on-light" : "light-on-dark"} version of the logo` }];
+      if (lost >= VANISH_SHARE * total) {
+        const [hex, { roles }] = [...lostBy].reduce((a, e) => (e[1].w > a[1].w ? e : a));
+        const part = partName(hex, [...roles].reduce((a, e) => (e[1] > a[1] ? e : a))[0]);
+        const message = `the logo's ${part} would vanish on a ${where(hex)}: use a ${light ? "dark-on-light" : "light-on-dark"} version of the logo`;
+        return [name, { clash: { ink: hex, part, message }, note: null }];
+      }
+      if (biggest && spared >= VANISH_SHARE * total) {
+        const message = `the edge of the logo's ${partName(biggest.edge.hex, biggest.role)} blends into the ${where(biggest.edge.hex)}; the ${biggest.shown.hex} inside it still reads`;
+        return [name, { clash: null, note: { ink: biggest.edge.hex, message } }];
+      }
+      return [name, { clash: null, note: null }];
     }),
   );
 };
+
+/** Per theme: { ink, part, message } saying why this logo file would not read on it, or null if it does (see judgeLogo). */
+export const logoClashes = (stats, fit = judgeLogo(stats)) => fit && Object.fromEntries(Object.entries(fit).map(([name, f]) => [name, f.clash]));
 
 /**
  * Light or dark video background for this logo, and why (base null = either
  * works). `firm`: the logo file itself demands it: its own opaque backdrop, or
  * ink that vanishes on most themes of the other base (`clashes`, from
- * logoClashes). Otherwise the accent's lightness gives a mild preference only.
+ * logoClashes). A tile or outline whose inside still reads never decides it.
+ * Otherwise the accent's lightness gives a mild preference only.
  */
 export const decideBase = (stats, accent, clashes = logoClashes(stats)) => {
   const firm = (base, why) => ({ base, why, firm: true });
@@ -735,9 +930,9 @@ export const decideBase = (stats, accent, clashes = logoClashes(stats)) => {
     return lost.length * 2 > side.length ? clashes[lost[0]] : null;
   };
   const [onLight, onDark] = [lostOn(true), lostOn(false)];
-  if (onLight && onDark) return { base: null, why: `its ${inkName(onLight.ink)} vanishes on light backgrounds and its ${inkName(onDark.ink)} on dark ones`, firm: false };
-  if (onLight) return firm("dark", `its ${inkName(onLight.ink)} would vanish on light backgrounds`);
-  if (onDark) return firm("light", `its ${inkName(onDark.ink)} would vanish on dark backgrounds`);
+  if (onLight && onDark) return { base: null, why: `its ${onLight.part} vanishes on light backgrounds and its ${onDark.part} on dark ones`, firm: false };
+  if (onLight) return firm("dark", `its ${onLight.part} would vanish on light backgrounds`);
+  if (onDark) return firm("light", `its ${onDark.part} would vanish on dark backgrounds`);
   const mild = (base, why) => ({ base, why, firm: false });
   if (accent) {
     const y = T.luminance(accent);
@@ -759,9 +954,11 @@ const QUIET = ["mono", "clean", "studio", "studio-dark", "corporate", "editorial
  * base's remaining themes come after the firm base's, however well they keep
  * the colours. Within that, most weight goes to keeping the brand colours true
  * (how far withBrand would have to move them), then to a mild base preference
- * (from the accent's lightness), then to a theme built around a similar hue.
+ * (from the accent's lightness), then to a theme built around a similar hue;
+ * a theme where only the edge of a tile or outline blends in (`notes`, from
+ * judgeLogo; its `note`) ranks a little lower than one where all of it shows.
  */
-export const recommendThemes = ({ accent, accent2, base, firm = false, clashes = null }) => {
+export const recommendThemes = ({ accent, accent2, base, firm = false, clashes = null, notes = null }) => {
   const themes = T.THEME_NAMES.map((name) => {
     const theme = T.THEMES[name];
     const light = isLight(theme);
@@ -795,9 +992,11 @@ export const recommendThemes = ({ accent, accent2, base, firm = false, clashes =
       score += fits ? 0.3 : -0.3;
       if (fits) reasons.push(`${base} base like the logo`);
     }
+    const note = notes?.[name] ?? null;
+    if (note) score -= 0.1;
     const tier = clashes?.[name] ? 2 : firm && !fits ? 1 : 0;
     const clash = clashes?.[name] ?? null;
-    return { name, score, tier, reasons, clash: clash?.message ?? null, clashInk: clash?.ink ?? null, accent: colors.accent, accent2: colors.accent2, onAccent: colors.onAccent, bg: colors.bg };
+    return { name, score, tier, reasons, clash: clash?.message ?? null, clashInk: clash?.ink ?? null, note: note?.message ?? null, accent: colors.accent, accent2: colors.accent2, onAccent: colors.onAccent, bg: colors.bg };
   });
   const order = (a, b) => a.tier - b.tier || b.score - a.score || T.THEME_NAMES.indexOf(a.name) - T.THEME_NAMES.indexOf(b.name);
   return themes.sort(order).map(({ tier: _tier, ...t }) => t);
@@ -807,24 +1006,25 @@ export const recommendThemes = ({ accent, accent2, base, firm = false, clashes =
 export const analyse = ({ colours, stats }) => {
   const palette = extractPalette(colours);
   const { accent, accent2 } = pickBrandColours(palette);
-  const clashes = logoClashes(stats);
+  const fit = judgeLogo(stats);
+  const clashes = logoClashes(stats, fit);
+  const notes = fit && Object.fromEntries(Object.entries(fit).map(([name, f]) => [name, f.note]));
   const { base, why, firm } = decideBase(stats, accent, clashes);
-  return { stats, palette, accent, accent2, base, baseWhy: why, baseFirm: firm, fitChecked: Boolean(clashes), themes: recommendThemes({ accent, accent2, base, firm, clashes }) };
+  return { stats, palette, accent, accent2, base, baseWhy: why, baseFirm: firm, fitChecked: Boolean(fit), themes: recommendThemes({ accent, accent2, base, firm, clashes, notes }) };
 };
 
 /**
  * Colour samples of an SVG read as text (svgColors), shaped like samplePixels'
- * output. Text has no pixels, so there is no rim (whether its lettering reads
- * on a theme is unknown); a paper rect covering the drawing still counts as
- * the logo's own backdrop. null if it paints nothing.
+ * output. Text has no pixels, so there is no rim and there are no parts
+ * (whether its lettering reads on a theme is unknown); a paper rect framing the
+ * drawing still counts as the logo's own backdrop. null if it paints nothing.
  */
 export const svgTextSamples = (svg) => {
   const { weights, backdrop } = svgColors(svg);
   const { colours, white, black } = separate(weights);
   const total = [...weights.values()].reduce((a, w) => a + w, 0);
   if (!total) return null;
-  const box = backdrop ? { border: 1, borderOpaque: 1, paper: 1, paperRgb: T.hexToRgb(backdrop) } : { border: 0, borderOpaque: 0, paper: 0, paperRgb: null };
-  return { colours, stats: { pixels: total, transparent: 0, white, black, ...box, rim: null } };
+  return { colours, stats: { pixels: total, transparent: 0, white, black, backdrop: backdrop ? T.hexToRgb(backdrop) : null, rim: null, parts: null } };
 };
 
 /**
@@ -1017,8 +1217,9 @@ if (isMain) {
   const logoPath = rel && !rel.startsWith("..") && !path.isAbsolute(rel) ? rel.split(path.sep).join("/") : null;
 
   if (args.json) {
-    const { themes, palette, ...rest } = result;
-    console.log(JSON.stringify({ logo: logoPath ?? logo.label, ...rest, palette: palette.map(({ hex, share, blend }) => ({ hex, share: +share.toFixed(3), blend })), themes: themes.map((t) => ({ ...t, score: +t.score.toFixed(3) })) }, null, 2));
+    const { themes, palette, stats, ...rest } = result;
+    const { rim: _rim, parts: _parts, ...counts } = stats; // per-pixel detail, not data for a reader
+    console.log(JSON.stringify({ logo: logoPath ?? logo.label, ...rest, stats: counts, palette: palette.map(({ hex, share, blend }) => ({ hex, share: +share.toFixed(3), blend })), themes: themes.map((t) => ({ ...t, score: +t.score.toFixed(3) })) }, null, 2));
   } else {
     const s = result.stats;
     const pct = (n) => `${Math.round((100 * n) / (s.pixels || 1))}%`;
@@ -1043,6 +1244,7 @@ if (isMain) {
     result.themes.slice(0, 3).forEach((t, i) => {
       console.log(`  ${i + 1}. ${c.bold(t.name.padEnd(11))} ${t.reasons.join("; ")}.`);
       if (t.clash) console.log(c.yellow(`     ⚠ ${t.clash}.`));
+      else if (t.note) console.log(c.dim(`     ℹ ${t.note}.`));
       const colours = ` Accent ${t.accent} (${ratio(T.contrast(t.accent, t.bg))} on its background) · button text ${t.onAccent} · accent2 ${t.accent2}.`;
       console.log(c.dim(`     ${T.THEMES[t.name].description}`) + (result.accent ? c.dim(colours) : ""));
     });
@@ -1079,9 +1281,10 @@ if (isMain) {
       for (const ch of T.resolveBrand(T.THEMES[name], brand).changes) say(c.dim(`  ℹ With theme ${name}: `) + ch.message);
       const rank = result.themes.findIndex((t) => t.name === name);
       const top = result.themes.filter((t) => !t.clash).slice(0, 3).map((t) => `"${t.name}"`).join(" / ");
-      const { clash } = result.themes[rank];
+      const { clash, note } = result.themes[rank];
       if (clash) say(c.yellow(`  ⚠ Theme ${name}: ${clash}${top ? `, or switch to theme ${top}` : ""}.`));
-      else if (rank > 2) say(c.dim(`  Theme ${name} ranks ${rank + 1}/10 for this logo; consider ${top}.`));
+      else if (note) say(c.dim(`  ℹ Theme ${name}: ${note}.`));
+      if (!clash && rank > 2) say(c.dim(`  Theme ${name} ranks ${rank + 1}/10 for this logo; consider ${top}.`));
     }
   } else if (!args.json) {
     console.log(c.dim(`\nWrite these into a spec: npm run brand -- ${logo.abs ? logo.label : "<logo>"} --spec specs/<name>.json`));

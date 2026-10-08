@@ -76,7 +76,8 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
   // --- logo files on this theme ------------------------------------------------
   // "logo" scenes draw the file as is, straight on the background. brand.mjs
   // reads its pixels in memory: ink that would vanish on this theme, or an
-  // opaque backdrop that would show as a box, is worth a warning.
+  // opaque backdrop that would show as a box, is worth a warning; a tile or
+  // outline whose edge blends in while its inside still reads, a note.
   const logoFits = new Map();
   const logoFit = async (src) => {
     if (!src) return null;
@@ -86,11 +87,16 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
   const clashOf = (fit, name) => fit?.themes.find((t) => t.name === name)?.clash ?? null;
   for (const src of new Set(plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src).map((s) => s.scene.src))) {
     const fit = await logoFit(src);
-    const clash = clashOf(fit, theme.name);
-    if (!clash) continue;
-    const alt = fit.themes.filter((t) => !t.clash).slice(0, 3).map((t) => t.name);
     const scenes = plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src === src).map((s) => s.index + 1);
-    warnings.push(`Logo "${src.startsWith("data:") ? "data: URL" : src}" (scene ${scenes.join(", ")}) on theme ${theme.name}: ${clash}${alt.length ? `, or use theme ${alt.join(" / ")}` : ""}.`);
+    const where = `Logo "${src.startsWith("data:") ? "data: URL" : src}" (scene ${scenes.join(", ")}) on theme ${theme.name}`;
+    const clash = clashOf(fit, theme.name);
+    if (!clash) {
+      const note = fit?.themes.find((t) => t.name === theme.name)?.note;
+      if (note) notes.push(`${where}: ${note}.`);
+      continue;
+    }
+    const alt = fit.themes.filter((t) => !t.clash).slice(0, 3).map((t) => t.name);
+    warnings.push(`${where}: ${clash}${alt.length ? `, or use theme ${alt.join(" / ")}` : ""}.`);
   }
 
   // --- brand colours --------------------------------------------------------
