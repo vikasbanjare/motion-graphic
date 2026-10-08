@@ -1,13 +1,19 @@
 // npm test  (or: node --test scripts/test-brand.mjs)
 // Brand colours: colour maths, withBrand/resolveBrand guarantees, k-means and
-// palette picking, theme recommendation and spec writing. Every image here is a
-// synthetic pixel array built in memory; no image file is read or written.
+// palette picking, theme recommendation, spec writing and the CLI's error paths.
+// Every image here is a synthetic pixel array or SVG text held in memory; no
+// image file is read or written (the CLI test writes one temp spec, then removes it).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const T = await import("../src/engine/themes.ts");
 const B = await import("./brand.mjs");
+const KIT = fileURLToPath(new URL("..", import.meta.url));
 
 /** Deterministic pseudo-random numbers (mulberry32). */
 const rng = (seed) => () => {
@@ -510,6 +516,41 @@ test("nextBrand drops a stale accent2 and leaves colours alone for monochrome lo
   // Odd formatting still produces valid JSON.
   const out = B.setBrandInText(`{"theme":"neon","scenes":[]}`, { accent: "#C6FF3D" });
   assert.deepEqual(JSON.parse(out), { theme: "neon", brand: { accent: "#C6FF3D" }, scenes: [] });
+});
+
+test("brandChanged ignores key order and treats a missing brand as empty", () => {
+  // Monochrome logo outside public/ on a spec with no brand: nothing to write.
+  assert.equal(B.brandChanged(undefined, B.nextBrand(undefined, { accent: null, accent2: null, logo: null })), false);
+  assert.equal(B.brandChanged({ handle: "@x", accent: "#E4002B" }, { accent: "#E4002B", handle: "@x" }), false);
+  assert.equal(B.brandChanged(undefined, { logo: "brand/x.png" }), true);
+  assert.equal(B.brandChanged({ accent: "#111111", accent2: "#222222" }, { accent: "#111111" }), true);
+});
+
+// --- CLI ---------------------------------------------------------------------------
+
+const cli = (args, input) => spawnSync(process.execPath, ["scripts/brand.mjs", ...args], { cwd: KIT, input, encoding: "utf8" });
+
+test("CLI: a folder instead of a logo file is a friendly error, not a stack trace", () => {
+  const r = cli(["public"]);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /Could not read public \(it is a folder, not an image file\)/);
+  assert.doesNotMatch(r.stderr, /EISDIR|\n\s+at /);
+});
+
+test("CLI: a monochrome logo leaves a spec without a brand block untouched", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "brand-test-"));
+  try {
+    const spec = path.join(dir, "x.json");
+    const text = `{\n  "theme": "mono",\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`;
+    fs.writeFileSync(spec, text);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#000"/></svg>`;
+    const r = cli(["-", "--spec", spec], svg);
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /brand already up to date/);
+    assert.equal(fs.readFileSync(spec, "utf8"), text);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 // --- decoding (in memory) ----------------------------------------------------------

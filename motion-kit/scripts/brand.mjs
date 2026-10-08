@@ -530,6 +530,12 @@ export const nextBrand = (current = {}, { accent, accent2, logo }) => {
   return Object.fromEntries(Object.entries(brand).sort(([a], [b]) => rank(a) - rank(b)));
 };
 
+/** Whether writing `next` changes the spec's brand (key order aside; no brand = {}). */
+export const brandChanged = (current, next) => {
+  const norm = (o) => JSON.stringify(Object.entries(o ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
+  return norm(current) !== norm(next);
+};
+
 // --- CLI ---------------------------------------------------------------------------
 
 const swatch = (hex) => {
@@ -545,7 +551,14 @@ const read = (file) => {
     console.error(c.red(`Logo not found: ${file}`));
     process.exit(1);
   }
-  const buf = fs.readFileSync(abs ?? 0);
+  let buf;
+  try {
+    buf = fs.readFileSync(abs ?? 0);
+  } catch (e) {
+    const why = e.code === "EISDIR" ? "it is a folder, not an image file" : (e.code ?? e.message);
+    console.error(c.red(`Could not read ${file} (${why}).`) + " Point at the logo file itself: a PNG, JPG, WebP, GIF or SVG.");
+    process.exit(1);
+  }
   const label = abs ? path.relative(process.cwd(), abs) : "stdin";
   const type = sniff(buf);
   const pixels = decodeImage(buf, type);
@@ -600,7 +613,8 @@ if (isMain) {
   if (args.spec) {
     const { abs, spec } = readSpec(args.spec);
     const brand = nextBrand(spec.brand, { accent: result.accent, accent2: result.accent2, logo: logoPath });
-    fs.writeFileSync(abs, setBrandInText(fs.readFileSync(abs, "utf8"), brand));
+    // Nothing new (e.g. a monochrome logo outside public/): leave the file alone.
+    if (brandChanged(spec.brand, brand)) fs.writeFileSync(abs, setBrandInText(fs.readFileSync(abs, "utf8"), brand));
     const say = args.json ? (s) => console.error(s) : (s) => console.log(s);
     const wrote = ["accent", "accent2", "logo"].filter((k) => brand[k] !== undefined && brand[k] !== spec.brand?.[k]).map((k) => `brand.${k} ${brand[k]}`);
     say(c.green(`\n✔ ${args.spec}: `) + (wrote.length ? `wrote ${wrote.join(", ")}` : "brand already up to date") + ".");
