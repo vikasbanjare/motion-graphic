@@ -1,13 +1,21 @@
 // npm test  (or: node --test scripts/test-brand.mjs)
 // Brand colours: colour maths, withBrand/resolveBrand guarantees, k-means and
-// palette picking, theme recommendation and spec writing. Every image here is a
-// synthetic pixel array built in memory; no image file is read or written.
+// palette picking, theme recommendation, spec writing, brand.logo in "logo"
+// scenes and the CLI's error paths.
+// Every image here is a synthetic pixel array or SVG text held in memory; no
+// image file is read or written (the CLI test writes one temp spec, then removes it).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import zlib from "node:zlib";
 
 const T = await import("../src/engine/themes.ts");
 const B = await import("./brand.mjs");
+const KIT = fileURLToPath(new URL("..", import.meta.url));
 
 /** Deterministic pseudo-random numbers (mulberry32). */
 const rng = (seed) => () => {
@@ -18,14 +26,49 @@ const rng = (seed) => () => {
 };
 const close = (a, b, eps, msg) => assert.ok(Math.abs(a - b) <= eps, `${msg ?? ""} ${a} vs ${b} (±${eps})`);
 
-/** RGBA canvas filled with `bg`, plus a box painter. */
+/** RGBA canvas filled with `bg`, plus painters: boxes, rounded boxes, discs and rings. */
 const canvas = (w, h, bg = [0, 0, 0, 0]) => {
   const px = new Uint8Array(w * h * 4);
   for (let i = 0; i < w * h; i++) px.set(bg, i * 4);
   const box = (x, y, bw, bh, rgba) => {
     for (let yy = y; yy < y + bh; yy++) for (let xx = x; xx < x + bw; xx++) px.set(rgba, (yy * w + xx) * 4);
   };
-  return { px, box, w, h };
+  /** Every pixel whose centre is `inside`. */
+  const paint = (inside, rgba) => {
+    for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) if (inside(xx + 0.5, yy + 0.5)) px.set(rgba, (yy * w + xx) * 4);
+  };
+  /** A box with corners rounded to radius r. */
+  const round = (x, y, bw, bh, r, rgba) =>
+    paint((X, Y) => {
+      const [cx, cy] = [Math.min(Math.max(X, x + r), x + bw - r), Math.min(Math.max(Y, y + r), y + bh - r)];
+      return X >= x && X <= x + bw && Y >= y && Y <= y + bh && (X - cx) ** 2 + (Y - cy) ** 2 <= r * r;
+    }, rgba);
+  /** A disc of radius r, or a ring `width` thick. */
+  const disc = (cx, cy, r, rgba, width = r) =>
+    paint((X, Y) => {
+      const d = Math.hypot(X - cx, Y - cy);
+      return d <= r && d >= r - width;
+    }, rgba);
+  return { px, box, paint, round, disc, w, h };
+};
+
+/** PNG bytes of a canvas, encoded in memory (8-bit RGBA, no filter): for decoder and check() tests. */
+const pngOf = ({ px, w, h }) => {
+  const chunk = (type, data) => {
+    const head = Buffer.alloc(4);
+    head.writeUInt32BE(data.length);
+    const body = Buffer.concat([Buffer.from(type, "latin1"), data]);
+    const crc = Buffer.alloc(4);
+    crc.writeUInt32BE(zlib.crc32(body));
+    return Buffer.concat([head, body, crc]);
+  };
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(w, 0);
+  ihdr.writeUInt32BE(h, 4);
+  ihdr.set([8, 6, 0, 0, 0], 8); // 8 bits, RGBA
+  const rows = Buffer.alloc(h * (w * 4 + 1));
+  for (let y = 0; y < h; y++) rows.set(px.subarray(y * w * 4, (y + 1) * w * 4), y * (w * 4 + 1) + 1);
+  return Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), chunk("IHDR", ihdr), chunk("IDAT", zlib.deflateSync(rows)), chunk("IEND", Buffer.alloc(0))]);
 };
 const rgba = (hex, a = 255) => [...T.hexToRgb(hex), a];
 
@@ -122,6 +165,8 @@ const assertReads = (theme, r, label) => {
   assert.deepEqual(r.errors, [], label);
   for (const f of ["text", "bg", "surface", "line", "muted", "onMark"]) assert.equal(k[f], t[f], `${label}: ${f} must not change`);
   assert.ok(T.contrast(k.accent, k.bg) >= 3, `${label}: accent ${k.accent} on bg ${T.contrast(k.accent, k.bg)}`);
+  // Kicker pills and the Compare hero card draw the accent as text on surface.
+  assert.ok(T.contrast(k.accent, k.surface) >= 3, `${label}: accent ${k.accent} on surface ${T.contrast(k.accent, k.surface)}`);
   assert.ok(T.contrast(k.accent, k.onAccent) >= 4.5, `${label}: onAccent ${k.onAccent} on ${k.accent}`);
   const darkInk = T.luminance(t.text) < T.luminance(t.bg) ? t.text : t.bg;
   assert.ok([t.onAccent, "#FFFFFF", darkInk].includes(k.onAccent), `${label}: onAccent ${k.onAccent} is theme ink or white`);
@@ -156,6 +201,7 @@ test("the themes themselves follow the colour rules brand colours are held to", 
     assert.ok(T.contrast(k.text, k.bg) >= 7, `${name} text`);
     assert.ok(T.contrast(k.muted, k.bg) >= 4.5, `${name} muted`);
     assert.ok(T.contrast(k.accent, k.bg) >= 3, `${name} accent`);
+    assert.ok(T.contrast(k.accent, k.surface) >= 3, `${name} accent on surface`);
     assert.ok(T.contrast(k.accent, k.onAccent) >= 4.5, `${name} onAccent`);
     assert.ok(T.contrast(k.accent2, k.bg) >= 3, `${name} accent2`);
     assert.ok(T.contrast(k.accent2, k.onAccent) >= 3, `${name} glyph on accent2`);
@@ -170,7 +216,7 @@ test("every brand accent on every theme ends up readable, text/bg untouched", ()
       const r = T.resolveBrand(theme, { accent: accent.toLowerCase() });
       assertReads(theme, r, `${name} + ${accent}`);
       // A colour that already reads is kept to the hex.
-      const passes = T.contrast(accent, theme.colors.bg) >= 3 && [theme.colors.onAccent, "#FFFFFF", theme.colors.text, theme.colors.bg].some((x) => T.contrast(accent, x) >= 4.5);
+      const passes = T.contrast(accent, theme.colors.bg) >= 3 && T.contrast(accent, theme.colors.surface) >= 3 && [theme.colors.onAccent, "#FFFFFF", theme.colors.text, theme.colors.bg].some((x) => T.contrast(accent, x) >= 4.5);
       if (passes && T.contrast(accent, theme.colors.onAccent) >= 4.5) assert.equal(r.theme.colors.accent, accent, `${name} keeps ${accent}`);
     }
   }
@@ -186,6 +232,37 @@ test("brand accent + accent2 pairs also read on every theme", () => {
       assertReads(T.THEMES[name], T.resolveBrand(T.THEMES[name], { accent2 }), `${name} + accent2 ${accent2}`);
     }
   }
+});
+
+test("random brand colours (fuzz) read on every theme, alone and in pairs", () => {
+  const r0 = rng(29);
+  const hex = () => T.rgbToHex([r0() * 255, r0() * 255, r0() * 255]);
+  for (const name of T.THEME_NAMES) {
+    const theme = T.THEMES[name];
+    for (let i = 0; i < 150; i++) {
+      const [accent, accent2] = [hex(), hex()];
+      assertReads(theme, T.resolveBrand(theme, { accent }), `${name} + ${accent}`);
+      assertReads(theme, T.resolveBrand(theme, { accent, accent2 }), `${name} + ${accent}/${accent2}`);
+    }
+  }
+});
+
+test("a deep brand accent lifted on a dark theme also reads on its cards", () => {
+  // Navy on dark themes: 3:1 on bg alone left it ~2.6:1 in kicker pills (surface).
+  for (const name of ["midnight", "desi", "studio-dark", "neon", "mono"]) {
+    const theme = T.THEMES[name];
+    const r = T.resolveBrand(theme, { accent: "#0D23A9" });
+    const fixed = r.theme.colors.accent;
+    assertReads(theme, r, `${name} + #0D23A9`);
+    close(T.hueDelta(T.hexToOklch(fixed).h, T.hexToOklch("#0D23A9").h), 0, 6, `${name} navy hue kept`);
+    // Nearest: one step back towards the brand's own lightness fails on surface.
+    const { l, c, h } = T.hexToOklch(fixed);
+    assert.ok(T.contrast(T.oklchToHex({ l: l - 0.004, c, h }), theme.colors.surface) < 3, `${name}: ${fixed} is the nearest`);
+    assert.match(r.changes[0].message, new RegExp(`lightened to ${fixed} .* on the ${name} background and cards, needs 3:1`));
+  }
+  // corporate's surface is darker than its white page, so it binds for pale brands.
+  const corp = T.resolveBrand(T.THEMES.corporate, { accent: "#AA9B94" }).theme.colors;
+  assert.ok(T.contrast(corp.accent, T.THEMES.corporate.colors.surface) >= 3, `corporate ${corp.accent} on surface`);
 });
 
 test("adjustments keep the brand hue and are reported", () => {
@@ -314,7 +391,50 @@ test("samplePixels drops transparency and counts near-white / near-black separat
   assert.equal(stats.black, 50);
   assert.equal(stats.white, 25);
   assert.deepEqual([...colours], [[0xe4002b, 100]]);
-  assert.equal(stats.borderOpaque, 0);
+  assert.equal(stats.backdrop, null);
+  // Four opaque parts, each with its own box; the faint one is not one.
+  assert.deepEqual(stats.parts.map((p) => [p.pixels, p.box]), [[100, [2, 2, 11, 11]], [50, [15, 2, 24, 6]], [25, [30, 2, 34, 6]]]);
+});
+
+test("samplePixels: the rim is the ink that meets the backdrop, not what the logo encloses", () => {
+  // A red app icon with a white glyph inside, on transparency.
+  const { px, box, w, h } = canvas(20, 20);
+  box(2, 2, 16, 16, rgba("#E4002B"));
+  box(7, 7, 6, 6, rgba("#FFFFFF"));
+  const { stats } = B.samplePixels(px, w, h);
+  assert.deepEqual([...stats.rim], [[0xe4002b, 4 * 16 - 4]], "only the red outline touches transparency");
+  // One part: its rim is red, the white glyph is inside it.
+  assert.equal(stats.parts.length, 1);
+  assert.deepEqual([...stats.parts[0].rim], [[0xe4002b, 60]]);
+  assert.deepEqual([...stats.parts[0].inner].sort(), [[0xe4002b, 16 * 16 - 60 - 36], [0xffffff, 36]].sort());
+  assert.equal(stats.parts[0].outer, 60);
+  // The image edge counts as backdrop too (a tightly cropped logo). A frame that
+  // is a colour (navy) is not paper: no backdrop.
+  const full = canvas(10, 4, rgba("#1D3557"));
+  const edge = B.samplePixels(full.px, full.w, full.h).stats;
+  assert.equal(edge.rim.get(0x1d3557), 2 * 10 + 2 * 2);
+  assert.equal(edge.backdrop, null);
+  // Cream paper is: its mean colour is measured.
+  const cream = canvas(10, 4, rgba("#FDF6E3"));
+  assert.deepEqual(B.samplePixels(cream.px, cream.w, cream.h).stats.backdrop, T.hexToRgb("#FDF6E3"));
+});
+
+test("samplePixels: holes a part encloses, and the parts lying in them", () => {
+  // A white ring with a red square inside its hole, and an "O"-like dark ring beside it.
+  const { px, box, w, h } = canvas(40, 20);
+  box(1, 1, 18, 18, rgba("#FFFFFF"));
+  box(3, 3, 14, 14, [0, 0, 0, 0]);
+  box(7, 7, 6, 6, rgba("#E4002B"));
+  box(24, 4, 10, 10, rgba("#222222"));
+  box(26, 6, 6, 6, [0, 0, 0, 0]);
+  const { parts } = B.samplePixels(px, w, h).stats;
+  const [ring, o, glyph] = parts; // in raster order of their first pixel
+  assert.equal(ring.holes, 14 * 14 - 36);
+  assert.deepEqual([...ring.islands], [[0xe4002b, 36]], "the red square lies in the ring's hole");
+  assert.equal(ring.outer, 4 * 18 - 4, "the outer rim leaves out the hole's edge");
+  assert.equal(glyph.holes, 0);
+  assert.equal(o.holes, 36);
+  assert.equal(o.islands.size, 0);
 });
 
 /** A two-colour logo on transparency with anti-aliased (blended) edges and dark lettering. */
@@ -337,8 +457,10 @@ test("palette: exact flat colours, accent = most saturated, accent2 = next", () 
   close(palette.reduce((a, p) => a + p.share, 0), 1, 1e-9, "shares sum to 1");
   assert.deepEqual(B.pickBrandColours(palette), { accent: "#E4002B", accent2: "#1D3557" });
   const result = B.analyse({ colours, stats });
+  // Its navy and near-black parts touch the backdrop and would vanish on dark themes.
   assert.equal(result.base, "light");
-  assert.match(result.baseWhy, /dark lettering/);
+  assert.ok(result.baseFirm);
+  assert.match(result.baseWhy, /would vanish on dark backgrounds/);
 });
 
 test("blends of two colours (or a colour and white / black) are spotted", () => {
@@ -369,16 +491,49 @@ test("palette: a monochrome logo has no brand accent and gets quiet themes", () 
   for (const t of result.themes.slice(0, 3)) assert.ok(["mono", "clean", "studio", "studio-dark", "corporate", "editorial"].includes(t.name), t.name);
 });
 
-test("base: opaque backgrounds, ink colour and accent lightness decide light vs dark", () => {
-  const stats = { pixels: 100, transparent: 0, white: 0, black: 0, border: 40, borderOpaque: 40 };
-  assert.equal(B.decideBase({ ...stats, borderLum: 0.95 }, null).base, "light");
-  assert.equal(B.decideBase({ ...stats, borderLum: 0.01 }, null).base, "dark");
-  const clear = { pixels: 100, transparent: 60, white: 0, black: 0, border: 40, borderOpaque: 0, borderLum: 0 };
-  assert.equal(B.decideBase({ ...clear, white: 20 }, null).base, "dark");
-  assert.equal(B.decideBase({ ...clear, black: 20 }, null).base, "light");
-  assert.equal(B.decideBase(clear, "#C6FF3D").base, "dark");
-  assert.equal(B.decideBase(clear, "#1D3557").base, "light");
-  assert.equal(B.decideBase(clear, "#E4002B").base, null);
+/** In-memory logo: `draw` paints boxes on a transparent (or `bg`) 96×48 canvas; returns samplePixels' output. */
+const logoPixels = (draw, bg) => {
+  const cv = canvas(96, 48, bg);
+  draw(cv.box);
+  return B.samplePixels(cv.px, cv.w, cv.h);
+};
+
+test("standsOut: lightness contrast and colour difference both make ink read", () => {
+  const bgOf = (n) => T.THEMES[n].colors.bg;
+  // A vivid yellow mark reads on white at ~1.5:1; navy or charcoal lettering on near-black does not at ~1.6:1.
+  for (const n of ["clean", "studio", "corporate", "editorial"]) assert.ok(B.standsOut("#FFC20E", bgOf(n)) >= 1, n);
+  for (const n of ["midnight", "neon", "desi", "mono", "studio-dark"]) {
+    for (const ink of ["#111111", "#222222", "#2B2B2B", "#333333", "#1D3557"]) assert.ok(B.standsOut(ink, bgOf(n)) < 1, `${ink} on ${n}`);
+    assert.ok(B.standsOut("#FFFFFF", bgOf(n)) >= 1 && B.standsOut("#E4002B", bgOf(n)) >= 1, n);
+  }
+  assert.ok(B.standsOut("#FFC20E", bgOf("pop")) < 1, "yellow on pop's yellow");
+  assert.ok(B.standsOut("#FFFFFF", bgOf("clean")) < 1, "white on off-white");
+  assert.ok(B.standsOut("#0D23A9", bgOf("midnight")) >= 1, "a vivid deep blue still reads on dark");
+});
+
+test("base: opaque backgrounds, ink that meets the backdrop and accent lightness decide light vs dark", () => {
+  const white = logoPixels((box) => box(20, 10, 56, 28, rgba("#C6FF3D")), rgba("#FFFFFF")).stats;
+  const black = logoPixels((box) => box(20, 10, 56, 28, rgba("#C6FF3D")), rgba("#050505")).stats;
+  const whiteInk = logoPixels((box) => box(10, 10, 76, 20, rgba("#FFFFFF"))).stats;
+  const darkInk = logoPixels((box) => box(10, 10, 76, 20, rgba("#2B2B2B"))).stats;
+  const red = logoPixels((box) => box(10, 10, 76, 20, rgba("#E4002B"))).stats;
+  assert.deepEqual(B.decideBase(white, null), { base: "light", why: "the logo sits on a light background", firm: true });
+  assert.equal(B.decideBase(black, null).base, "dark");
+  assert.deepEqual(B.decideBase(whiteInk, null), { base: "dark", why: "its white lettering (#FFFFFF) would vanish on light backgrounds", firm: true });
+  assert.deepEqual(B.decideBase(darkInk, null), { base: "light", why: "its dark lettering (#2B2B2B) would vanish on dark backgrounds", firm: true });
+  // Ink that reads everywhere leaves a mild hint from the accent's lightness only.
+  assert.deepEqual(B.decideBase(red, "#C6FF3D"), { base: "dark", why: "its main colour #C6FF3D is light and glows on dark", firm: false });
+  assert.equal(B.decideBase(red, "#1D3557").base, "light");
+  assert.equal(B.decideBase(red, "#E4002B").base, null);
+  assert.ok(Object.values(B.logoClashes(red)).every((x) => x === null));
+  // What goes wrong, theme by theme.
+  const box = B.logoClashes(white);
+  for (const n of ["midnight", "neon", "desi", "mono", "studio-dark", "pop"]) assert.match(box[n].message, /own light background \(#FFFFFF\) would show as a box: use a transparent PNG or SVG/, n);
+  for (const n of ["clean", "studio", "corporate", "editorial"]) assert.equal(box[n], null, `a white box blends into ${n}`);
+  assert.equal(B.logoClashes(darkInk).midnight.message, "the logo's dark lettering (#2B2B2B) would vanish on a dark background (1.4:1): use a light-on-dark version of the logo");
+  // Unknown (an SVG read as text has no rim): no clash, no firm base.
+  assert.equal(B.logoClashes({ ...red, rim: null }), null);
+  assert.equal(B.decideBase({ ...red, rim: null }, null).firm, false);
 });
 
 test("theme recommendation: keeps the brand colour true and matches the base", () => {
@@ -394,6 +549,375 @@ test("theme recommendation: keeps the brand colour true and matches the base", (
   // Pale yellow cannot stay itself on a light theme: dark themes win.
   const pale = B.recommendThemes({ accent: "#FFE14D", accent2: null, base: null });
   assert.ok(T.luminance(T.THEMES[pale[0].name].colors.bg) < 0.5, pale[0].name);
+  // A mild base (from the accent alone) only nudges: nothing is ruled out.
+  assert.ok(B.recommendThemes({ accent: "#1D3557", accent2: null, base: "light" }).every((t) => t.clash === null));
+});
+
+const isLightTheme = (name) => T.luminance(T.THEMES[name].colors.bg) > 0.5;
+/** Transparent logo: a coloured mark plus a wordmark in `ink`. */
+const markAndWordmark = (mark, ink) => {
+  const { px, box, w, h } = canvas(96, 48);
+  box(4, 4, 30, 30, rgba(mark));
+  box(40, 12, 50, 16, rgba(ink));
+  return B.analyse(B.samplePixels(px, w, h));
+};
+
+test("theme recommendation: whether the logo file reads outranks colour fidelity", () => {
+  // Black wordmark + yellow mark: yellow stays truest on dark themes, but the
+  // wordmark would vanish there (#111111 on midnight is ~1.05:1).
+  const ink = markAndWordmark("#FFC20E", "#111111");
+  assert.equal(ink.accent, "#FFC20E");
+  assert.equal(ink.base, "light");
+  assert.ok(ink.baseFirm && ink.fitChecked);
+  const names = ink.themes.map((t) => t.name).join();
+  assert.deepEqual(ink.themes.slice(0, 4).map((t) => isLightTheme(t.name) && t.clash === null), [true, true, true, true], names);
+  for (const t of ink.themes.slice(4)) {
+    if (t.name === "pop") assert.match(t.clash, /the logo's #FFC20E parts would vanish on a light background \(1\.2:1\)/, "yellow mark on pop's yellow");
+    else assert.match(t.clash, /dark lettering \(#111111\) would vanish on a dark background \(1\.\d:1\): use a light-on-dark version of the logo/, t.name);
+  }
+  // The yellow is darkened to read on the light winner, never left unreadable.
+  assert.ok(T.contrast(ink.themes[0].accent, ink.themes[0].bg) >= 3);
+
+  // White wordmark + deep blue mark: the mirror case. pop keeps the white
+  // lettering just readable, so it is not ruled out, but dark themes come first.
+  const white = markAndWordmark("#0D23A9", "#FFFFFF");
+  assert.equal(white.base, "dark");
+  assert.ok(white.themes.slice(0, 5).every((t) => !isLightTheme(t.name) && t.clash === null), white.themes.map((t) => t.name).join());
+  assert.equal(white.themes[5].name, "pop");
+  assert.equal(white.themes[5].clash, null);
+  for (const t of white.themes.slice(6)) assert.match(t.clash, /white lettering \(#FFFFFF\) would vanish on a light background/, t.name);
+
+  // An opaque white backdrop (e.g. a JPG logo) would be a white box on dark themes.
+  const { px, box, w, h } = canvas(96, 48, rgba("#FFFFFF"));
+  box(20, 10, 56, 28, rgba("#C6FF3D"));
+  const boxed = B.analyse(B.samplePixels(px, w, h));
+  assert.equal(boxed.base, "light");
+  assert.ok(isLightTheme(boxed.themes[0].name), boxed.themes[0].name);
+  assert.match(boxed.themes[9].clash, /show as a box/);
+});
+
+test("theme recommendation: charcoal, grey and navy wordmarks rule out dark themes too", () => {
+  for (const wordmark of ["#222222", "#2B2B2B", "#333333", "#1D3557"]) {
+    const r = markAndWordmark("#FFC20E", wordmark);
+    const names = r.themes.map((t) => `${t.name}${t.clash ? "!" : ""}`).join();
+    assert.equal(r.base, "light", wordmark);
+    assert.ok(r.baseFirm, wordmark);
+    for (const t of r.themes.slice(0, 3)) assert.ok(isLightTheme(t.name) && !t.clash, `${wordmark}: ${names}`);
+    for (const n of ["midnight", "neon", "desi", "mono", "studio-dark"]) {
+      const t = r.themes.find((x) => x.name === n);
+      assert.ok(t.clash?.includes(`(${wordmark})`) || t.clash?.includes(`${wordmark} parts`), `${wordmark} on ${n}: ${t.clash}`);
+      assert.ok(T.contrast(wordmark, t.bg) < 1.7, "the clash is real");
+    }
+  }
+});
+
+test("theme recommendation: ink the logo encloses does not decide the base", () => {
+  // A red app icon with a white glyph inside reads on every theme.
+  const icon = B.analyse(
+    logoPixels((box) => {
+      box(24, 4, 40, 40, rgba("#E4002B"));
+      box(36, 14, 16, 20, rgba("#FFFFFF"));
+    }),
+  );
+  assert.equal(icon.baseFirm, false);
+  assert.ok(icon.themes.every((t) => t.clash === null), icon.themes.map((t) => t.clash).join());
+  // A yellow badge with black text reads everywhere: on pop's yellow only its
+  // edge blends in, while the black text on it still reads (a note, not a clash).
+  const badge = B.analyse(
+    logoPixels((box) => {
+      box(8, 8, 80, 32, rgba("#FFC20E"));
+      box(20, 18, 56, 12, rgba("#111111"));
+    }),
+  );
+  assert.equal(badge.baseFirm, false);
+  assert.ok(badge.themes.every((t) => t.clash === null), badge.themes.map((t) => t.clash).join());
+  assert.deepEqual(badge.themes.filter((t) => t.note).map((t) => t.name), ["pop"]);
+  assert.equal(clashOn(badge, "pop"), null);
+  assert.equal(badge.themes.find((t) => t.name === "pop").note, "the edge of the logo's #FFC20E tile blends into the light background (1.2:1); the #111111 inside it still reads");
+});
+
+const DARK = ["midnight", "neon", "desi", "mono", "studio-dark"];
+/** The dark themes a black box blends into (desi's deep violet sets it apart). */
+const NEAR_BLACK = ["midnight", "neon", "mono", "studio-dark"];
+const LIGHT = ["clean", "studio", "corporate", "editorial"];
+const clashOn = (r, name) => r.themes.find((t) => t.name === name).clash;
+const noteOn = (r, name) => r.themes.find((t) => t.name === name).note;
+/** A full-bleed opaque square in `fill` (no transparency anywhere) with a `glyph` inside it. */
+const fullBleed = (fill, glyph) => {
+  const { px, box, w, h } = canvas(64, 64, rgba(fill));
+  box(20, 14, 24, 36, rgba(glyph));
+  return B.analyse(B.samplePixels(px, w, h));
+};
+
+test("a full-bleed coloured tile is the mark (an app icon), not a box around the logo", () => {
+  for (const fill of ["#612BD3", "#1D3557", "#FFC20E"]) {
+    const tile = fullBleed(fill, "#FFFFFF");
+    assert.equal(tile.accent, fill);
+    assert.doesNotMatch(tile.baseWhy, /sits on/, fill);
+    for (const t of tile.themes) assert.doesNotMatch(t.clash ?? "", /box|transparent PNG/, `${fill} on ${t.name}`);
+    // The best themes never carry a warning: there is always a theme this logo file reads on.
+    for (const t of tile.themes.slice(0, 3)) assert.equal(t.clash, null, `${fill}: ${t.name}`);
+  }
+  // Violet reads on every background, the near-black, violet-glow and indigo dark ones included.
+  const violet = fullBleed("#612BD3", "#FFFFFF");
+  assert.ok(violet.themes.every((t) => t.clash === null), violet.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  assert.equal(violet.baseFirm, false);
+  // Yellow and navy read on every theme too. Where the tile's colour meets its
+  // own (pop's yellow; navy on near-black, 1.6:1) only the tile's edge blends
+  // in: the white glyph on it still reads, so that is a note, never a clash or
+  // a firm base. A tile is never called lettering.
+  const yellow = fullBleed("#FFC20E", "#FFFFFF");
+  assert.ok(yellow.themes.every((t) => t.clash === null), yellow.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  assert.equal(noteOn(yellow, "pop"), "the edge of the logo's #FFC20E tile blends into the light background (1.2:1); the #FFFFFF inside it still reads");
+  const navy = fullBleed("#1D3557", "#FFFFFF");
+  assert.ok(navy.themes.every((t) => t.clash === null), navy.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+  for (const n of DARK) assert.match(noteOn(navy, n), /^the edge of the logo's #1D3557 tile blends into the dark background \(1\.\d:1\); the #FFFFFF inside it still reads$/, n);
+  for (const n of LIGHT) assert.equal(noteOn(navy, n), null, n);
+  assert.equal(navy.baseFirm, false);
+  // With the base only a mild hint (navy is deep), the themes the whole tile shows on come first.
+  for (const t of navy.themes.slice(0, 3)) assert.ok(isLightTheme(t.name), t.name);
+});
+
+test("a white, cream or black full-bleed backdrop is paper: it shows as a box where it stands out", () => {
+  for (const paper of ["#FFFFFF", "#FDF6E3", "#F5F5DC"]) {
+    const sheet = fullBleed(paper, "#612BD3");
+    assert.deepEqual([sheet.base, sheet.baseFirm, sheet.baseWhy], ["light", true, "the logo sits on a light background"], paper);
+    for (const n of DARK) assert.equal(clashOn(sheet, n), `the logo's own light background (${paper}) would show as a box: use a transparent PNG or SVG of the logo`, `${paper} on ${n}`);
+    for (const n of LIGHT) assert.equal(clashOn(sheet, n), null, `${paper} on ${n}`);
+  }
+  const black = fullBleed("#111111", "#FFC20E");
+  assert.deepEqual([black.base, black.baseFirm], ["dark", true]);
+  for (const n of LIGHT) assert.match(clashOn(black, n), /own dark background \(#111111\) would show as a box/, n);
+  // JPEG noise and a coloured mark touching part of the edge do not turn paper into a colour.
+  const r = rng(3);
+  const { px, box, w, h } = canvas(64, 64);
+  for (let i = 0; i < w * h; i++) px.set([255, 255, 255].map((v) => v - Math.floor(r() * 6)).concat(255), i * 4);
+  box(0, 20, 64, 24, rgba("#612BD3")); // a band bleeding off both sides: 48 of 252 border pixels
+  const jpg = B.analyse(B.samplePixels(px, w, h));
+  assert.equal(jpg.accent, "#612BD3");
+  // The box is named by the paper's own colour, not tinted by the band.
+  for (const n of DARK) assert.match(clashOn(jpg, n), /own light background \(#F[CD]F[CD]F[CD]\) would show as a box/, n);
+});
+
+/** Distance from (px, py) to the segment a-b. */
+const toSegment = (px, py, [ax, ay], [bx, by]) => {
+  const [dx, dy] = [bx - ax, by - ay];
+  const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+};
+/** Bold 48 px capitals, 10 px strokes: [width, inside(x, y)] per letter. */
+const CAP = 48;
+const roundRect = (X, Y, [x0, y0, x1, y1], r) => {
+  const [cx, cy] = [Math.min(Math.max(X, x0 + r), x1 - r), Math.min(Math.max(Y, y0 + r), y1 - r)];
+  return X >= x0 && X <= x1 && Y >= y0 && Y <= y1 && Math.hypot(X - cx, Y - cy) <= r;
+};
+const GLYPHS = {
+  A: [44, (X, Y) => {
+    const [l, r] = [15 - (15 * Y) / CAP, 29 + (15 * Y) / CAP];
+    return X >= l && X <= r && (X < l + 11 || X > r - 11 || Y < 10 || (Y >= 28 && Y < 38)); // its counter: rows 10-27 between the legs
+  }],
+  C: [42, (X, Y) => roundRect(X, Y, [0, 0, 42, CAP], 12) && !roundRect(X, Y, [10, 10, 32, CAP - 10], 6) && !(X > 30 && Y > 13 && Y < CAP - 13)],
+  M: [44, (X, Y) => X < 10 || X > 34 || toSegment(X, Y, [5, 0], [22, 32]) < 5.5 || toSegment(X, Y, [39, 0], [22, 32]) < 5.5],
+  E: [38, (X, Y) => X < 10 || Y < 10 || Y >= CAP - 10 || (Y >= 19 && Y < 29 && X < 32)],
+  H: [40, (X, Y) => X < 10 || X > 30 || (Y >= 19 && Y < 29)],
+  L: [34, (X, Y) => X < 10 || Y >= CAP - 10],
+};
+/** An opaque `word` in `ink` on `paper`, cropped tight to the ink: every letter meets the top and bottom edges, the first and last the sides. */
+const wordmark = (word, paper, ink) => {
+  const glyphs = [...word].map((ch) => GLYPHS[ch]);
+  const w = glyphs.reduce((a, [gw]) => a + gw, 0) + 8 * (glyphs.length - 1);
+  const cv = canvas(w, CAP, rgba(paper));
+  let left = 0;
+  for (const [gw, inside] of glyphs) {
+    const x0 = left;
+    cv.paint((X, Y) => X >= x0 && X <= x0 + gw && inside(X - x0, Y), rgba(ink));
+    left += gw + 8;
+  }
+  return cv;
+};
+/** Share of a canvas's border pixels in `hex`. */
+const borderShare = ({ px, w, h }, hex) => {
+  const [r, g, b] = T.hexToRgb(hex);
+  let [all, hit] = [0, 0];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (x && y && x < w - 1 && y < h - 1) continue;
+      all++;
+      const i = (y * w + x) * 4;
+      if (px[i] === r && px[i + 1] === g && px[i + 2] === b) hit++;
+    }
+  }
+  return hit / all;
+};
+
+test("an opaque page with lettering cropped to the ink: the page is the backdrop, never lettering", () => {
+  // Black ACME on a white JPG-like page, cropped so the letters touch all four
+  // edges and cover nearly half the border. The page is a white box on dark
+  // themes and pop, and blends into the light ones: it is never "lettering".
+  const acme = wordmark("ACME", "#FFFFFF", "#111111");
+  const cover = borderShare(acme, "#111111");
+  assert.ok(cover >= 0.45 && cover < 0.5, `ink covers ${cover} of the border`);
+  const day = analyseCanvas(acme);
+  assert.deepEqual(day.stats.backdrop, [255, 255, 255], "the page's own colour, not a blend with the ink");
+  assert.deepEqual([day.base, day.baseFirm, day.baseWhy], ["light", true, "the logo sits on a light background"]);
+  for (const n of [...DARK, "pop"]) assert.equal(clashOn(day, n), "the logo's own light background (#FFFFFF) would show as a box: use a transparent PNG or SVG of the logo", n);
+  for (const n of LIGHT) assert.equal(clashOn(day, n), null, n);
+  assert.ok(isLightTheme(day.themes[0].name), day.themes[0].name);
+  assert.doesNotMatch(wording(day), /lettering|mark|vanish/);
+  // The mirror: white lettering on a black page.
+  const night = analyseCanvas(wordmark("ACME", "#111111", "#FFFFFF"));
+  assert.deepEqual(night.stats.backdrop, [17, 17, 17]);
+  assert.deepEqual([night.base, night.baseFirm, night.baseWhy], ["dark", true, "the logo sits on a dark background"]);
+  for (const n of [...LIGHT, "pop"]) assert.equal(clashOn(night, n), "the logo's own dark background (#111111) would show as a box: use a transparent PNG or SVG of the logo", n);
+  for (const n of NEAR_BLACK) assert.equal(clashOn(night, n), null, n);
+  assert.doesNotMatch(wording(night), /lettering|mark|vanish/);
+});
+
+test("lettering that covers most of the border still does not turn into the page", () => {
+  // Stems and bars meet the edges more than the page does (65 % here, white HELM
+  // on black has the same rim), but the page is cut into more pieces than the
+  // lettering, one piece per letter.
+  for (const word of ["HELM", "HEM"]) {
+    const day = wordmark(word, "#FFFFFF", "#111111");
+    assert.ok(borderShare(day, "#111111") > 0.6, word);
+    const r = analyseCanvas(day);
+    assert.deepEqual([r.base, r.baseFirm, r.stats.backdrop], ["light", true, [255, 255, 255]], word);
+    for (const n of LIGHT) assert.equal(clashOn(r, n), null, `${word} on ${n}`);
+    const m = analyseCanvas(wordmark(word, "#111111", "#FFFFFF"));
+    assert.deepEqual([m.base, m.baseFirm, m.stats.backdrop], ["dark", true, [17, 17, 17]], `${word} mirrored`);
+    for (const n of NEAR_BLACK) assert.equal(clashOn(m, n), null, `${word} mirrored on ${n}`);
+  }
+  // With a margin anywhere the rim decides, as for any padded logo.
+  const padded = canvas(200, 64, rgba("#FFFFFF"));
+  const helm = wordmark("HELM", "#FFFFFF", "#111111");
+  for (let y = 0; y < helm.h; y++) padded.px.set(helm.px.subarray(y * helm.w * 4, (y + 1) * helm.w * 4), ((y + 16) * 200 + 10) * 4);
+  assert.deepEqual(analyseCanvas(padded).stats.backdrop, [255, 255, 255]);
+});
+
+test("a grey page is a box on light and dark themes alike, never lettering", () => {
+  // Mid-grey paper stands out on white and on near-black: wherever it goes it is a box.
+  const grey = analyseCanvas(wordmark("ACME", "#8A8A8A", "#111111"));
+  assert.deepEqual(grey.stats.backdrop, [138, 138, 138]);
+  for (const t of grey.themes) assert.equal(t.clash, "the logo's own grey background (#8A8A8A) would show as a box: use a transparent PNG or SVG of the logo", t.name);
+  assert.deepEqual([grey.base, grey.baseFirm, grey.baseWhy], [null, false, "its own grey background (#8A8A8A) would show as a box on light and dark backgrounds"]);
+  assert.doesNotMatch(wording(grey), /lettering|mark|vanish/);
+});
+
+/**
+ * A 96×96 app-icon-style logo: a `fill` tile, "square" (full bleed), "rounded"
+ * (corner radius 22 %) or "inset" (4 % transparent padding all round), with a
+ * `glyph` inside it (null: the glyph is cut out to transparency).
+ */
+const appIcon = (shape, fill, glyph) => {
+  const cv = canvas(96, 96);
+  if (shape === "square") cv.box(0, 0, 96, 96, rgba(fill));
+  else if (shape === "rounded") cv.round(0, 0, 96, 96, 21, rgba(fill));
+  else cv.box(4, 4, 88, 88, rgba(fill));
+  cv.box(30, 22, 12, 52, glyph ? rgba(glyph) : [0, 0, 0, 0]); // a chunky "L"
+  cv.box(30, 62, 36, 12, glyph ? rgba(glyph) : [0, 0, 0, 0]);
+  return cv;
+};
+const analyseCanvas = (cv) => B.analyse(B.samplePixels(cv.px, cv.w, cv.h));
+/** Every message a result carries: base reason, clashes and notes. */
+const wording = (r) => [r.baseWhy, ...r.themes.flatMap((t) => [t.clash, t.note])].filter(Boolean).join("\n");
+
+test("a paper tile gets the same verdict square, with rounded corners or with transparent padding", () => {
+  for (const [fill, glyph, base] of [["#000000", "#FFFFFF", "dark"], ["#111111", "#FFC20E", "dark"], ["#FFFFFF", "#E4002B", "light"], ["#FFFFFF", "#0A5CFF", "light"], ["#FDF6E3", "#612BD3", "light"]]) {
+    const [square, rounded, inset] = ["square", "rounded", "inset"].map((shape) => analyseCanvas(appIcon(shape, fill, glyph)));
+    const label = `${fill} tile, ${glyph} glyph`;
+    assert.deepEqual([square.base, square.baseFirm, square.baseWhy], [base, true, `the logo sits on a ${base} background`], label);
+    for (const [shape, r] of [["rounded", rounded], ["inset", inset]]) {
+      assert.deepEqual([r.base, r.baseFirm, r.baseWhy], [square.base, square.baseFirm, square.baseWhy], `${label}, ${shape}`);
+      assert.deepEqual(r.themes.map((t) => [t.name, t.clash]), square.themes.map((t) => [t.name, t.clash]), `${label}, ${shape}`);
+    }
+    for (const r of [square, rounded, inset]) assert.doesNotMatch(wording(r), /lettering/, label);
+  }
+  // A black tile with a white glyph: black does not show on near-black, so no
+  // warning on midnight; on light themes it is a box.
+  for (const shape of ["square", "rounded", "inset"]) {
+    const black = analyseCanvas(appIcon(shape, "#000000", "#FFFFFF"));
+    for (const n of NEAR_BLACK) assert.equal(clashOn(black, n), null, `${shape} on ${n}`);
+    for (const n of LIGHT) assert.equal(clashOn(black, n), "the logo's own dark background (#000000) would show as a box: use a transparent PNG or SVG of the logo", `${shape} on ${n}`);
+    const white = analyseCanvas(appIcon(shape, "#FFFFFF", "#E4002B"));
+    for (const n of DARK) assert.match(clashOn(white, n), /own light background \(#FFFFFF\) would show as a box/, `${shape} on ${n}`);
+    for (const n of LIGHT) assert.equal(clashOn(white, n), null, `${shape} on ${n}`);
+  }
+});
+
+test("a tile, badge or outline whose inside still reads is not lost when its edge blends in", () => {
+  // A navy app tile with rounded corners: same as the full-bleed one, notes only.
+  const navy = analyseCanvas(appIcon("rounded", "#1D3557", "#FFFFFF"));
+  assert.ok(navy.themes.every((t) => t.clash === null), wording(navy));
+  assert.equal(navy.baseFirm, false);
+  assert.match(noteOn(navy, "midnight"), /^the edge of the logo's #1D3557 tile blends into the dark background \(1\.6:1\); the #FFFFFF inside it still reads$/);
+  // A smaller black tile with transparent space around it (not the logo's frame): its edge blends into dark themes.
+  const small = canvas(96, 96);
+  small.round(18, 18, 60, 60, 12, rgba("#000000"));
+  small.box(38, 30, 20, 36, rgba("#FFFFFF"));
+  const tile = analyseCanvas(small);
+  assert.ok(tile.themes.every((t) => t.clash === null), wording(tile));
+  assert.equal(tile.baseFirm, false);
+  for (const n of DARK) assert.match(noteOn(tile, n), /^the edge of the logo's dark tile \(#000000\) blends into the dark background/, n);
+  // A round badge is named a badge.
+  const round = canvas(96, 96);
+  round.disc(48, 48, 46, rgba("#FFFFFF"));
+  round.box(34, 30, 28, 36, rgba("#00A86B"));
+  const badge = analyseCanvas(round);
+  assert.ok(badge.themes.every((t) => t.clash === null), wording(badge));
+  for (const n of LIGHT) assert.match(noteOn(badge, n), /^the edge of the logo's white badge \(#FFFFFF\) blends into the light background .*; the #00A86B inside it still reads$/, n);
+
+  // An orange mascot with a #111 outline and #111 eyes: the outline blends into
+  // dark themes, the orange body inside reads. Not "dark lettering", not a firm light base.
+  const cv = canvas(96, 96);
+  cv.disc(48, 48, 44, rgba("#111111"));
+  cv.disc(48, 48, 40, rgba("#FF6A13"));
+  cv.disc(36, 40, 5, rgba("#111111"));
+  cv.disc(60, 40, 5, rgba("#111111"));
+  cv.box(36, 60, 24, 4, rgba("#111111"));
+  const mascot = analyseCanvas(cv);
+  assert.equal(mascot.accent, "#FF6A13");
+  assert.ok(mascot.themes.every((t) => t.clash === null), wording(mascot));
+  assert.equal(mascot.baseFirm, false);
+  assert.doesNotMatch(wording(mascot), /lettering/);
+  for (const n of DARK) assert.match(noteOn(mascot, n), /^the edge of the logo's dark outline \(#111111\) blends into the dark background \(1\.\d:1\); the #FF6A13 inside it still reads$/, n);
+  for (const n of LIGHT) assert.equal(noteOn(mascot, n), null, n);
+
+  // A white ring around a separate red glyph: on light themes the ring blends in, the glyph inside it reads.
+  const ringed = canvas(96, 96);
+  ringed.disc(48, 48, 46, rgba("#FFFFFF"), 5);
+  ringed.box(34, 28, 28, 40, rgba("#E4002B"));
+  const ring = analyseCanvas(ringed);
+  assert.ok(ring.themes.every((t) => t.clash === null), wording(ring));
+  for (const n of LIGHT) assert.match(noteOn(ring, n), /^the edge of the logo's white outline \(#FFFFFF\) blends into the light background .*; the #E4002B inside it still reads$/, n);
+});
+
+test("a part with nothing readable inside is still lost, and named for what it is", () => {
+  // A black tile with the glyph cut out: on dark themes the tile vanishes and the
+  // cut-out shows the background, so nothing is left. Light themes come first.
+  for (const shape of ["square", "rounded", "inset"]) {
+    const cut = analyseCanvas(appIcon(shape, "#000000", null));
+    assert.deepEqual([cut.base, cut.baseFirm, cut.baseWhy], ["light", true, "its dark tile (#000000) would vanish on dark backgrounds"], shape);
+    for (const n of DARK) assert.match(clashOn(cut, n), /^the logo's dark tile \(#000000\) would vanish on a dark background \(1\.\d:1\): use a light-on-dark version of the logo$/, `${shape} on ${n}`);
+    for (const n of LIGHT) assert.equal(clashOn(cut, n), null, `${shape} on ${n}`);
+  }
+  // A black tile whose charcoal glyph does not read on dark themes either.
+  const dim = canvas(96, 96);
+  dim.round(18, 18, 60, 60, 12, rgba("#000000"));
+  dim.box(38, 30, 20, 36, rgba("#2B2B2B"));
+  const faint = analyseCanvas(dim);
+  for (const n of DARK) assert.match(clashOn(faint, n), /^the logo's dark tile \(#000000\) would vanish on a dark background/, n);
+  // A plain black square mark is a mark, not lettering.
+  const plain = canvas(96, 96);
+  plain.box(18, 18, 60, 60, rgba("#000000"));
+  assert.match(clashOn(analyseCanvas(plain), "midnight"), /^the logo's dark mark \(#000000\) would vanish/);
+  // A navy app tile beside a charcoal wordmark: the tile is fine, the wordmark is lost on dark themes.
+  const lockup = canvas(96, 48);
+  lockup.round(2, 6, 36, 36, 8, rgba("#1D3557"));
+  lockup.box(12, 14, 16, 20, rgba("#FFFFFF"));
+  for (let i = 0; i < 6; i++) lockup.box(44 + 8 * i, 18, 4, 14, rgba("#222222")); // six thin letters
+  const both = analyseCanvas(lockup);
+  assert.equal(both.base, "light");
+  for (const n of DARK) assert.match(clashOn(both, n), /^the logo's dark lettering \(#222222\) would vanish/, n);
 });
 
 // --- SVG text -----------------------------------------------------------------------
@@ -408,19 +932,108 @@ test("parseColour reads hex, short hex, rgb() and names", () => {
   assert.equal(B.parseColour("var(--brand)"), null);
 });
 
-test("svgColors honours classes, style, inheritance, gradients and defs", () => {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
+const weightsByHex = (weights) => Object.fromEntries([...weights].map(([n, v]) => [T.rgbToHex([(n >> 16) & 255, (n >> 8) & 255, n & 255]), +v.toFixed(2)]));
+
+test("svgColors weighs colours by area and honours classes, style, inheritance, transforms, gradients and defs", () => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <style>.a{fill:#E4002B}.b,.c{fill:#1d3557;stroke:#FF6A13}</style>
     <defs><linearGradient id="g"><stop offset="0" stop-color="#00A86B"/><stop offset="1" style="stop-color:#0A5CFF"/></linearGradient>
-      <path d="M0 0" fill="#ABCDEF"/></defs>
-    <g class="a"><path d="M0 0"/><rect width="1" height="1"/><circle r="1" fill="#E4002B"/></g>
-    <path class="b" d="M0 0"/>
-    <rect width="1" height="1" style="fill:url(#g)" fill="#123456"/>
-    <text>ACME</text>
+      <path d="M0 0h50v50H0z" fill="#ABCDEF"/></defs>
+    <g class="a"><rect width="10" height="10"/><circle r="5" fill="#E4002B"/></g>
+    <path class="b" d="M0 0h20v10H0z"/>
+    <rect width="10" height="20" style="fill:url(#g)" fill="#123456"/>
+    <g transform="translate(5 5) scale(2)"><rect width="5" height="5" fill="#FFC20E"/></g>
+    <text font-size="10">A B</text>
     <path d="M0 0" fill="none" stroke="rgb(255,106,19)"/>
+    <line x1="0" y1="0" x2="30" y2="40" stroke="#FF6A13" stroke-width="2"/>
   </svg>`;
-  const w = Object.fromEntries([...B.svgColors(svg)].map(([n, v]) => [T.rgbToHex([(n >> 16) & 255, (n >> 8) & 255, n & 255]), v]));
-  assert.deepEqual(w, { "#E4002B": 3, "#1D3557": 1, "#FF6A13": 1, "#00A86B": 0.5, "#0A5CFF": 0.5, "#000000": 1 });
+  const { weights, backdrop } = B.svgColors(svg);
+  assert.deepEqual(weightsByHex(weights), {
+    "#E4002B": +(100 + 25 * Math.PI).toFixed(2), // rect + circle
+    "#1D3557": 200,
+    "#FF6A13": 60 + 50 * 2, // the 20×10 path's outline + a 50-long line 2 wide
+    "#00A86B": 100, // a gradient splits its area across its stops
+    "#0A5CFF": 100,
+    "#FFC20E": 100, // 5×5 scaled 2×
+    "#000000": 60, // two letters at 0.3 em² each
+  });
+  assert.equal(backdrop, null);
+});
+
+test("svgColors: holes are not ink, arcs and relative / packed path data are read", () => {
+  const area = (d) => weightsByHex(B.svgColors(`<svg viewBox="0 0 100 100"><path d="${d}" fill="#E4002B"/></svg>`).weights)["#E4002B"];
+  assert.equal(area("M0 0h100v100H0zM25 25h50v50H25z"), 7500, "a square ring, same winding");
+  assert.equal(area("M0 0h100v100H0zM25 25v50h50V25z"), 7500, "a square ring, opposite winding");
+  assert.equal(area("m10 10 20 0 0 20-20 0z"), 400, "relative moveto with implicit line-tos");
+  const circle = Math.PI * 40 * 40;
+  close(area("M10 50a40 40 0 1 0 80 0a40 40 0 1 0-80 0z"), circle, 0.03 * circle, "circle drawn with two arcs");
+  close(area("M10 50a40 40 0 1080 0a40 40 0 10-80 0z"), circle, 0.03 * circle, "same, with packed arc flags");
+  assert.ok(B.pathPolygons("M0 0L10 0 10 10z").length === 1 && B.pathPolygons("M0 0 L").length === 1, "malformed data stops cleanly");
+});
+
+test("svgColors: a rect covering the whole drawing is the logo's backdrop", () => {
+  const backdrop = (inner, root = `viewBox="0 0 200 100"`) => B.svgColors(`<svg xmlns="http://www.w3.org/2000/svg" ${root}>${inner}<circle cx="50" cy="50" r="30" fill="#0A5CFF"/></svg>`).backdrop;
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#fff"/>`), "#FFFFFF");
+  assert.equal(backdrop(`<rect width="100%" height="100%" fill="white"/>`, `width="400" height="200"`), "#FFFFFF");
+  assert.equal(backdrop(`<rect x="-1" y="-1" width="202" height="102" fill="#111"/>`), "#111111");
+  assert.equal(backdrop(`<rect width="150" height="100" fill="#fff"/>`), null, "part of it only");
+  assert.equal(backdrop(`<g transform="scale(0.5)"><rect width="200" height="100" fill="#fff"/></g>`), null, "scaled down");
+  assert.equal(backdrop(`<rect width="200" height="100" fill="url(#g)"/>`), null, "not a solid colour");
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#FDF6E3"/>`), "#FDF6E3", "cream paper");
+  // Rounded corners or a few % of padding: the same sheet, as in pixels.
+  assert.equal(backdrop(`<rect width="200" height="100" rx="22" fill="#fff"/>`), "#FFFFFF", "rounded corners");
+  assert.equal(backdrop(`<rect x="8" y="4" width="184" height="92" fill="#111"/>`), "#111111", "4 % padding");
+  assert.equal(backdrop(`<rect x="20" y="10" width="160" height="80" fill="#fff"/>`), null, "10 % padding: a plate inside the drawing");
+  assert.equal(backdrop(`<rect width="100" height="100" rx="50" fill="#fff"/>`, `viewBox="0 0 100 100"`), null, "fully rounded: a disc, not a sheet");
+  // A coloured artboard is the mark itself (an app tile), not a background.
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#612BD3"/>`), null, "violet tile");
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#FFC20E"/>`), null, "yellow tile");
+  // The topmost covering rect decides: a tile drawn over white paper hides it.
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#fff"/><rect width="200" height="100" fill="#1D3557"/>`), null);
+  assert.equal(backdrop(`<rect width="200" height="100" fill="#612BD3"/><rect width="200" height="100" fill="#fff"/>`), "#FFFFFF");
+});
+
+test("svgViewBox / svgSize read the root's viewBox and width / height", () => {
+  assert.deepEqual(B.svgViewBox(`<svg viewBox="0 0 100 40">`), [0, 0, 100, 40]);
+  assert.deepEqual(B.svgSize(`<svg viewBox="0 0 100 40">`), [100, 40]);
+  assert.deepEqual(B.svgSize(`<svg width="200px" height="80" viewBox="0 0 100 40">`), [200, 80]);
+  assert.deepEqual(B.svgSize(`<svg width="100%" height="100%" viewBox="0,0,10,5">`), [10, 5]);
+  assert.deepEqual(B.svgViewBox(`<svg width="64" height="32">`), [0, 0, 64, 32]);
+  assert.equal(B.svgSize(`<svg xmlns="http://www.w3.org/2000/svg">`), null);
+});
+
+test("an SVG read as text: area-weighted colours, its artboard rect as a backdrop, no guess about lettering", () => {
+  const artboard = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><rect width="200" height="100" fill="#fff"/><circle cx="50" cy="50" r="30" fill="#0A5CFF"/><rect x="110" y="20" width="60" height="60" fill="#E4002B"/></svg>`;
+  const boxed = B.analyse(B.svgTextSamples(artboard));
+  assert.equal(boxed.base, "light");
+  assert.ok(boxed.baseFirm);
+  assert.deepEqual(boxed.themes.filter((t) => t.clash).map((t) => t.name).sort(), ["desi", "midnight", "mono", "neon", "pop", "studio-dark"]);
+  assert.match(boxed.themes[9].clash, /own light background \(#FFFFFF\) would show as a box/);
+  // The red square covers more area than the blue circle, but blue is more saturated: accent by saturation.
+  assert.deepEqual([boxed.accent, boxed.accent2], ["#0A5CFF", "#E4002B"]);
+  // Without pixels there is no rim: a white-on-colour mark is not mistaken for white lettering.
+  const glyph = B.svgTextSamples(`<svg viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" fill="#E4002B"/><path d="M20 16h24v32H20z" fill="#fff"/></svg>`);
+  const r = B.analyse(glyph);
+  assert.equal(r.fitChecked, false);
+  assert.equal(r.baseFirm, false);
+  assert.ok(r.themes.every((t) => t.clash === null));
+  assert.equal(B.svgTextSamples(`<svg viewBox="0 0 10 10"><path d="M0 0" fill="none"/></svg>`), null);
+});
+
+/** An app-icon logo: a full 260×260 violet artboard with a white mark (the shape of postiz/assets/logo.svg). */
+const APP_TILE = `<svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="260" height="260" fill="#612BD3"/><path d="M80 78h100v112H80z" fill="white"/><path d="M100 96h60v20h-60z" fill="#131019"/></svg>`;
+
+test("an SVG read as text: a coloured artboard rect is the mark, not a backdrop", () => {
+  const tile = B.analyse(B.svgTextSamples(APP_TILE));
+  assert.equal(tile.accent, "#612BD3");
+  assert.equal(tile.stats.backdrop, null);
+  assert.equal(tile.baseFirm, false);
+  assert.doesNotMatch(tile.baseWhy, /sits on/);
+  assert.ok(tile.themes.every((t) => t.clash === null), tile.themes.map((t) => t.clash).join());
+  // The same drawing on a cream artboard is a box on dark themes.
+  const sheet = B.analyse(B.svgTextSamples(APP_TILE.replace(`fill="#612BD3"/>`, `fill="#FDF6E3"/><circle cx="40" cy="40" r="20" fill="#612BD3"/>`)));
+  assert.equal(sheet.base, "light");
+  for (const n of DARK) assert.match(clashOn(sheet, n), /own light background \(#FDF6E3\) would show as a box/, n);
 });
 
 // --- writing the spec --------------------------------------------------------------
@@ -478,9 +1091,143 @@ test("nextBrand drops a stale accent2 and leaves colours alone for monochrome lo
   assert.deepEqual(JSON.parse(out), { theme: "neon", brand: { accent: "#C6FF3D" }, scenes: [] });
 });
 
+test("brandChanged ignores key order and treats a missing brand as empty", () => {
+  // Monochrome logo outside public/ on a spec with no brand: nothing to write.
+  assert.equal(B.brandChanged(undefined, B.nextBrand(undefined, { accent: null, accent2: null, logo: null })), false);
+  assert.equal(B.brandChanged({ handle: "@x", accent: "#E4002B" }, { accent: "#E4002B", handle: "@x" }), false);
+  assert.equal(B.brandChanged(undefined, { logo: "brand/x.png" }), true);
+  assert.equal(B.brandChanged({ accent: "#111111", accent2: "#222222" }, { accent: "#111111" }), true);
+});
+
+// --- brand.logo in "logo" scenes ----------------------------------------------------
+
+test("a logo scene showing brand.logo is planned like one with its own src", async () => {
+  const P = await import("../src/engine/plan.ts");
+  const video = (logoScene, brand) => ({
+    theme: "clean",
+    ...(brand ? { brand } : {}),
+    scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme", tagline: "Build more", ...logoScene }],
+  });
+  const own = P.planVideo(video({ src: "brand/logo.png" }));
+  const fromBrand = P.planVideo(video({}, { logo: "brand/logo.png" }));
+  const none = P.planVideo(video({}));
+  const last = (plan) => plan.scenes[plan.scenes.length - 1];
+
+  // The template draws scene.src: the fallback is already resolved into the planned scene.
+  assert.equal(last(fromBrand).scene.src, "brand/logo.png");
+  assert.equal(last(none).scene.src, undefined);
+  // Same image, same timeline: the name waits for the logo, the impact lands with the name.
+  assert.deepEqual(last(fromBrand).beats, last(own).beats);
+  assert.deepEqual(last(fromBrand).cues, last(own).cues);
+  assert.equal(last(fromBrand).duration, last(own).duration);
+  assert.equal(fromBrand.durationInFrames, own.durationInFrames);
+  assert.ok(last(own).beats.name > last(none).beats.name, "with an image the name enters after the logo");
+  // An explicit src still wins over brand.logo.
+  const both = P.planVideo(video({ src: "brand/other.png" }, { logo: "brand/logo.png" }));
+  assert.equal(last(both).scene.src, "brand/other.png");
+});
+
+// --- CLI ---------------------------------------------------------------------------
+
+const cli = (args, input, env = process.env) => spawnSync(process.execPath, ["scripts/brand.mjs", ...args], { cwd: KIT, input, encoding: "utf8", env });
+/** A temp spec for one CLI run, removed afterwards. */
+const withSpec = (text, fn) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "brand-test-"));
+  try {
+    const spec = path.join(dir, "x.json");
+    fs.writeFileSync(spec, text);
+    fn(spec);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+};
+const hasFfmpeg = spawnSync("ffmpeg", ["-version"]).status === 0;
+/** Whether this machine's ffmpeg can rasterise SVG (librsvg); else SVGs are read as text. */
+const canRasterise = hasFfmpeg && Boolean(B.decodeImage(Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 4"><rect width="4" height="4" fill="#E4002B"/></svg>`)));
+const YELLOW_BLACK = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"><rect width="30" height="30" fill="#FFC20E"/><path d="M40 10h50v10H40z" fill="#111"/></svg>`;
+
+test("CLI: --spec without a file prints the usage, not a stack trace", () => {
+  const r = cli(["-", "--spec"], YELLOW_BLACK);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /^Usage: npm run brand -- <logo file>/);
+  assert.doesNotMatch(r.stderr, /TypeError|\n\s+at /);
+});
+
+test("CLI: a folder instead of a logo file is a friendly error, not a stack trace", () => {
+  const r = cli(["public"]);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /Could not read public \(it is a folder, not an image file\)/);
+  assert.doesNotMatch(r.stderr, /EISDIR|\n\s+at /);
+});
+
+test("CLI: a monochrome logo leaves a spec without a brand block untouched", () => {
+  const text = `{\n  "theme": "mono",\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`;
+  withSpec(text, (spec) => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#000"/></svg>`;
+    const r = cli(["-", "--spec", spec], svg);
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /brand already up to date/);
+    assert.equal(fs.readFileSync(spec, "utf8"), text);
+  });
+});
+
+test("CLI: values kept from an earlier logo are pointed out", () => {
+  const text = `{\n  "theme": "mono",\n  "brand": { "accent": "#E4002B", "accent2": "#1D3557", "logo": "brand/old.png" },\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`;
+  withSpec(text, (spec) => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect x="2" y="2" width="6" height="6" fill="#000"/></svg>`;
+    const r = cli(["-", "--spec", spec], svg);
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /Kept brand\.accent #E4002B and brand\.accent2 #1D3557 from before: this logo has no brand colour\. Delete them/);
+    assert.match(r.stdout, /brand\.logo not updated \(it still points to "brand\/old\.png"\)/);
+    assert.equal(fs.readFileSync(spec, "utf8"), text);
+  });
+});
+
+test("CLI: a spec theme the logo cannot sit on gets a warning and light alternatives", { skip: !canRasterise && "no ffmpeg with librsvg to rasterise SVG" }, () => {
+  withSpec(`{\n  "theme": "midnight",\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`, (spec) => {
+    const r = cli(["-", "--spec", spec], YELLOW_BLACK);
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /96×39 px/, "rasterised, at the SVG's own aspect ratio");
+    const best = [...r.stdout.matchAll(/^\s+\d\. (?:\x1b\[\d+m)?([\w-]+)/gm)].map((m) => m[1]);
+    assert.equal(best.length, 3, r.stdout);
+    for (const name of best) assert.ok(isLightTheme(name), name);
+    assert.match(r.stdout, /Accent #B48700 \(3\.0:1 on its background\)/, "each theme shows its accent's contrast");
+    assert.match(r.stdout, /Not with this logo file:[\s\S]*midnight, desi, neon, mono, studio-dark\S* — the logo's dark lettering \(#111111\)/);
+    assert.match(r.stdout, /pop\S* — the logo's #FFC20E parts would vanish/);
+    assert.match(r.stdout, /Theme midnight: the logo's dark lettering \(#111111\) would vanish on a dark background \(1\.0:1\): use a light-on-dark version of the logo, or switch to theme "clean"/);
+  });
+});
+
+test("CLI: an SVG no ffmpeg can rasterise is read as text, and says so", () => {
+  // No PATH: no ffmpeg at all, so the SVG text fallback runs.
+  const r = cli(["-"], YELLOW_BLACK, { ...process.env, PATH: "" });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /SVG read as text · ignored: 0% near-white, 36% near-black \(by area\)/);
+  assert.match(r.stdout, /This SVG was read as text, not pixels: no ffmpeg here can rasterise it/);
+  assert.match(r.stdout, /whether its lettering reads on each theme was not checked/);
+  assert.doesNotMatch(r.stdout, /Not with this logo file/);
+});
+
 // --- decoding (in memory) ----------------------------------------------------------
 
-const hasFfmpeg = spawnSync("ffmpeg", ["-version"]).status === 0;
+test("decodeArgs: a file is read from its path, stdin is piped (an SVG with its length)", () => {
+  const file = B.decodeArgs("png", { file: "/logos/acme.png", bytes: 99 });
+  assert.equal(file[file.indexOf("-i") + 1], "/logos/acme.png");
+  assert.ok(!file.includes("pipe:0") && !file.includes("-frame_size"));
+  const piped = B.decodeArgs("png", { bytes: 99 });
+  assert.equal(piped[piped.indexOf("-i") + 1], "pipe:0");
+  // svg_pipe cannot tell where a piped SVG ends: it is told the length.
+  const svg = B.decodeArgs("svg", { bytes: 1234, size: [100, 40] });
+  assert.equal(svg[svg.indexOf("-frame_size") + 1], "1234");
+  assert.ok(svg.indexOf("-frame_size") < svg.indexOf("-i") && svg.includes("librsvg"));
+  // Rendered at 4× the sample width, at the SVG's own aspect ratio (not librsvg's 100×100 box).
+  assert.deepEqual(svg.slice(svg.indexOf("-width"), svg.indexOf("-width") + 6), ["-width", "384", "-height", "154", "-keep_ar", "0"]);
+  const svgFile = B.decodeArgs("svg", { file: "/logos/acme.svg", bytes: 1234 });
+  assert.equal(svgFile[svgFile.indexOf("-i") + 1], "/logos/acme.svg");
+  assert.ok(!svgFile.includes("-frame_size") && !svgFile.includes("-height"));
+  // Full colour resolution while scaling: no invented colours at vertical edges.
+  assert.match(piped[piped.indexOf("-vf") + 1], /^scale=96:-1:flags=neighbor\+full_chroma_inp/);
+});
 
 test("decodeImage turns PNG bytes into RGBA pixels in memory", { skip: !hasFfmpeg && "ffmpeg not installed" }, () => {
   // 192×64 PNG generated in memory: left half red, right half transparent.
@@ -495,8 +1242,160 @@ test("decodeImage turns PNG bytes into RGBA pixels in memory", { skip: !hasFfmpe
   assert.equal(B.pickBrandColours(B.extractPalette(colours)).accent, "#E4002B");
 });
 
+test("decodeImage invents no colours at sharp vertical edges", { skip: !hasFfmpeg && "ffmpeg not installed" }, () => {
+  // 200×50 PNG in memory: a yellow band (x 37-90) on transparency. Scaling to
+  // 96 wide with half-resolution colour used to put #DFC167 at its edges.
+  const src = "color=c=black@0:s=200x50,format=rgba,geq=r='if(between(X,37,90),255,0)':g='if(between(X,37,90),194,0)':b='if(between(X,37,90),14,0)':a='if(between(X,37,90),255,0)'";
+  const png = spawnSync("ffmpeg", ["-v", "error", "-f", "lavfi", "-i", src, "-frames:v", "1", "-f", "image2pipe", "-c:v", "png", "-"]).stdout;
+  const img = B.decodeImage(png);
+  const { colours, stats } = B.samplePixels(img.rgba, img.width, img.height);
+  assert.deepEqual([...colours.keys()], [0xffc20e]);
+  assert.deepEqual([...stats.rim.keys()], [0xffc20e]);
+});
+
+test("decodeImage rasterises SVG bytes from a pipe, at their aspect ratio, colours un-premultiplied", { skip: !canRasterise && "no ffmpeg with librsvg" }, () => {
+  const img = B.decodeImage(Buffer.from(YELLOW_BLACK));
+  assert.deepEqual([img.width, img.height], [96, 39]);
+  const { colours, stats } = B.samplePixels(img.rgba, img.width, img.height);
+  // Anti-aliased edges come back at their true colour, not darkened towards black.
+  assert.deepEqual([...colours.keys()], [0xffc20e]);
+  assert.deepEqual([...stats.rim.keys()].sort(), [0x111111, 0xffc20e].sort());
+  const r = B.analyse({ colours, stats });
+  assert.equal(r.base, "light");
+  assert.ok(r.baseFirm);
+  // An artboard rect is an opaque backdrop: a box on dark themes, not "white lettering".
+  const artboard = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><rect width="200" height="100" fill="#fff"/><circle cx="50" cy="50" r="30" fill="#0A5CFF"/><rect x="110" y="20" width="60" height="60" fill="#E4002B"/></svg>`;
+  const boxed = B.analyse(B.samplesOf(Buffer.from(artboard)));
+  assert.equal(boxed.base, "light");
+  assert.match(boxed.baseWhy, /sits on a light background/);
+  assert.match(boxed.themes.find((t) => t.name === "midnight").clash, /would show as a box/);
+  assert.equal(boxed.themes.find((t) => t.name === "clean").clash, null);
+  // A coloured artboard is the app tile itself: it reads on every theme.
+  const pixels = B.samplesOf(Buffer.from(APP_TILE));
+  assert.equal(pixels.text, false, "rasterised");
+  const tile = B.analyse(pixels);
+  assert.equal(tile.accent, "#612BD3");
+  assert.ok(tile.fitChecked);
+  assert.ok(tile.themes.every((t) => t.clash === null), tile.themes.map((t) => `${t.name}: ${t.clash}`).join("\n"));
+});
+
+test("analyseLogo reads a data: URL in memory and skips remote URLs", { skip: !hasFfmpeg && "ffmpeg not installed" }, () => {
+  const r = B.analyseLogo(`data:image/svg+xml;base64,${Buffer.from(YELLOW_BLACK).toString("base64")}`);
+  assert.equal(r.accent, "#FFC20E");
+  assert.equal(B.analyseLogo(`data:image/svg+xml,${encodeURIComponent(YELLOW_BLACK)}`).accent, "#FFC20E");
+  assert.equal(B.analyseLogo("https://example.com/logo.png"), null);
+  assert.equal(B.analyseLogo("brand/does-not-exist.png"), null);
+});
+
+test("check: a logo scene whose file would not read on the theme gets a warning", { skip: !canRasterise && "no ffmpeg with librsvg" }, async () => {
+  const { check } = await import("./check.mjs");
+  const logo = `data:image/svg+xml;base64,${Buffer.from(YELLOW_BLACK.replace("#FFC20E", "#FFE14D")).toString("base64")}`;
+  const spec = (theme) => ({ theme, brand: { accent: "#FFE14D", logo }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] });
+  const night = await check(spec("midnight"), { quiet: true });
+  assert.ok(night.warnings.some((w) => /^Logo "data: URL" \(scene 2\) on theme midnight: the logo's dark lettering \(#111111\) would vanish .*, or use theme clean \/ studio \/ corporate\.$/.test(w)), night.warnings.join("\n"));
+  // On a light theme the yellow is darkened; it would stay exact only on dark themes, where this logo does not read.
+  const clean = await check(spec("clean"), { quiet: true });
+  assert.ok(!clean.warnings.some((w) => w.startsWith("Logo ")), clean.warnings.join("\n"));
+  const note = clean.notes.find((n) => n.startsWith("brand accent #FFE14D darkened"));
+  assert.match(note, /It stays exact only on theme midnight \/ neon \/ desi \/ mono \/ studio-dark, where brand\.logo would not read\.$/);
+  assert.doesNotMatch(note, /To keep it exactly/);
+  // An app-tile logo (full-bleed violet artboard) is not a box on any theme: no warning to fix.
+  const tile = `data:image/svg+xml;base64,${Buffer.from(APP_TILE).toString("base64")}`;
+  for (const theme of ["midnight", "neon", "clean", "studio-dark"]) {
+    const r = await check({ theme, brand: { accent: "#612BD3", logo: tile }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] }, { quiet: true });
+    assert.ok(!r.warnings.some((w) => w.startsWith("Logo ")), `${theme}: ${r.warnings.join("\n")}`);
+  }
+});
+
+test("decodeImage reads in-memory PNG bytes exactly at the sample width", { skip: !hasFfmpeg && "ffmpeg not installed" }, () => {
+  const cv = appIcon("rounded", "#1D3557", "#FFFFFF");
+  const img = B.decodeImage(pngOf(cv));
+  assert.deepEqual([img.width, img.height], [96, 96]);
+  assert.deepEqual([...img.rgba], [...cv.px]);
+});
+
+test("check / CLI: an app tile whose inside reads gets no warning on a dark theme", { skip: !hasFfmpeg && "ffmpeg not installed" }, async () => {
+  const { check } = await import("./check.mjs");
+  const dataUrl = (cv) => `data:image/png;base64,${pngOf(cv).toString("base64")}`;
+  const spec = (theme, logo, accent) => ({ theme, brand: { ...(accent ? { accent } : {}), logo }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] });
+  const logoLines = (r) => [...r.warnings, ...r.notes].filter((w) => w.startsWith("Logo "));
+  for (const shape of ["square", "rounded", "inset"]) {
+    // Black tile, white glyph: nothing to say on midnight; a box on clean.
+    const black = dataUrl(appIcon(shape, "#000000", "#FFFFFF"));
+    const night = await check(spec("midnight", black), { quiet: true });
+    assert.deepEqual(logoLines(night), [], `${shape}: ${logoLines(night).join("\n")}`);
+    const day = await check(spec("clean", black), { quiet: true });
+    assert.ok(day.warnings.some((w) => /^Logo "data: URL" \(scene 2\) on theme clean: the logo's own dark background \(#000000\) would show as a box/.test(w)), `${shape}: ${day.warnings.join("\n")}`);
+    // Navy tile, white glyph: on midnight only a note that its edge blends in.
+    const navy = await check(spec("midnight", dataUrl(appIcon(shape, "#1D3557", "#FFFFFF")), "#1D3557"), { quiet: true });
+    assert.ok(!navy.warnings.some((w) => w.startsWith("Logo ")), `${shape}: ${navy.warnings.join("\n")}`);
+    assert.ok(navy.notes.some((n) => /^Logo "data: URL" \(scene 2\) on theme midnight: the edge of the logo's #1D3557 tile blends into the dark background \(1\.6:1\); the #FFFFFF inside it still reads\.$/.test(n)), `${shape}: ${navy.notes.join("\n")}`);
+    for (const r of [night, day, navy]) assert.doesNotMatch(logoLines(r).join("\n"), /lettering/);
+  }
+  // The CLI with --spec says the same.
+  const plain = (text) => text.replace(/\x1b\[\d+m/g, "");
+  withSpec(`{\n  "theme": "midnight",\n  "scenes": [{ "type": "kinetic", "lines": ["One."] }]\n}\n`, (file) => {
+    const black = cli(["-", "--spec", file], pngOf(appIcon("rounded", "#000000", "#FFFFFF")));
+    assert.equal(black.status, 0, black.stderr);
+    assert.doesNotMatch(black.stdout, /⚠ Theme midnight|lettering/);
+    assert.match(plain(black.stdout), /Base {2}dark — the logo sits on a dark background, so dark themes come first\./);
+    const mascot = canvas(96, 96);
+    mascot.disc(48, 48, 44, rgba("#111111"));
+    mascot.disc(48, 48, 40, rgba("#FF6A13"));
+    const r = cli(["-", "--spec", file], pngOf(mascot));
+    assert.equal(r.status, 0, r.stderr);
+    assert.doesNotMatch(r.stdout, /⚠|lettering/);
+    assert.match(plain(r.stdout), /ℹ Theme midnight: the edge of the logo's dark outline \(#111111\) blends into the dark background \(1\.0:1\); the #FF6A13 inside it still reads\./);
+  });
+});
+
+test("check: an opaque page with lettering cropped to the ink is a box only where the page shows", { skip: !hasFfmpeg && "ffmpeg not installed" }, async () => {
+  const { check } = await import("./check.mjs");
+  const dataUrl = (cv) => `data:image/png;base64,${pngOf(cv).toString("base64")}`;
+  const spec = (theme, logo) => ({ theme, brand: { logo }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] });
+  const logoLines = (r) => [...r.warnings, ...r.notes].filter((w) => w.startsWith("Logo "));
+  const day = dataUrl(wordmark("ACME", "#FFFFFF", "#111111"));
+  for (const theme of LIGHT) {
+    const r = await check(spec(theme, day), { quiet: true });
+    assert.deepEqual(logoLines(r), [], `${theme}: ${logoLines(r).join("\n")}`);
+  }
+  for (const theme of ["midnight", "pop"]) {
+    const lines = logoLines(await check(spec(theme, day), { quiet: true }));
+    assert.equal(lines.length, 1, `${theme}: ${lines.join("\n")}`);
+    const light = "(?:clean|studio|corporate|editorial)";
+    assert.match(lines[0], new RegExp(`^Logo "data: URL" \\(scene 2\\) on theme ${theme}: the logo's own light background \\(#FFFFFF\\) would show as a box: use a transparent PNG or SVG of the logo, or use theme ${light} / ${light} / ${light}\\.$`));
+  }
+  // The mirror: a black page fits the dark themes and is a box on clean.
+  const night = dataUrl(wordmark("ACME", "#111111", "#FFFFFF"));
+  assert.deepEqual(logoLines(await check(spec("midnight", night), { quiet: true })), []);
+  const clean = await check(spec("clean", night), { quiet: true });
+  assert.match(logoLines(clean).join("\n"), /^Logo "data: URL" \(scene 2\) on theme clean: the logo's own dark background \(#111111\) would show as a box: use a transparent PNG or SVG of the logo, or use theme /);
+});
+
+test("rasterised SVG app icons: square, rounded and padded tiles get the same verdict", { skip: !canRasterise && "no ffmpeg with librsvg" }, () => {
+  const icon = (tile, glyph) => `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">${tile}<path d="M32 22h12v42h24v12H32z" fill="${glyph}"/></svg>`;
+  const tiles = (fill) => [`<rect width="100" height="100" fill="${fill}"/>`, `<rect width="100" height="100" rx="22" fill="${fill}"/>`, `<rect x="4" y="4" width="92" height="92" fill="${fill}"/>`];
+  for (const [fill, glyph, base] of [["#000000", "#FFFFFF", "dark"], ["#FFFFFF", "#E4002B", "light"], ["#FFFFFF", "#0A5CFF", "light"]]) {
+    const [square, ...others] = tiles(fill).map((t) => B.analyse(B.samplesOf(Buffer.from(icon(t, glyph)))));
+    assert.deepEqual([square.base, square.baseFirm], [base, true], fill);
+    for (const r of others) {
+      assert.deepEqual([r.base, r.baseFirm, r.baseWhy], [square.base, square.baseFirm, square.baseWhy], `${fill}/${glyph}`);
+      assert.deepEqual(r.themes.map((t) => [t.name, t.clash]), square.themes.map((t) => [t.name, t.clash]), `${fill}/${glyph}`);
+    }
+    for (const r of [square, ...others]) assert.doesNotMatch(wording(r), /lettering/);
+  }
+  // A navy tile, rounded: no dark theme ruled out.
+  const navy = B.analyse(B.samplesOf(Buffer.from(icon(`<rect width="100" height="100" rx="22" fill="#1D3557"/>`, "#FFFFFF"))));
+  assert.ok(navy.themes.every((t) => t.clash === null), wording(navy));
+  // As SVG text the same rects frame the drawing (no ffmpeg needed for this part).
+  for (const t of tiles("#000000")) assert.equal(B.svgColors(icon(t, "#FFFFFF")).backdrop, "#000000");
+});
+
 test("sniff recognises formats by content", () => {
   assert.equal(B.sniff(Buffer.from("<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg'></svg>")), "svg");
+  // The root may come after a long prolog (comments, metadata).
+  assert.equal(B.sniff(Buffer.from(`﻿<?xml version="1.0"?>\n<!-- ${"x".repeat(20000)} -->\n<svg viewBox="0 0 1 1"/>`)), "svg");
+  assert.equal(B.sniff(Buffer.from("not markup <svg>")), "unknown");
   assert.equal(B.sniff(Buffer.from([0xff, 0xd8, 0xff, 0xe0])), "jpeg");
   assert.equal(B.sniff(Buffer.from("GIF89a")), "gif");
   assert.equal(B.sniff(Buffer.from("RIFF\0\0\0\0WEBPVP8 ")), "webp");

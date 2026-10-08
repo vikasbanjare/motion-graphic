@@ -79,16 +79,46 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     if (run === 3) warnings.push(`Scenes ${i - 1}-${i + 1} are all "${spec.scenes[i].type}". Vary scene types to keep attention.`);
   }
 
+  // --- logo files on this theme ------------------------------------------------
+  // "logo" scenes draw the file as is, straight on the background. brand.mjs
+  // reads its pixels in memory: ink that would vanish on this theme, or an
+  // opaque backdrop that would show as a box, is worth a warning; a tile or
+  // outline whose edge blends in while its inside still reads, a note.
+  const logoFits = new Map();
+  const logoFit = async (src) => {
+    if (!src) return null;
+    if (!logoFits.has(src)) logoFits.set(src, (await import("./brand.mjs")).analyseLogo(src));
+    return logoFits.get(src);
+  };
+  const clashOf = (fit, name) => fit?.themes.find((t) => t.name === name)?.clash ?? null;
+  for (const src of new Set(plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src).map((s) => s.scene.src))) {
+    const fit = await logoFit(src);
+    const scenes = plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src === src).map((s) => s.index + 1);
+    const where = `Logo "${src.startsWith("data:") ? "data: URL" : src}" (scene ${scenes.join(", ")}) on theme ${theme.name}`;
+    const clash = clashOf(fit, theme.name);
+    if (!clash) {
+      const note = fit?.themes.find((t) => t.name === theme.name)?.note;
+      if (note) notes.push(`${where}: ${note}.`);
+      continue;
+    }
+    const alt = fit.themes.filter((t) => !t.clash).slice(0, 3).map((t) => t.name);
+    warnings.push(`${where}: ${clash}${alt.length ? `, or use theme ${alt.join(" / ")}` : ""}.`);
+  }
+
   // --- brand colours --------------------------------------------------------
   // withBrand() already moved any brand colour that would not read (lightness
   // only, hue kept); say what changed. Only an impossible fix is an error.
   if (spec.brand?.accent || spec.brand?.accent2) {
     const report = E.resolveBrand(E.THEMES[theme.name], spec.brand);
+    const logo = await logoFit(spec.brand.logo);
     for (const ch of report.changes) {
       let note = ch.message;
       if (ch.field === "accent" && ch.kind === "adjusted" && E.deltaE(ch.from, ch.to) > 0.08) {
-        const keep = E.THEME_NAMES.filter((n) => E.resolveBrand(E.THEMES[n], { accent: ch.from }).theme.colors.accent === ch.from);
+        // Only themes that keep the colour and that the logo file reads on.
+        const exact = E.THEME_NAMES.filter((n) => E.resolveBrand(E.THEMES[n], { accent: ch.from }).theme.colors.accent === ch.from);
+        const keep = exact.filter((n) => !clashOf(logo, n));
         if (keep.length) note += ` To keep it exactly, use theme ${keep.join(" / ")}.`;
+        else if (exact.length) note += ` It stays exact only on theme ${exact.join(" / ")}, where brand.logo would not read.`;
       }
       notes.push(note);
     }

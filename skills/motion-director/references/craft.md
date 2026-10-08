@@ -42,18 +42,60 @@ that pass first time.
 ### Brand colours (they always match, and always read)
 - **From a logo**: put it in `public/brand/`, then
   `npm run brand -- public/brand/logo.png --spec specs/<name>.json` (PNG, JPG, WebP, GIF, SVG; `--json` for data).
-  The logo is decoded in memory (nothing written but the spec). Transparent, near-white and
-  near-black pixels (background, lettering) and anti-aliased blends are ignored; the rest is
-  clustered (k-means, k=5, OKLab). It writes `brand.accent` (the most saturated colour covering
-  ≥ 5 % of the logo's colour), `brand.accent2` (the next clearly different one; dropped for
-  one-colour logos) and `brand.logo` (`logo` scenes without `src` show it). It prints every
-  colour's contrast, light vs dark base, and ranks the 10 themes: keeping the brand colours
-  true counts most, then the base, then a theme built around a similar hue. Choose among the
-  top 3 by vibe. A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
+  The logo is decoded in memory (nothing written but the spec; SVG is rasterised by a system
+  ffmpeg built with librsvg, else read as text and its colours weighted by shape area — the tool
+  says so). Transparent, near-white and near-black pixels (background, lettering) and
+  anti-aliased blends are ignored; the rest is clustered (k-means, k=5, OKLab). It writes
+  `brand.accent` (the most saturated colour covering ≥ 5 % of the logo's colour), `brand.accent2`
+  (the next clearly different one; dropped for one-colour logos) and `brand.logo` (`logo` scenes
+  without `src` show it). It prints every colour's contrast, light vs dark base, and ranks the 10
+  themes with each one's accent contrast. Choose among the top 3 by vibe.
+  - **The logo file must read on the theme — a rule, not a score**: `logo` scenes draw the file as
+    is, straight on the theme background (no plate). The tool judges each opaque part of the logo
+    (each connected shape: a letter, a mark, a tile with its glyph) by its rim, the ink that meets
+    the background (pixels next to transparency), against each theme. Ink vanishes below ~2.5:1
+    contrast unless its colour differs strongly (a vivid yellow mark reads on white at 1.5:1; navy
+    or #333 lettering on near-black at 1.6:1 does not).
+    - A part whose rim vanishes but which holds ink of another colour that reads there — a tile or
+      badge with a glyph (a navy or black app tile's white glyph on a dark theme), an outline around
+      a body (an orange mascot's #111 outline), a ring around a glyph, black text on a yellow badge on
+      `pop` — still reads: only its edge blends in. That is an ℹ note, never a warning and never a
+      reason to rule out a base.
+    - A part with nothing readable inside — wordmark strokes, a plain mark, a tile with its glyph cut
+      out to transparency — is lost with its rim. When that is ≥ 10 % of the logo's rim, the theme is
+      listed last under "Not with this logo file", and messages name the part for what it is
+      (lettering, mark, tile, outline).
+    - The logo's own frame — its biggest part when it spans ≥ 85 % of the image both ways as a solid
+      square (full bleed, rounded corners or a few % of transparent padding: app icons are exported
+      all three ways, and all three get the same verdict) — is a backdrop when its rim is mostly
+      paper (white, cream, grey, black; a JPG, an SVG artboard rect): it shows as a box wherever it
+      stands out ("use a transparent PNG or SVG"), and a light or dark one decides the base (a
+      mid-grey one is a box on both). The backdrop is never judged as lettering, and its colour is
+      the page's own, never a blend with the ink: a JPG wordmark cropped tight to the ink meets the
+      edge with its letters too, so the paper is whichever of light / dark covers more of the rim —
+      unless nothing is enclosed (no counters), no long side is all page and the rim is split, where
+      the page is the tone cut into more pieces (gaps, notches) than the lettering (one per letter),
+      so a bold HELM whose stems cover 65 % of the edge still reads as black on a white page. Its
+      mirror (white on black) gets the mirrored verdict. A full-bleed *colour* is not a backdrop
+      but the mark itself (an app tile), judged as a part like any other.
+    - When most themes of one base fail, the other base comes first. So a yellow mark with a black,
+      charcoal or navy wordmark gets `clean` / `studio` / `corporate` (yellow darkened to read), not
+      `midnight` or `pop`; a violet, red, navy or yellow app tile with a white glyph fits every theme
+      (navy's edge blends into near-black, yellow's into `pop`: a note); a black tile with a white
+      glyph is a dark box on light themes and fits the dark ones, `midnight` included; a white one is
+      the mirror case. To keep yellow on dark, get a light-on-dark version of the logo from the brand
+      and run the tool on that file.
+  - With `--spec`, a spec theme the logo does not read on gets a ⚠ and alternatives (an edge that only
+    blends in, an ℹ); `npm run check` gives the same warning or note for any `logo` scene's file
+    (path in public/ or data: URL).
+  - Then keeping the brand colours true counts most, then the accent's lightness (a mild hint),
+    then a theme built around a similar hue.
+  - A monochrome logo writes no accent: the theme keeps its own (mono, clean, studio suit it).
 - **From hex codes** the user gives: write them to `brand.accent` / `brand.accent2` directly.
 - **Never rejected, never unreadable** (`withBrand` in `src/engine/themes.ts`):
-  - accent stays exactly as given if it reaches 3:1 on the background and some button text reaches
-    4.5:1 on it; otherwise only its lightness moves (OKLCH, hue and chroma kept) to the nearest value that passes;
+  - accent stays exactly as given if it reaches 3:1 on the background and on cards (surface: kicker pills,
+    the `compare` hero label) and some button text reaches 4.5:1 on it; otherwise only its lightness moves
+    (OKLCH, hue and chroma kept) to the nearest value that passes;
   - button text: the theme's own if it reads, else white or the theme's dark ink, whichever reads better;
   - accent2: the brand's, held to 3:1 on the background and under button-text glyphs; if missing it is
     derived with the theme's own pairing — analogous (desi, corporate), a quarter turn (midnight, clean, pop),
@@ -63,8 +105,10 @@ that pass first time.
     highlighter, not beige and not neon; a muted brand gets muted tints);
   - text, background, surface, lines and muted text never change.
 - `npm run check` prints an ℹ line per adjustment, e.g. "brand accent #FFE14D darkened to #A48D00 for
-  contrast … To keep it exactly, use theme midnight / neon / desi …". Light brand colours (yellow, lime,
-  pastels) belong on dark themes; deep ones (navy, maroon) on light themes.
+  contrast … To keep it exactly, use theme midnight / neon / desi …" (only themes `brand.logo` reads on).
+  Light brand colours (yellow, lime, pastels) belong on dark themes; deep ones (navy, maroon) on light
+  themes — unless the logo file itself only reads on the other base (above): a readable logo beats an
+  exact accent.
 
 ## Motion personalities
 - `snappy` — mask reveals, 2-frame stagger, push transitions. Creator energy.
