@@ -32,6 +32,10 @@ const FRAME_SPAN = 0.85;
 const FRAME_SOLID = 0.85;
 /** ...with at most this share cut out to transparency (more is a knockout: the glyph shows the video through it). */
 const KNOCKOUT = 0.03;
+/** A frame's rim split this evenly between light and dark paper (the lesser share) may be lettering cropped to the ink... */
+const SPLIT = 0.25;
+/** ...told from its page by counting pieces; pieces under this share of the frame (anti-aliasing specks) do not count. */
+const SPECK = 0.002;
 
 const pack = ([r, g, b]) => (r << 16) | (g << 8) | b;
 const unpack = (n) => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
@@ -42,6 +46,10 @@ const chroma = (lab) => Math.hypot(lab[1], lab[2]);
  * saturated full-bleed colour is the mark itself (an app tile).
  */
 const isPaper = (rgb) => chroma(T.rgbToOklab(rgb)) < GREY;
+/** Paper above this luminance is light (white, cream, pale grey), below it dark: where contrast with white and with black is equal. */
+const PAPER_MID = Math.sqrt(1.05 * 0.05) - 0.05;
+/** "light" / "dark" paper, or null for a colour. */
+const paperTone = (rgb) => (isPaper(rgb) ? (T.luminance(T.rgbToHex(rgb)) > PAPER_MID ? "light" : "dark") : null);
 
 // --- decoding ----------------------------------------------------------------
 
@@ -496,6 +504,62 @@ export const separate = (weights) => {
 const bump = (map, key, by = 1) => map.set(key, (map.get(key) ?? 0) + by);
 
 /**
+ * Lettering cropped tight to the ink on its own page (no margin), told apart
+ * from that page: the page is cut into more pieces (the gaps between letters,
+ * the notches of E or M, the space above L) than the lettering (one piece per
+ * letter); a white HELM on black has the same rim as a black one on white.
+ * Pieces are 4-connected areas of one tone (light paper, dark paper, colour)
+ * within the frame (`part`, labelled `id`). Returns how many pieces each
+ * paper tone has, or null when the frame does not look like such a crop: a
+ * long side all one tone (a margin), or anything enclosed, not reaching the
+ * frame's rim (a counter, a floating letter, a glyph on a badge), which tells
+ * nothing here because it is a letter's counter in a tight crop but a whole
+ * letter once the page has a margin anywhere. Then the rim decides.
+ */
+const tightCrop = (rgba, width, height, label, id, part, onRim) => {
+  const tones = new Map();
+  const toneOf = (key) => tones.get(key) ?? tones.set(key, paperTone(unpack(key)) ?? "colour").get(key);
+  const toneAt = (i) => (label[i] === id ? toneOf((rgba[i * 4] << 16) | (rgba[i * 4 + 1] << 8) | rgba[i * 4 + 2]) : "clear");
+  const [x0, y0, x1, y1] = part.box;
+  const sides = [];
+  if (x1 - x0 >= y1 - y0) for (const y of [y0, y1]) sides.push(Array.from({ length: x1 - x0 + 1 }, (_, k) => y * width + x0 + k));
+  if (y1 - y0 >= x1 - x0) for (const x of [x0, x1]) sides.push(Array.from({ length: y1 - y0 + 1 }, (_, k) => (y0 + k) * width + x));
+  for (const side of sides) {
+    const along = new Set(side.map(toneAt));
+    if (along.size === 1 && (along.has("light") || along.has("dark"))) return null;
+  }
+  const seen = new Uint8Array(width * height);
+  const counts = { light: 0, dark: 0 };
+  const speck = Math.max(2, SPECK * part.pixels);
+  const stack = [];
+  for (let s = 0; s < label.length; s++) {
+    if (label[s] !== id || seen[s]) continue;
+    const tone = toneAt(s);
+    let [size, open] = [0, false];
+    seen[s] = 1;
+    stack.push(s);
+    while (stack.length) {
+      const i = stack.pop();
+      const [x, y] = [i % width, Math.floor(i / width)];
+      size++;
+      open ||= Boolean(onRim[i]);
+      for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) {
+        if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+        const j = ny * width + nx;
+        if (!seen[j] && toneAt(j) === tone) {
+          seen[j] = 1;
+          stack.push(j);
+        }
+      }
+    }
+    if (size < speck) continue;
+    if (!open) return null;
+    if (tone !== "colour") counts[tone]++;
+  }
+  return counts;
+};
+
+/**
  * Sort decoded RGBA pixels: transparent pixels (alpha < 128) are dropped, the
  * rest are counted per exact colour. Also finds:
  * - the rim: opaque pixels next to a transparent one or the image edge, the
@@ -505,10 +569,14 @@ const bump = (map, key, by = 1) => map.set(key, (map.get(key) ?? 0) + by);
  *   inside an outline; they sit on the logo's own colour, not on the video),
  *   its bounding box, the transparent holes it encloses and the inks of the
  *   parts lying in those holes (`islands`: a glyph inside a ring);
- * - `backdrop`: the mean colour of the logo's own paper, when its biggest part
- *   is a frame (see FRAME_SPAN; square, rounded or inset alike) whose rim is
- *   mostly paper (a coloured mark touching part of the edge neither hides nor
- *   tints it), else null.
+ * - `backdrop`: the colour of the logo's own paper, when its biggest part is a
+ *   frame (see FRAME_SPAN; square, rounded or inset alike) whose rim is mostly
+ *   paper (a coloured mark touching part of the edge neither hides nor tints
+ *   it), else null. Black lettering cropped tight to the ink meets the edge of
+ *   its white page too (or white lettering, of a black one), so the paper is
+ *   the light or the dark paper on that rim, never a blend of the two: the one
+ *   covering more of it, unless the frame looks like lettering cropped to the
+ *   ink (see tightCrop) and the other one is cut into more pieces.
  */
 export const samplePixels = (rgba, width, height) => {
   const n = width * height;
@@ -614,16 +682,25 @@ export const samplePixels = (rgba, width, height) => {
     const [bw, bh] = [main.box[2] - main.box[0] + 1, main.box[3] - main.box[1] + 1];
     const shape = main.pixels + main.holes;
     if (bw >= FRAME_SPAN * width && bh >= FRAME_SPAN * height && shape >= FRAME_SOLID * bw * bh && main.holes <= KNOCKOUT * shape) {
-      let [edge, paper] = [0, 0];
-      const sum = [0, 0, 0];
+      const tones = { light: { rim: 0, sum: [0, 0, 0] }, dark: { rim: 0, sum: [0, 0, 0] } };
+      let edge = 0;
       for (const [key, w] of main.rim) {
         edge += w;
         const rgb = unpack(key);
-        if (!isPaper(rgb)) continue;
-        paper += w;
-        rgb.forEach((v, k) => (sum[k] += v * w));
+        const tone = paperTone(rgb);
+        if (!tone) continue;
+        tones[tone].rim += w;
+        rgb.forEach((v, k) => (tones[tone].sum[k] += v * w));
       }
-      if (2 * paper > edge) backdrop = sum.map((v) => v / paper);
+      const { light, dark } = tones;
+      if (2 * (light.rim + dark.rim) > edge) {
+        let paper = light.rim >= dark.rim ? light : dark;
+        if (Math.min(light.rim, dark.rim) >= SPLIT * (light.rim + dark.rim)) {
+          const pieces = tightCrop(rgba, width, height, label, parts.indexOf(main), main, onRim);
+          if (pieces && pieces.light !== pieces.dark) paper = pieces.light > pieces.dark ? light : dark;
+        }
+        backdrop = paper.sum.map((v) => v / paper.rim);
+      }
     }
   }
 
@@ -781,15 +858,16 @@ const apart = (p, q) => Math.hypot(p.lab[0] - q.lab[0], p.lab[1] - q.lab[1], p.l
 export const standsOut = (ink, bg) => clarity(inkOf(ink), inkOf(bg));
 
 /**
- * "light" / "dark" when the logo carries its own opaque light or dark paper
+ * "light" / "grey" / "dark" when the logo carries its own opaque paper
  * (`backdrop`: a frame that is mostly white, cream, grey or black), else null.
- * A full-bleed colour (a purple, navy or yellow app tile) is not a background
- * but the mark: it is judged as a part like any other.
+ * That paper is only ever a box, never lettering. A full-bleed colour (a
+ * purple, navy or yellow app tile) is not a background but the mark: it is
+ * judged as a part like any other.
  */
 const backdropTone = (stats) => {
   if (!stats.backdrop) return null;
   const y = T.luminance(T.rgbToHex(stats.backdrop));
-  return y > 0.4 ? "light" : y < 0.1 ? "dark" : null;
+  return y > 0.4 ? "light" : y < 0.1 ? "dark" : "grey";
 };
 
 /**
@@ -836,8 +914,8 @@ const partName = (hex, role) => {
  * Whether this logo file reads on each theme: { [theme]: { clash, note } },
  * or null when it cannot be told (an SVG read as text has no pixels). The
  * "logo" scene draws the file as is, straight on the theme background.
- * - A logo on its own opaque light / dark paper shows as a box wherever that
- *   paper stands out (`clash`).
+ * - A logo on its own opaque paper (light, grey or dark) shows as a box
+ *   wherever that paper stands out (`clash`); the paper is never judged as ink.
  * - Otherwise each opaque part is judged by its rim, the ink that meets the
  *   background. A part whose rim vanishes but which holds ink of another
  *   colour that reads there (a navy app tile's white glyph on near-black, the
@@ -915,24 +993,31 @@ export const logoClashes = (stats, fit = judgeLogo(stats)) => fit && Object.from
 
 /**
  * Light or dark video background for this logo, and why (base null = either
- * works). `firm`: the logo file itself demands it: its own opaque backdrop, or
- * ink that vanishes on most themes of the other base (`clashes`, from
- * logoClashes). A tile or outline whose inside still reads never decides it.
- * Otherwise the accent's lightness gives a mild preference only.
+ * works). `firm`: the logo file itself demands it: its own opaque light or
+ * dark backdrop, or ink (or a grey backdrop) that fails on most themes of the
+ * other base (`clashes`, from logoClashes). A tile or outline whose inside
+ * still reads never decides it. Otherwise the accent's lightness gives a mild
+ * preference only.
  */
 export const decideBase = (stats, accent, clashes = logoClashes(stats)) => {
   const firm = (base, why) => ({ base, why, firm: true });
   const tone = backdropTone(stats);
-  if (tone) return firm(tone, `the logo sits on a ${tone} background`);
+  if (tone === "light" || tone === "dark") return firm(tone, `the logo sits on a ${tone} background`);
   const lostOn = (light) => {
     const side = T.THEME_NAMES.filter((n) => isLight(T.THEMES[n]) === light);
     const lost = side.filter((n) => clashes?.[n]);
     return lost.length * 2 > side.length ? clashes[lost[0]] : null;
   };
   const [onLight, onDark] = [lostOn(true), lostOn(false)];
-  if (onLight && onDark) return { base: null, why: `its ${onLight.part} vanishes on light backgrounds and its ${onDark.part} on dark ones`, firm: false };
-  if (onLight) return firm("dark", `its ${onLight.part} would vanish on light backgrounds`);
-  if (onDark) return firm("light", `its ${onDark.part} would vanish on dark backgrounds`);
+  // A grey backdrop is a box, not ink: it does not vanish, it shows.
+  const its = (clash) => `its ${tone ? "own " : ""}${clash.part}`;
+  const fails = tone ? "would show as a box" : "would vanish";
+  if (onLight && onDark) {
+    const why = tone ? `${its(onLight)} would show as a box on light and dark backgrounds` : `${its(onLight)} vanishes on light backgrounds and ${its(onDark)} on dark ones`;
+    return { base: null, why, firm: false };
+  }
+  if (onLight) return firm("dark", `${its(onLight)} ${fails} on light backgrounds`);
+  if (onDark) return firm("light", `${its(onDark)} ${fails} on dark backgrounds`);
   const mild = (base, why) => ({ base, why, firm: false });
   if (accent) {
     const y = T.luminance(accent);

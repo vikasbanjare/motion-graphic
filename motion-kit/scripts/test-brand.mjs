@@ -49,7 +49,7 @@ const canvas = (w, h, bg = [0, 0, 0, 0]) => {
       const d = Math.hypot(X - cx, Y - cy);
       return d <= r && d >= r - width;
     }, rgba);
-  return { px, box, round, disc, w, h };
+  return { px, box, paint, round, disc, w, h };
 };
 
 /** PNG bytes of a canvas, encoded in memory (8-bit RGBA, no filter): for decoder and check() tests. */
@@ -637,6 +637,8 @@ test("theme recommendation: ink the logo encloses does not decide the base", () 
 });
 
 const DARK = ["midnight", "neon", "desi", "mono", "studio-dark"];
+/** The dark themes a black box blends into (desi's deep violet sets it apart). */
+const NEAR_BLACK = ["midnight", "neon", "mono", "studio-dark"];
 const LIGHT = ["clean", "studio", "corporate", "editorial"];
 const clashOn = (r, name) => r.themes.find((t) => t.name === name).clash;
 const noteOn = (r, name) => r.themes.find((t) => t.name === name).note;
@@ -697,6 +699,110 @@ test("a white, cream or black full-bleed backdrop is paper: it shows as a box wh
   for (const n of DARK) assert.match(clashOn(jpg, n), /own light background \(#F[CD]F[CD]F[CD]\) would show as a box/, n);
 });
 
+/** Distance from (px, py) to the segment a-b. */
+const toSegment = (px, py, [ax, ay], [bx, by]) => {
+  const [dx, dy] = [bx - ax, by - ay];
+  const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+};
+/** Bold 48 px capitals, 10 px strokes: [width, inside(x, y)] per letter. */
+const CAP = 48;
+const roundRect = (X, Y, [x0, y0, x1, y1], r) => {
+  const [cx, cy] = [Math.min(Math.max(X, x0 + r), x1 - r), Math.min(Math.max(Y, y0 + r), y1 - r)];
+  return X >= x0 && X <= x1 && Y >= y0 && Y <= y1 && Math.hypot(X - cx, Y - cy) <= r;
+};
+const GLYPHS = {
+  A: [44, (X, Y) => {
+    const [l, r] = [15 - (15 * Y) / CAP, 29 + (15 * Y) / CAP];
+    return X >= l && X <= r && (X < l + 11 || X > r - 11 || Y < 10 || (Y >= 28 && Y < 38)); // its counter: rows 10-27 between the legs
+  }],
+  C: [42, (X, Y) => roundRect(X, Y, [0, 0, 42, CAP], 12) && !roundRect(X, Y, [10, 10, 32, CAP - 10], 6) && !(X > 30 && Y > 13 && Y < CAP - 13)],
+  M: [44, (X, Y) => X < 10 || X > 34 || toSegment(X, Y, [5, 0], [22, 32]) < 5.5 || toSegment(X, Y, [39, 0], [22, 32]) < 5.5],
+  E: [38, (X, Y) => X < 10 || Y < 10 || Y >= CAP - 10 || (Y >= 19 && Y < 29 && X < 32)],
+  H: [40, (X, Y) => X < 10 || X > 30 || (Y >= 19 && Y < 29)],
+  L: [34, (X, Y) => X < 10 || Y >= CAP - 10],
+};
+/** An opaque `word` in `ink` on `paper`, cropped tight to the ink: every letter meets the top and bottom edges, the first and last the sides. */
+const wordmark = (word, paper, ink) => {
+  const glyphs = [...word].map((ch) => GLYPHS[ch]);
+  const w = glyphs.reduce((a, [gw]) => a + gw, 0) + 8 * (glyphs.length - 1);
+  const cv = canvas(w, CAP, rgba(paper));
+  let left = 0;
+  for (const [gw, inside] of glyphs) {
+    const x0 = left;
+    cv.paint((X, Y) => X >= x0 && X <= x0 + gw && inside(X - x0, Y), rgba(ink));
+    left += gw + 8;
+  }
+  return cv;
+};
+/** Share of a canvas's border pixels in `hex`. */
+const borderShare = ({ px, w, h }, hex) => {
+  const [r, g, b] = T.hexToRgb(hex);
+  let [all, hit] = [0, 0];
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (x && y && x < w - 1 && y < h - 1) continue;
+      all++;
+      const i = (y * w + x) * 4;
+      if (px[i] === r && px[i + 1] === g && px[i + 2] === b) hit++;
+    }
+  }
+  return hit / all;
+};
+
+test("an opaque page with lettering cropped to the ink: the page is the backdrop, never lettering", () => {
+  // Black ACME on a white JPG-like page, cropped so the letters touch all four
+  // edges and cover nearly half the border. The page is a white box on dark
+  // themes and pop, and blends into the light ones: it is never "lettering".
+  const acme = wordmark("ACME", "#FFFFFF", "#111111");
+  const cover = borderShare(acme, "#111111");
+  assert.ok(cover >= 0.45 && cover < 0.5, `ink covers ${cover} of the border`);
+  const day = analyseCanvas(acme);
+  assert.deepEqual(day.stats.backdrop, [255, 255, 255], "the page's own colour, not a blend with the ink");
+  assert.deepEqual([day.base, day.baseFirm, day.baseWhy], ["light", true, "the logo sits on a light background"]);
+  for (const n of [...DARK, "pop"]) assert.equal(clashOn(day, n), "the logo's own light background (#FFFFFF) would show as a box: use a transparent PNG or SVG of the logo", n);
+  for (const n of LIGHT) assert.equal(clashOn(day, n), null, n);
+  assert.ok(isLightTheme(day.themes[0].name), day.themes[0].name);
+  assert.doesNotMatch(wording(day), /lettering|mark|vanish/);
+  // The mirror: white lettering on a black page.
+  const night = analyseCanvas(wordmark("ACME", "#111111", "#FFFFFF"));
+  assert.deepEqual(night.stats.backdrop, [17, 17, 17]);
+  assert.deepEqual([night.base, night.baseFirm, night.baseWhy], ["dark", true, "the logo sits on a dark background"]);
+  for (const n of [...LIGHT, "pop"]) assert.equal(clashOn(night, n), "the logo's own dark background (#111111) would show as a box: use a transparent PNG or SVG of the logo", n);
+  for (const n of NEAR_BLACK) assert.equal(clashOn(night, n), null, n);
+  assert.doesNotMatch(wording(night), /lettering|mark|vanish/);
+});
+
+test("lettering that covers most of the border still does not turn into the page", () => {
+  // Stems and bars meet the edges more than the page does (65 % here, white HELM
+  // on black has the same rim), but the page is cut into more pieces than the
+  // lettering, one piece per letter.
+  for (const word of ["HELM", "HEM"]) {
+    const day = wordmark(word, "#FFFFFF", "#111111");
+    assert.ok(borderShare(day, "#111111") > 0.6, word);
+    const r = analyseCanvas(day);
+    assert.deepEqual([r.base, r.baseFirm, r.stats.backdrop], ["light", true, [255, 255, 255]], word);
+    for (const n of LIGHT) assert.equal(clashOn(r, n), null, `${word} on ${n}`);
+    const m = analyseCanvas(wordmark(word, "#111111", "#FFFFFF"));
+    assert.deepEqual([m.base, m.baseFirm, m.stats.backdrop], ["dark", true, [17, 17, 17]], `${word} mirrored`);
+    for (const n of NEAR_BLACK) assert.equal(clashOn(m, n), null, `${word} mirrored on ${n}`);
+  }
+  // With a margin anywhere the rim decides, as for any padded logo.
+  const padded = canvas(200, 64, rgba("#FFFFFF"));
+  const helm = wordmark("HELM", "#FFFFFF", "#111111");
+  for (let y = 0; y < helm.h; y++) padded.px.set(helm.px.subarray(y * helm.w * 4, (y + 1) * helm.w * 4), ((y + 16) * 200 + 10) * 4);
+  assert.deepEqual(analyseCanvas(padded).stats.backdrop, [255, 255, 255]);
+});
+
+test("a grey page is a box on light and dark themes alike, never lettering", () => {
+  // Mid-grey paper stands out on white and on near-black: wherever it goes it is a box.
+  const grey = analyseCanvas(wordmark("ACME", "#8A8A8A", "#111111"));
+  assert.deepEqual(grey.stats.backdrop, [138, 138, 138]);
+  for (const t of grey.themes) assert.equal(t.clash, "the logo's own grey background (#8A8A8A) would show as a box: use a transparent PNG or SVG of the logo", t.name);
+  assert.deepEqual([grey.base, grey.baseFirm, grey.baseWhy], [null, false, "its own grey background (#8A8A8A) would show as a box on light and dark backgrounds"]);
+  assert.doesNotMatch(wording(grey), /lettering|mark|vanish/);
+});
+
 /**
  * A 96×96 app-icon-style logo: a `fill` tile, "square" (full bleed), "rounded"
  * (corner radius 22 %) or "inset" (4 % transparent padding all round), with a
@@ -730,7 +836,7 @@ test("a paper tile gets the same verdict square, with rounded corners or with tr
   // warning on midnight; on light themes it is a box.
   for (const shape of ["square", "rounded", "inset"]) {
     const black = analyseCanvas(appIcon(shape, "#000000", "#FFFFFF"));
-    for (const n of ["midnight", "neon", "mono", "studio-dark"]) assert.equal(clashOn(black, n), null, `${shape} on ${n}`);
+    for (const n of NEAR_BLACK) assert.equal(clashOn(black, n), null, `${shape} on ${n}`);
     for (const n of LIGHT) assert.equal(clashOn(black, n), "the logo's own dark background (#000000) would show as a box: use a transparent PNG or SVG of the logo", `${shape} on ${n}`);
     const white = analyseCanvas(appIcon(shape, "#FFFFFF", "#E4002B"));
     for (const n of DARK) assert.match(clashOn(white, n), /own light background \(#FFFFFF\) would show as a box/, `${shape} on ${n}`);
@@ -1241,6 +1347,29 @@ test("check / CLI: an app tile whose inside reads gets no warning on a dark them
     assert.doesNotMatch(r.stdout, /⚠|lettering/);
     assert.match(plain(r.stdout), /ℹ Theme midnight: the edge of the logo's dark outline \(#111111\) blends into the dark background \(1\.0:1\); the #FF6A13 inside it still reads\./);
   });
+});
+
+test("check: an opaque page with lettering cropped to the ink is a box only where the page shows", { skip: !hasFfmpeg && "ffmpeg not installed" }, async () => {
+  const { check } = await import("./check.mjs");
+  const dataUrl = (cv) => `data:image/png;base64,${pngOf(cv).toString("base64")}`;
+  const spec = (theme, logo) => ({ theme, brand: { logo }, scenes: [{ type: "kinetic", lines: ["Ship faster."] }, { type: "logo", name: "Acme" }] });
+  const logoLines = (r) => [...r.warnings, ...r.notes].filter((w) => w.startsWith("Logo "));
+  const day = dataUrl(wordmark("ACME", "#FFFFFF", "#111111"));
+  for (const theme of LIGHT) {
+    const r = await check(spec(theme, day), { quiet: true });
+    assert.deepEqual(logoLines(r), [], `${theme}: ${logoLines(r).join("\n")}`);
+  }
+  for (const theme of ["midnight", "pop"]) {
+    const lines = logoLines(await check(spec(theme, day), { quiet: true }));
+    assert.equal(lines.length, 1, `${theme}: ${lines.join("\n")}`);
+    const light = "(?:clean|studio|corporate|editorial)";
+    assert.match(lines[0], new RegExp(`^Logo "data: URL" \\(scene 2\\) on theme ${theme}: the logo's own light background \\(#FFFFFF\\) would show as a box: use a transparent PNG or SVG of the logo, or use theme ${light} / ${light} / ${light}\\.$`));
+  }
+  // The mirror: a black page fits the dark themes and is a box on clean.
+  const night = dataUrl(wordmark("ACME", "#111111", "#FFFFFF"));
+  assert.deepEqual(logoLines(await check(spec("midnight", night), { quiet: true })), []);
+  const clean = await check(spec("clean", night), { quiet: true });
+  assert.match(logoLines(clean).join("\n"), /^Logo "data: URL" \(scene 2\) on theme clean: the logo's own dark background \(#111111\) would show as a box: use a transparent PNG or SVG of the logo, or use theme /);
 });
 
 test("rasterised SVG app icons: square, rounded and padded tiles get the same verdict", { skip: !canRasterise && "no ffmpeg with librsvg" }, () => {

@@ -65,10 +65,17 @@ that pass first time.
       (lettering, mark, tile, outline).
     - The logo's own frame — its biggest part when it spans ≥ 85 % of the image both ways as a solid
       square (full bleed, rounded corners or a few % of transparent padding: app icons are exported
-      all three ways, and all three get the same verdict) — is a backdrop when it is light or dark
-      paper (white, cream, pale grey, black; a JPG, an SVG artboard rect): it shows as a box wherever
-      it stands out ("use a transparent PNG or SVG"), and decides the base. A full-bleed *colour* is
-      not a backdrop but the mark itself (an app tile), judged as a part like any other.
+      all three ways, and all three get the same verdict) — is a backdrop when its rim is mostly
+      paper (white, cream, grey, black; a JPG, an SVG artboard rect): it shows as a box wherever it
+      stands out ("use a transparent PNG or SVG"), and a light or dark one decides the base (a
+      mid-grey one is a box on both). The backdrop is never judged as lettering, and its colour is
+      the page's own, never a blend with the ink: a JPG wordmark cropped tight to the ink meets the
+      edge with its letters too, so the paper is whichever of light / dark covers more of the rim —
+      unless nothing is enclosed (no counters), no long side is all page and the rim is split, where
+      the page is the tone cut into more pieces (gaps, notches) than the lettering (one per letter),
+      so a bold HELM whose stems cover 65 % of the edge still reads as black on a white page. Its
+      mirror (white on black) gets the mirrored verdict. A full-bleed *colour* is not a backdrop
+      but the mark itself (an app tile), judged as a part like any other.
     - When most themes of one base fail, the other base comes first. So a yellow mark with a black,
       charcoal or navy wordmark gets `clean` / `studio` / `corporate` (yellow darkened to read), not
       `midnight` or `pop`; a violet, red, navy or yellow app tile with a white glyph fits every theme
