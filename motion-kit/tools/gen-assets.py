@@ -70,11 +70,12 @@ def stereo(mono, pan_from=0.0, pan_to=0.0):
     return np.stack([left, right], axis=1)
 
 
-def write(name, data, peak_db=-3.0):
+def write(name, data, peak_db=-3.0, pack=None):
     if data.ndim == 1:
         data = stereo(data)
     data = data / (np.max(np.abs(data)) + 1e-9) * 10 ** (peak_db / 20)
-    path = ROOT / "sfx" / f"{name}.wav"
+    path = ROOT / "sfx" / (pack or "") / f"{name}.wav"
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.parent.mkdir(parents=True, exist_ok=True)
     pcm = (data * 32767).astype("<i2")
     with wave.open(str(path), "wb") as w:
@@ -166,7 +167,119 @@ def grain(size=256, alpha=26):
     print(f"{path.relative_to(ROOT.parent)}")
 
 
+
+
+# --- extra SFX packs (public/sfx/<pack>/): same names, different character -------------
+# Picked with audio.sfxPack in a spec. The classic pack above stays in public/sfx/.
+
+def bitcrush(x, steps=24, hold=6):
+    """Fewer amplitude steps and a lower effective sample rate: a digital, lo-fi edge."""
+    y = np.round(x * steps) / steps
+    return np.repeat(y[::hold], hold)[: len(x)]
+
+
+def square(f, tt, duty=0.5):
+    phase = np.cumsum(np.broadcast_to(f, tt.shape)) / SR
+    return np.where((phase % 1.0) < duty, 1.0, -1.0)
+
+
+def soft_pack():
+    """Gentle, airy: calm launch films, editorial, wellness."""
+    write("whoosh", whoosh(0.75, 160, 1300, 420, pan=(-0.4, 0.4)) * 0.9, -9, "soft")
+    write("whoosh-soft", whoosh(0.6, 220, 1000, 500, pan=(0.25, -0.25)), -12, "soft")
+    tt = t(0.22)
+    f = 520 * np.exp(-tt * 14) + 210
+    write("pop", np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 18) * env(len(tt), 0.006, 0.08), -9, "soft")
+    tt = t(0.06)
+    write("click", lowpass(rng.standard_normal(len(tt)) * np.exp(-tt * 180), 2200), -14, "soft")
+    tt = t(1.4)
+    f = 70 * np.exp(-tt * 2.2) + 42
+    write("impact", np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 2.4) * env(len(tt), 0.02, 0.6), -6, "soft")
+    n = len(t(1.6))
+    noise = sweep_bandpass(rng.standard_normal(n), 200, 1400, 3200, q=1.2)
+    shape = np.linspace(0, 1, n) ** 2.6
+    shape[-int(0.05 * SR):] *= np.linspace(1, 0, int(0.05 * SR))
+    write("riser", stereo(noise * shape, -0.15, 0.15), -10, "soft")
+    tt = t(1.4)
+    marimba = sum(a * np.sin(2 * np.pi * fr * tt) * np.exp(-tt * d) for fr, a, d in [(784.0, 1.0, 4.5), (1568.0, 0.3, 9.0), (3136.0, 0.08, 14.0)])
+    write("ding", marimba * env(len(tt), 0.004, 0.5), -9, "soft")
+    write("typing", lowpass(typing(2.0, 10), 3000), -16, "soft")
+
+
+def punchy_pack():
+    """Tight and loud: creator reels, offers, sports."""
+    write("whoosh", whoosh(0.32, 420, 4200, 900, pan=(-0.8, 0.8)) * 1.2, -3, "punchy")
+    write("whoosh-soft", whoosh(0.28, 600, 3000, 1200, pan=(0.6, -0.6)), -7, "punchy")
+    tt = t(0.12)
+    f = 1500 * np.exp(-tt * 40) + 320
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 40)
+    write("pop", np.tanh((tone + rng.standard_normal(len(tt)) * np.exp(-tt * 1400) * 0.8) * 1.6), -3, "punchy")
+    tt = t(0.035)
+    write("click", sweep_bandpass(rng.standard_normal(len(tt)) * np.exp(-tt * 420), 4200, 5600, 4000, q=4.0), -7, "punchy")
+    tt = t(0.9)
+    f = 130 * np.exp(-tt * 6) + 45
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 4)
+    snap = lowpass(rng.standard_normal(len(tt)), 2400) * np.exp(-tt * 40) * 4.0
+    write("impact", np.tanh((sub + snap) * 2.2), -1, "punchy")
+    n = len(t(0.9))
+    f = np.geomspace(220, 1800, n)
+    saw = lowpass(2 * ((np.cumsum(f) / SR) % 1.0) - 1, 5000) * 0.5
+    noise = sweep_bandpass(rng.standard_normal(n), 600, 5000, 9000, q=2.0)
+    shape = np.linspace(0, 1, n) ** 3.0
+    shape[-int(0.02 * SR):] *= np.linspace(1, 0, int(0.02 * SR))
+    write("riser", stereo((noise + saw) * shape, -0.3, 0.3), -4, "punchy")
+    tt = t(0.9)
+    bell = sum(a * np.sin(2 * np.pi * fr * tt) * np.exp(-tt * d) for fr, a, d in [(1760.0, 1.0, 5.0), (3520.0, 0.5, 8.0), (5280.0, 0.25, 12.0)])
+    write("ding", bell * env(len(tt), 0.002, 0.3), -5, "punchy")
+    write("typing", typing(2.0, 16), -10, "punchy")
+
+
+def digital_pack():
+    """Blips and bit-crushed edges: AI, tech, gaming, dev tools."""
+    write("whoosh", bitcrush(whoosh(0.45, 300, 3200, 800).mean(axis=1), 16, 4), -6, "digital")
+    write("whoosh-soft", bitcrush(whoosh(0.35, 500, 2200, 900).mean(axis=1), 20, 3) * 0.8, -10, "digital")
+    tt = t(0.09)
+    f = np.where(tt < 0.03, 880.0, 1320.0)
+    write("pop", square(f, tt, 0.3) * env(len(tt), 0.001, 0.03) * 0.6, -10, "digital")
+    tt = t(0.025)
+    write("click", square(2400.0, tt, 0.5) * np.exp(-tt * 200) * 0.5, -14, "digital")
+    tt = t(1.0)
+    f = 160 * np.exp(-tt * 9) + 48
+    write("impact", bitcrush(np.tanh(np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 3.5) * 1.8), 32, 2), -3, "digital")
+    tt = t(1.0)
+    steps = np.floor(tt / 0.0625).astype(int)
+    f = 330.0 * 2 ** ((steps % 12) / 12) * (1 + (steps // 12))
+    arp = square(f, tt, 0.25) * 0.35
+    shape = np.linspace(0, 1, len(tt)) ** 1.8
+    shape[-int(0.02 * SR):] *= np.linspace(1, 0, int(0.02 * SR))
+    write("riser", lowpass(arp, 4500) * shape, -9, "digital")
+    tt = t(0.8)
+    a = np.sin(2 * np.pi * 1046.5 * tt) * np.exp(-tt * 9)
+    b = np.zeros_like(tt)
+    k = int(0.09 * SR)
+    b[k:] = np.sin(2 * np.pi * 1568.0 * tt[: len(tt) - k]) * np.exp(-tt[: len(tt) - k] * 7)
+    write("ding", (a + b) * env(len(tt), 0.002, 0.3), -8, "digital")
+    n = len(t(2.0))
+    out = np.zeros(n)
+    tick = square(3000.0, t(0.012), 0.5) * np.exp(-t(0.012) * 300)
+    pos = 0.0
+    while int(pos * SR) + len(tick) < n:
+        i = int(pos * SR)
+        out[i:i + len(tick)] += tick * rng.uniform(0.4, 1.0)
+        pos += 1 / 14 * rng.uniform(0.75, 1.25)
+    write("typing", out, -14, "digital")
+
+
 if __name__ == "__main__":
+    import sys
+
+    if "--packs" in sys.argv:
+        # Only the extra packs; leaves the classic sounds and the grain untouched.
+        rng = np.random.default_rng(11)
+        soft_pack()
+        punchy_pack()
+        digital_pack()
+        raise SystemExit
     write("whoosh", whoosh(), -4)
     write("whoosh-soft", swoosh_soft(), -8)
     write("pop", pop(), -5)

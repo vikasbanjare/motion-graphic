@@ -77,6 +77,35 @@ No terminal at all? Install Node.js (step 1), download this repository (**Code >
 on GitHub), unzip it and open the folder in the desktop app's **Code** tab as a local session.
 It sets itself up the same way as option A, and the videos land in `motion-kit/out/`.
 
+### Motion Studio: make it by clicking (on your computer)
+
+A browser app with a live preview, for choosing everything yourself before anything renders:
+
+```bash
+cd motion-graphic/motion-kit
+npm install
+npm run studio            # then open http://localhost:5173
+```
+
+Seven steps, each with the real video playing beside it:
+1. **Brief**: name, format (9:16 / 4:5 / 1:1 / 16:9), pace, brand name; start from one of 12 recipes.
+2. **References**: upload a logo (brand colours + which themes suit it), mood-board images
+   (palette) and reference videos. A video is measured (how often it cuts, how much moves,
+   its colours, its music tempo) and turned into a matching style you can apply in one click.
+3. **Style**: 10 complete styles, 10 themes, 4 motion personalities, 7 transitions; hover any
+   tile to see your own first scenes in that style.
+4. **Look**: headline and body fonts, canvas and accent colours (presets or your hex codes),
+   background, film grain, corners, CTA and label style. Colours that would not read are
+   adjusted automatically.
+5. **Storyboard**: add, reorder, duplicate and edit scenes (17 types); narration per scene.
+6. **Sound**: sound-effect pack (classic / soft / punchy / digital) and level; music, either
+   your own licensed track or generated with ElevenLabs Music (asks before spending),
+   fitted to the beat; voice-over upload, timed to every word.
+7. **Make**: visual check of the real frames, then render one or all formats.
+
+Specs are saved in `motion-kit/specs/`, so Claude in chat and the Studio edit the same video.
+To generate music, start it with your key: `ELEVENLABS_API_KEY=… npm run studio`.
+
 ### C. By hand, without Claude (npm)
 
 For people comfortable with a terminal. Needs Node.js 22.18+ and git.

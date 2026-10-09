@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "remotion studio",
+    "studio": "node scripts/studio.mjs",
     "new": "node scripts/new.mjs",
     "check": "node scripts/check.mjs",
     "scaffold": "node scripts/scaffold.mjs",
@@ -16,6 +17,7 @@
     "music": "node scripts/music.mjs",
     "make": "node scripts/make.mjs",
     "brand": "node scripts/brand.mjs",
+    "reference": "node scripts/reference.mjs",
     "lint": "eslint src && tsc",
     "test": "node --test scripts/test-*.mjs tests/*.test.mjs"
   },
@@ -30,6 +32,7 @@
     "@remotion/install-whisper-cpp": "4.0.534",
     "@remotion/layout-utils": "4.0.534",
     "@remotion/media": "4.0.534",
+    "@remotion/player": "4.0.534",
     "@remotion/renderer": "4.0.534",
     "@remotion/transitions": "4.0.534",
     "@remotion/zod-types": "4.0.534",
@@ -42,10 +45,12 @@
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.534",
     "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.7",
     "@types/web": "0.0.166",
     "eslint": "9.19.0",
     "prettier": "3.8.1",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "8.3.0"
   },
   "engines": {
     "node": ">=22.18"

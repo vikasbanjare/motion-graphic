@@ -10,14 +10,15 @@ import { FPS, textFloor } from "./formats.ts";
 import { useFontsReady } from "./fonts.ts";
 import { resolveMedia } from "./media.ts";
 import { beatFields, musicCurve } from "./music.ts";
-import { planVideo, type SfxName, type VideoPlan } from "./plan.ts";
+import { planVideo, type SfxName, type SfxPack, type VideoPlan } from "./plan.ts";
 import { QaProbe } from "./qa.tsx";
 import { videoSchema, type Scene, type VideoSpec } from "./schema.ts";
 import { makeTransition, transitionTiming } from "./transitions.tsx";
 import { SCENES } from "../scenes/index.ts";
 
-let sfxUrl = (name: SfxName) => staticFile(`sfx/${name}.wav`);
-export const setSfxUrlResolver = (fn: (name: SfxName) => string) => {
+/** The classic pack lives in public/sfx/, the others in public/sfx/<pack>/ (tools/gen-assets.py). */
+let sfxUrl = (name: SfxName, pack: SfxPack = "classic") => staticFile(pack === "classic" ? `sfx/${name}.wav` : `sfx/${pack}/${name}.wav`);
+export const setSfxUrlResolver = (fn: (name: SfxName, pack?: SfxPack) => string) => {
   sfxUrl = fn;
 };
 
@@ -194,7 +195,7 @@ const Sounds: React.FC<{ plan: VideoPlan }> = ({ plan }) => {
     <>
       {cues.map((c, i) => (
         <Sequence key={i} from={c.at} durationInFrames={c.duration ?? 45} layout="none" name={`sfx ${c.sfx}`}>
-          <Audio src={sfxUrl(c.sfx)} volume={c.volume} loop={Boolean(c.duration && c.duration > 55)} />
+          <Audio src={sfxUrl(c.sfx, audio.sfxPack)} volume={Math.min(1, c.volume * audio.sfxVolume)} loop={Boolean(c.duration && c.duration > 55)} />
         </Sequence>
       ))}
       {music ? (

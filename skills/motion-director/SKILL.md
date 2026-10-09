@@ -19,6 +19,10 @@ Read before the first video of a session:
 - `references/craft.md`: timing, themes, motion, safe zones, sound.
 - `references/production.md`: voice-over, music, footage, delivery.
 
+If the user would rather pick styles, fonts, colours and sounds by clicking, with a live
+preview, tell them to run `npm run studio` in `motion-kit/` (Motion Studio). It edits the same
+`specs/<name>.json` files, so you can keep working on a video they started there.
+
 If the user wants a concept, a storyboard or prompts for AI video tools (Flow / Veo, Runway, Kling,
 Higgsfield) rather than a rendered video, use the `motion-creative-director` skill instead; it
 hands back here for the parts the engine renders.

@@ -55,6 +55,18 @@ Chromium headless shell (plus `REMOTION_CHROME_MODE=chrome-for-testing` for a fu
 Chromium). The repository's SessionStart hook (`../scripts/session-start.sh`) does this
 in Claude Code on the web, and `remotion.config.ts` passes it on to Studio.
 
+## Motion Studio
+
+`npm run studio` opens a step-by-step maker in the browser (Brief → References → Style →
+Look → Storyboard → Sound → Make) with the real engine playing live beside every step. It is
+a thin layer over the same scripts: `check`, `qa`, `new`, `brand`, `music`, `voice`, `make`
+and `reference`. It saves to `specs/`, uploads to `public/` (`brand/`, `refs/`, `music/`,
+`voice/`, `images/`, `clips/`) and renders to `out/`. Code: `studio/` (React + Remotion
+Player, served by Vite) and `scripts/studio.mjs`.
+
+`npm run reference -- refs/ad.mp4` measures a reference video on its own: cuts, motion,
+palette, brightness and music tempo, plus the theme, motion, pace and transition that match.
+
 ## A spec
 
 ```json

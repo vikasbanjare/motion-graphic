@@ -139,10 +139,13 @@ export const resolveLook = (theme: Theme, look?: Look): { theme: Theme; changes:
       changes.push({ field: "bg", from: pickedBg, to: bg, message: `canvas ${pickedBg} is a mid-tone no text reads on at ${MIN_LOOK_TEXT}:1; ${isDark(bg) ? "darkened" : "lightened"} to ${bg}.` });
     const want = look.text ?? colors.text;
     // Text: keep the pick if it reads; else move its lightness away from the canvas.
-    const text =
-      contrast(want, bg) >= MIN_LOOK_TEXT
-        ? want
-        : (nearestPassing(want, (h) => contrast(h, bg) >= MIN_LOOK_TEXT, isDark(bg) ? 1 : -1) ?? (isDark(bg) ? "#FFFFFF" : "#000000"));
+    // A small lightness move keeps the picked hue; a big one (dark ink on a dark canvas)
+    // would only give a muddy grey, so near-white or near-black ink is used instead.
+    const fit = contrast(want, bg) >= MIN_LOOK_TEXT ? want : nearestPassing(want, (h) => contrast(h, bg) >= MIN_LOOK_TEXT, isDark(bg) ? 1 : -1);
+    const ink = isDark(bg) ? "#F8FAFC" : "#111111";
+    const fallback = contrast(ink, bg) >= MIN_LOOK_TEXT ? ink : isDark(bg) ? "#FFFFFF" : "#000000";
+    const far = (h: string) => Math.abs(rgbToOklab(hexToRgb(h))[0] - rgbToOklab(hexToRgb(want))[0]) > 0.3;
+    const text = fit && !far(fit) ? fit : fallback;
     if (text.toUpperCase() !== want.toUpperCase())
       changes.push({ field: "text", from: want, to: text, message: `text ${want} ${isDark(bg) ? "lightened" : "darkened"} to ${text} so it reaches ${MIN_LOOK_TEXT}:1 on ${bg}.` });
     // Muted text sits up to 60% of the way from text to canvas, as far toward the canvas

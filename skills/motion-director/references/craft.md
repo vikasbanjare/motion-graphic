@@ -149,5 +149,9 @@ usually a sign another theme fits better.
 - Music (`npm run music`) is level-matched, fades in 0.4 s / out 1.5 s, and with narration
   sits at 0.15 and ducks to 35 % while words are spoken. Cuts land on its beats (±7 frames,
   downbeats ±10; narrated ±4), with the whoosh on the beat.
-- Music must be licensed (YouTube Audio Library, Pixabay, Mixkit, bought). Business accounts can't use trending sounds.
-  The kit never generates music.
+- `audio.sfxPack` sets the character of every effect: `classic` (default), `soft` (calm launch
+  films, editorial), `punchy` (creator reels, offers), `digital` (AI, tech, gaming).
+  `audio.sfxVolume` scales them (1 = as designed). Match the pack to the theme's motion.
+- Music: a licensed track (YouTube Audio Library, Pixabay, Mixkit, bought) or one generated in
+  Motion Studio with ElevenLabs Music (paid; ask before spending; the prompt is saved next to
+  the file as its provenance). Business accounts can't use trending sounds.

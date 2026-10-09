@@ -298,7 +298,11 @@ export const videoSchema = z.object({
   audio: z
     .object({
       sfx: z.boolean().optional(),
-      /** Music file inside public/ or https URL. Licensed tracks only; the kit never generates music. */
+      /** Sound-effect character: classic, soft (calm films), punchy (reels, offers), digital (tech, AI). */
+      sfxPack: z.enum(["classic", "soft", "punchy", "digital"]).optional(),
+      /** Level of all sound effects; 1 = as designed, 0.5 = half, 1.5 = louder. */
+      sfxVolume: z.number().min(0).max(2).optional(),
+      /** Music file inside public/ or https URL: a licensed track, or one generated in the Studio with ElevenLabs Music. */
       music: z.string().optional(),
       musicVolume: z.number().min(0).max(1).optional(),
       /** Seconds into the music file where the video starts (picked by `npm run music`). Loops from here if the track is short. */

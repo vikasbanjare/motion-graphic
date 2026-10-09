@@ -25,6 +25,9 @@ export type SfxName =
   | "ding"
   | "typing";
 
+export const SFX_PACKS = ["classic", "soft", "punchy", "digital"] as const;
+export type SfxPack = (typeof SFX_PACKS)[number];
+
 export type Cue = { at: number; sfx: SfxName; volume: number; duration?: number };
 
 type Ctx = {
@@ -389,6 +392,9 @@ export type ResolvedSpec = Required<Pick<VideoSpec, "format" | "theme" | "motion
   look?: VideoSpec["look"];
   audio: {
     sfx: boolean;
+    sfxPack: SfxPack;
+    /** Multiplies every sound effect's level (1 = as designed). */
+    sfxVolume: number;
     music?: string;
     musicVolume: number;
     /** Seconds into the music file. */
@@ -446,6 +452,8 @@ export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
     look: spec.look,
     audio: {
       sfx: spec.audio?.sfx ?? true,
+      sfxPack: spec.audio?.sfxPack ?? "classic",
+      sfxVolume: spec.audio?.sfxVolume ?? 1,
       music: spec.audio?.music,
       // Narrated music is ducked while words are spoken, so its bed can sit
       // higher between lines; a voice-over without `say` lines gets a flat, low bed.
