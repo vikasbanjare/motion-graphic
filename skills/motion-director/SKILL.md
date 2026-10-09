@@ -152,7 +152,8 @@ Try another look without editing: `--theme studio --format landscape`.
 ### 6. Voice (optional)
 
 `npm run voice -- specs/<name>.json` prints the narration and its character count. Then
-`--tts --voice <id>` (ElevenLabs, asks before spending), `--align voice/<name>.mp3` (the user's
+`--engine kokoro` (free, offline), `--engine edge` (free, online; Indian English voices for
+Hinglish), `--engine gemini` (free-tier key), `--tts --voice <id>` (ElevenLabs, asks before spending), `--align voice/<name>.mp3` (the user's
 recording), or `--import subs.srt`. Re-run check + qa (coverage ≥ 70 %).
 
 ### 7. Music (optional, user-supplied only)

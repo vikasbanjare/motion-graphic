@@ -42,6 +42,12 @@ export const Sound: React.FC<Ctx> = ({ spec, update, replace, name, catalog, che
   const [log, setLog] = useState<string | null>(null);
   const [prompt, setPrompt] = useState(MOODS[spec.theme ?? "midnight"] ?? MOODS.studio);
   const [quote, setQuote] = useState<string | null>(null);
+  const hinglish = spec.scenes.some((sc) => /\b(hai|karo|mein|banao|nahi|kya)\b/i.test(sc.say ?? ""));
+  const [vEngine, setVEngine] = useState(hinglish ? "edge" : "kokoro");
+  const [vVoice, setVVoice] = useState<string>("");
+  const [vSpeed, setVSpeed] = useState(1);
+  const [vStyle, setVStyle] = useState("Read this like a confident, warm product video narrator");
+  const [vConfirm, setVConfirm] = useState(false);
   const musicInput = useRef<HTMLInputElement>(null);
   const voiceInput = useRef<HTMLInputElement>(null);
   const player = useRef<HTMLAudioElement>(null);
@@ -74,6 +80,21 @@ export const Sound: React.FC<Ctx> = ({ spec, update, replace, name, catalog, che
     if (!name) throw new Error("Name and save the video in the Brief step first: music fitting edits the saved file.");
     return name;
   };
+  const engines = catalog.voiceEngines ?? {};
+  const engineInfo = engines[vEngine];
+  const generateVoice = (confirm = false) =>
+    task(`Generating the voice-over with ${engineInfo?.label ?? vEngine}… (free offline voices take about 1.5× the video length)`, async () => {
+      const n = needName();
+      if (!spec.scenes.some((sc) => sc.say)) throw new Error("No scene has a 'say' line yet. Add narration in the Storyboard step.");
+      await api.save(n, spec);
+      const r = await api.voiceGenerate({ name: n, engine: vEngine, voice: vVoice || undefined, speed: vSpeed, style: vEngine === "gemini" ? vStyle : undefined, confirm });
+      replace(n, r.spec);
+      setLog(r.log);
+      setVConfirm(false);
+      load();
+      if (r.spec.audio?.voiceover) play(`/${r.spec.audio.voiceover}?t=${Date.now()}`);
+    });
+
   const fit = (track: string) =>
     task("Measuring tempo and beats, choosing the best start…", async () => {
       const n = needName();
@@ -211,7 +232,77 @@ export const Sound: React.FC<Ctx> = ({ spec, update, replace, name, catalog, che
         ) : null}
       </Section>
 
-      <Section title="Voice-over" hint="Each scene's 'say' line is the script. Record or generate it, upload the full MP3, and the video re-times to the real voice.">
+      <Section title="Voice-over" hint="Each scene's 'say' line is the script. Generate it here or upload your own recording; the video re-times to the real voice.">
+        <h4>Generate it</h4>
+        <div className="grid tiles small">
+          {Object.entries(engines).map(([id, e]) => (
+            <Card
+              key={id}
+              selected={vEngine === id}
+              onClick={() => {
+                setVEngine(id);
+                setVVoice("");
+                setVConfirm(false);
+              }}
+              className="tile"
+            >
+              <b>{e.label}</b>
+              <span className="hint">{e.cost}</span>
+            </Card>
+          ))}
+        </div>
+        {engineInfo ? (
+          <>
+            <p className="hint">
+              {engineInfo.licence} {engineInfo.timing} Setup: <code>{engineInfo.setup}</code>
+              {vEngine === "gemini" && !catalog.gemini ? <b> GEMINI_API_KEY is not set in the Studio's terminal.</b> : null}
+              {vEngine === "elevenlabs" && !catalog.elevenlabs ? <b> ELEVENLABS_API_KEY is not set in the Studio's terminal.</b> : null}
+            </p>
+            {hinglish ? <p className="hint">Your script is Hinglish in Latin letters: the Edge Indian English voices (Neerja, Prabhat) read it most naturally.</p> : null}
+            <Row label="Voice">
+              {engineInfo.voices.length ? (
+                <select value={vVoice} onChange={(e) => setVVoice(e.target.value)}>
+                  <option value="">Default</option>
+                  {engineInfo.voices.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input value={vVoice} placeholder="ElevenLabs voice ID" onChange={(e) => setVVoice(e.target.value.trim())} />
+              )}
+            </Row>
+            <Row label="Speed">
+              <Chips options={["0.9", "1", "1.1", "1.2"]} value={String(vSpeed)} onChange={(v) => setVSpeed(Number(v ?? 1))} />
+            </Row>
+            {vEngine === "gemini" ? (
+              <Row label="Delivery" hint="Tell the voice how to sound, e.g. 'Excited Indian creator, fast and punchy'.">
+                <input value={vStyle} onChange={(e) => setVStyle(e.target.value)} />
+              </Row>
+            ) : null}
+            {vEngine === "elevenlabs" && !vConfirm ? (
+              <button className="primary" disabled={!vVoice || !!busy} onClick={() => setVConfirm(true)}>
+                Generate voice-over…
+              </button>
+            ) : vEngine === "elevenlabs" ? (
+              <Banner kind="warning">
+                This spends ElevenLabs credits (about 1 per character: {spec.scenes.reduce((n, sc) => n + (sc.say?.length ?? 0), 0)} characters).
+                <div className="inline">
+                  <button className="primary" onClick={() => generateVoice(true)}>
+                    Yes, generate
+                  </button>
+                  <button onClick={() => setVConfirm(false)}>Cancel</button>
+                </div>
+              </Banner>
+            ) : (
+              <button className="primary" disabled={!!busy} onClick={() => generateVoice()}>
+                Generate voice-over (free)
+              </button>
+            )}
+          </>
+        ) : null}
+        <h4>Or use your own recording</h4>
         <div className="inline">
           <button onClick={() => voiceInput.current?.click()}>Upload voice-over</button>
           <input
@@ -269,8 +360,7 @@ export const Sound: React.FC<Ctx> = ({ spec, update, replace, name, catalog, che
           </ul>
         ) : null}
         <p className="hint">
-          Timing uses ElevenLabs forced alignment when ELEVENLABS_API_KEY is set, otherwise a local Whisper model (downloaded once). No recording yet? Ask Claude: "generate the
-          voice-over for this video" (runs <code>npm run voice -- specs/{name ?? "<name>"}.json --tts</code>, asks before spending).
+          Timing uses ElevenLabs forced alignment when ELEVENLABS_API_KEY is set, otherwise a local Whisper model (downloaded once). Generated voices are timed automatically.
         </p>
       </Section>
     </div>

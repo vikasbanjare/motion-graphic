@@ -1,6 +1,10 @@
 // Voice-over tools. One narration file + word timings = scenes cut on the spoken beat.
 //
 //   npm run voice -- specs/x.json                       print the narration script + cost estimate
+//   npm run voice -- specs/x.json --engine kokoro       free + offline (pip install kokoro-onnx soundfile); --free is short for this
+//   npm run voice -- specs/x.json --engine edge         free + online, Indian/Hindi voices, real word timings (pip install edge-tts)
+//   npm run voice -- specs/x.json --engine gemini       Google Gemini TTS free tier (GEMINI_API_KEY), takes --style "…"
+//      common: --voice <id> (npm run voice -- --voices lists them)  --speed 1.1  --gap 350 (ms between beats)
 //   npm run voice -- specs/x.json --tts --voice <id>    generate with ElevenLabs (needs ELEVENLABS_API_KEY)
 //   npm run voice -- specs/x.json --align voice/x.mp3   time an existing recording (yours or downloaded)
 //   npm run voice -- specs/x.json --import subs.srt     use timings from an .srt or captions .json
@@ -13,8 +17,23 @@ import path from "node:path";
 import readline from "node:readline/promises";
 import { spawnSync } from "node:child_process";
 import { ROOT, c, engine, parseArgs, readSpec } from "./lib.mjs";
+import { VOICE_ENGINES, defaultVoice } from "./voices.mjs";
 
 const args = parseArgs(process.argv.slice(2));
+// --free is short for the offline engine; --engine elevenlabs is the same as --tts.
+if (args.free && !args.engine) args.engine = "kokoro";
+if (args.engine === "elevenlabs") {
+  args.tts = true;
+  delete args.engine;
+}
+if (args.voices) {
+  for (const [id, e] of Object.entries(VOICE_ENGINES)) {
+    console.log(c.bold(`\n--engine ${id}`) + `  ${e.label}`);
+    console.log(c.dim(`  ${e.cost}\n  setup: ${e.setup}\n  ${e.licence}\n  ${e.timing}`));
+    for (const v of e.voices) console.log(`    --voice ${v.id.padEnd(32)} ${v.label}`);
+  }
+  process.exit(0);
+}
 const { spec, abs: specPath, name } = readSpec(args._[0]);
 const E = await engine();
 
@@ -118,6 +137,146 @@ if (args.tts) {
   const alignment = data.alignment ?? data.normalized_alignment;
   const words = E.wordsFromCharacters(alignment).filter((w) => !/^\[[^\]]*\]$/.test(w.text));
   saveTiming(words, audioRel, `elevenlabs-tts:${model}`);
+  process.exit(0);
+}
+
+// ---------------------------------------------------------------------------
+// Free voices, one beat at a time: kokoro (offline), edge (online) or gemini (free-tier key).
+// Each beat is its own clip, so scene cuts land exactly; words come from the engine
+// when it reports them (edge), else they are spread by length inside the beat.
+if (args.engine) {
+  const engine = String(args.engine);
+  if (!VOICE_ENGINES[engine] || engine === "elevenlabs") {
+    console.error(c.red(`Unknown --engine ${engine}. Use one of: ${Object.keys(VOICE_ENGINES).join(", ")}.`));
+    process.exit(1);
+  }
+  const info = VOICE_ENGINES[engine];
+  const hindi = says.some((s) => /[ऀ-ॿ]/.test(s));
+  const voice = typeof args.voice === "string" ? args.voice : defaultVoice(engine, hindi);
+  const speed = Number(args.speed ?? 1);
+  const tmp = path.join(ROOT, "out", ".tmp", `${name}-beats`);
+  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.mkdirSync(tmp, { recursive: true });
+  console.log(c.bold(`${info.label} · ${voice} · ${says.length} beats (~${estSeconds.toFixed(0)}s)`));
+  console.log(c.dim(`  ${info.cost}\n  ${info.licence}`));
+
+  let beats;
+  if (engine === "gemini") {
+    const key = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+    if (!key) {
+      console.error(c.red(`Set GEMINI_API_KEY first. ${info.setup}. Never paste it into a spec or chat.`));
+      process.exit(1);
+    }
+    const model = typeof args.model === "string" ? args.model : "gemini-2.5-flash-preview-tts";
+    // A style line steers delivery; the model speaks only the text after the colon.
+    const style = typeof args.style === "string" ? args.style : "Read this like a confident, warm product video narrator";
+    beats = [];
+    for (const [k, say] of says.entries()) {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: `${style}: ${say}` }] }],
+          generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } },
+        }),
+      });
+      if (!res.ok) {
+        console.error(c.red(`Gemini ${res.status}: ${(await res.text()).slice(0, 400)}`));
+        process.exit(1);
+      }
+      const data = await res.json();
+      const b64 = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData)?.inlineData?.data;
+      if (!b64) {
+        console.error(c.red(`Gemini returned no audio for beat ${k + 1}: ${JSON.stringify(data).slice(0, 300)}`));
+        process.exit(1);
+      }
+      // Raw 16-bit PCM, 24 kHz mono.
+      const file = path.join(tmp, `${String(k).padStart(3, "0")}.pcm`);
+      fs.writeFileSync(file, Buffer.from(b64, "base64"));
+      beats.push({ file, words: null, raw: true });
+      console.log(c.dim(`  beat ${k + 1}/${says.length}`));
+    }
+  } else {
+    const python = typeof args.python === "string" ? args.python : process.platform === "win32" ? "python" : "python3";
+    const mod = engine === "kokoro" ? "kokoro_onnx, soundfile" : "edge_tts";
+    if (spawnSync(python, ["-c", `import ${mod}`]).status !== 0) {
+      console.error(c.red(`${info.label} needs Python with: ${info.setup.replace("pip", `${python} -m pip`)}`));
+      process.exit(1);
+    }
+    const job = { engine, beats: says, voice, speed, dir: tmp };
+    if (engine === "kokoro") {
+      // Kokoro language by voice prefix: a=US, b=UK, h=Hindi, e=Spanish, f=French, i=Italian, p=Portuguese.
+      job.lang = args.language ?? { a: "en-us", b: "en-gb", h: "hi", e: "es", f: "fr-fr", i: "it", p: "pt-br", j: "ja", z: "cmn" }[voice[0]] ?? "en-us";
+      const dir = path.join(os.homedir(), ".cache", "motion-kit", "kokoro");
+      fs.mkdirSync(dir, { recursive: true });
+      const release = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0";
+      for (const [file, mb] of [["kokoro-v1.0.int8.onnx", 88], ["voices-v1.0.bin", 27]]) {
+        const dest = path.join(dir, file);
+        if (fs.existsSync(dest) && fs.statSync(dest).size > mb * 0.9e6) continue;
+        console.log(c.dim(`Downloading ${file} (~${mb} MB, once)…`));
+        if (spawnSync("curl", ["-fsSL", "-o", dest + ".part", `${release}/${file}`], { stdio: "inherit" }).status !== 0) {
+          console.error(c.red(`Could not download ${release}/${file}. Download it by hand into ${dir}.`));
+          process.exit(1);
+        }
+        fs.renameSync(dest + ".part", dest);
+      }
+      Object.assign(job, { model: path.join(dir, "kokoro-v1.0.int8.onnx"), voices: path.join(dir, "voices-v1.0.bin") });
+      console.log(c.dim("  Offline synthesis takes about 1.5× the audio length on a laptop CPU."));
+    }
+    const r = spawnSync(python, ["-I", path.join(ROOT, "tools", "tts_beats.py")], { input: JSON.stringify(job), encoding: "utf8", stdio: ["pipe", "pipe", "inherit"], maxBuffer: 1 << 26 });
+    if (r.status !== 0) {
+      console.error(c.red(`${info.label} failed (see above).`));
+      process.exit(1);
+    }
+    beats = JSON.parse(r.stdout.trim().split("\n").at(-1)).beats;
+  }
+
+  // Join the beats as 24 kHz mono PCM with a short breath between them, then encode once.
+  const RATE = 24000;
+  const gap = Buffer.alloc(Math.round((RATE * Number(args.gap ?? 350)) / 1000) * 2);
+  const parts = [];
+  const words = [];
+  let bytes = 0;
+  for (const [k, b] of beats.entries()) {
+    const pcm = b.raw
+      ? fs.readFileSync(b.file)
+      : spawnSync("ffmpeg", ["-v", "error", "-i", b.file, "-f", "s16le", "-ac", "1", "-ar", String(RATE), "-"], { maxBuffer: 1 << 28 }).stdout;
+    if (!pcm?.length) {
+      console.error(c.red(`Beat ${k + 1} came back empty. Is ffmpeg installed?`));
+      process.exit(1);
+    }
+    if (k) {
+      parts.push(gap);
+      bytes += gap.length;
+    }
+    const startMs = (bytes / 2 / RATE) * 1000;
+    const endMs = startMs + (pcm.length / 2 / RATE) * 1000;
+    if (b.words?.length) {
+      for (const w of b.words) words.push({ text: w.text, startMs: startMs + w.startMs, endMs: startMs + w.endMs });
+    } else {
+      const ws = says[k].split(/\s+/).filter(Boolean);
+      const total = ws.reduce((n, w) => n + w.length + 1, 0);
+      let at = startMs;
+      for (const w of ws) {
+        const len = ((endMs - startMs) * (w.length + 1)) / total;
+        words.push({ text: w, startMs: at, endMs: at + len });
+        at += len;
+      }
+    }
+    parts.push(pcm);
+    bytes += pcm.length;
+  }
+  const audioRel = `voice/${name}.mp3`;
+  const enc = spawnSync("ffmpeg", ["-y", "-v", "error", "-f", "s16le", "-ac", "1", "-ar", String(RATE), "-i", "-", "-ar", "44100", "-b:a", "160k", path.join(ROOT, "public", audioRel)], {
+    input: Buffer.concat(parts),
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+  if (enc.status !== 0) {
+    console.error(c.red("ffmpeg is needed to encode the MP3 (https://ffmpeg.org/download.html)."));
+    process.exit(1);
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
+  saveTiming(words, audioRel, `${engine}:${voice}`);
   process.exit(0);
 }
 
@@ -235,4 +394,5 @@ console.log(script);
 console.log(c.dim(`\n${chars} characters · ~${estSeconds.toFixed(1)}s at a natural pace · saved to ${path.relative(process.cwd(), out)}`));
 console.log(c.dim("Then either:"));
 console.log(c.dim(`  • save the MP3 as public/voice/${name}.mp3 and run:  npm run voice -- ${args._[0]} --align voice/${name}.mp3`));
-console.log(c.dim(`  • or generate + time it in one go:               npm run voice -- ${args._[0]} --tts --voice <voice_id>`));
+console.log(c.dim(`  • or generate free:  --engine kokoro (offline) · --engine edge (online, Indian voices) · --engine gemini (free-tier key)`));
+console.log(c.dim(`  • or generate with ElevenLabs:                   npm run voice -- ${args._[0]} --tts --voice <voice_id>`));

@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { ROOT, engine } from "../../scripts/lib.mjs";
+import { VOICE_ENGINES } from "../../scripts/voices.mjs";
 
 const SPECS = path.join(ROOT, "specs");
 const RECIPES = path.join(SPECS, "recipes");
@@ -108,6 +109,8 @@ const catalog = () => {
       : [],
     recipes,
     elevenlabs: Boolean(process.env.ELEVENLABS_API_KEY),
+    gemini: Boolean(process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY),
+    voiceEngines: VOICE_ENGINES,
   };
 };
 
@@ -276,6 +279,24 @@ const routes = {
     const { name, file } = await json(req);
     if (!fs.existsSync(specPath(name))) throw Object.assign(new Error("Save the video first (Brief step)."), { status: 400 });
     const r = await run("voice.mjs", [path.relative(ROOT, specPath(name)), "--align", file, "--yes"]);
+    if (r.code !== 0) throw Object.assign(new Error((r.stderr || r.stdout).trim().slice(-900)), { status: 400 });
+    return { spec: JSON.parse(fs.readFileSync(specPath(name), "utf8")), log: r.stdout };
+  },
+
+  /**
+   * Generate the voice-over from the say lines (npm run voice --engine …) and time it.
+   * Free engines spend nothing; elevenlabs needs confirm: true because it spends credits.
+   */
+  "POST /api/voice/generate": async (req) => {
+    const { name, engine: eng, voice, speed, style, confirm } = await json(req);
+    if (!VOICE_ENGINES[eng]) throw Object.assign(new Error(`Unknown voice engine ${eng}.`), { status: 400 });
+    if (eng === "elevenlabs" && !confirm) throw Object.assign(new Error("ElevenLabs spends credits; confirm first."), { status: 400 });
+    if (!fs.existsSync(specPath(name))) throw Object.assign(new Error("Save the video first (Brief step)."), { status: 400 });
+    const args = [path.relative(ROOT, specPath(name)), "--engine", eng, "--yes"];
+    if (voice) args.push("--voice", String(voice));
+    if (speed && Number(speed) !== 1) args.push("--speed", String(speed));
+    if (style && eng === "gemini") args.push("--style", String(style));
+    const r = await run("voice.mjs", args);
     if (r.code !== 0) throw Object.assign(new Error((r.stderr || r.stdout).trim().slice(-900)), { status: 400 });
     return { spec: JSON.parse(fs.readFileSync(specPath(name), "utf8")), log: r.stdout };
   },

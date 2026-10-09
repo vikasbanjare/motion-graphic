@@ -39,7 +39,7 @@ With Claude Code, just describe the video; the `motion-director` skill
 | `npm run check -- specs/x.json [--theme t] [--format f]` | Validates the spec and lints it against the timing, copy and contrast rules; prints the timeline. Instant, no browser. Exit 1 on errors. |
 | `npm run qa -- specs/x.json [--theme t] [--format f] [--json]` | Renders the key frames in memory and checks what is really on screen; writes no files. Exit 1 on errors ([Visual QA](#visual-qa)). |
 | `npm run preview -- specs/x.json [--theme t] [--format f]` | `out/x.sheet.jpg`: one settled frame per scene, platform-UI zones tinted red. |
-| `npm run voice -- specs/x.json [...]` | Narration script, ElevenLabs TTS, or alignment of your own recording ([Voice sync](#voice-sync-say--show)). |
+| `npm run voice -- specs/x.json [...]` | Narration script, free voices (Kokoro, Edge, Gemini), ElevenLabs TTS, or alignment of your own recording ([Voice sync](#voice-sync-say--show)). |
 | `npm run music -- specs/x.json --track music/song.mp3 [--start 12.5]` | Fits a licensed track you supply: beats, start point, ducking ([Music](#music-your-licensed-track)). |
 | `npm run brand -- <logo file> [--spec specs/x.json]` | Palette from a logo, recommended theme; `--spec` writes the brand colours ([Brand colours](#brand-colours)). |
 | `npm run make -- specs/x.json [--format f] [--all-formats] [--crf 22] [--skip-qa]` | Runs QA and stops on errors, then renders `out/x.mp4` + `out/x-cover.jpg`. |
@@ -128,12 +128,20 @@ matches. Then:
 
 ```bash
 npm run voice -- specs/x.json                         # paste-ready narration + character count
+npm run voice -- specs/x.json --engine kokoro         # free + offline (pip install kokoro-onnx soundfile)
+npm run voice -- specs/x.json --engine edge           # free + online, Indian English / Hindi voices (pip install edge-tts)
+npm run voice -- specs/x.json --engine gemini         # Google Gemini TTS free tier (GEMINI_API_KEY), --style "…"
 npm run voice -- specs/x.json --tts --voice <id>      # ElevenLabs (ELEVENLABS_API_KEY), asks before spending
+npm run voice -- --voices                             # every engine with its cost, licence and best voices
 npm run voice -- specs/x.json --align voice/x.mp3     # your recording / downloaded MP3
 npm run voice -- specs/x.json --import subs.srt       # existing subtitles
 ```
 
-Scenes then cut on the spoken beat and words reveal as they are said.
+Scenes then cut on the spoken beat and words reveal as they are said. Free engines speak
+each beat separately, so scene cuts are exact. Edge reports real word timings; Kokoro and
+Gemini spread the words across each beat. For Hinglish written in Latin letters, the Edge
+Indian English voices (`en-IN-NeerjaExpressiveNeural`, `en-IN-PrabhatNeural`) sound the most natural.
+Edge is an unofficial use of a consumer service, so use Kokoro, Gemini or ElevenLabs for paid client work.
 
 ## Brand colours
 

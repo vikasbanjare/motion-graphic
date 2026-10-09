@@ -6,7 +6,15 @@ Re-run check + qa after every change to the spec, the voice or the music.
 ## Voice-over
 
 1. `npm run voice -- specs/x.json` → paste-ready narration (one paragraph per beat), character count.
-2. Choose a path:
+2. Choose a path (`npm run voice -- --voices` lists engines, costs, licences and voices):
+   - **Free, offline — Kokoro**: `npm run voice -- specs/x.json --engine kokoro [--voice af_heart]`.
+     Apache-2.0, safe for client work; ~115 MB download once; ~1.5× realtime on a laptop CPU.
+     Hindi voices (`hf_alpha`, `hm_omega`) need Devanagari text; Latin Hinglish sounds American.
+   - **Free, online — Edge**: `--engine edge [--voice en-IN-NeerjaExpressiveNeural]`. Real word timings,
+     best free Hinglish. Unofficial use of a consumer service: drafts and personal videos only.
+   - **Free tier — Gemini**: `GEMINI_API_KEY=… npm run voice -- specs/x.json --engine gemini --voice Kore --style "Excited Indian creator"`.
+     Very natural; the style line steers delivery. Default model `gemini-2.5-flash-preview-tts` (`--model` to change).
+   - All three speak each beat separately (`--gap 350` ms between beats, `--speed 1.1`), so scene cuts are exact.
    - **ElevenLabs API**: `ELEVENLABS_API_KEY=… npm run voice -- specs/x.json --tts --voice <voice_id>`
      - Model default `eleven_multilingual_v2` (Hindi/Hinglish/English, ~1 credit/char).
        `--model eleven_flash_v2_5` for cheap drafts (~0.5 credit/char). `eleven_v3`/`eleven_v4` only if you use `[audio tags]`.

@@ -21,6 +21,7 @@ export type ThemeInfo = {
   transition: string;
 };
 export type Recipe = { name: string; purpose: string; format: string; theme: string; motion?: string; pace?: string; spec: VideoSpec };
+export type VoiceEngine = { label: string; cost: string; setup: string; licence: string; timing: string; voices: { id: string; label: string; lang: string }[] };
 export type Catalog = {
   themes: ThemeInfo[];
   formats: { name: string; width: number; height: number; label: string }[];
@@ -34,6 +35,8 @@ export type Catalog = {
   sfx: string[];
   sfxPacks: string[];
   recipes: Recipe[];
+  gemini?: boolean;
+  voiceEngines: Record<string, VoiceEngine>;
   elevenlabs: boolean;
 };
 export type CheckResult = {
@@ -68,6 +71,8 @@ export const api = {
   musicQuote: (seconds: number) => call<{ seconds: number; credits: number | null; note: string }>("POST", "/api/music/quote", { seconds }),
   musicGenerate: (prompt: string, seconds: number, instrumental: boolean) =>
     call<{ path: string }>("POST", "/api/music/generate", { prompt, seconds, instrumental, confirm: true }),
+  voiceGenerate: (body: { name: string; engine: string; voice?: string; speed?: number; style?: string; confirm?: boolean }) =>
+    call<{ spec: VideoSpec; log: string }>("POST", "/api/voice/generate", body),
   voiceAlign: (name: string, file: string) => call<{ spec: VideoSpec; log: string }>("POST", "/api/voice/align", { name, file }),
   render: (name: string, opts: { format?: string; allFormats?: boolean }) => call<{ id: string }>("POST", "/api/render", { name, ...opts }),
   job: (id: string) => call<Job>("GET", `/api/job?id=${id}`),
