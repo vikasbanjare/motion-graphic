@@ -105,11 +105,22 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     warnings.push(`${where}: ${clash}${alt.length ? `, or use theme ${alt.join(" / ")}` : ""}.`);
   }
 
+  // --- look ---------------------------------------------------------------------
+  // resolveLook() kept every pick that reads and moved the rest (lightness only).
+  if (spec.look) {
+    const looked = E.resolveLook(E.THEMES[theme.name], spec.look);
+    for (const ch of looked.changes) notes.push(`look: ${ch.message}`);
+    if (spec.look.bg && !(spec.brand?.accent || spec.brand?.accent2)) {
+      const fixed = E.resolveBrand(looked.theme, { accent: E.THEMES[theme.name].colors.accent, accent2: E.THEMES[theme.name].colors.accent2 });
+      for (const ch of fixed.changes) notes.push(`look: on the ${spec.look.bg} canvas the theme ${ch.field} ${ch.kind === "derived" ? "was derived as" : "moved to"} ${ch.to} so it reads.`);
+    }
+  }
+
   // --- brand colours --------------------------------------------------------
   // withBrand() already moved any brand colour that would not read (lightness
   // only, hue kept); say what changed. Only an impossible fix is an error.
   if (spec.brand?.accent || spec.brand?.accent2) {
-    const report = E.resolveBrand(E.THEMES[theme.name], spec.brand);
+    const report = E.resolveBrand(E.resolveLook(E.THEMES[theme.name], spec.look).theme, spec.brand);
     const logo = await logoFit(spec.brand.logo);
     for (const ch of report.changes) {
       let note = ch.message;

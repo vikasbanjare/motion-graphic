@@ -3,6 +3,7 @@ import { FORMATS, FPS, type Format } from "./formats.ts";
 import { countWords, plainText, richWords } from "./rich.ts";
 import type { Scene, SceneOf, SceneType, VideoSpec } from "./schema.ts";
 import { THEMES, withBrand, type Theme, type TransitionName } from "./themes.ts";
+import { resolveLook } from "./look.ts";
 import { MOTION, PACE, type MotionTokens } from "./tokens.ts";
 import { buildVoiceTrack, showTimes, type TimedWord, type VoiceTrack } from "./voice.ts";
 import { SNAP, SNAP_VOICE, loudnessGain, onTimeline, snapToBeat, startFrameOf, type MusicPlan } from "./music.ts";
@@ -385,6 +386,7 @@ export type ScenePlan = {
 export type ResolvedSpec = Required<Pick<VideoSpec, "format" | "theme" | "motion" | "pace" | "progressBar">> & {
   transition: TransitionName;
   brand: NonNullable<VideoSpec["brand"]>;
+  look?: VideoSpec["look"];
   audio: {
     sfx: boolean;
     music?: string;
@@ -417,6 +419,18 @@ export type VideoPlan = {
   music: MusicPlan | null;
 };
 
+/**
+ * The theme with the spec's look and brand applied. A custom canvas (look.bg)
+ * re-checks the accents against it too, brand colours or the theme's own.
+ */
+export const themeFor = (spec: Pick<ResolvedSpec, "theme" | "brand" | "look">): Theme => {
+  const base = THEMES[spec.theme];
+  const looked = resolveLook(base, spec.look).theme;
+  if (looked === base) return withBrand(base, spec.brand);
+  const brand = spec.brand?.accent || spec.brand?.accent2 ? spec.brand : looked.colors.bg !== base.colors.bg ? { accent: base.colors.accent, accent2: base.colors.accent2 } : undefined;
+  return withBrand(looked, brand);
+};
+
 export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
   const theme = THEMES[spec.theme ?? "midnight"];
   const transition = spec.transition && spec.transition !== "auto" ? spec.transition : theme.transition;
@@ -429,6 +443,7 @@ export const resolveSpec = (spec: VideoSpec): ResolvedSpec => {
     progressBar: spec.progressBar ?? false,
     transition,
     brand,
+    look: spec.look,
     audio: {
       sfx: spec.audio?.sfx ?? true,
       music: spec.audio?.music,
@@ -458,7 +473,7 @@ const toFrame = (ms: number) => Math.round((ms / 1000) * FPS);
 
 export const planVideo = (input: VideoSpec): VideoPlan => {
   const spec = resolveSpec(input);
-  const theme = withBrand(THEMES[spec.theme], spec.brand);
+  const theme = themeFor(spec);
   const format = FORMATS[spec.format];
   const motion = MOTION[spec.motion];
   const pace = PACE[spec.pace];

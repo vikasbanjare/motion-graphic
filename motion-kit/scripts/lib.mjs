@@ -28,7 +28,8 @@ export const engine = async () => {
   const rich = await import("../src/engine/rich.ts");
   const voice = await import("../src/engine/voice.ts");
   const music = await import("../src/engine/music.ts");
-  return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice, ...music };
+  const look = await import("../src/engine/look.ts");
+  return { ...schema, ...plan, ...themes, ...formats, ...rich, ...voice, ...music, ...look };
 };
 
 /** Flags that never take a value, so `--skip-qa specs/x.json` keeps the spec path. */

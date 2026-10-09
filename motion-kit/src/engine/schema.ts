@@ -2,6 +2,7 @@
 import { z } from "zod";
 import { THEME_NAMES } from "./themes.ts";
 import { FORMAT_NAMES } from "./formats.ts";
+import { BACKGROUND_NAMES, BODY_FONT_NAMES, CORNER_RADIUS, DISPLAY_FONT_NAMES } from "./look.ts";
 
 /**
  * The storyboard spec. A video is data, not code: every field here is
@@ -271,6 +272,27 @@ export const videoSchema = z.object({
       handle: z.string().optional(),
       /** Show the handle small in a corner for the whole video. */
       watermark: z.boolean().optional(),
+    })
+    .optional(),
+  /**
+   * Pick parts of the look one by one, on top of the theme (the Studio's Look step).
+   * Colours that would not read are moved in lightness only, like brand colours.
+   */
+  look: z
+    .object({
+      displayFont: z.enum(DISPLAY_FONT_NAMES).optional(),
+      displayWeight: z.number().int().min(100).max(900).optional(),
+      uppercase: z.boolean().optional(),
+      bodyFont: z.enum(BODY_FONT_NAMES).optional(),
+      /** Canvas colour; surface, lines and muted text are derived from it. */
+      bg: hex.optional(),
+      /** Main text colour; kept at 7:1 or better on bg. */
+      text: hex.optional(),
+      background: z.enum(BACKGROUND_NAMES).optional(),
+      grain: z.boolean().optional(),
+      corners: z.enum(Object.keys(CORNER_RADIUS) as ["sharp", "soft", "round"]).optional(),
+      ctaStyle: z.enum(["button", "link"]).optional(),
+      kicker: z.enum(["pill", "plain"]).optional(),
     })
     .optional(),
   audio: z

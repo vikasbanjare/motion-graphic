@@ -39,6 +39,21 @@ that pass first time.
 | `mono` | Swiss minimal (black, white, one red) |
 | `studio` / `studio-dark` | launch films in the calm ElevenLabs-style: light type, orb, blur dissolves, "Try X →" endings |
 
+### Look (change one part of a theme)
+`look` overrides parts of the theme one by one; anything not set stays the theme's:
+- `displayFont`: Anton · Inter · Space Grotesk · Instrument Serif · Archivo Black · Teko ·
+  Plus Jakarta Sans · Poppins (each gets the weight, case and tracking it looks best at;
+  `displayWeight` and `uppercase` override). `bodyFont`: Inter · Poppins · Plus Jakarta Sans · Space Grotesk.
+  Hindi falls back to Teko / Poppins automatically.
+- `bg` / `text`: a custom canvas. Text is kept at 7:1 or better (lightness moves if needed),
+  muted text at 4.5:1, surface and lines are derived, the accents are re-checked on the new
+  canvas. A mid-tone canvas no text can read on is moved lighter or darker. `check` says what moved.
+- `background` (aurora · grid · spotlight · paper · dots · plain · canvas), `grain`,
+  `corners` (sharp · soft · round), `ctaStyle` (button · link), `kicker` (pill · plain).
+
+Prefer a theme first and change one or two things; a look that overrides everything is
+usually a sign another theme fits better.
+
 ### Brand colours (they always match, and always read)
 - **From a logo**: put it in `public/brand/`, then
   `npm run brand -- public/brand/logo.png --spec specs/<name>.json` (PNG, JPG, WebP, GIF, SVG; `--json` for data).
