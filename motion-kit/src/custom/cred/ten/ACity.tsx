@@ -289,7 +289,7 @@ export const ACity: React.FC = () => {
       <Head f={f} from={T.market - 6} to={T.blvd + 16} big={["5% rewards"]} small="on online shopping" x={110} y={110} ink={G} sheen="#ffffff" size={112} />
       <Head f={f} from={T.field - 6} to={T.hotel + 4} big={["redeem on flights"]} x={110} y={110} ink={G} sheen="#ffffff" size={96} />
       <Head f={f} from={T.hotel + 14} to={T.ware + 4} big={["and hotels"]} x={110} y={110} ink={G} sheen="#ffffff" size={96} />
-      <Head f={f} from={T.ware + 16} to={T.gate + 2} big={["and 2,000+ products"]} small="on CRED store" x={110} y={110} ink={G} sheen="#ffffff" size={92} />
+      <Head f={f} from={T.ware + 16} to={T.gate + 2} big={["and 2,000+ products"]} small="on CRED store" x={110} y={110} ink="#3b2a12" sheen="#d6b25a" size={92} />
       <Head f={f} from={T.gate + 12} to={T.out + 20} big={["zero joining fee"]} x={110} y={110} ink={G} sheen="#ffffff" size={104} />
       {f >= T.lock - 6 && <AbsoluteFill style={{ background: "#000", opacity: lightsOut * 0.4 }} />}
       {f >= T.lock + 14 && <Logo f={f} at={T.lock + 14} y={700} h={96} />}

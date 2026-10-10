@@ -137,7 +137,7 @@
    "anchor": "paper_flick",
    "anchor_t": 17.5,
    "align": "start",
-   "over_bed_lu": -8.0,
+   "over_bed_lu": -15.0,
    "floor_lufs": -40.0,
    "pan": 0.0
   },
@@ -148,7 +148,7 @@
    "anchor": "paper_flick",
    "anchor_t": 17.9,
    "align": "start",
-   "over_bed_lu": -8.0,
+   "over_bed_lu": -15.0,
    "floor_lufs": -40.0,
    "pan": 0.0
   },
@@ -159,7 +159,7 @@
    "anchor": "paper_flick",
    "anchor_t": 18.3,
    "align": "start",
-   "over_bed_lu": -8.0,
+   "over_bed_lu": -15.0,
    "floor_lufs": -40.0,
    "pan": 0.0
   },

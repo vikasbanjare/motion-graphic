@@ -407,7 +407,8 @@ def jet_pass(dur=2.4):
 def paper_flick(dur=0.3):
     """Banknote / paper flick (for a bill or ticket moving). Broadband 1-12 kHz, crinkle grains."""
     n = int(SR * dur)
-    x = bandpass(_noise(n), 1000, 12000, 2) * (0.4 + (_rng.random(n) < 0.02) * 2.5)
+    grains = np.convolve((_rng.random(n) < 0.02).astype(np.float64), np.hanning(96), "same")  # crinkle grains, no single-sample steps
+    x = bandpass(_noise(n), 1000, 12000, 2) * (0.4 + np.minimum(grains, 1.0) * 1.6)
     return norm(fade_edges(to_stereo(x * env_ad(n, 0.02, 0.2, 1.2), 0, 0.2)))
 
 
