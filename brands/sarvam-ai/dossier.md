@@ -17,40 +17,40 @@ Scouted 2026-10-10 from https://www.sarvam.ai by research/scout/scout.py. Facts 
 
 Brand colours from the site's CSS (count = uses):
 
-- `#6a88e2` × 343
-- `#e6651b` × 300
-- `#f59970` × 282
-- `#a5bbfc` × 59
-- `#0a66c2` × 58
-- `#ff0000` × 58
-- `#5865f2` × 58
-- `#e4405f` × 58
-- `#a5460f` × 51
-- `#83c040` × 50
+- `#6a88e2` × 342
+- `#e6651b` × 297
+- `#f59970` × 281
+- `#a5bbfc` × 57
+- `#83c040` × 49
+- `#a5460f` × 47
+- `#818cf8` × 32
+- `#3333cc` × 30
+- `#c7d2fe` × 25
+- `#e96c2f` × 25
 
 Neutrals:
 
-- `#000000` × 310
-- `#ffffff` × 164
+- `#000000` × 269
+- `#ffffff` × 84
 - `#181717` × 58
-- `#13121e` × 53
-- `#999999` × 38
-- `#fafafa` × 32
+- `#13121e` × 51
+- `#999999` × 36
+- `#141414` × 32
 
 Named CSS colour tokens:
 
 - `--hover-color`: `#0a66c2`
-- `--color-white`: `#ffffff`
-- `--tw-ring-offset-color`: `#ffffff`
-- `--color-black`: `#000000`
-- `--color-tx`: `#1f1f1f`
-- `--color-tx-secondary`: `#3d3d3d`
-- `--color-tx-tertiary`: `#666666`
 - `--color-tx-inverse`: `#faf8f5`
-- `--color-tx-brand`: `#29211d`
-- `--color-tx-accent`: `#c4733d`
-- `--color-sf`: `#fcfcfc`
-- `--color-sf-secondary`: `#f5f5f5`
+- `--tw-ring-offset-color`: `#ffffff`
+- `--color-white`: `#ffffff`
+- `--accent-contrast`: `#ffffff`
+- `--accent-contrast`: `#311921`
+- `--color-st-tertiary`: `#d4d0c8`
+- `--color-epoch-ink`: `#141414`
+- `--color-epoch-paper`: `#faf8f5`
+- `--color-epoch-gray`: `#6b6558`
+- `--color-epoch-gray-2`: `#46423a`
+- `--color-epoch-red`: `#c20d26`
 
 Colours measured in their own films (share of pixels):
 
@@ -69,14 +69,13 @@ Colours measured in their own films (share of pixels):
 
 Font families named in the site's CSS (licensed fonts: names only; pick the closest free match):
 
-- VideoJS × 50
-- KaTeX_Main × 12
-- KaTeX_SansSerif × 10
-- Matter Mono × 10
-- KaTeX_Fraktur × 6
-- KaTeX_Math × 6
-- KaTeX_Caligraphic × 5
-- KaTeX_Size1 × 5
+- Matter Mono × 5
+- Kalice × 4
+- Season Mix × 4
+- monospace) × 3
+- monospace!important × 2
+- Matter × 2
+- Matter Semi Mono × 2
 
 ## Logos found
 
