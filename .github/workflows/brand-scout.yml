@@ -1,0 +1,97 @@
+# Brand scout: turns a company name into a brand dossier for a video (research/scout/scout.py).
+# Claude adds brands/requests/<slug>.json ({"company", "site", "channels": [], "videos": []}) and
+# pushes; this runs on GitHub's open network, collects the site's logos / colours / fonts / brand
+# pages / launch posts and the company's short product films, measures them, and publishes to the
+# brand-scout branch under brands/<slug>/:
+#   dossier.json, dossier.md       facts and measurements (plain)
+#   private-<run>.tar.enc(.partNN) logos and contact sheets, encrypted to research/research-key.pub.pem
+#   private-<run>.key.enc          (the repository is public: other companies' material never goes in readable)
+# Optional secret YT_COOKIES (Netscape cookies.txt) lets yt-dlp pass YouTube's bot check.
+name: Brand scout
+
+on:
+  push:
+    branches: [claude/youthful-darwin-n1lt7l]
+    paths: [brands/requests/*.json, research/scout/scout.py]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: brand-scout
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 2
+
+      - name: Tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pipx install "yt-dlp[default,curl-cffi]"
+          python3 -m pip install --quiet --break-system-packages numpy
+
+      - name: Which requests
+        id: which
+        run: |
+          # Requests changed by this push; on a manual run (or a scout.py change), all of them.
+          changed=$(git diff --name-only HEAD~1 HEAD -- 'brands/requests/*.json' 2>/dev/null || true)
+          if [ -z "$changed" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ] || git diff --name-only HEAD~1 HEAD | grep -q '^research/scout/scout.py$'; then
+            changed=$(ls brands/requests/*.json 2>/dev/null || true)
+          fi
+          echo "$changed" | tee "$RUNNER_TEMP/requests.txt"
+
+      - name: Scout
+        env:
+          YT_COOKIES: ${{ secrets.YT_COOKIES }}
+        run: |
+          if [ -n "$YT_COOKIES" ]; then printf '%s\n' "$YT_COOKIES" > "$RUNNER_TEMP/cookies.txt"; export YT_COOKIES_FILE="$RUNNER_TEMP/cookies.txt"; fi
+          mkdir -p "$RUNNER_TEMP/out"
+          while read -r req; do
+            [ -n "$req" ] || continue
+            slug=$(basename "$req" .json)
+            args=$(python3 - "$req" <<'PY'
+          import json, shlex, sys
+          r = json.load(open(sys.argv[1]))
+          a = ["--company", r["company"], "--site", r["site"]]
+          for c in r.get("channels", []): a += ["--channel", c]
+          for v in r.get("videos", []): a += ["--video", v]
+          print(" ".join(shlex.quote(x) for x in a))
+          PY
+            )
+            eval python3 research/scout/scout.py $args --out "$RUNNER_TEMP/out/$slug" || echo "::warning::scout failed for $slug"
+          done < "$RUNNER_TEMP/requests.txt"
+
+      - name: Publish to brand-scout
+        run: |
+          cp research/research-key.pub.pem "$RUNNER_TEMP/key.pub.pem"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q origin brand-scout; then git checkout -q -B brand-scout FETCH_HEAD; else git checkout -q --orphan brand-scout; git rm -rq --cached . >/dev/null; git clean -fdq; fi
+          RUN=${GITHUB_RUN_ID}
+          for d in "$RUNNER_TEMP"/out/*/; do
+            [ -f "$d/dossier.json" ] || continue
+            slug=$(basename "$d")
+            mkdir -p "brands/$slug"
+            cp "$d/dossier.json" "$d/dossier.md" "brands/$slug/"
+            if [ -d "$d/private" ]; then
+              key=$(openssl rand -hex 32)
+              tar -C "$d" -cf - private | openssl enc -aes-256-cbc -pbkdf2 -salt -pass "pass:$key" -out "brands/$slug/private-$RUN.tar.enc"
+              printf '%s' "$key" | openssl pkeyutl -encrypt -pubin -inkey "$RUNNER_TEMP/key.pub.pem" -pkeyopt rsa_padding_mode:oaep -out "brands/$slug/private-$RUN.key.enc"
+              unset key
+              split -b 90m -d "brands/$slug/private-$RUN.tar.enc" "brands/$slug/private-$RUN.tar.enc.part"
+              rm "brands/$slug/private-$RUN.tar.enc"
+            fi
+          done
+          git add -A brands
+          git commit -qm "Brand scout: run $RUN" || { echo "nothing new"; exit 0; }
+          for i in 1 2 3 4; do git push -q origin brand-scout && break; sleep $((2**i)); git pull -q --rebase origin brand-scout || true; done

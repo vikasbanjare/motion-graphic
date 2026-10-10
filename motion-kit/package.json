@@ -26,6 +26,7 @@
     "route": "node scripts/route.mjs",
     "produce": "node scripts/produce.mjs",
     "local:doctor": "python3 tools/local/doctor.py",
+    "scout": "python3 ../research/scout/scout.py",
     "local:setup": "bash tools/local/setup_mac.sh"
   },
   "sideEffects": [

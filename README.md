@@ -227,6 +227,7 @@ It shows the credit cost and waits for a yes before generating anything. Without
   per-shot prompts for AI video tools. Its `references/` hold the Master SaaS Motion Design
   System (11 parts plus a condensed digest), 12 format guidelines, prompt templates and a
   worked example. `.claude/skills/motion-creative-director` links to it.
+- **`skills/brand-film/`**: company name in, on-brand film out. Finds the site, latest launch and channels on the web, runs the brand scout (`research/scout/scout.py`, on GitHub via `.github/workflows/brand-scout.yml` or on your Mac via `npm run scout`) for logos, colours, fonts, launch posts and the company's own short product films, studies and measures them, then builds a bespoke film to `docs/research/pro-film-rules.md` and checks it with `tools/film_qa.py`.
 - **`skills/motion-ai-studio/`**: the two-route skill. Route 1 is Claude Code only. Route 2 adds AI plates from Higgsfield, Seedance, Kling or Veo, either over MCP or by hand, composited with code-rendered text. `references/plates.md` holds the prompt shape, per-style starters, model choice and cost rules. `.claude/skills/motion-ai-studio` links to it.
 - **`docs/research/`**: the evidence behind it. It has frame-by-frame teardowns of 8 reference
   films, catalogues from Superside, Raivcoo, Showreel.design and motion.so, and the reference-video study:
