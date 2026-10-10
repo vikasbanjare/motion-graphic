@@ -1,0 +1,214 @@
+{
+ "_about": "CRED card v2 cue sheet (24 fps EDL in src/custom/cred/v2/look.ts). anchor_t in seconds; levels follow research cue_rules.json (LU over the music bed's 2 s median momentary loudness; floor_lufs where the bed is silent). No SFX on text or UI.",
+ "seconds": 30.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": 0
+ },
+ "cues": [
+  {
+   "id": "Q01",
+   "sfx": "pen_scribble",
+   "params": {
+    "dur": 2.71
+   },
+   "anchor": "first line drawn (f4) -> hard stop before the wash wipe",
+   "anchor_t": 0.25,
+   "align": "start",
+   "over_bed_lu": -60,
+   "floor_lufs": -26.0
+  },
+  {
+   "id": "Q02",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 0.7
+   },
+   "anchor": "after the 0.21 s dead gap (2.96-3.17); swells into the parcels landing and the music intro (3.84)",
+   "anchor_t": 3.17,
+   "align": "start",
+   "over_bed_lu": -60,
+   "floor_lufs": -22.6
+  },
+  {
+   "id": "Q03",
+   "sfx": "air_bed",
+   "params": {
+    "dur": 4.8
+   },
+   "anchor": "parcel world air",
+   "anchor_t": 3.9,
+   "align": "start",
+   "over_bed_lu": -25,
+   "floor_lufs": -44.0
+  },
+  {
+   "id": "Q04",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "tag drops in on its string (f112)",
+   "anchor_t": 4.7,
+   "align": "start",
+   "over_bed_lu": -6,
+   "floor_lufs": -40.0
+  },
+  {
+   "id": "Q05",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "wide loupe edge enters (f176)",
+   "anchor_t": 7.36,
+   "align": "start",
+   "over_bed_lu": 0,
+   "floor_lufs": -40.0
+  },
+  {
+   "id": "Q06",
+   "sfx": "glass_shimmer",
+   "params": {
+    "notes_hz": [
+     2489.0,
+     3136.0,
+     3729.0,
+     4978.0
+    ]
+   },
+   "anchor": "+0.66 s after the cut into the macro (f207)",
+   "anchor_t": 9.29,
+   "align": "start",
+   "over_bed_lu": -10,
+   "floor_lufs": -40.0
+  },
+  {
+   "id": "Q07",
+   "sfx": "whip_pair",
+   "params": {},
+   "anchor": "lens-swap drop (f290-305); first block ends as the lens passes centre",
+   "anchor_t": 12.22,
+   "align": "end",
+   "over_bed_lu": -13,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q08",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "tilt-up, peak at max tilt speed (f338)",
+   "anchor_t": 14.08,
+   "align": "peak",
+   "over_bed_lu": -26,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q09",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 2.2
+   },
+   "anchor": "airliner orbiting the globe",
+   "anchor_t": 14.5,
+   "align": "start",
+   "over_bed_lu": -9,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q10",
+   "sfx": "desk_bell",
+   "params": {
+    "root_hz": 1244.5,
+    "dur": 1.2
+   },
+   "anchor": "travel world lands, desk bell in view (f357)",
+   "anchor_t": 14.88,
+   "align": "start",
+   "over_bed_lu": -9,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q11",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.0
+   },
+   "anchor": "card-slab matte wipe (f381-393)",
+   "anchor_t": 15.82,
+   "align": "start",
+   "over_bed_lu": -5.5,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q12",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "foil ribbon glints on the hero gift box",
+   "anchor_t": 18.1,
+   "align": "start",
+   "over_bed_lu": -9,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q13",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "hard cut into the seal loupe (f484), block ends 2 frames before",
+   "anchor_t": 20.08,
+   "align": "end",
+   "over_bed_lu": -5,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q14",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "card enters the studio carrying the whip (hidden cut f561)",
+   "anchor_t": 23.36,
+   "align": "end",
+   "over_bed_lu": -14,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q15",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "card flips to its back; cut on the flip (f645)",
+   "anchor_t": 26.84,
+   "align": "end",
+   "over_bed_lu": -13,
+   "floor_lufs": -46.0
+  },
+  {
+   "id": "Q16",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "lockup, +0.05 s after the cut from black",
+   "anchor_t": 26.93,
+   "align": "start",
+   "over_bed_lu": 2,
+   "floor_lufs": -40.0
+  },
+  {
+   "id": "Q17",
+   "sfx": "end_bell",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "bell chord with echoes, rings to the end",
+   "anchor_t": 28.8,
+   "align": "start",
+   "over_bed_lu": -12.5,
+   "floor_lufs": -40.0
+  }
+ ]
+}
