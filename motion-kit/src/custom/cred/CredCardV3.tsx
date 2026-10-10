@@ -172,9 +172,10 @@ const FeeTag: React.FC<{ w: number }> = ({ w }) => {
 
 // ---- the coin stage (beats 3-5: one 3D world, fixed camera; the worlds scroll, the coins lead) ---------------------
 const U = 85.6; // px per world unit at z = 0 (camera z 20, fov 35)
-const sB3 = (f: number) => -13 * ramp(f, 262, 292); // bag world moves down (we follow the coins up)
-const sB4 = (f: number) => 13 * (1 - ramp(f, 262, 292)) + 13 * ramp(f, 355, 385);
-const sB5 = (f: number) => -13 * (1 - ramp(f, 355, 385));
+const SD = 1080 / 85.6; // one frame height in world units: worlds scroll edge to edge, no seam
+const sB3 = (f: number) => -SD * ramp(f, 262, 292); // bag world moves down (we follow the coins up)
+const sB4 = (f: number) => SD * (1 - ramp(f, 262, 292)) + SD * ramp(f, 355, 385);
+const sB5 = (f: number) => -SD * (1 - ramp(f, 355, 385));
 
 const N = 7;
 const quad = (a: number[], b: number[], c: number[], t: number) => a.map((_, k) => (1 - t) * (1 - t) * a[k] + 2 * (1 - t) * t * b[k] + t * t * c[k]);
@@ -345,8 +346,15 @@ export const CredCardV3: React.FC = () => {
   const lightsOut = ramp(f, B.lock - 4, B.lock + 14);
   const endFade = ramp(f, 704, 719, (t) => t);
   const show3D = f >= B.hero + 30;
+  // camera breathing: a slow push inside each beat that returns to rest at the beat's edges (no snap on cuts)
+  const starts = [B.intro, B.name, B.shop, B.travel, B.store, B.fee, B.hero, B.lock, B.end];
+  const k = Math.max(0, starts.findIndex((s0, i) => f >= s0 && f < starts[i + 1]));
+  const bt = (f - starts[k]) / (starts[k + 1] - starts[k]);
+  const cam = 1 + 0.035 * (1 - Math.cos(2 * Math.PI * bt)) / 2;
+  const camX = 14 * Math.sin(2 * Math.PI * bt) * (k % 2 ? 1 : -1);
   return (
     <AbsoluteFill style={{ background: "#000" }}>
+     <AbsoluteFill style={{ transform: `translateX(${camX}px) scale(${cam})` }}>
       {/* paper worlds */}
       {(f < B.shop + 14 || (f >= B.fee - 8 && f < 620)) && (
         <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 70% at 50% 45%, #f3f1e4 0%, #e6e8d6 100%)" }} />
@@ -415,6 +423,7 @@ export const CredCardV3: React.FC = () => {
           </div>
         </>
       )}
+     </AbsoluteFill>
       <AbsoluteFill style={{ background: "#000", opacity: endFade }} />
       <Audio src={staticFile("custom/cred-v3/mix.wav")} />
     </AbsoluteFill>
