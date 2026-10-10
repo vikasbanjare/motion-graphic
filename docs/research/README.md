@@ -9,6 +9,7 @@ Index of every file in this research set. Start with the master document; open t
 | [`style-playbook.md`](style-playbook.md) | 13 motion styles taken from 251 reference videos. Covers measured shot lengths and brightness per style, ten rules, the look, motion, edit and evidence for each style, how to build it with motion-kit (including the `style-*` recipes), variations, pitfalls, and the kit's gaps. |
 | [`motion-techniques.md`](motion-techniques.md) | 39 signature moves with kit support and Remotion code, plus palettes, gradient CSS, type pairings and sizes, timing and easing, transitions, camera, sound defaults, a glossary, and how to brief Claude. |
 | [`production-routes.md`](production-routes.md) | Every style built three ways: Claude Code only, Claude + AI generation (Higgsfield / Veo / Kling plates composited in motion-kit), and Claude Design frames animated in code. Includes plate prompts per style and the variation dials. |
+| [`dataset.md`](dataset.md) | The per-frame dataset (10 fps, numbers only) for 499 videos: columns, how to load it, and what it shows about the shape of a film over time. |
 | [`award-notes.md`](award-notes.md) | All 173 videos crawled from motiondesignawards.com, frame-by-frame notes and an index; summary in the playbook §6. |
 | [`reference-notes.md`](reference-notes.md) | Index of every reviewed video (length, shots, average shot, brightness, link) and the frame-by-frame notes. |
 
