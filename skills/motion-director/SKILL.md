@@ -42,8 +42,10 @@ hands back here for the parts the engine renders.
    only when the user asked for a preview or the video. "Make me a reel" = run `make` at the end;
    "write me a script / storyboard" = stop before it.
 5. **Spend nothing without a yes.** ElevenLabs costs credits: show the character count first.
-6. **Music is the user's.** Only tracks they supply and have a licence for. Never generate,
-   download or pick music yourself.
+6. **Music is the user's or generated here.** Tracks they supply and have a licence for, or a
+   bed synthesized by `tools/music_bed.py` (the notes are generated in this repo, so it carries no
+   third-party licence). Never download or pick third-party music yourself. Model-generated music
+   (local or MCP tier) only from models whose licence allows the use (`docs/research/free-open-models.md`).
 
 ## One-shot flow
 

@@ -2,7 +2,7 @@
 
 This is the single entry point to the research in this repo. It exists so no detail is lost between Claude sessions. Every finding below points to the file that holds the evidence. Update this file whenever research changes.
 
-_Last updated: 2026-10-10._
+_Last updated: 2026-10-10 (three-tier production pipeline added)._
 
 ## 1. What was studied
 
@@ -81,7 +81,10 @@ _Last updated: 2026-10-10._
 | Every style built 3 ways (code only / AI plates / design-first) | `docs/research/production-routes.md` | Pick a route |
 | AI video method: model choice, cost, switching, keyframes, consistency, genres, Freepik/Magnific | `docs/research/ai-video-production.md` | Make AI shots cheaply and consistently |
 | Model catalog + shot types | `research/models.json` | Data behind the router |
-| Router | `motion-kit/scripts/route.mjs` (`npm run route`) | Shot list → models, pipeline steps, relative cost |
+| Router | `motion-kit/scripts/route.mjs` (`npm run route --provider higgsfield\|magnific\|local\|free`) | Shot list → models, pipeline steps, relative cost |
+| Open-model picks | `docs/research/free-open-models.md` | Best free video / voice / music / SFX models by blind arenas and listening tests, licences, VRAM |
+| One-command pipeline | `motion-kit/scripts/produce.mjs` (`npm run produce -- specs/productions/x.json --tier free\|local\|mcp`) | Production file → voices, plates, music → job sheet for what is missing → rendered MP4 with free stand-ins |
+| Free audio | `motion-kit/tools/cast_voices.py`, `sfx_synth.py`, `music_bed.py` | Multi-voice cast with phone filter, 17 synthesized story SFX, 4 synthesized music moods (CPU only) |
 | Plates importer | `motion-kit/scripts/plates.mjs` (`npm run plates`) | Generated files → `public/plates/`, checked |
 | 5 `style-*` recipes | `motion-kit/specs/recipes/` | Ready storyboards (pass check and QA) |
 | Skills | `skills/motion-director`, `skills/motion-creative-director`, `skills/motion-ai-studio` | Render with code; plan concepts and prompts; run both routes |
@@ -116,6 +119,8 @@ _Last updated: 2026-10-10._
 
 ## 5. Open questions and next steps
 
+- **Free tier upgrades that need Hugging Face access** (blocked in the cloud container): goonj-1-82M (Hindi Kokoro fine-tune, CPU) as a drop-in Hindi voice, Supertonic-3 (CPU, ONNX) and Stable Audio 3 Small (CPU music and SFX). Wire them in once a machine can download them, and judge them by ear first.
+- **Local tier not yet run on a GPU:** the picks in `free-open-models.md` are researched, not tested here.
 - **Vimeo (award site):** confirm whether the in-page browser fallback works. If it does, review the new videos and refresh `dataset.md`.
 - **YouTube:** needs the `YT_COOKIES` secret from the repo owner.
 - **Freepik / Magnific MCP:** connect it, list its tools, and replace the `unverified` entries in `research/models.json`.

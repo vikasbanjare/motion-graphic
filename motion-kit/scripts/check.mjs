@@ -150,7 +150,9 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     if (/^(https?:|data:)/.test(src)) continue;
     if (!fs.existsSync(path.join(ROOT, "public", src))) errors.push(`${where}: file "public/${src}" does not exist. Put the file in motion-kit/public/ and use a path relative to it.`);
   }
-  if (spec.audio?.music) warnings.push("Music: only use tracks you have a licence for (YouTube Audio Library, Pixabay Music, Mixkit, or bought). Business accounts can't use trending sounds.");
+  // Beds made by tools/music_bed.py carry a sidecar note: the notes were generated here, so no licence question.
+  const generatedBed = spec.audio?.music && fs.existsSync(path.join(ROOT, "public", spec.audio.music + ".generated.json"));
+  if (spec.audio?.music && !generatedBed) warnings.push("Music: only use tracks you have a licence for (YouTube Audio Library, Pixabay Music, Mixkit, or bought). Business accounts can't use trending sounds.");
   if (spec.audio?.music && spec.audio.musicStart !== undefined && spec.audio.musicDuration !== undefined && spec.audio.musicStart > spec.audio.musicDuration - 1)
     errors.push(`audio.musicStart is ${spec.audio.musicStart}s but the track is only ${spec.audio.musicDuration.toFixed(1)}s long. Pick an earlier start, or re-run: npm run music -- <spec> --track ${spec.audio.music}`);
 

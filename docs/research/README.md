@@ -6,6 +6,7 @@ Index of every file in this research set. Start with the master document; open t
 
 | File | What it is |
 |---|---|
+| [`free-open-models.md`](free-open-models.md) | The best free / open-weight models for video, voice (Hindi focus), music and SFX, ranked by blind arenas and listening tests (not stars), with licence traps and VRAM, plus the verdict on the t3-video-4k Space. Drives the local tier of `npm run produce`. |
 | [`ai-video-production.md`](ai-video-production.md) | How to make AI shots: model choice per shot type, cost-saving habits, switching models mid-shot, keyframes, character / product / voice consistency across a series, genres (ads, story, series), Freepik / Magnific. Backed by `research/models.json` and `npm run route`. |
 
 ## Reference-video study (frame by frame)

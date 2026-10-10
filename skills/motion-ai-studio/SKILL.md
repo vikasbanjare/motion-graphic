@@ -1,20 +1,56 @@
 ---
 name: motion-ai-studio
-description: Make a motion-graphics video in one of two ways. Route 1, Claude Code only, is free with a Claude subscription: type, UI, charts, orbs and logo moves rendered by motion-kit. Route 2, AI plates, connects an AI image/video tool over MCP (Higgsfield, which also serves Seedance, Kling, Veo and more) or any tool the user has, generates the 3D, product, character, texture and cinematic shots code cannot draw, and composites them with exact code-rendered text. Also covers realistic and story video: performance-marketing / UGC ads, short films, and short series with consistent characters, products and voices. It picks a model per shot (npm run route), keeps credits low (stills first, cheap drafts, keyframes) and switches models mid-shot when one does a step better. Use whenever someone wants a video "with AI images/video", "using Higgsfield / Seedance / Kling / Veo / Freepik / Magnific", "with 3D or realistic shots", an ad, a story, a series or a character that must stay the same, or asks which model or route is cheapest.
+description: Make a video end to end on one of three tiers with one command (npm run produce). Free tier, Claude Code only: code scenes, offline Kokoro voices for a whole cast, synthesized story SFX and music beds. Local tier: free open-weight models on the user's GPU / Colab / a Space (MiniMax H3, LTX-2.5, Wan 2.2, Chatterbox, VoxCPM2, Stable Audio 3) via a generated job sheet. MCP tier: Higgsfield or Magnific with cost preflight. Route 1, Claude Code only, is free with a Claude subscription: type, UI, charts, orbs and logo moves rendered by motion-kit. Route 2, AI plates, connects an AI image/video tool over MCP (Higgsfield, which also serves Seedance, Kling, Veo and more) or any tool the user has, generates the 3D, product, character, texture and cinematic shots code cannot draw, and composites them with exact code-rendered text. Also covers realistic and story video: performance-marketing / UGC ads, short films, and short series with consistent characters, products and voices. It picks a model per shot (npm run route), keeps credits low (stills first, cheap drafts, keyframes) and switches models mid-shot when one does a step better. Use whenever someone wants a video "with AI images/video", "using Higgsfield / Seedance / Kling / Veo / Freepik / Magnific", "with 3D or realistic shots", an ad, a story, a series or a character that must stay the same, or asks which model or route is cheapest, or wants free / open-source / local video, voice, music or SFX generation.
 ---
 
 # Motion AI Studio
 
-One brief, two ways to make it. Pick the route with the user in one question, then run it
-end to end. The look comes from the 13 styles in `docs/research/style-playbook.md`; this skill
-decides **where each shot comes from**.
+One brief, three tiers. Pick the tier with the user in one question, then run it end to end
+with **one command**. The look comes from the 13 styles in `docs/research/style-playbook.md`;
+this skill decides **where each shot, voice, sound and track comes from**.
 
-| | Route 1: Claude Code only | Route 2: AI plates |
-|---|---|---|
-| Makes | Type, UI cards, cursor demos, charts, counters, orbs, gradients, logo moves, transitions | Everything in Route 1 **plus** 3D products, clay/glass objects, characters, worlds, textures, cinematic B-roll |
-| Needs | Claude subscription + this repo (Node 22, ffmpeg) | Route 1 + an AI tool connected over MCP (Higgsfield) **or** any AI image/video tool the user can use by hand |
-| Costs | Nothing beyond Claude | The tool's credits; free-trial generations where the tool offers them |
-| Engine | `motion-director` skill → motion-kit | This skill → plates → motion-kit |
+| | Free: Claude Code only (Route 1) | Local: open models (Route 3) | MCP: AI tool (Route 2) |
+|---|---|---|---|
+| Footage | Code scenes: type, UI, charts, orbs, logo moves | Realistic plates from open weights (MiniMax H3, LTX-2.5, Wan 2.2) | Realistic plates (Magnific Seedance 2.5, Higgsfield Seedance / Kling / Cinematic Studio) |
+| Voice | Kokoro, one voice per character (`tools/cast_voices.py`) | Chatterbox Multilingual / VoxCPM2 (Hindi + cloning) | Magnific `audio_tts`, Higgsfield `seed_audio` |
+| Music | `tools/music_bed.py` (synth, 4 moods) or the user's licensed track | Stable Audio 3, MiniMax Music 3, ACE-Step | Magnific `audio_music_generate` |
+| SFX | `tools/sfx_synth.py` (17 story effects) + kit UI packs | Stable Audio 3 (SFX), HunyuanVideo-Foley | Magnific `audio_sfx_generate`, `video_soundfx` |
+| Needs | Claude + this repo (Node 22, ffmpeg, Python with numpy, kokoro-onnx) | + a GPU (8–32 GB), Colab or a HF Space | + an MCP connection and credits |
+| Costs | Nothing | GPU time; check each model's licence | Credits, preflighted, user says yes first |
+
+**Honest limit:** the free tier cannot make realistic people or places. Code draws type, UI and
+shapes. A realistic story needs the local or MCP tier for its plates. Everything else (cut, text,
+voice, SFX, music, QA, render) is the same on all three.
+
+Model choices and licences for the local tier: `docs/research/free-open-models.md` (ranked by
+blind arenas and listening tests, not GitHub stars).
+
+## The one command
+
+```bash
+cd motion-kit
+npm run produce -- specs/productions/<name>.json --tier free    # or local | mcp   [--strict] [--fresh] [--dry]
+```
+
+The **production file** `specs/productions/<name>.json` holds everything around the video spec:
+- `spec`: the video, built from **code scenes only**, so it always renders and passes CI.
+- `voices`: the cast (`tools/cast_voices.py` format). Each beat is a Kokoro voice, or `{"file": …}`, a take made anywhere else.
+- `music`: `{mood, volume, prompt, file?}`.
+- `plates`: each one replaces a code scene (`scene` index) with media (`as`, e.g. a `clip` with a caption) once its file exists.
+- `bible`: look and character words appended to every plate prompt.
+
+`produce` makes whatever the tier can make itself:
+- Voices are synthesized and placed.
+- Plates that already have a URL or file are imported.
+- The free bed is synthesized and fitted to the cut.
+
+Everything still missing goes to `out/<name>.jobs.md`, one row per job: the prompt, the models to use for that tier, and where to save the result. `produce` then renders anyway with free stand-ins, so there is always a video. `--strict` stops instead.
+
+To upgrade, do the jobs and run `produce` again. Example: `specs/productions/sarvam-samvaad.json` (IVR, customer, agent and narrator voices, phone SFX, a warm bed, and 2 plates of the grandmother).
+
+**MCP tier:** read the job sheet, then preflight every job's cost: Magnific `simulate_cost`, Higgsfield `get_cost: true`. Show the total and get a yes. Only then generate (steps 2.2 below) and put each result `url` into the plate, or the saved path into the voice beat or `music.file`. Then run `produce` again.
+
+**Local tier:** the user runs the job sheet on their GPU (ComfyUI, Wan2GP, diffusers, Colab, a Space), saves the files at the paths given, and runs `produce` again.
 
 **The rule for both:** anything that must be exact is rendered by code: text, numbers, logos,
 UI, the cursor, charts. AI generates only what code cannot draw: objects, people, places,
@@ -29,7 +65,7 @@ light, texture. Never ask a generator for readable words or a real logo; they co
 - `docs/research/ai-video-production.md`: model choice by shot type, cost-saving habits, model switching, keyframes / frame-by-frame, the series bible (characters, products, worlds, voices), genres, Freepik / Magnific.
 - `docs/research/RESEARCH-REPORT.md`: the one-page summary of all research. Read it first if context was lost.
 
-## Step 1: Pick the route (ask once, with a recommendation)
+## Step 1: Pick the tier (ask once, with a recommendation)
 
 Ask which tools they have, unless they already said. Then recommend:
 
@@ -40,8 +76,13 @@ Ask which tools they have, unless they already said. Then recommend:
 - **Both**: build Route 1 first (free, fast), then upgrade 2-4 shots with plates. The spec stays
   the same; only `image` / `clip` scenes are added or swapped. This is the best default when unsure.
 
-Say the cost plainly: Route 1 is free; Route 2 spends their credits. Never spend credits
-without a yes.
+- **Local** when they have a GPU (or will use Colab / a Space) and want realistic shots for free:
+  same plates as Route 2, made with open weights. Warn about licences: H3 and Hunyuan exclude some
+  regions, LTX / Stable Audio / MiniMax Music cap revenue or need attribution, many TTS models are
+  non-commercial (see `free-open-models.md`).
+
+Say the cost plainly: free is free; local costs GPU time; MCP spends their credits. Never spend
+credits without a yes.
 
 ## Route 1: Claude Code only
 
@@ -49,9 +90,9 @@ Hand over to the `motion-director` skill and follow it fully. Start from the clo
 including the `style-*` recipes (`npm run new` lists them). Free extras that stay in Route 1:
 - Voice-over: `npm run voice -- specs/x.json --engine kokoro` (offline, free) or `--engine edge`.
 - Story ads with several speakers (IVR, customer, agent, narrator) and phone sounds:
-  `python3 -I tools/cast_voices.py specs/casts/x.json` (offline Kokoro voices per beat, telephone
+  `python3 -I tools/cast_voices.py specs/productions/x.json` (offline Kokoro voices per beat, telephone
   filter, synthesized ringback / DTMF / pickup / chime / night ambience). It writes the same
-  voiceover and timing files as `npm run voice`. Example: `specs/casts/sarvam-samvaad.json`.
+  voiceover and timing files as `npm run voice`. Example: `specs/productions/sarvam-samvaad.json`.
 - Music: a licensed track the user owns, via `npm run music`.
 - Logo colours: `npm run brand -- public/brand/logo.png --spec specs/x.json`.
 - Their own screenshots, photos and screen recordings, as `image` / `clip` scenes.

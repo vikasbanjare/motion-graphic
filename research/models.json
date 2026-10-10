@@ -1,5 +1,5 @@
 {
-  "_about": "Model catalog for the router (motion-kit/scripts/route.mjs). Capabilities come from each tool's own MCP tool descriptions as seen in this repo's sessions; 'verified' says where. Cost is a RELATIVE tier (1 = cheapest), never a price: always preflight with the tool's cost check (Higgsfield: get_cost:true) before spending. Re-check with models_explore / the tool's model list before relying on any entry; catalogs change monthly.",
+  "_about": "Model catalog for the router (motion-kit/scripts/route.mjs). Capabilities come from each tool's own MCP tool descriptions as seen in this repo's sessions; 'verified' says where. Cost is a RELATIVE tier (1 = cheapest), never a price: always preflight with the tool's cost check (Higgsfield: get_cost:true; Magnific: simulate_cost) before spending. Re-check with models_explore / the tool's model list before relying on any entry; catalogs change monthly. Providers: higgsfield and magnific (MCP, paid credits), local (open weights on the user's GPU), free (Claude + CPU in this repo).",
   "updated": "2026-10-10",
   "providers": {
     "higgsfield": {
@@ -10,62 +10,940 @@
       "consistency": "Reference elements: create once from one clear image, then put <<<element_id>>> in prompts. Honoured by the models marked elements:true. kling3_0 also needs a start_image.",
       "notes": "Seedance, Kling, MiniMax, Veo-class and GPT/Nano Banana image models are served through Higgsfield, so one MCP connection covers most of the model landscape."
     },
-    "freepik": {
-      "mcp": "Freepik MCP (not connected in this repo's sessions)",
-      "verified": "NO. Entries are from Freepik's public product line-up (Freepik AI suite and Magnific) and must be confirmed against the connected MCP's tool list before use.",
-      "cost_check": "unknown until connected: list the tools, look for a cost/credits field or a preview mode",
-      "consistency": "unknown until connected: look for character/style reference or 'custom character' inputs",
-      "notes": "Magnific's strength is upscaling and enhancement (adding detail to a still), relighting and style transfer, which slot in as the 'finish' step of a stills-first pipeline whatever generated the still."
+    "magnific": {
+      "mcp": "mcp__magnific__*",
+      "verified": "tool list and video_models_list read in session 2026-10-10. Video slugs from video_models_list; image slugs from the images_generate tool description (trap: imagen-nano-banana-2 is Nano Banana PRO, imagen-nano-banana-2-flash is Nano Banana 2).",
+      "cost_check": "simulate_cost (read-only) before any generate call; account_balance for credits",
+      "consistency": "reference images in video_generate / images_generate; brand_kit_* for brand rules",
+      "notes": "Covers video, image, TTS, SFX, music, Foley (video_soundfx), lip-sync (video_speak), upscale/relight. Sign-in can expire: the user re-signs in the Magnific panel."
+    },
+    "local": {
+      "how": "Open weights on the user's own GPU (ComfyUI, Wan2GP, diffusers) or a free Colab / Hugging Face Space. npm run produce --tier local writes the job sheet; results come back as files.",
+      "verified": "web research 2026-10-10 (docs/research/free-open-models.md); not run in this repo's GPU-less container",
+      "cost_check": "none: GPU time only. Check each model card's licence for client work (several exclude regions or need attribution).",
+      "consistency": "character LoRA (Wan 2.2), H3 Ref2VA references, same voice reference clip + seed for TTS"
+    },
+    "free": {
+      "how": "Claude Code + CPU only: motion-kit code scenes, Kokoro voices, tools/sfx_synth.py, tools/music_bed.py",
+      "verified": "built and run in this repo",
+      "cost_check": "none",
+      "consistency": "same Kokoro voice per character; plates fall back to each plate's code scene"
     }
   },
   "models": [
-    {"id": "gpt_image_2_5", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": false, "strengths": ["general", "photoreal", "typography", "reference-edit"], "notes": "Higgsfield's default general image model."},
-    {"id": "gpt_image_2", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": true, "strengths": ["general", "reference-edit", "character-consistency"]},
-    {"id": "nano_banana_pro", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": true, "strengths": ["reference-edit", "character-consistency", "multi-reference", "edit-in-place"]},
-    {"id": "nano_banana_2", "provider": "higgsfield", "kind": "image", "cost": 1, "elements": true, "strengths": ["reference-edit", "character-consistency", "fast-drafts"]},
-    {"id": "seedream_v4_5", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": true, "strengths": ["photoreal", "character-consistency", "high-res"]},
-    {"id": "seedream_v5_lite", "provider": "higgsfield", "kind": "image", "cost": 1, "elements": true, "strengths": ["fast-drafts", "character-consistency"]},
-    {"id": "cinematic_studio_2_5", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": true, "strengths": ["cinematic", "film-look", "keyframes", "character-consistency"]},
-    {"id": "marketing_studio_image", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": false, "strengths": ["product", "ads", "packshot", "commercial"]},
-    {"id": "soul_2", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": false, "strengths": ["portrait", "fashion", "ugc", "editorial"], "notes": "With a trained soul_id it reproduces one person across images."},
-    {"id": "soul_cast", "provider": "higgsfield", "kind": "image", "cost": 2, "elements": false, "strengths": ["character-design", "avatar"], "notes": "Text-only character creation."},
-
-    {"id": "seedance_2_5", "provider": "higgsfield", "kind": "video", "cost": 3, "elements": false, "strengths": ["general", "image-to-video", "smooth-camera"], "notes": "Higgsfield's default general video model (Seedance)."},
-    {"id": "seedance_2_0", "provider": "higgsfield", "kind": "video", "cost": 3, "elements": true, "strengths": ["image-to-video", "character-consistency"]},
-    {"id": "kling3_0", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": "needs start_image", "strengths": ["multi-shot", "audio", "motion-transfer", "action", "people"]},
-    {"id": "minimax_h3", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": false, "strengths": ["2k", "keyframes", "first-last-frame", "mixed-references"]},
-    {"id": "cinematic_studio_video_v2", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": true, "strengths": ["cinematic", "film-look", "character-consistency", "camera-control"]},
-    {"id": "cinematic_studio_3_0", "provider": "higgsfield", "kind": "video", "cost": 5, "elements": true, "strengths": ["cinematic", "film-look", "character-consistency", "storytelling"]},
-    {"id": "marketing_studio_video", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": false, "strengths": ["ads", "product", "ugc", "performance-marketing"]},
-    {"id": "hf_mult_motion_control", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": false, "strengths": ["motion-transfer", "dance", "gesture-copy"], "notes": "Copies motion from one driving video onto reference-image subjects."},
-    {"id": "hf_mult_replace_object", "provider": "higgsfield", "kind": "video", "cost": 4, "elements": false, "strengths": ["object-swap", "product-swap", "variants"], "notes": "Replaces a product/garment/character inside an existing video."},
-
-    {"id": "seed_audio", "provider": "higgsfield", "kind": "voice", "cost": 1, "elements": "voice elements", "strengths": ["tts", "voice-clone", "consistent-voice"], "notes": "Default speech model; preset or element voice; can clone from an audio reference."},
-    {"id": "text2speech_v2", "provider": "higgsfield", "kind": "voice", "cost": 1, "elements": "voice elements", "strengths": ["tts", "engine-choice"], "notes": "variant: elevenlabs | minimax | seed_speech | vibe_voice | cozy_voice."},
-
-    {"id": "upscale_image", "provider": "higgsfield", "kind": "finish", "cost": 1, "strengths": ["upscale-2k", "upscale-4k"]},
-    {"id": "upscale_video", "provider": "higgsfield", "kind": "finish", "cost": 2, "strengths": ["upscale-video"]},
-    {"id": "remove_background", "provider": "higgsfield", "kind": "finish", "cost": 1, "strengths": ["cutout", "transparent", "video-cutout"]},
-
-    {"id": "magnific_upscale", "provider": "freepik", "kind": "finish", "cost": 2, "unverified": true, "strengths": ["upscale", "detail-enhance", "creative-upscale"]},
-    {"id": "magnific_relight", "provider": "freepik", "kind": "finish", "cost": 2, "unverified": true, "strengths": ["relight", "match-lighting"]},
-    {"id": "magnific_style_transfer", "provider": "freepik", "kind": "finish", "cost": 2, "unverified": true, "strengths": ["style-transfer", "look-match"]},
-    {"id": "freepik_mystic", "provider": "freepik", "kind": "image", "cost": 2, "unverified": true, "strengths": ["photoreal", "general"]},
-    {"id": "freepik_video", "provider": "freepik", "kind": "video", "cost": 4, "unverified": true, "strengths": ["image-to-video"], "notes": "Freepik exposes several third-party video models; read the connected tool for which."}
+    {
+      "id": "gpt_image_2_5",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": false,
+      "strengths": [
+        "general",
+        "photoreal",
+        "typography",
+        "reference-edit"
+      ],
+      "notes": "Higgsfield's default general image model."
+    },
+    {
+      "id": "gpt_image_2",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "general",
+        "reference-edit",
+        "character-consistency"
+      ]
+    },
+    {
+      "id": "nano_banana_pro",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "reference-edit",
+        "character-consistency",
+        "multi-reference",
+        "edit-in-place"
+      ]
+    },
+    {
+      "id": "nano_banana_2",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 1,
+      "elements": true,
+      "strengths": [
+        "reference-edit",
+        "character-consistency",
+        "fast-drafts"
+      ]
+    },
+    {
+      "id": "seedream_v4_5",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "photoreal",
+        "character-consistency",
+        "high-res"
+      ]
+    },
+    {
+      "id": "seedream_v5_lite",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 1,
+      "elements": true,
+      "strengths": [
+        "fast-drafts",
+        "character-consistency"
+      ]
+    },
+    {
+      "id": "cinematic_studio_2_5",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "cinematic",
+        "film-look",
+        "keyframes",
+        "character-consistency"
+      ]
+    },
+    {
+      "id": "marketing_studio_image",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": false,
+      "strengths": [
+        "product",
+        "ads",
+        "packshot",
+        "commercial"
+      ]
+    },
+    {
+      "id": "soul_2",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": false,
+      "strengths": [
+        "portrait",
+        "fashion",
+        "ugc",
+        "editorial"
+      ],
+      "notes": "With a trained soul_id it reproduces one person across images."
+    },
+    {
+      "id": "soul_cast",
+      "provider": "higgsfield",
+      "kind": "image",
+      "cost": 2,
+      "elements": false,
+      "strengths": [
+        "character-design",
+        "avatar"
+      ],
+      "notes": "Text-only character creation."
+    },
+    {
+      "id": "seedance_2_5",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 3,
+      "elements": false,
+      "strengths": [
+        "general",
+        "image-to-video",
+        "smooth-camera"
+      ],
+      "notes": "Higgsfield's default general video model (Seedance)."
+    },
+    {
+      "id": "seedance_2_0",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 3,
+      "elements": true,
+      "strengths": [
+        "image-to-video",
+        "character-consistency"
+      ]
+    },
+    {
+      "id": "kling3_0",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": "needs start_image",
+      "strengths": [
+        "multi-shot",
+        "audio",
+        "motion-transfer",
+        "action",
+        "people"
+      ]
+    },
+    {
+      "id": "minimax_h3",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": false,
+      "strengths": [
+        "2k",
+        "keyframes",
+        "first-last-frame",
+        "mixed-references"
+      ]
+    },
+    {
+      "id": "cinematic_studio_video_v2",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": true,
+      "strengths": [
+        "cinematic",
+        "film-look",
+        "character-consistency",
+        "camera-control"
+      ]
+    },
+    {
+      "id": "cinematic_studio_3_0",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 5,
+      "elements": true,
+      "strengths": [
+        "cinematic",
+        "film-look",
+        "character-consistency",
+        "storytelling"
+      ]
+    },
+    {
+      "id": "marketing_studio_video",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": false,
+      "strengths": [
+        "ads",
+        "product",
+        "ugc",
+        "performance-marketing"
+      ]
+    },
+    {
+      "id": "hf_mult_motion_control",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": false,
+      "strengths": [
+        "motion-transfer",
+        "dance",
+        "gesture-copy"
+      ],
+      "notes": "Copies motion from one driving video onto reference-image subjects."
+    },
+    {
+      "id": "hf_mult_replace_object",
+      "provider": "higgsfield",
+      "kind": "video",
+      "cost": 4,
+      "elements": false,
+      "strengths": [
+        "object-swap",
+        "product-swap",
+        "variants"
+      ],
+      "notes": "Replaces a product/garment/character inside an existing video."
+    },
+    {
+      "id": "seed_audio",
+      "provider": "higgsfield",
+      "kind": "voice",
+      "cost": 1,
+      "elements": "voice elements",
+      "strengths": [
+        "tts",
+        "voice-clone",
+        "consistent-voice"
+      ],
+      "notes": "Default speech model; preset or element voice; can clone from an audio reference."
+    },
+    {
+      "id": "text2speech_v2",
+      "provider": "higgsfield",
+      "kind": "voice",
+      "cost": 1,
+      "elements": "voice elements",
+      "strengths": [
+        "tts",
+        "engine-choice"
+      ],
+      "notes": "variant: elevenlabs | minimax | seed_speech | vibe_voice | cozy_voice."
+    },
+    {
+      "id": "upscale_image",
+      "provider": "higgsfield",
+      "kind": "finish",
+      "cost": 1,
+      "strengths": [
+        "upscale-2k",
+        "upscale-4k"
+      ]
+    },
+    {
+      "id": "upscale_video",
+      "provider": "higgsfield",
+      "kind": "finish",
+      "cost": 2,
+      "strengths": [
+        "upscale-video"
+      ]
+    },
+    {
+      "id": "remove_background",
+      "provider": "higgsfield",
+      "kind": "finish",
+      "cost": 1,
+      "strengths": [
+        "cutout",
+        "transparent",
+        "video-cutout"
+      ]
+    },
+    {
+      "id": "imagen-nano-banana-2",
+      "provider": "magnific",
+      "kind": "image",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "reference-edit",
+        "character-consistency",
+        "multi-reference"
+      ],
+      "notes": "Nano Banana PRO despite the slug."
+    },
+    {
+      "id": "imagen-nano-banana-2-flash",
+      "provider": "magnific",
+      "kind": "image",
+      "cost": 1,
+      "elements": true,
+      "strengths": [
+        "fast-drafts",
+        "reference-edit"
+      ],
+      "notes": "Nano Banana 2."
+    },
+    {
+      "id": "bytedance-seedance-pro-2.5",
+      "provider": "magnific",
+      "kind": "video",
+      "cost": 4,
+      "elements": true,
+      "strengths": [
+        "general",
+        "image-to-video",
+        "audio",
+        "multi-shot",
+        "camera-control",
+        "people"
+      ],
+      "notes": "Tier sota, rank 1 in video_models_list. 4-30 s, 1080p/720p/480p/Draft, native audio (withSoundEffects, noMusic), up to 6 shots, cameraMotion, references incl. audio."
+    },
+    {
+      "id": "bytedance-seedance-fast-2.0",
+      "provider": "magnific",
+      "kind": "video",
+      "cost": 2,
+      "elements": true,
+      "strengths": [
+        "fast-drafts",
+        "image-to-video"
+      ]
+    },
+    {
+      "id": "kling-25",
+      "provider": "magnific",
+      "kind": "video",
+      "cost": 3,
+      "elements": false,
+      "strengths": [
+        "first-last-frame",
+        "image-to-video"
+      ],
+      "notes": "5/10 s, start and end frames, silent."
+    },
+    {
+      "id": "minimax-video-3_0-max",
+      "provider": "magnific",
+      "kind": "video",
+      "cost": 4,
+      "elements": false,
+      "strengths": [
+        "image-to-video",
+        "action",
+        "people"
+      ],
+      "notes": "5-15 s, 768p/480p; -turbo variant is cheaper."
+    },
+    {
+      "id": "audio_tts",
+      "provider": "magnific",
+      "kind": "voice",
+      "cost": 1,
+      "strengths": [
+        "tts",
+        "hindi?"
+      ],
+      "notes": "List voices with audio_voices_list; audio_tts_direction adds delivery notes."
+    },
+    {
+      "id": "audio_music_generate",
+      "provider": "magnific",
+      "kind": "music",
+      "cost": 2,
+      "strengths": [
+        "music"
+      ]
+    },
+    {
+      "id": "audio_sfx_generate",
+      "provider": "magnific",
+      "kind": "sfx",
+      "cost": 1,
+      "strengths": [
+        "text-to-sfx"
+      ]
+    },
+    {
+      "id": "video_soundfx",
+      "provider": "magnific",
+      "kind": "sfx",
+      "cost": 2,
+      "strengths": [
+        "video-to-sfx",
+        "foley"
+      ]
+    },
+    {
+      "id": "video_speak",
+      "provider": "magnific",
+      "kind": "lipsync",
+      "cost": 3,
+      "strengths": [
+        "lip-sync",
+        "talking-head"
+      ]
+    },
+    {
+      "id": "images_upscale",
+      "provider": "magnific",
+      "kind": "finish",
+      "cost": 2,
+      "strengths": [
+        "upscale",
+        "creative-upscale",
+        "detail-enhance"
+      ]
+    },
+    {
+      "id": "images_relight",
+      "provider": "magnific",
+      "kind": "finish",
+      "cost": 2,
+      "strengths": [
+        "relight"
+      ]
+    },
+    {
+      "id": "minimax_h3_local",
+      "provider": "local",
+      "kind": "video",
+      "cost": 3,
+      "elements": true,
+      "strengths": [
+        "image-to-video",
+        "first-last-frame",
+        "audio",
+        "references"
+      ],
+      "notes": "Top open model on LMArena/AA (2026-10). Licence bars local use in US/EU/UK/KR. 24 GB, 768p, 4-15 s."
+    },
+    {
+      "id": "ltx_2_5",
+      "provider": "local",
+      "kind": "video",
+      "cost": 3,
+      "elements": false,
+      "strengths": [
+        "text-to-video",
+        "audio",
+        "keyframes",
+        "4k"
+      ],
+      "notes": "Free under $10M revenue. 32 GB official, 24 GB int8, 16 GB GGUF."
+    },
+    {
+      "id": "wan2_2_a14b",
+      "provider": "local",
+      "kind": "video",
+      "cost": 3,
+      "elements": true,
+      "strengths": [
+        "text-to-video",
+        "image-to-video",
+        "first-last-frame",
+        "lora"
+      ],
+      "notes": "Apache-2.0: the safe licence. FLF2V for keyframes; character LoRAs for consistency; 24 GB with offload."
+    },
+    {
+      "id": "wan2_2_ti2v_5b",
+      "provider": "local",
+      "kind": "video",
+      "cost": 1,
+      "elements": false,
+      "strengths": [
+        "fast-drafts",
+        "low-vram"
+      ],
+      "notes": "About 8 GB, 720p."
+    },
+    {
+      "id": "infinitetalk",
+      "provider": "local",
+      "kind": "lipsync",
+      "cost": 2,
+      "strengths": [
+        "lip-sync",
+        "talking-head",
+        "multi-speaker"
+      ],
+      "notes": "Apache-2.0."
+    },
+    {
+      "id": "latentsync_1_6",
+      "provider": "local",
+      "kind": "lipsync",
+      "cost": 2,
+      "strengths": [
+        "re-sync existing footage"
+      ],
+      "notes": "About 18 GB."
+    },
+    {
+      "id": "qwen_image",
+      "provider": "local",
+      "kind": "image",
+      "cost": 2,
+      "elements": false,
+      "unverified": true,
+      "strengths": [
+        "photoreal",
+        "text-in-image",
+        "edit"
+      ],
+      "notes": "Not covered by the 2026-10-10 research; Apache-2.0 per earlier knowledge [Likely]. Re-check before use."
+    },
+    {
+      "id": "chatterbox_multilingual",
+      "provider": "local",
+      "kind": "voice",
+      "cost": 1,
+      "strengths": [
+        "tts",
+        "hindi",
+        "voice-clone",
+        "emotion"
+      ],
+      "notes": "MIT, watermarked outputs. cfg_weight=0 for cross-language cloning."
+    },
+    {
+      "id": "voxcpm2",
+      "provider": "local",
+      "kind": "voice",
+      "cost": 1,
+      "strengths": [
+        "tts",
+        "hindi",
+        "voice-clone",
+        "voice-design"
+      ],
+      "notes": "Apache-2.0, about 8 GB."
+    },
+    {
+      "id": "goonj_82m",
+      "provider": "local",
+      "kind": "voice",
+      "cost": 1,
+      "strengths": [
+        "tts",
+        "hindi",
+        "hinglish",
+        "cpu"
+      ],
+      "notes": "Kokoro fine-tune, Apache-2.0, CPU, no published evals."
+    },
+    {
+      "id": "stable_audio_3_medium",
+      "provider": "local",
+      "kind": "music",
+      "cost": 1,
+      "strengths": [
+        "music",
+        "instrumental",
+        "sfx"
+      ],
+      "notes": "Best open listening scores (own paper). Free under $1M revenue [Likely]. 6.5 GB."
+    },
+    {
+      "id": "stable_audio_3_small",
+      "provider": "local",
+      "kind": "music",
+      "cost": 1,
+      "strengths": [
+        "music",
+        "sfx",
+        "cpu"
+      ],
+      "notes": "459M, runs on CPU (30 s in 1.7 s on an M4)."
+    },
+    {
+      "id": "minimax_music_3",
+      "provider": "local",
+      "kind": "music",
+      "cost": 2,
+      "strengths": [
+        "song",
+        "vocals",
+        "hindi?"
+      ],
+      "notes": "Must display 'MiniMax-Music3' credit."
+    },
+    {
+      "id": "hunyuan_foley_xl",
+      "provider": "local",
+      "kind": "sfx",
+      "cost": 2,
+      "strengths": [
+        "video-to-sfx",
+        "foley"
+      ],
+      "notes": "Excludes EU/UK/KR."
+    },
+    {
+      "id": "kokoro",
+      "provider": "free",
+      "kind": "voice",
+      "cost": 0,
+      "strengths": [
+        "tts",
+        "english",
+        "cpu"
+      ],
+      "notes": "npm run voice --engine kokoro; tools/cast_voices.py for casts. Hindi voices are weak."
+    },
+    {
+      "id": "music_bed",
+      "provider": "free",
+      "kind": "music",
+      "cost": 0,
+      "strengths": [
+        "instrumental",
+        "cpu"
+      ],
+      "notes": "tools/music_bed.py --mood warm|tech|calm|tense"
+    },
+    {
+      "id": "sfx_synth",
+      "provider": "free",
+      "kind": "sfx",
+      "cost": 0,
+      "strengths": [
+        "story-sfx",
+        "cpu"
+      ],
+      "notes": "tools/sfx_synth.py --list"
+    }
   ],
   "shots": {
-    "product-hero":        {"pipeline": "stills-first", "image": ["marketing_studio_image", "gpt_image_2_5"], "video": ["seedance_2_5", "minimax_h3"], "finish": ["upscale_image"]},
-    "product-transform":   {"pipeline": "first-last-frame", "image": ["marketing_studio_image", "nano_banana_pro"], "video": ["minimax_h3", "seedance_2_5"]},
-    "abstract-material":   {"pipeline": "stills-first", "image": ["gpt_image_2_5", "seedream_v4_5"], "video": ["seedance_2_5"]},
-    "character-intro":     {"pipeline": "element-then-stills", "image": ["cinematic_studio_2_5", "nano_banana_pro"], "video": ["cinematic_studio_video_v2", "seedance_2_0"]},
-    "dialogue":            {"pipeline": "element-then-stills", "image": ["cinematic_studio_2_5"], "video": ["kling3_0", "cinematic_studio_3_0"], "voice": ["seed_audio"]},
-    "action":              {"pipeline": "element-then-stills", "image": ["cinematic_studio_2_5"], "video": ["kling3_0", "cinematic_studio_3_0"]},
-    "ugc-talking-head":    {"pipeline": "workflow:ugc-video", "image": ["soul_2"], "video": ["marketing_studio_video", "kling3_0"], "voice": ["seed_audio"]},
-    "ad-variant":          {"pipeline": "workflow:ad-multiplier", "video": ["hf_mult_replace_object", "marketing_studio_video"]},
-    "dance-or-gesture":    {"pipeline": "motion-transfer", "video": ["hf_mult_motion_control"]},
-    "establishing-world":  {"pipeline": "stills-first", "image": ["cinematic_studio_2_5", "seedream_v4_5"], "video": ["seedance_2_5", "cinematic_studio_video_v2"]},
-    "texture-background":  {"pipeline": "stills-first", "image": ["seedream_v5_lite", "nano_banana_2"], "video": ["seedance_2_5"]},
-    "cutout-object":       {"pipeline": "still-then-cutout", "image": ["gpt_image_2_5", "marketing_studio_image"], "finish": ["remove_background"]},
-    "ui-text-numbers-logo":{"pipeline": "code", "notes": "Never generated. motion-kit renders it (Route 1)."}
+    "product-hero": {
+      "pipeline": "stills-first",
+      "image": [
+        "marketing_studio_image",
+        "gpt_image_2_5",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "seedance_2_5",
+        "minimax_h3",
+        "bytedance-seedance-pro-2.5",
+        "bytedance-seedance-fast-2.0",
+        "wan2_2_a14b",
+        "ltx_2_5",
+        "minimax_h3_local",
+        "wan2_2_ti2v_5b"
+      ],
+      "finish": [
+        "upscale_image",
+        "images_upscale"
+      ]
+    },
+    "product-transform": {
+      "pipeline": "first-last-frame",
+      "image": [
+        "marketing_studio_image",
+        "nano_banana_pro",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "minimax_h3",
+        "seedance_2_5",
+        "kling-25",
+        "bytedance-seedance-pro-2.5",
+        "wan2_2_a14b",
+        "minimax_h3_local"
+      ]
+    },
+    "abstract-material": {
+      "pipeline": "stills-first",
+      "image": [
+        "gpt_image_2_5",
+        "seedream_v4_5",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "seedance_2_5",
+        "bytedance-seedance-pro-2.5",
+        "bytedance-seedance-fast-2.0",
+        "wan2_2_a14b",
+        "ltx_2_5",
+        "minimax_h3_local",
+        "wan2_2_ti2v_5b"
+      ]
+    },
+    "character-intro": {
+      "pipeline": "element-then-stills",
+      "image": [
+        "cinematic_studio_2_5",
+        "nano_banana_pro",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "cinematic_studio_video_v2",
+        "seedance_2_0",
+        "bytedance-seedance-pro-2.5",
+        "minimax-video-3_0-max",
+        "minimax_h3_local",
+        "wan2_2_a14b"
+      ]
+    },
+    "dialogue": {
+      "pipeline": "element-then-stills",
+      "image": [
+        "cinematic_studio_2_5",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "kling3_0",
+        "cinematic_studio_3_0",
+        "bytedance-seedance-pro-2.5",
+        "minimax-video-3_0-max",
+        "minimax_h3_local",
+        "wan2_2_a14b"
+      ],
+      "voice": [
+        "seed_audio",
+        "audio_tts",
+        "chatterbox_multilingual",
+        "voxcpm2",
+        "kokoro"
+      ]
+    },
+    "action": {
+      "pipeline": "element-then-stills",
+      "image": [
+        "cinematic_studio_2_5",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "kling3_0",
+        "cinematic_studio_3_0",
+        "bytedance-seedance-pro-2.5",
+        "minimax-video-3_0-max",
+        "minimax_h3_local",
+        "wan2_2_a14b"
+      ]
+    },
+    "ugc-talking-head": {
+      "pipeline": "workflow:ugc-video",
+      "image": [
+        "soul_2",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "marketing_studio_video",
+        "kling3_0",
+        "bytedance-seedance-pro-2.5",
+        "infinitetalk"
+      ],
+      "voice": [
+        "seed_audio",
+        "audio_tts",
+        "chatterbox_multilingual",
+        "voxcpm2",
+        "kokoro"
+      ]
+    },
+    "ad-variant": {
+      "pipeline": "workflow:ad-multiplier",
+      "video": [
+        "hf_mult_replace_object",
+        "marketing_studio_video",
+        "bytedance-seedance-pro-2.5",
+        "wan2_2_a14b"
+      ]
+    },
+    "dance-or-gesture": {
+      "pipeline": "motion-transfer",
+      "video": [
+        "hf_mult_motion_control"
+      ]
+    },
+    "establishing-world": {
+      "pipeline": "stills-first",
+      "image": [
+        "cinematic_studio_2_5",
+        "seedream_v4_5",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "seedance_2_5",
+        "cinematic_studio_video_v2",
+        "bytedance-seedance-pro-2.5",
+        "bytedance-seedance-fast-2.0",
+        "wan2_2_a14b",
+        "ltx_2_5",
+        "minimax_h3_local",
+        "wan2_2_ti2v_5b"
+      ]
+    },
+    "texture-background": {
+      "pipeline": "stills-first",
+      "image": [
+        "seedream_v5_lite",
+        "nano_banana_2",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "video": [
+        "seedance_2_5",
+        "bytedance-seedance-pro-2.5",
+        "bytedance-seedance-fast-2.0",
+        "wan2_2_a14b",
+        "ltx_2_5",
+        "minimax_h3_local",
+        "wan2_2_ti2v_5b"
+      ]
+    },
+    "cutout-object": {
+      "pipeline": "still-then-cutout",
+      "image": [
+        "gpt_image_2_5",
+        "marketing_studio_image",
+        "imagen-nano-banana-2",
+        "imagen-nano-banana-2-flash",
+        "qwen_image"
+      ],
+      "finish": [
+        "remove_background"
+      ]
+    },
+    "ui-text-numbers-logo": {
+      "pipeline": "code",
+      "notes": "Never generated. motion-kit renders it (Route 1)."
+    },
+    "voice-line": {
+      "pipeline": "voice",
+      "voice": [
+        "seed_audio",
+        "audio_tts",
+        "chatterbox_multilingual",
+        "voxcpm2",
+        "goonj_82m",
+        "kokoro"
+      ],
+      "notes": "One line per character; same voice/reference every time."
+    },
+    "music-bed": {
+      "pipeline": "audio",
+      "music": [
+        "audio_music_generate",
+        "stable_audio_3_medium",
+        "stable_audio_3_small",
+        "music_bed"
+      ]
+    },
+    "sfx": {
+      "pipeline": "audio",
+      "sfx": [
+        "audio_sfx_generate",
+        "stable_audio_3_medium",
+        "stable_audio_3_small",
+        "sfx_synth"
+      ]
+    },
+    "foley-for-clip": {
+      "pipeline": "audio",
+      "sfx": [
+        "video_soundfx",
+        "hunyuan_foley_xl",
+        "sfx_synth"
+      ]
+    },
+    "lip-sync": {
+      "pipeline": "audio",
+      "video": [
+        "video_speak",
+        "infinitetalk",
+        "latentsync_1_6"
+      ]
+    }
   }
 }

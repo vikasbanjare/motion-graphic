@@ -1,4 +1,4 @@
-// npm run route -- specs/<name>.shots.json [--budget low|balanced|best] [--provider higgsfield]
+// npm run route -- specs/<name>.shots.json [--budget low|balanced|best] [--provider higgsfield|magnific|local|free]
 // npm run route -- --shot product-hero [--seconds 4] [--budget low]
 //
 // Picks a model and a pipeline for every AI-generated shot, using research/models.json.
@@ -26,6 +26,8 @@ const PIPELINES = {
   "workflow:ugc-video": ["Load Higgsfield workflow 'ugc-video' (get_workflow_instructions) and follow it"],
   "workflow:ad-multiplier": ["Load Higgsfield workflow 'ad-multiplier' and follow it"],
   code: ["Route 1: motion-kit renders it. No generation."],
+  voice: ["Generate each line with the chosen voice (same voice / reference clip + seed every time)", "Put the take in the production file's voices beat as {\"file\": …}"],
+  audio: ["Generate with the chosen model; save under public/music/ or public/sfx/", "Music: npm run music fits it to the cut; SFX: reference it from the voices beats"],
 };
 
 // Expected generations per step, by budget: drafts on the cheap model, finals on the chosen one.
@@ -36,6 +38,8 @@ const PLAN = {
 };
 
 const ok = (id) => byId[id] && byId[id].provider === provider && !byId[id].unverified;
+// The free tier generates no footage: every visual shot becomes its code scene (the plate's fallback).
+const FREE_VISUAL = { pipeline: "code", notes: "Free tier: no footage generation. Use the plate's code fallback scene (npm run produce)." };
 const pick = (list, budget, character) => {
   const usable = (list || []).filter(ok).filter((id) => !character || byId[id].elements);
   const pool = usable.length ? usable : (list || []).filter(ok);
@@ -45,14 +49,17 @@ const pick = (list, budget, character) => {
 };
 
 const route = (shot, budgetDefault) => {
-  const spec = cat.shots[shot.type];
+  let spec = cat.shots[shot.type];
   if (!spec) return { error: `unknown shot type "${shot.type}"` };
+  if (provider === "free" && (spec.image || spec.video)) spec = { ...FREE_VISUAL, voice: spec.voice };
   const budget = shot.budget || budgetDefault;
   const p = PLAN[budget] || PLAN.balanced;
   const character = Boolean(shot.character);
   const image = pick(spec.image, budget, character);
   const video = pick(spec.video, budget, character);
   const voice = pick(spec.voice, budget, false);
+  const music = pick(spec.music, budget, false);
+  const sfx = pick(spec.sfx, budget, false);
   const finish = (spec.finish || []).filter(ok);
   const draft = p.draftCheap && image ? [...(spec.image || [])].filter(ok).sort((a, b) => byId[a].cost - byId[b].cost)[0] : null;
   let units = 0;
@@ -77,8 +84,13 @@ const route = (shot, budgetDefault) => {
     gens.push(`voice lines on ${voice}`);
     units += byId[voice].cost;
   }
+  for (const a of [music, sfx].filter(Boolean)) {
+    gens.push(`${1 + p.rerolls} take(s) on ${a}`);
+    units += (1 + p.rerolls) * byId[a].cost;
+  }
   for (const f of finish) units += byId[f].cost;
-  return { type: shot.type, budget, pipeline: spec.pipeline, steps: PIPELINES[spec.pipeline] || [], image, video, voice, finish, gens, units, note: spec.notes };
+  const missing = !image && !video && !voice && !music && !sfx && spec.pipeline !== "code";
+  return { type: shot.type, budget, pipeline: spec.pipeline, steps: PIPELINES[spec.pipeline] || [], image, video, voice, music, sfx, finish, gens, units, note: missing ? `No ${provider} model in the catalog for this shot type. Try another --provider.` : byId[video]?.notes || spec.notes };
 };
 
 if (!args._[0] && !args.shot) {
@@ -107,6 +119,8 @@ for (const s of shots) {
   if (r.image) console.log(`  image   ${r.image}`);
   if (r.video) console.log(`  video   ${r.video}`);
   if (r.voice) console.log(`  voice   ${r.voice}`);
+  if (r.music) console.log(`  music   ${r.music}`);
+  if (r.sfx) console.log(`  sfx     ${r.sfx}`);
   if (r.finish.length) console.log(`  finish  ${r.finish.join(", ")}`);
   for (const st of r.steps) console.log(c.dim(`   - ${st}`));
   for (const g of r.gens) console.log(c.dim(`   ≈ ${g}`));

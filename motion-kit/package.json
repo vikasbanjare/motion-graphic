@@ -23,7 +23,8 @@
     "lint": "eslint src && tsc",
     "test": "node --test scripts/test-*.mjs tests/*.test.mjs",
     "plates": "node scripts/plates.mjs",
-    "route": "node scripts/route.mjs"
+    "route": "node scripts/route.mjs",
+    "produce": "node scripts/produce.mjs"
   },
   "sideEffects": [
     "*.css"
