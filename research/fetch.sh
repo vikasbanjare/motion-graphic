@@ -55,7 +55,16 @@ while IFS= read -r line || [ -n "$line" ]; do
     if ! yt-dlp --quiet --no-warnings --no-playlist --socket-timeout 30 "${cookies[@]}" "${ref[@]}" \
       -f "$FORMAT" --merge-output-format mp4 --download-sections "*0-180" --js-runtimes node \
       -o "$out/$id-%(extractor)s-%(id)s.%(ext)s" "$url" 2>>"$fail.log"; then
-      echo -e "$url\tyt-dlp failed (see failures log)" >>"$fail"
+      # Vimeo embeds often answer 401 to yt-dlp from datacenter IPs; ask the player config instead.
+      stream=""
+      case "$url" in *vimeo.com/*) stream=$(python3 "$(dirname "$0")/vimeo_config.py" "$url" "${page_ref:-https://vimeo.com/}" 2>>"$fail.log") ;; esac
+      if [ -n "$stream" ] && yt-dlp --quiet --no-warnings --referer "${page_ref:-https://vimeo.com/}" \
+        -f "$FORMAT" --merge-output-format mp4 --download-sections "*0-180" \
+        -o "$out/$id-vimeo-config.%(ext)s" "$stream" 2>>"$fail.log"; then
+        :
+      else
+        echo -e "$url\tyt-dlp failed (see failures log)" >>"$fail"
+      fi
     fi
     ;;
   esac

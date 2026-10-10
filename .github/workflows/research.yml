@@ -15,7 +15,7 @@ name: Research videos
 on:
   push:
     branches: [claude/youthful-darwin-n1lt7l]
-    paths: [research/links.txt, research/sites.txt, research/crawl.py]
+    paths: [research/links.txt, research/sites.txt, research/crawl.py, research/fetch.sh, research/vimeo_config.py]
   workflow_dispatch:
     inputs:
       all:
