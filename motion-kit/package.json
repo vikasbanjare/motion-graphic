@@ -19,6 +19,7 @@
     "brand": "node scripts/brand.mjs",
     "reference": "node scripts/reference.mjs",
     "frames": "node scripts/frames.mjs",
+    "research": "node scripts/research.mjs",
     "lint": "eslint src && tsc",
     "test": "node --test scripts/test-*.mjs tests/*.test.mjs"
   },
