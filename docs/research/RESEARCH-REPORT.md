@@ -9,13 +9,13 @@ _Last updated: 2026-10-10 (three-tier production pipeline added)._
 | Source | Links | Downloaded and measured | Reviewed frame by frame | Notes file |
 |---|---|---|---|---|
 | Original reference list (`research/links.txt`: raivcoo, X/Twitter, showreel.design, YouTube) | 391 | 347 (96 were mirrors, leaving 251 unique) | 251 (first 16 s at 2 fps, plus some full pilots) | `reference-notes.md` |
-| Motion Design Awards (`research/sites.txt`, crawled) | 305 found | ~209 | 173 (first sheet plus a mid-video sheet) | `award-notes.md` |
-| Per-frame numeric dataset | n/a | 499 videos at 10 fps | n/a | `dataset.md` |
+| Motion Design Awards (`research/sites.txt`, crawled) | 305 found | ~267 | 221 (first sheet plus a mid-video sheet) | `award-notes.md` |
+| Per-frame numeric dataset | n/a | 577 videos at 10 fps | n/a | `dataset.md` |
 | Earlier study: 8 SaaS launch films, frame-level teardowns | 8 | 8 | 8 | `videos/*.md`, master system in `skills/motion-creative-director/references/` |
 
 **What is still missing, and why:**
 - **44 YouTube links.** YouTube's bot check blocks GitHub's servers. They need a `YT_COOKIES` repository secret.
-- **About 150 Motion Design Awards Vimeo embeds.** Vimeo refuses plain requests and the player config (401/403). The headless-browser fallback has been changed to play each video inside its own award page; the result is pending in the newest run on `research-results`.
+- **74 Motion Design Awards Vimeo embeds.** Playing each video inside its own award page (headless browser) recovered 78 of about 150. The rest show Vimeo's bot wall ("We couldn't verify the security of your connection") or "This video does not exist" to GitHub's servers. Retrying is stopped; they would need a residential network or a logged-in session.
 - **3 dead or refused links** on X and showreel.design.
 
 **Where the raw data lives:** the `research-results` branch.
@@ -121,7 +121,6 @@ _Last updated: 2026-10-10 (three-tier production pipeline added)._
 
 - **Free tier upgrades that need Hugging Face access** (blocked in the cloud container): goonj-1-82M (Hindi Kokoro fine-tune, CPU) as a drop-in Hindi voice, Supertonic-3 (CPU, ONNX) and Stable Audio 3 Small (CPU music and SFX). Wire them in once a machine can download them, and judge them by ear first.
 - **Local tier not yet run on a GPU:** the picks in `free-open-models.md` are researched, not tested here.
-- **Vimeo (award site):** confirm whether the in-page browser fallback works. If it does, review the new videos and refresh `dataset.md`.
 - **YouTube:** needs the `YT_COOKIES` secret from the repo owner.
 - **Freepik / Magnific MCP:** connect it, list its tools, and replace the `unverified` entries in `research/models.json`.
 - **Higgsfield:** run a real model list (`models_explore`) and cost preflights, and record actual relative costs in `models.json`. The user stopped these calls on 2026-10-10, so they haven't been run.

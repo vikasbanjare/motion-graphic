@@ -2,7 +2,7 @@
 
 Videos found by crawling motiondesignawards.com (`research/sites.txt`), downloaded and measured on GitHub's runners. Each review image is the first contact sheet (0-16 s at 2 fps) plus one sheet from the middle of the video. Frames stay encrypted on `research-results`; only these notes and the numbers are public.
 
-Review progress: all 173 videos reviewed (N092, N122 and N137 duplicate earlier entries).
+Review progress: all 221 videos reviewed (N092, N122, N137 and N199 duplicate earlier entries). N174–N221 were added on 2026-10-10 after the in-page Vimeo fallback recovered them.
 
 ## Index
 
@@ -181,6 +181,54 @@ Review progress: all 173 videos reviewed (N092, N122 and N137 duplicate earlier 
 | N171 | doordash-design-connects-motion-design | 66.1 | 14 | 4.72 | light |
 | N172 | bioo-3-techs-by-kutuko | 101.0 | 14 | 7.22 | dark |
 | N173 | fear-a-visual-journey-through-emotion-emotions-chapter-03 | 42.8 | 5 | 8.56 | dark |
+| N174 | error-507-ego-exceeded-1 | 7.1 | 1 | 7.1 | mixed |
+| N175 | slipstream-automated-videos | 55.04 | 24 | 2.29 | mixed |
+| N176 | training-mask-apollo | 38.72 | 2 | 19.36 | dark |
+| N177 | adidas-k-johnson | 33.08 | 3 | 11.03 | dark |
+| N178 | showreel-2022 | 63.12 | 25 | 2.52 | dark |
+| N179 | adidas-terrex-skychaser | 20.12 | 1 | 20.12 | mixed |
+| N180 | sint-promo-vsesvitio | 48.12 | 5 | 9.62 | dark |
+| N181 | karl-lagerfeld-x-the-woolmark-company-knit-karl | 55.02 | 30 | 1.83 | dark |
+| N182 | bmw-i4-eye-candies-collection | 90.69 | 11 | 8.24 | dark |
+| N183 | sins | 106.12 | 22 | 4.82 | dark |
+| N184 | ropes-creative-search | 60.01 | 21 | 2.86 | mixed |
+| N185 | peter-millar-apollo | 30.02 | 6 | 5 | dark |
+| N186 | celebrating-india | 15.12 | 6 | 2.52 | dark |
+| N187 | cariuma-ibi-slip-on | 30.03 | 7 | 4.29 | mixed |
+| N188 | gatorlyte-the-heat-is-on | 50.13 | 34 | 1.47 | dark |
+| N189 | tiny-drivers-2 | 9.13 | 1 | 9.13 | mixed |
+| N190 | rocketpanda-reel | 87.13 | 70 | 1.24 | dark |
+| N191 | nike-air-max-95000 | 28.71 | 2 | 14.35 | dark |
+| N192 | at-your-door-2d-3d-motion | 15.02 | 4 | 3.75 | mixed |
+| N193 | norte-adventures | 125.04 | 44 | 2.84 | mixed |
+| N194 | plusone-character-reel | 59.12 | 39 | 1.52 | mixed |
+| N195 | artgrid-art-loops-series-by-clim-studio | 46.85 | 1 | 46.85 | light |
+| N196 | prand-7-years | 46.13 | 3 | 15.38 | dark |
+| N197 | chinatown | 35.02 | 2 | 17.51 | mixed |
+| N198 | 5-a-day-artgrid-series-by-clim-studio | 19.52 | 2 | 9.76 | dark |
+| N199 | chinatown | 35.02 | 2 | 17.51 | mixed |
+| N200 | tegranite-by-kutuko-1 | 64.08 | 20 | 3.2 | dark |
+| N201 | the-brutalism | 36.08 | 19 | 1.9 | mixed |
+| N202 | cupid-we-need-to-talk | 14.13 | 5 | 2.83 | dark |
+| N203 | lightyear-solar-charging | 72.12 | 10 | 7.21 | mixed |
+| N204 | mbf-hm12-the-guardian | 63.12 | 24 | 2.63 | dark |
+| N205 | breguet-experimentale-1 | 53.01 | 17 | 3.12 | mixed |
+| N206 | aescripts-cyber-week-sale-story | 45.85 | 17 | 2.7 | mixed |
+| N207 | cariuma-mike-vallely-pro-model | 30.04 | 5 | 6.01 | dark |
+| N208 | hard-to-starboard | 56.71 | 4 | 14.18 | dark |
+| N209 | village-cinemas-opener | 26.73 | 4 | 6.68 | dark |
+| N210 | alibaba-illustration-system | 38.12 | 4 | 9.53 | light |
+| N211 | oakley-winter-sports-mash-up | 30.04 | 16 | 1.88 | mixed |
+| N212 | discord-apps-anywhere | 7.13 | 2 | 3.56 | dark |
+| N213 | helia-by-clim-studio | 34.01 | 6 | 5.67 | dark |
+| N214 | airwallex-money-2020 | 58.04 | 11 | 5.28 | dark |
+| N215 | serenis | 30.04 | 7 | 4.29 | mixed |
+| N216 | marex-video-series | 27.93 | 9 | 3.1 | light |
+| N217 | hamilton-red-by-kutuko | 30.04 | 4 | 7.51 | dark |
+| N218 | sky-crime-verbrechen-von-nebenan | 18.01 | 6 | 3 | light |
+| N219 | ebay-the-movement | 19.13 | 12 | 1.59 | mixed |
+| N220 | pattoon | 47.04 | 4 | 11.76 | light |
+| N221 | decimas-unisex-by-kutuko-studio-2 | 27.01 | 1 | 27.01 | light |
 
 ## Notes
 
@@ -698,3 +746,161 @@ Photoreal garden CGI with shallow DOF; soil explodes into a layered cube "Bioo P
 
 #### N173 Fear: emotions chapter 03 [3D-product-CGI][abstract]
 Black and green: a moonlit sea of glowing green scales, fog rolls in, darkness; green eyes flash; a scaled creature's coil passes; purple lightning; iridescent scales macro. Completes the Emotions series (N103 blue sadness, N125 red rage, N173 green fear): one hue per emotion.
+
+## Added 2026-10-10: 48 videos recovered by the in-page Vimeo fallback (N174–N221)
+
+Same method (first sheet plus a mid-video sheet, 2 fps). Two limits on this batch:
+- **Videos with exactly two sheets (16–32 s long) were reviewed from the first sheet only.** The review image repeated sheet 1 instead of showing sheet 2.
+- **N197 and N199 are the same Chinatown film,** posted under two Vimeo URLs.
+
+**What this batch adds to the earlier findings:**
+- **One hero material plus one accent colour still dominates.** Examples: gold rope, stone with gold, granite and rose gold, natural rubber and bamboo, red light leaking from rock, acid yellow on grey.
+- **Product CGI leaves the studio for dramatic natural settings:** jungle, sea, desert, volcanic rock.
+- **Pacing splits in two.** Product films hold 5–20 s macro moves, sometimes as a single shot with speed ramps. Sport and brand pieces cut every 1.2–2.5 s, with full-bleed colour or type cards as punctuation.
+- **Transitions come from the material:** fabric billows, dust clouds, light leaks, knitting needles crossing into the "x" of a logo, circles that also mask photos.
+- **Vertical pieces favour miniature dioramas** behind a proscenium frame, with an escalating gag or a cast that builds up.
+- **Type stays minimal or physical:** tiny centred captions, lettering carved into the set, or giant comic words used as rhythm cards.
+
+#### N174 Error 507: Ego Exceeded [3D-product-CGI][neon-glow]
+Handheld street footage of a Times Square-style corner billboard showing CGI on the screen. A glossy candy-pink claw-machine cabinet holds a heap of colourful candy spheres, and a pink claw drops in and grabs. The screen then flips to a bold red-orange pixel-arcade "GAME OVER" title over the candy pile. 1 shot / 7.1 s. Building a game metaphor (claw machine, arcade end screen) into the billboard's own shape turns a static screen into a short story with a clear punchline.
+
+#### N175 Slipstream Automated Videos [abstract][brand-system][flat-illustration]
+Case-study film. Small white sans captions on near-black narrate the story and alternate with full-bleed flat shape loops: lime/blue/green blobs, red-and-lime squiggle patterns, purple zigzags, nested concentric squares, gradient waves. A grid of module thumbnails and a track-picker UI (a pill selection inside a circle) show the system, and swatch and shape pickers show the customisation options. Palette of lime, cobalt, pink, red, purple and forest green. 24 shots / 55 s (2.29 s). Splitting the explanation into black caption cards and full-bleed colour bursts keeps a process film readable while still showing the output at full energy.
+
+#### N176 Training Mask Apollo [3D-product-CGI]
+Near-monochrome black-and-grey CGI product film. A wordmark appears over a dark lattice, then macro shots follow: fibrous fabric on a hex-patterned surface, a droplet falling onto a filter material that sprays particles, a filter cartridge rotating, and finally the full mask emerging from darkness. Each feature gets a tiny centered white caption. Rim light only, with slow push-ins and rotations. 2 shots / 38.7 s (19.36 s). Removing colour entirely and lighting only the edges makes a technical product read as premium and lets the material macros do the selling.
+
+#### N177 Adidas K. Johnson [3D-product-CGI][brand-system]
+A tribute to a NASA mathematician. It opens with a small serif quote on dark plum, then a black space capsule floats through billowing folds of an orange flight suit with a NASA patch. Hand-written equations, a compass, a pencil and a small eraser drift in the air around it. The camera orbits and dollies through the cloth in long continuous moves, ending on the white adidas mark on dark teal. 3 shots / 33 s (11.03 s). Floating a few symbolic objects (capsule, compass, handwritten maths) around one hero garment tells a biography without showing a person.
+
+#### N178 Showreel 2022 [agency-reel][2D-character][neon-glow]
+Opens on a hand-drawn "R" monogram scratched onto inky blue texture, then cuts across varied pieces. A tiny figure stands before a huge glowing white moon over a blue sea, a black hand reaches into an orange sun, and a red forest tunnel follows. Later come a green circular vignette of swirling water, glowing lilac rings sketched in light over red curtains, a crumpled-paper burst, a winged figure, white blossoms on navy, an anime-style eye, live-action people with light-ring VFX, and a red/white kaleidoscope pattern. 25 shots / 63 s (2.52 s). Reusing a circle motif (moon, sun, porthole vignette, light rings) gives a mixed-style reel visual continuity.
+
+#### N179 Adidas Terrex Skychaser [live-action][3D-product-CGI]
+Low ground-level camera in a forest: a red-socked foot in the shoe splashes through a puddle. Then a macro slide along a black/sage upper with a GORE-TEX badge, a grey outsole lug stepping onto rock against the sky, a heel close-up, and a final hero three-quarter on a boulder at dusk. Earthy greens and greys with a red sock accent; one continuous move with speed ramps. 1 shot / 20.1 s. Keeping the camera at ground level and riding one continuous speed-ramped move from splash to hero pose gives a footwear spot momentum without any cuts.
+
+#### N180 SINT Promo [3D-character][3D-product-CGI][neon-glow]
+Opens with a small white line typed onto black, then a dark industrial room where a robot lies on a table before a bright screen showing the wordmark. Cut to violet-lit interface views: a pod in a circular diagram, a scan of the robot head with numeric labels, a glowing violet reactor core. Then slow macro passes over a black hex-scaled humanoid body with magenta light strips, cable-sheathed limbs and shoulders. Black, violet and magenta only. 5 shots / 48 s (9.62 s). A strict two-hue palette (black body, one glowing accent) makes a long product reveal feel engineered rather than busy.
+
+#### N181 Karl Lagerfeld x The Woolmark Company: Knit Karl [brand-system][archival-montage][editorial-swiss]
+Strict black-and-white. A mirrored corridor reveals a white box. A crossed-knitting-needles "X" becomes the collab symbol between the KARL LAGERFELD and Woolmark logos in a gallery set, followed by a bracketed [KNIT] packaging box. Then come vintage CRT TVs playing archival footage, a newspaper-style headline card, and glowing DIY lettering crossed by needles. It ends with hands knitting, contact-sheet photo prints and B&W fashion portraits. 30 shots / 55 s (1.83 s). Turning a craft tool (two needles) into the "x" of a collaboration gives the brand system a mark that also works as a transition.
+
+#### N182 BMW i4 Eye Candies Collection [3D-product-CGI]
+Vertical. A white BMW i4 sits on a blue faceted stage with pink cherry-blossom trees and drifting petals. The car slowly lifts and tilts as the camera swoops under it. Then a dreamy interior sequence follows inside billowing cream silk: curved display edge, steering wheel against violet, a jewelled control dial, macro of quilted leather seats, and the infotainment map. It ends on the car on a dark violet plinth. 11 shots / 90.7 s (8.24 s). Wrapping interior details in flowing fabric transitions turns a feature list into one soft, continuous sensory sequence.
+
+#### N183 Sins [3D-product-CGI][grunge]
+Dark, moody tabletop still lifes in heavy green and blood-red light. A carved stone "7", a skull, a hand holding a phone, a CRT reading "PLAY", cluttered occult desks with candles and bottles, red roses, an open book, a pentagram, and creeping vines. It moves with slow dolly pushes and light-leak flash transitions, and the frames are low-key throughout. 22 shots / 106 s (4.82 s). Two opposing coloured light sources (toxic green vs crimson) can carry a seven-part theme while the props change.
+
+#### N184 Ropes Creative Search [3D-product-CGI][abstract]
+Climbing hardware as sculpture on warm grey and white. A gold carabiner spins, a gate is shown in macro knurl, piles of chrome carabiners fall onto contour-line sand, and the line pattern wraps the hardware in gold rope. Then come a gold belay plate, a spoked rope wheel, a test-rig shot with a small set label, a sunlit warehouse with gold rope through gravel, and racks of knotted gold cords over pegs. Chrome, gold rope and grey only. 21 shots / 60 s (2.86 s). A single metallic accent colour on neutral surfaces lets dozens of different setups read as one family.
+
+#### N185 Peter Millar Apollo [3D-product-CGI]
+Grayscale macro world: lunar-like powdery terrain, dust clouds sweeping across, a circular imprint pattern in the ground, then a leopard-spotted surface and a knit shoe upper and white tongue with a faint logo. The camera skims low over the surface in long dissolves, and a faint watermark logo sits over the frames. 6 shots / 30 s (5 s). Shooting a product's texture as if it were a moonscape gives a mundane material an epic scale.
+
+#### N186 Celebrating India [3D-product-CGI][logo-sting]
+The Emporio Armani wordmark is centered over dark rock, which cracks to reveal gold flecks. A gold-plated slab is shown in a shard, followed by sunglasses in a gold frame on gold, a black bar with "CELEBRATING INDIA" and the brand name, and gold crystals growing on a stone mountain range. It closes on two pairs on a gold-lit shelf in a chevron alcove. Black stone and gold only, with slow orbits. 6 shots / 15 s (2.52 s). Pairing one raw material (rough stone) with one precious one (gold) states the luxury message in materials alone.
+
+#### N187 Cariuma IBI Slip-On [3D-product-CGI][brand-system]
+CGI rainforest: the white chevron logo sits over canopy, then over a bed of red/orange cut bamboo stalks with hummingbirds. A green leaf-shaped badge sits on a pile of glossy amber gum, then the camera whips through bamboo where a white sans claim appears. It ends on macro passes over translucent rubber clusters and tangled fibre. Green, amber and cream. 7 shots / 30 s (4.29 s). Showing each raw ingredient in its natural setting before the product makes a sustainability claim feel tangible.
+
+#### N188 Gatorlyte: The Heat Is On [live-action][3D-product-CGI]
+Warm, saturated live-action comedy. People wilt in city heat, and a sneaker sole melts like wax on the pavement. A yellow car droops, someone sprawls on a sofa next to a deflating balloon, and a worker in a red-carpeted brutalist hall turns into a pile of empty clothes. Then a bottle shot against blue sky and characters drinking. It ends on a violet particle burst with italic "ELECTROLITOS" type. Wide-angle low and symmetrical framing, quick cuts. 34 shots / 50 s (1.47 s). Exaggerating the problem (people literally melting) with practical-looking VFX before the product makes the payoff land harder.
+
+#### N189 Tiny Drivers 2 [2D-character][3D-product-CGI]
+A flat, hand-drawn violet/blue cartoon driver with an outlined face crouches by a glossy 3D-rendered yellow taxi with a checker roof sign. He climbs into and out of the car as the camera orbits the vehicle. He waves, and small flat birds pop up. Grey studio backdrop. 1 shot / 9.1 s. Mixing a flat-shaded 2D character into a photoreal 3D object, with the colours kept complementary (blue on yellow), gives an instantly ownable look.
+
+#### N190 Rocketpanda Reel [agency-reel][2D-character][neon-glow]
+Opens on a retro fighting-game parody: two outlined brawlers with health bars, explosive red/yellow impact frames, a giant "KO" and a 3-2-1 countdown on flat red cards, then a round-headed hero squaring up to a glowing green orb. The middle of the reel switches styles: an app-icon grid, glowing planets on black, a teal low-poly frog, a burning stage, pixel space invaders on yellow, a pastel city skyline, hands on a UI screen, then character turnarounds and pencil sketches. The palette is electric violet/blue gradients against hard red and black, with thin glowing linework on the characters. 70 shots / 87 s (1.24 s). Full-frame flat-color cards (KO, numbers, "YES!") between action beats act as rhythm punctuation and reset the eye cheaply.
+
+#### N191 Nike Air Max 95000 [3D-product-CGI][neon-glow]
+A black-on-black sneaker world: carbon-dark knit and rippled rubber textures in macro, with acid-green light tracing the swoosh and seams, small HUD crosshairs, smoke, and robotic arms that 3D-print and dispense green foam onto the sole. Lighting is low-key with one hero accent color, and the camera moves in slow, close macro slides. 2 shots / 28.7 s (14.35 s); the middle sheet repeats the opening frames, so the piece appears to loop. Restricting a product film to monochrome plus one neon accent makes every detail the accent touches read as a technology beat.
+
+#### N192 At Your Door 2D 3D Motion [flat-illustration][2D-character]
+A food-delivery spot on saturated red: a flat-drawn hand hands over a glossy 3D-ish bubble bag with a yellow smiley, it swings across zig-zag bursts, opens onto a spread of noodles, rice and drinks on a pink/cyan starburst, then a character slurps noodles with chopsticks before shrinking into a rounded frame. It ends on a tiny smiley logo with a line of small text on red. 4 shots / 15 s (3.75 s). One recurring hero object (the smiley bag) carries the story from handoff to meal, so a 15 s spot needs no extra explanation.
+
+#### N193 Norte Adventures [2D-character][flat-illustration]
+Title card in hand-lettered type on orange, then a spiky orange sun-like character careers through a plum-and-pink isometric city, rides past scooters and cars, meets a magenta book character among scattered pages, cries in a green jungle, swims in cyan water and chases a boat across hot-pink sky and teal waves before landing in a dense teal/cream pattern finale. A limited palette (orange, plum, hot pink, teal, olive) recolors each location while staying in the same family, and long side-scrolling pans carry the action. 44 shots / 125 s (2.84 s). Give each location its own two-color pair from one master palette so the world changes while the brand stays coherent.
+
+#### N194 PlusOne Character Reel [agency-reel][2D-character][3D-character]
+Opens with a white fluffy 3D creature doing martial-arts moves over red title strips ("Character Reel"), then cuts through a grab bag of styles: a particle hand on blue, flat 2D women in sunglasses, a wooden mannequin arranging products, a halftone portrait, a cartoon dog in live-action footage, kinetic yellow captions over a teal character, wave-riding blue figures, "80%" stat illustrations, red/yellow flat-color dance poses, a pixel-dot crowd, and 3D characters at the end. Reds, yellows and cobalt blues recur as full-bleed backgrounds. 39 shots / 59 s (1.52 s). In a mixed-style reel, recurring full-bleed brand colors (red, yellow, cobalt) behind wildly different techniques make it feel curated rather than random.
+
+#### N195 Artgrid Art Loops Series by Clim Studio [3D-product-CGI][abstract]
+One continuous camera move through a soft-lit, warm-grey studio set of abstract objects: a coral torus behind ribbed glass, pebble-textured stones, a black glass sphere, a thin brass wire arc, a spiky orange gear and a stone cylinder ringed with lilac donuts. Objects roll, swing and pass behind fluted glass, which refracts them into stripes, and it ends on a large coral arc with a rolling black ball. 1 shot / 46.9 s. Fluted or ribbed glass in front of a moving object turns a simple roll into a free, satisfying refraction transition.
+
+#### N196 Prand 7 Years [3D-character]
+Vertical. A velvet-curtained theater stage opens on a miniature snowy diorama inside a glass display box: a fuzzy yellow creature with big red glasses at a microphone, joined by a pink worm, a ladybug-like character, a mushroom figure and dangling spider puppets. The look is felt and fabric: soft cartoony 3D with bunting, paper clouds and a crescent moon, under warm stage light on deep blue. 3 shots / 46 s (15.38 s); after one close-up the frame stays locked on the stage while characters enter one by one. A locked proscenium frame where characters arrive one at a time builds an ensemble payoff with almost no editing.
+
+#### N197 Chinatown [3D-product-CGI][abstract]
+A slow push out of a dark sea cave reveals a Chinese junk with dark ribbed sails and a figure in orange on deck, sailing through towering white iceberg and paper-like forms with circular cut-outs, into misty pale water filled with a fleet of junks and a low sun. The palette is desaturated cyan-grey with a single orange accent on the figure. 2 shots / 35 s (17.51 s). Revealing scale by moving from a tight dark aperture into a vast bright vista makes the size of the world land without cutting.
+
+#### N198 5 a Day Artgrid Series by Clim Studio [3D-product-CGI][abstract]
+Photoreal vegetables (eggplant, pomegranate, cucumber, squash, peppers, corn, carrots, potatoes, mushrooms) float, bob and balance in small groups on a dark, softly graded studio floor with the Artgrid mark at the start. Each group is a still-life tableau that rearranges itself in mid-air, and a cucumber and mushroom stack into a creature at the end. Lighting is moody and low-key with warm-to-cool background shifts. 2 shots / 19.5 s (9.76 s). Treat everyday objects as performers by giving them weightless choreography in a still-life setup.
+
+#### N199 Chinatown (duplicate) [3D-product-CGI][abstract]
+Same footage as N197, a different source URL: a junk sails out of a dark cave through white iceberg forms into a misty fleet under a low sun, in cyan-grey with a lone orange figure. 2 shots / 35 s (17.51 s). This is a duplicate entry. The lesson is the same as N197: one bright accent figure gives scale and a focal point inside a monochrome environment.
+
+#### N200 Tegranite by Kutuko [3D-product-CGI][brand-system]
+A premium kitchen-sink product film: dark matte granite sinks under raking window light and slatted shadows, macro passes along textured edges, a pile of granite granules, swirling black fluid, a steel drain with a glass bubble, then split-screen pairings of material macros under a small "Material de alta calidad" caption. It ends with sink color blocks rising as a bar chart and tumbling cubes for the color range. The palette is black, beige and white with tiny centered sans-serif captions. 20 shots / 64 s (3.2 s). Pair the product with a macro of its raw material in a split screen to sell quality without a voiceover.
+
+#### N201 The Brutalism [3D-product-CGI]
+Vertical. Opens on "THE BRUTALISM" carved into concrete slabs edged with yellow-black hazard stripes, then visits a series of photoreal sci-fi brutalist megastructures set in grassy landscapes under an overcast sky: stacked concrete towers with LED windows, round pod buildings with big yellow numbers, rotating ring decks, a spherical observatory, a twin-slab tower and a tilted gear-shaped monument. Slow low-angle dollies and crane moves give each building a heroic reveal. 19 shots / 36 s (1.9 s). Hazard striping and big painted numerals give invented architecture an instant sense of real-world scale and function.
+
+#### N202 Cupid We Need to Talk [3D-character][paper-collage]
+Vertical. A diorama of a medieval chamber with a checkered floor and chandelier, in a clay or carved look: a red-haired queen at a writing desk with a golden lion at her feet. Cut-out paper doves deliver love letters, then flood the frame in a white burst until heart-sealed envelopes bury the scene and the queen's expression turns sour. It ends on a scroll reading "Be My Valentine" with the Prand mark. 5 shots / 14 s (2.83 s). Escalate a single gag (one letter, then a flood) to the point of overwhelm, then cut to a calm end card for the punchline.
+
+#### N203 Lightyear Solar Charging [whitespace-UI][3D-product-CGI][data-viz]
+A clean whitespace-UI explainer on light grey: the Lightyear wordmark on black, a 3D field of white solar cells with a cloud and a large "5%" counter, then a node network that grows from small circles into a dense black-dot graph. Next come sleek renders of the white car in clean boxed layouts with red accent bars, wheel-motor cutaways, tiny UI captions, photo strips of roads and forests, and a scrolling month calendar in large black sans. Transitions are grid-aligned wipes and boxes sliding in. 10 shots / 72 s (7.21 s). A single red accent bar and generous grey whitespace let technical data read as calm product UI rather than a spec sheet.
+
+#### N204 MB&F HM12 The Guardian [3D-product-CGI]
+A dark lab with a light-panel ceiling: hundreds of exploded watch parts hover in formation, fly in on fast whip-pans, and assemble into a chrome robot-like figure with blue accents, a dome head and a dial face. The camera then dives into balance wheels, gears and the movement in extreme macro. The palette is chrome, black, white light and electric blue. 24 shots / 63 s (2.63 s). An exploded-to-assembled build shows craftsmanship and tells a transformation story at the same time.
+
+#### N205 Breguet Experimentale 1 [3D-product-CGI][abstract]
+On a cool-grey white set with technical hairlines, a raw stone fragment, rose-gold and steel components, and a spoked escapement wheel float and rotate. Between parts it cuts to grayscale fur and grass textures, a churning sea and a ghostly clipper ship, and a blue-white storm of exploded movement parts that assemble into the watch with a glass caseback. The palette is silver, rose gold and steel blue, with a few split-screen frames pairing a part with a texture. 17 shots / 53 s (3.12 s). Intercutting precise mechanical parts with organic textures (fur, waves) gives a technical product an emotional, historical story.
+
+#### N206 Aescripts Cyber Week Sale Story [2D-character][flat-illustration]
+A flat-shaded 2D story in warm interior browns and cool street blues: hands holding a "Cyber Week Sale" notice, a bearded man with two kids at a desk, a POV drive into a stylized town, a shop window with sale signs, a fruit-like creature in grass, suburban houses, a woman at a window, a man at a glowing desk, a cloaked hero on a pink-and-white building facade, and a recurring Roman-numeral clock counting down. Camera moves are mostly slow parallax pushes, with a few fast POV whooshes. 17 shots / 46 s (2.7 s). A recurring clock insert turns a sale deadline into narrative tension and holds a multi-location story together.
+
+#### N207 Cariuma Mike Vallely Pro Model [3D-product-CGI][live-action]
+Photoreal CGI jungle at shoe height: wet grass, ferns, an elephant's trunk and legs, then a furry animal limb resting on a black sneaker. Macro push-ins on the white chevron logo, the stitched upper and the rubber sole, with a soft-focus foreground of grass blades. Palette is deep jungle green with the black-and-white shoe as the only graphic element; the chevron mark opens the film as a white overlay. 5 shots / 30 s (6.01 s). Shoot the product at the eye level of a creature in its habitat, so ordinary macro detail shots feel like a nature documentary.
+
+#### N208 Hard to Starboard [3D-product-CGI][live-action]
+Near-black night-sea CGI: a flag and mast light against stars, foam on black water, a ship's bow cutting the swell, then a brass engine-order telegraph dial with its handle swinging, and dim sepia engine-room machinery. Almost everything is crushed blue-black, with a warm brass highlight saved for the telegraph. 4 shots / 56.7 s (14.18 s), slow pushes and long holds. Keep a dark film almost monochrome so the single warm, lit object (the telegraph) carries the story beat.
+
+#### N209 Village Cinemas Opener [3D-product-CGI][logo-sting]
+The faceted V logo hangs as a glowing window or portal in four CGI worlds: a meteor-strewn rock wasteland, a sunlit misty forest, a teal underwater cave and an ornate classical interior with billowing white curtains. Each world has its own grade (grey, gold-green, teal, warm interior) while the logo keeps one position and size, and slow camera drifts add life. 4 shots / 26.7 s (6.68 s). Lock the logo to the same spot in frame and swap the world around it; the logo becomes the constant that ties different genres together.
+
+#### N210 Alibaba Illustration System [flat-illustration][2D-character][brand-system]
+A white-ground showcase of spot illustrations: line-drawn hands and figures with flat peach-orange and lavender shapes, parcels popping out of boxes, a ship turning into a delivery truck through a door-frame wipe, a phone mockup with a t-shirt order. A small grey caption labels each use case in the corner. Strict two-hue palette (orange plus violet) with black linework and generous whitespace. 4 shots / 38.1 s (9.53 s); scenes morph into each other instead of cutting. Present an illustration system as a chain of morphs on one blank canvas so the shared shape language is the hero.
+
+#### N211 Oakley Winter Sports Mash-Up [3D-product-CGI][kinetic-type]
+CGI product tour of goggles and a helmet: macro on red-orange lens surfaces, matte-black helmet shell, a dial fit system, vents, and the goggle strap clipping into the helmet. Feature labels in small white bold caps sit on each close-up, with brief blue X-ray/wireframe cut-ins and pixel-block glitch transitions. Grey studio, black product, with the only colour coming from the hot lens. 16 shots / 30 s (1.88 s). Pair each macro hero shot with exactly one short feature label so a fast cut still reads as a spec sheet.
+
+#### N212 Discord Apps Anywhere [3D-product-CGI][brand-system]
+Stylised 3D in indigo and violet with hot-pink accents: hands tapping big shape buttons on a drum-like device, then a swirling tunnel of floating objects (game controller, headphones, a card, a glowing case) streaking past light rays. It resolves to a flat blurple card where a round icon pops in. 2 shots / 7.1 s (3.56 s). Use a fast push through a vortex of tangible props to say "everywhere", then land on a flat brand-colour end card.
+
+#### N213 Helia by Clim Studio [3D-product-CGI]
+Lush CGI: hydrangea heads blooming in the dark, a flowering hillside under a pink dusk sky, then a sand desert with hard shadows where flowers and a red handbag sit. Handbags in mint, coral, cream and lilac fan into a kaleidoscope wheel, burst out of flower piles and finally rest on stone plinths in raking sunlight. The film closes on the brand name in small white type over the flower field. 6 shots / 34 s (5.67 s). Put a product colourway into an organic pattern (a petal wheel of bags) to show a whole range in a single image.
+
+#### N214 Airwallex Money 2020 [kinetic-type][abstract][brand-system]
+A brushstroke-like logo draws itself, then charcoal frames full of glossy 3D spheres in magenta, violet, red and white. The spheres form rows, rings and grids that act as the sentence: a capsule widens into a word, a ring of dots encircles a phrase, and a check mark drops into a dot. Hard cuts to full-bleed magenta-pink gradient cards carry the big section headers in a rounded sans. 11 shots / 58 s (5.28 s). Make one primitive (the glossy dot) carry every idea (payments flowing, funds stored, global reach) so copy and graphics feel like the same system.
+
+#### N215 Serenis [flat-illustration][kinetic-type][device-mockup]
+Black ground with indigo star and blob shapes; a line draws itself into a handwritten-style word, then a lavender bubble rolls in carrying the brand name. A bright lavender wipe opens onto soft UI: an app card with store badges, stacked tabs in mint, coral and lilac, chat icons and a therapist-booking calendar. Grainy shapes, rounded type and gentle bounces throughout. 7 shots / 30 s (4.29 s). Contrast a dark, spiky opening with a soft pastel product world, so the transition itself tells the brand promise of change.
+
+#### N216 Marex Video Series [data-viz][editorial-swiss][abstract]
+Light grey Swiss-grid canvas with a tiny caption under each frame. Bold flat circles in electric blue, lime, lilac, bottle green and sage form concentric targets, Venn overlaps and dot matrices. Photo crops (mountains, offices, fields) are masked into the same circle, triangle and polygon shapes, and the last frames build an isometric timeline stack labelled with months. 9 shots / 27.9 s (3.1 s). Mask photography into your chart primitives so data graphics and imagery share one geometric vocabulary.
+
+#### N217 Hamilton Red by Kutuko [3D-product-CGI][abstract]
+Monochrome storm-grey CGI landscape: jagged rock coast, crashing waves, cracked basalt with molten red light seeping through the fissures. Slow pushes past rocks reveal a steel watch partly buried in stone, its red LED display glowing, with a red scan-line flash in between; the finale is the lit red time display. 4 shots / 30 s (7.51 s). Desaturate the whole world and give the product's signature colour to only the light leaking from it.
+
+#### N218 Sky Crime Verbrechen von nebenan [paper-collage][editorial-swiss][grunge]
+Grey-white paper collage with a single acid-yellow accent: torn photocopy pistols, a knife, a face with a yellow redaction bar, shattered-glass splashes, a house with a black blot over it, and pencil-line figure sketches. Halftone portrait fragments slide over each other in split-face montages before the show title lands on paper tags held by yellow tape lines. Jittery stop-motion, torn-edge wipes. 6 shots / 18 s (3 s). In true-crime branding, one highlighter colour on photocopied B&W reads as both evidence marking and brand.
+
+#### N219 eBay The Movement [2D-character][flat-illustration]
+Cel-style 2D animation in cobalt and royal blue with hard white highlights and bursts of red, yellow and green on the characters: a street scene at night, a player training under a metro sign, sprinting silhouettes on radial speed lines, a stadium tunnel opening into white, and a camera rush to a footballer in a number 7 shirt. A ball punches through as a black tunnel hole; it ends on the league badge with the sponsor logo on blue. 12 shots / 19.1 s (1.59 s). Build the whole palette from one dominant brand blue and let tunnels and radial lines push the camera forward between shots.
+
+#### N220 Pattoon [2D-character][flat-illustration][retro-UI][kinetic-type]
+Pink ground: a flat lavender-and-coral character slumps over a desk while a black label (ending "IS HARD") follows a cursor, and an orange cartoon cat crawls out of a monitor. A mustard-yellow flood brings the line "BUT NOT ANYMORE!", then the wordmark is assembled letter by letter from patterned tiles. After that come chunky software panels (Source, Scale, Rotation, Tint color, Blur) whose sliders apply stripe and check patterns to a desk scene seen from above. 4 shots / 47 s (11.76 s). Show a tool's UI as big, bouncy props inside the illustration so the interface itself becomes a character.
+
+#### N221 Decimas Unisex by Kutuko Studio [3D-character][kinetic-type][brand-system]
+Rounded, toy-like 3D characters in matching tracksuits (skater, basketball player, yogi, artist, rocker, b-girl) each perform a short move on their own pastel backdrop: grey, salmon, mint-teal, lavender, periwinkle. A name in big bold caps, a role subtitle, progress-bar stats and a column of product thumbnails frame each character like a game select screen; it ends on a close-up of legs and sneakers. 1 shot / 27 s, a continuous sequence with colour wipes between characters. Use a character-select template (name, role, stats, colour field) to turn a product lineup into a roster.
