@@ -1,0 +1,967 @@
+{
+ "company": "CRED",
+ "site": "https://cred.club",
+ "scouted": "2026-10-10",
+ "socials": {
+  "x": [
+   "https://twitter.com/CRED_support",
+   "https://twitter.com/cred_club"
+  ],
+  "linkedin": [
+   "https://www.linkedin.com/company/credapp"
+  ],
+  "instagram": [
+   "https://www.instagram.com/cred_club"
+  ]
+ },
+ "site_videos": [
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/hero-desktop.mp4?tr=q-95",
+   "found_on": "https://cred.club"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/phone-ticker-desktop-final.mp4?tr=q-95",
+   "found_on": "https://cred.club"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/ccbp-fold-d.mp4?tr=q-95",
+   "found_on": "https://cred.club"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/rewards-desktop-final.mp4?tr=q-95",
+   "found_on": "https://cred.club"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/hero.mp4",
+   "found_on": "https://cred.club/tap"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/strokes.mp4",
+   "found_on": "https://cred.club/tap"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/cards-loop.mp4",
+   "found_on": "https://cred.club/tap"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/power-by-rule.mp4",
+   "found_on": "https://cred.club/tap"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/magic-unlocked.mp4",
+   "found_on": "https://cred.club/tap"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-card/desktop/hero/desktop-fold-final-v1.mp4?tr=orig",
+   "found_on": "https://cred.club/card"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-card/mobile/hero/hero-mobile-fold-1.mp4?tr=orig",
+   "found_on": "https://cred.club/card"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/desktop/HeroComponent/fold1_hero.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/desktop/ResetComponent/fold7_reset.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/desktop/OutroComponent/fold9_outro1.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/mobile/HeroComponent/fold1_mobile.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/mobile/ResetComponent/fold9_mobile.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/cred-cash/mobile/OutroComponent/fold7_mobile1.mp4?tr=orig",
+   "found_on": "https://cred.club/cash-plus"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/snp/snp_feature_01.mp4",
+   "found_on": "https://cred.club/cred-pay?source=footer"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/snp/snp_feature_02.mp4",
+   "found_on": "https://cred.club/cred-pay?source=footer"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/snp/snp_feature_03.mp4",
+   "found_on": "https://cred.club/cred-pay?source=footer"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/snp/security-anonymity.mp4",
+   "found_on": "https://cred.club/cred-pay?source=footer"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/snp/security-payments.mp4",
+   "found_on": "https://cred.club/cred-pay?source=footer"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/desktop/fold-1/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/desktop/fold-4/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/desktop/fold-5/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/tablet/fold-1/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/tablet/fold-4/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/tablet/fold-5/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/mobile/fold-1/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/mobile/fold-4/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/credit-score/mobile/fold-5/v1.mp4?tr=orig",
+   "found_on": "https://cred.club/credit-score"
+  }
+ ],
+ "logos": [
+  {
+   "kind": "img",
+   "file": "private/logos/img-0.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/snp-logo-final.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-1.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/rupay-logo-final.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-2.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/tnp-logo-final.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-3.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/p2p-logo-final.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-4.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/garage-logo-final.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-5.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/desktop/footer-logo.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-6.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/images/landing/security-final-2.png"
+  },
+  {
+   "kind": "icon",
+   "file": "private/logos/icon-7.png",
+   "found_on": "https://cred.club",
+   "src": "https://web-images.credcdn.in/v2/_next/assets/icons/logo.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-8.png",
+   "found_on": "https://cred.club/about",
+   "src": "https://web-images.credcdn.in/_next/assets/images/home-page/cred-logo-horizontal.png"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-9.png",
+   "found_on": "https://cred.club/about",
+   "src": "https://web-images.credcdn.in/_next/assets/images/home-page/security-logos.png"
+  },
+  {
+   "kind": "icon",
+   "file": "private/logos/icon-10.png",
+   "found_on": "https://cred.club/about",
+   "src": "https://cred.club/assets/icons/logo.png"
+  },
+  {
+   "kind": "og-image",
+   "file": "private/logos/og-image-11.png",
+   "found_on": "https://cred.club/about",
+   "src": "https://cred.club/assets/icons/og-image.png"
+  }
+ ],
+ "colors": {
+  "brand": [
+   [
+    "#06c270",
+    149
+   ],
+   [
+    "#ee4d37",
+    147
+   ],
+   [
+    "#144cc7",
+    146
+   ],
+   [
+    "#f08d32",
+    144
+   ],
+   [
+    "#26458c",
+    57
+   ],
+   [
+    "#426bb6",
+    57
+   ],
+   [
+    "#ffa948",
+    38
+   ],
+   [
+    "#fb7272",
+    38
+   ],
+   [
+    "#b09f5e",
+    30
+   ],
+   [
+    "#6277cd",
+    27
+   ]
+  ],
+  "neutral": [
+   [
+    "#ffffff",
+    829
+   ],
+   [
+    "#000000",
+    378
+   ],
+   [
+    "#494848",
+    153
+   ],
+   [
+    "#c1d2c9",
+    115
+   ],
+   [
+    "#242424",
+    97
+   ],
+   [
+    "#f8f8f8",
+    95
+   ]
+  ],
+  "css_custom_properties": [
+   [
+    "tw-ring-offset-color",
+    "#ffffff",
+    2
+   ],
+   [
+    "theme-color",
+    "#000000",
+    1
+   ],
+   [
+    "text-color",
+    "#000000",
+    1
+   ],
+   [
+    "theme-color",
+    "#874bf9",
+    1
+   ],
+   [
+    "text-color",
+    "#ffffff",
+    1
+   ]
+  ]
+ },
+ "fonts": [
+  [
+   "gilroy-bold",
+   575
+  ],
+  [
+   "gilroy-regular",
+   480
+  ],
+  [
+   "gilroy-semibold",
+   473
+  ],
+  [
+   "denton",
+   390
+  ],
+  [
+   "Termina",
+   324
+  ],
+  [
+   "gilroy-medium",
+   288
+  ],
+  [
+   "Gilroy",
+   181
+  ],
+  [
+   "Denton",
+   180
+  ]
+ ],
+ "brand_pages": [],
+ "news": [],
+ "channels": [
+  "https://www.youtube.com/@CRED_club"
+ ],
+ "videos": [
+  {
+   "url": "https://playground.cred.club/",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "given": true,
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/shorts/n7RtpEoRdC4",
+   "title": "Grab IKEA products worth ₹5 lakh on this week’s CRED Only Fridays.",
+   "duration": null,
+   "rank": 1,
+   "source": "https://www.youtube.com/@CRED_club/shorts",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=Kfoa8ZISD6U",
+   "title": "clarity meets craft | CRED IndusInd Bank RuPay Credit Card",
+   "duration": 79,
+   "rank": 14,
+   "source": "https://www.youtube.com/@CRED_club/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/hero-desktop.mp4?tr=q-95",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club",
+   "status": "ok",
+   "mg_score": 1.118,
+   "mg_parts": {
+    "flat": 0.804,
+    "crisp": 0.0032,
+    "texture": 0.077,
+    "skin": 0.005
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.473
+    ],
+    [
+     "#242424",
+     0.248
+    ],
+    [
+     "#3c3c3c",
+     0.118
+    ],
+    [
+     "#545454",
+     0.062
+    ],
+    [
+     "#0c2424",
+     0.055
+    ],
+    [
+     "#0c0c24",
+     0.01
+    ],
+    [
+     "#240c0c",
+     0.006
+    ],
+    [
+     "#3c2424",
+     0.004
+    ]
+   ],
+   "metrics": {
+    "duration": 8.2,
+    "still_pct": 29.3,
+    "longest_still_s": 1.9,
+    "motion_median": 0.0052,
+    "empty_pct": 0.0,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 6670,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/07.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/phone-ticker-desktop-final.mp4?tr=q-95",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club",
+   "status": "ok",
+   "mg_score": 1.307,
+   "mg_parts": {
+    "flat": 0.863,
+    "crisp": 0.0262,
+    "texture": 0.069,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.853
+    ],
+    [
+     "#242424",
+     0.073
+    ],
+    [
+     "#fcfcfc",
+     0.028
+    ],
+    [
+     "#3c3c3c",
+     0.015
+    ],
+    [
+     "#545454",
+     0.007
+    ],
+    [
+     "#e4e4e4",
+     0.005
+    ],
+    [
+     "#6c6c6c",
+     0.004
+    ],
+    [
+     "#848484",
+     0.003
+    ]
+   ],
+   "metrics": {
+    "duration": 6.3,
+    "still_pct": 22.2,
+    "longest_still_s": 1.3,
+    "motion_median": 0.0224,
+    "empty_pct": 0.0,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 4860,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/03.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/ccbp-fold-d.mp4?tr=q-95",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club",
+   "status": "ok",
+   "mg_score": 1.323,
+   "mg_parts": {
+    "flat": 0.869,
+    "crisp": 0.0195,
+    "texture": 0.058,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.901
+    ],
+    [
+     "#242424",
+     0.032
+    ],
+    [
+     "#3c3c3c",
+     0.014
+    ],
+    [
+     "#545454",
+     0.009
+    ],
+    [
+     "#6c6c6c",
+     0.005
+    ],
+    [
+     "#0c240c",
+     0.004
+    ],
+    [
+     "#848484",
+     0.004
+    ],
+    [
+     "#9c9c9c",
+     0.003
+    ]
+   ],
+   "metrics": {
+    "duration": 8.4,
+    "still_pct": 1.2,
+    "longest_still_s": 0.1,
+    "motion_median": 0.0245,
+    "empty_pct": 0.0,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 6880,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/02.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/landing/desktop/rewards-desktop-final.mp4?tr=q-95",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club",
+   "status": "ok",
+   "mg_score": 0.28,
+   "mg_parts": {
+    "flat": 0.438,
+    "crisp": 0.0573,
+    "texture": 0.269,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.342
+    ],
+    [
+     "#242424",
+     0.157
+    ],
+    [
+     "#0c2424",
+     0.078
+    ],
+    [
+     "#243c3c",
+     0.06
+    ],
+    [
+     "#3c3c3c",
+     0.05
+    ],
+    [
+     "#6c6c6c",
+     0.038
+    ],
+    [
+     "#3c5454",
+     0.033
+    ],
+    [
+     "#545454",
+     0.027
+    ]
+   ],
+   "metrics": {
+    "duration": 10.1,
+    "still_pct": 24.8,
+    "longest_still_s": 2.3,
+    "motion_median": 0.0095,
+    "empty_pct": 0.0,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 8620,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   }
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/hero.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club/tap",
+   "status": "ok",
+   "mg_score": 1.281,
+   "mg_parts": {
+    "flat": 0.89,
+    "crisp": 0.0045,
+    "texture": 0.071,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.897
+    ],
+    [
+     "#0c0c24",
+     0.049
+    ],
+    [
+     "#0c0c3c",
+     0.01
+    ],
+    [
+     "#0c0c54",
+     0.006
+    ],
+    [
+     "#240c6c",
+     0.003
+    ],
+    [
+     "#24246c",
+     0.003
+    ],
+    [
+     "#0c0c6c",
+     0.002
+    ],
+    [
+     "#242484",
+     0.002
+    ]
+   ],
+   "metrics": {
+    "error": "a cannot be empty"
+   },
+   "sheet": "private/sheets/06.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/strokes.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club/tap",
+   "status": "ok",
+   "mg_score": 1.481,
+   "mg_parts": {
+    "flat": 0.945,
+    "crisp": 0.0,
+    "texture": 0.014,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.826
+    ],
+    [
+     "#0c0c24",
+     0.126
+    ],
+    [
+     "#0c0c3c",
+     0.048
+    ],
+    [
+     "#0c0c54",
+     0.0
+    ]
+   ],
+   "metrics": {
+    "duration": 1.7,
+    "still_pct": 82.4,
+    "longest_still_s": 1.2,
+    "motion_median": 0.0002,
+    "empty_pct": 18.8,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 200,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/01.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/cards-loop.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club/tap",
+   "status": "ok",
+   "mg_score": 1.296,
+   "mg_parts": {
+    "flat": 0.878,
+    "crisp": 0.0045,
+    "texture": 0.056,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.802
+    ],
+    [
+     "#0c0c24",
+     0.086
+    ],
+    [
+     "#0c0c3c",
+     0.048
+    ],
+    [
+     "#0c0c54",
+     0.012
+    ],
+    [
+     "#0c2454",
+     0.006
+    ],
+    [
+     "#242454",
+     0.005
+    ],
+    [
+     "#24243c",
+     0.005
+    ],
+    [
+     "#0c243c",
+     0.004
+    ]
+   ],
+   "metrics": {
+    "error": "a cannot be empty"
+   },
+   "sheet": "private/sheets/05.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/power-by-rule.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club/tap",
+   "status": "ok",
+   "mg_score": 1.306,
+   "mg_parts": {
+    "flat": 0.886,
+    "crisp": 0.0012,
+    "texture": 0.052,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.78
+    ],
+    [
+     "#0c0c24",
+     0.122
+    ],
+    [
+     "#0c0c3c",
+     0.037
+    ],
+    [
+     "#0c0c54",
+     0.015
+    ],
+    [
+     "#242484",
+     0.006
+    ],
+    [
+     "#0c246c",
+     0.004
+    ],
+    [
+     "#24246c",
+     0.004
+    ],
+    [
+     "#3c3ccc",
+     0.004
+    ]
+   ],
+   "metrics": {
+    "error": "a cannot be empty"
+   },
+   "sheet": "private/sheets/04.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://web-images.credcdn.in/v2/_next/assets/videos/tap-and-pay-5/desktop/magic-unlocked.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://cred.club/tap",
+   "status": "ok",
+   "mg_score": 1.566,
+   "mg_parts": {
+    "flat": 0.979,
+    "crisp": 0.0,
+    "texture": 0.0,
+    "skin": 0.0
+   },
+   "palette": [
+    [
+     "#0c0c0c",
+     0.737
+    ],
+    [
+     "#0c0c24",
+     0.137
+    ],
+    [
+     "#0c0c3c",
+     0.091
+    ],
+    [
+     "#0c0c54",
+     0.022
+    ],
+    [
+     "#0c2454",
+     0.013
+    ]
+   ],
+   "metrics": {
+    "duration": 2.0,
+    "still_pct": 95.0,
+    "longest_still_s": 1.8,
+    "motion_median": 0.0002,
+    "empty_pct": 0.0,
+    "lufs": -70.0,
+    "true_peak": -Infinity,
+    "longest_silence_ms": 520,
+    "onsets_per_s": 0.0,
+    "hit_prominence_db": null,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 0.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/00.jpg",
+   "kept": true
+  }
+ ],
+ "house_style": {
+  "still_pct": 29.3,
+  "longest_still_s": 1.3,
+  "motion_median": 0.0052,
+  "lufs": -70.0,
+  "hit_prominence_db": null,
+  "onsets_per_s": 0.0,
+  "duration": 6.3
+ },
+ "film_palette": [
+  [
+   "#0c0c0c",
+   0.784
+  ],
+  [
+   "#0c0c24",
+   0.066
+  ],
+  [
+   "#242424",
+   0.044
+  ],
+  [
+   "#0c0c3c",
+   0.029
+  ],
+  [
+   "#3c3c3c",
+   0.018
+  ],
+  [
+   "#545454",
+   0.01
+  ],
+  [
+   "#0c0c54",
+   0.007
+  ],
+  [
+   "#0c2424",
+   0.007
+  ],
+  [
+   "#fcfcfc",
+   0.004
+  ],
+  [
+   "#0c2454",
+   0.002
+  ]
+ ]
+}
