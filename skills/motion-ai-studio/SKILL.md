@@ -48,6 +48,10 @@ without a yes.
 Hand over to the `motion-director` skill and follow it fully. Start from the closest recipe,
 including the `style-*` recipes (`npm run new` lists them). Free extras that stay in Route 1:
 - Voice-over: `npm run voice -- specs/x.json --engine kokoro` (offline, free) or `--engine edge`.
+- Story ads with several speakers (IVR, customer, agent, narrator) and phone sounds:
+  `python3 -I tools/cast_voices.py specs/x.cast.json` (offline Kokoro voices per beat, telephone
+  filter, synthesized ringback / DTMF / pickup / chime / night ambience). It writes the same
+  voiceover and timing files as `npm run voice`. Example: `specs/sarvam-samvaad.cast.json`.
 - Music: a licensed track the user owns, via `npm run music`.
 - Logo colours: `npm run brand -- public/brand/logo.png --spec specs/x.json`.
 - Their own screenshots, photos and screen recordings, as `image` / `clip` scenes.

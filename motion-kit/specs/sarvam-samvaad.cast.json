@@ -1,0 +1,96 @@
+{
+  "spec": "specs/sarvam-samvaad.json",
+  "gapMs": 200,
+  "beats": [
+    {
+      "voice": "am_michael",
+      "speed": 1.2,
+      "phone": true,
+      "gain": 0.9,
+      "before": [
+        {
+          "sfx": "ringback",
+          "gain": 0.9
+        },
+        {
+          "sfx": "pickup"
+        }
+      ],
+      "after": [
+        {
+          "sfx": "dtmf",
+          "digit": "9"
+        },
+        {
+          "sfx": "dtmf",
+          "digit": "9"
+        }
+      ]
+    },
+    {
+      "voice": "hf_beta",
+      "speed": 1.0,
+      "speak": "लखनऊ, रात ग्यारह बजे। बस अपना के वाई सी अपडेट करना था।",
+      "under": [
+        {
+          "sfx": "night",
+          "gain": 0.8
+        }
+      ]
+    },
+    {
+      "voice": "hf_alpha",
+      "speed": 1.1,
+      "phone": true,
+      "speak": "नमस्ते दादी जी! मैं आपके बैंक से हूँ। कैसे मदद करूँ?",
+      "before": [
+        {
+          "sfx": "chime"
+        }
+      ],
+      "after": [
+        {
+          "sfx": "silence",
+          "ms": 450
+        }
+      ]
+    },
+    {
+      "voice": "hf_alpha",
+      "speed": 1.1,
+      "phone": true,
+      "speak": "पहचान हो गई। पता सही है। आपका के वाई सी अपडेट हो गया।",
+      "after": [
+        {
+          "sfx": "chime",
+          "gain": 0.7
+        }
+      ]
+    },
+    {
+      "voice": "hf_beta",
+      "speed": 1.0,
+      "speak": "बस बेटा। शुक्रिया!",
+      "under": [
+        {
+          "sfx": "night",
+          "gain": 0.8
+        }
+      ],
+      "after": [
+        {
+          "sfx": "click"
+        },
+        {
+          "sfx": "silence",
+          "ms": 250
+        }
+      ]
+    },
+    {
+      "voice": "am_eric",
+      "speed": 1.1,
+      "speak": "Voice agents that sound human, in every Indian language. Sarvam A I."
+    }
+  ]
+}

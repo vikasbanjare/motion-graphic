@@ -1,0 +1,275 @@
+{
+ "source": "cast:kokoro",
+ "words": [
+  {
+   "text": "Press",
+   "startMs": 1360.0,
+   "endMs": 1691.3
+  },
+  {
+   "text": "one",
+   "startMs": 1691.3,
+   "endMs": 1912.1
+  },
+  {
+   "text": "for",
+   "startMs": 1912.1,
+   "endMs": 2133.0
+  },
+  {
+   "text": "English.",
+   "startMs": 2133.0,
+   "endMs": 2629.9
+  },
+  {
+   "text": "Press",
+   "startMs": 2629.9,
+   "endMs": 2961.2
+  },
+  {
+   "text": "nine",
+   "startMs": 2961.2,
+   "endMs": 3237.3
+  },
+  {
+   "text": "to",
+   "startMs": 3237.3,
+   "endMs": 3402.9
+  },
+  {
+   "text": "repeat.",
+   "startMs": 3402.9,
+   "endMs": 3844.6
+  },
+  {
+   "text": "Lucknow,",
+   "startMs": 4764.6,
+   "endMs": 5407.6
+  },
+  {
+   "text": "raat",
+   "startMs": 5407.6,
+   "endMs": 5764.9
+  },
+  {
+   "text": "gyaarah",
+   "startMs": 5764.9,
+   "endMs": 6336.4
+  },
+  {
+   "text": "baje.",
+   "startMs": 6336.4,
+   "endMs": 6765.1
+  },
+  {
+   "text": "Bas",
+   "startMs": 6765.1,
+   "endMs": 7050.9
+  },
+  {
+   "text": "apna",
+   "startMs": 7050.9,
+   "endMs": 7408.1
+  },
+  {
+   "text": "KYC",
+   "startMs": 7408.1,
+   "endMs": 7693.9
+  },
+  {
+   "text": "update",
+   "startMs": 7693.9,
+   "endMs": 8194.0
+  },
+  {
+   "text": "karna",
+   "startMs": 8194.0,
+   "endMs": 8622.7
+  },
+  {
+   "text": "tha.",
+   "startMs": 8622.7,
+   "endMs": 8979.9
+  },
+  {
+   "text": "Namaste",
+   "startMs": 9999.9,
+   "endMs": 10478.3
+  },
+  {
+   "text": "Dadi",
+   "startMs": 10478.3,
+   "endMs": 10777.3
+  },
+  {
+   "text": "ji!",
+   "startMs": 10777.3,
+   "endMs": 11016.5
+  },
+  {
+   "text": "Main",
+   "startMs": 11016.5,
+   "endMs": 11315.5
+  },
+  {
+   "text": "aapke",
+   "startMs": 11315.5,
+   "endMs": 11674.3
+  },
+  {
+   "text": "bank",
+   "startMs": 11674.3,
+   "endMs": 11973.3
+  },
+  {
+   "text": "se",
+   "startMs": 11973.3,
+   "endMs": 12152.7
+  },
+  {
+   "text": "hoon.",
+   "startMs": 12152.7,
+   "endMs": 12511.5
+  },
+  {
+   "text": "Kaise",
+   "startMs": 12511.5,
+   "endMs": 12870.4
+  },
+  {
+   "text": "madad",
+   "startMs": 12870.4,
+   "endMs": 13229.2
+  },
+  {
+   "text": "karoon?",
+   "startMs": 13229.2,
+   "endMs": 13707.6
+  },
+  {
+   "text": "Pehchaan",
+   "startMs": 14357.6,
+   "endMs": 14993.6
+  },
+  {
+   "text": "ho",
+   "startMs": 14993.6,
+   "endMs": 15205.7
+  },
+  {
+   "text": "gayi.",
+   "startMs": 15205.7,
+   "endMs": 15629.7
+  },
+  {
+   "text": "Pata",
+   "startMs": 15629.7,
+   "endMs": 15983.0
+  },
+  {
+   "text": "sahi",
+   "startMs": 15983.0,
+   "endMs": 16336.4
+  },
+  {
+   "text": "hai.",
+   "startMs": 16336.4,
+   "endMs": 16689.8
+  },
+  {
+   "text": "Aapka",
+   "startMs": 16689.8,
+   "endMs": 17113.8
+  },
+  {
+   "text": "KYC",
+   "startMs": 17113.8,
+   "endMs": 17396.5
+  },
+  {
+   "text": "update",
+   "startMs": 17396.5,
+   "endMs": 17891.2
+  },
+  {
+   "text": "ho",
+   "startMs": 17891.2,
+   "endMs": 18103.2
+  },
+  {
+   "text": "gaya.",
+   "startMs": 18103.2,
+   "endMs": 18527.2
+  },
+  {
+   "text": "Bas",
+   "startMs": 19547.2,
+   "endMs": 19907.3
+  },
+  {
+   "text": "beta.",
+   "startMs": 19907.3,
+   "endMs": 20447.4
+  },
+  {
+   "text": "Shukriya!",
+   "startMs": 20447.4,
+   "endMs": 21347.5
+  },
+  {
+   "text": "Voice",
+   "startMs": 21947.5,
+   "endMs": 22276.7
+  },
+  {
+   "text": "agents",
+   "startMs": 22276.7,
+   "endMs": 22660.7
+  },
+  {
+   "text": "that",
+   "startMs": 22660.7,
+   "endMs": 22935.0
+  },
+  {
+   "text": "sound",
+   "startMs": 22935.0,
+   "endMs": 23264.2
+  },
+  {
+   "text": "human,",
+   "startMs": 23264.2,
+   "endMs": 23648.2
+  },
+  {
+   "text": "in",
+   "startMs": 23648.2,
+   "endMs": 23812.8
+  },
+  {
+   "text": "every",
+   "startMs": 23812.8,
+   "endMs": 24142.0
+  },
+  {
+   "text": "Indian",
+   "startMs": 24142.0,
+   "endMs": 24526.0
+  },
+  {
+   "text": "language.",
+   "startMs": 24526.0,
+   "endMs": 25074.7
+  },
+  {
+   "text": "Sarvam",
+   "startMs": 25074.7,
+   "endMs": 25458.7
+  },
+  {
+   "text": "AI.",
+   "startMs": 25458.7,
+   "endMs": 25678.2
+  }
+ ]
+}
