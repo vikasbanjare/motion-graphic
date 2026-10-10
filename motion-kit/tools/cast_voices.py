@@ -5,7 +5,7 @@ customer, an agent, a narrator, plus phone sounds. This tool reads a cast file a
 the same outputs as `npm run voice` (public/voice/<name>.mp3 + <name>.timing.json, and
 audio.voiceover / audio.timing in the spec), so check, qa and make work unchanged.
 
-    python3 -I tools/cast_voices.py specs/<name>.cast.json
+    python3 -I tools/cast_voices.py specs/casts/<name>.json
 
 Cast file:
   {

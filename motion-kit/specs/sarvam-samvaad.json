@@ -1,5 +1,5 @@
 {
-  "_note": "Spec ad (unofficial) for Sarvam AI's Samvaad voice agents. Route 1: code only, offline Kokoro voices, synthesized phone SFX (scripts in specs/sarvam-samvaad.audio.json). Product line quoted from sarvam.ai: 'Voice agents that sound human in every Indian language. Handle collections, customer support, sales, lead generation, KYC verification, and onboarding at scale.' Characters are fictional.",
+  "_note": "Spec ad (unofficial) for Sarvam AI's Samvaad voice agents. Route 1: code only, offline Kokoro voices, synthesized phone SFX (cast in specs/casts/sarvam-samvaad.json). Product line quoted from sarvam.ai: 'Voice agents that sound human in every Indian language. Handle collections, customer support, sales, lead generation, KYC verification, and onboarding at scale.' Characters are fictional.",
   "format": "reel",
   "theme": "studio-dark",
   "motion": "smooth",
