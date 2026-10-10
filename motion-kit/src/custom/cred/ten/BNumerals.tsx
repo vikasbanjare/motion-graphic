@@ -91,7 +91,7 @@ const CardWorld: React.FC<{ f: number }> = ({ f }) => {
   let pos: V3, target: V3, near = 0.05;
   if (f < T.back) {
     const slide = ramp(f, 0, T.dive, inOut);
-    const dive = ramp(f, T.dive, T.street, easeIn);
+    const dive = ramp(f, T.dive, T.street + 10, inOut); // decelerates into the landing (an ease-in crashed: frame jump)
     const walk = ramp(f, T.street, T.lift, inOut);
     const lift = ramp(f, T.lift, T.city, inOut);
     const p0 = v3([-4.2, -9.0, 5.6], [-2.4, -8.6, 5.2], slide); // the whole card, low 3/4, sliding right
@@ -105,7 +105,7 @@ const CardWorld: React.FC<{ f: number }> = ({ f }) => {
     const tStreet: V3 = [cx - 0.02, ROW_Y + 1.6, 0.04]; // looking along the street
     const tLift: V3 = [fiveX + 1.05, ROW_Y - 0.55, 0.03];
     target = v3(v3(t0, tStreet, Math.max(dive, walk * 0.3)), tLift, lift);
-    near = lerp(0.05, 0.003, dive);
+    near = lerp(0.05, 0.003, Math.pow(dive, 0.6));
   } else {
     // the way out: from street level by the last 0 up and back to the full card
     const out = ramp(f, T.back, T.real + 10, inOut);
