@@ -1,41 +1,56 @@
 #!/usr/bin/env bash
 # Downloads every link in a list for the research workflow: the first 3 minutes, at most 720p.
-# Direct .mp4 links use curl; pages (YouTube, X, raivcoo…) use yt-dlp. A failed link is logged
-# and skipped so one dead link never stops the batch.
+# Direct .mp4 links use curl, then yt-dlp with browser impersonation if the host refuses curl;
+# pages (YouTube, X, raivcoo…) use yt-dlp. A failed link is logged and skipped so one dead link
+# never stops the batch.
 #
-#   bash research/fetch.sh <links.txt> <out-dir> <failures.txt> <prefix>
+# Each video is named after a stable id (first 8 hex of sha1(url)), so re-running a link
+# replaces its earlier result instead of duplicating it. <map.tsv> records id → url.
+#
+#   bash research/fetch.sh <links.txt> <out-dir> <failures.txt> <map.tsv>
+#   YT_COOKIES_FILE=cookies.txt bash research/fetch.sh …   (optional, for YouTube's bot check)
 set -u
 links=$1
 out=$2
 fail=$3
-prefix=${4:-v}
-mkdir -p "$out" "$(dirname "$fail")"
+map=$4
+mkdir -p "$out" "$(dirname "$fail")" "$(dirname "$map")"
 : >"$fail"
+: >"$map"
+
+UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15"
+FORMAT="bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720][ext=mp4]/bv*[height<=720]+ba/b"
+cookies=()
+if [ -n "${YT_COOKIES_FILE:-}" ] && [ -s "$YT_COOKIES_FILE" ]; then cookies=(--cookies "$YT_COOKIES_FILE"); fi
 
 n=0
 while IFS= read -r url || [ -n "$url" ]; do
   url=$(printf '%s' "$url" | tr -d '\r' | xargs)
   [ -z "$url" ] && continue
   n=$((n + 1))
-  id="$prefix-$(printf '%03d' "$n")"
+  id=$(printf '%s' "$url" | sha1sum | cut -c1-8)
+  printf '%s\t%s\n' "$id" "$url" >>"$map"
   case "$url" in
   *.mp4 | *.mp4\?*)
-    slug=$(basename "${url%%\?*}" .mp4 | python3 -c 'import re,sys,urllib.parse; print(re.sub(r"[^A-Za-z0-9_-]+", "-", urllib.parse.unquote(sys.stdin.read().strip()))[:60])')
-    # Some hosts (showreel.design) refuse requests without a browser user agent and referer.
-    if ! curl -fsSL --max-time 300 -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15" \
-      -e "https://$(echo "$url" | awk -F/ '{print $3}' | sed 's/^video\.//')/" -o "$out/$id-$slug.mp4" "$url" 2>>"$fail.log"; then
-      echo -e "$url\tcurl failed" >>"$fail"
-      rm -f "$out/$id-$slug.mp4"
+    slug=$(basename "${url%%\?*}" .mp4 | python3 -c 'import re,sys,urllib.parse; print(re.sub(r"[^A-Za-z0-9_-]+", "-", urllib.parse.unquote(sys.stdin.read().strip()))[:50])')
+    dest="$out/$id-$slug.mp4"
+    referer="https://$(echo "$url" | awk -F/ '{print $3}' | sed 's/^video\.//')/"
+    if ! curl -fsSL --max-time 300 -A "$UA" -e "$referer" -o "$dest" "$url" 2>>"$fail.log"; then
+      rm -f "$dest"
+      # Hosts behind bot protection refuse curl's TLS fingerprint; yt-dlp can impersonate Chrome.
+      if ! yt-dlp --quiet --no-warnings --impersonate chrome --referer "$referer" -o "$dest" "$url" 2>>"$fail.log"; then
+        echo -e "$url\tdownload refused (curl and impersonated yt-dlp)" >>"$fail"
+        rm -f "$dest"
+      fi
     fi
     ;;
   *)
-    if ! yt-dlp --quiet --no-warnings --no-playlist --socket-timeout 30 \
-      -f "bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720][ext=mp4]/bv*[height<=720]+ba/b" \
-      --merge-output-format mp4 --download-sections "*0-180" --js-runtimes node \
+    if ! yt-dlp --quiet --no-warnings --no-playlist --socket-timeout 30 "${cookies[@]}" \
+      -f "$FORMAT" --merge-output-format mp4 --download-sections "*0-180" --js-runtimes node \
       -o "$out/$id-%(extractor)s-%(id)s.%(ext)s" "$url" 2>>"$fail.log"; then
-      echo -e "$url\tyt-dlp failed (see failures.txt.log)" >>"$fail"
+      echo -e "$url\tyt-dlp failed (see failures log)" >>"$fail"
     fi
     ;;
   esac
 done <"$links"
-echo "downloaded $(find "$out" -name '*.mp4' | wc -l) of $n links; $(wc -l <"$fail") failed"
+echo "downloaded $(find "$out" -name '*.mp4' | wc -l) files from $n links; $(wc -l <"$fail") failed"

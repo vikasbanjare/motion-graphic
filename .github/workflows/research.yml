@@ -1,11 +1,14 @@
 # Reference-video research. Downloads every link in research/links.txt on GitHub's runners,
 # measures each video (cuts, shot length, motion, a 10 fps motion curve, colours, tempo) and
-# makes contact sheets for frame-by-frame review. Results go to the research-results branch.
+# makes contact sheets for frame-by-frame review. Results accumulate on the research-results
+# branch: re-running a link replaces that video's record, other videos are kept.
 #
 # This repository is public, so frames of other people's videos are never committed in readable
-# form: the contact sheets are encrypted to research/research-key.pub.pem, and only the holder
-# of the private key can open them. The measurements (numbers only) are committed as plain JSON
-# and CSV. Videos themselves are never stored.
+# form: contact sheets are encrypted to research/research-key.pub.pem and only the holder of the
+# private key can open them. Measurements (numbers only) are plain JSON and CSV. Videos are never
+# stored.
+#
+# Optional secret YT_COOKIES (a Netscape cookies.txt export) lets yt-dlp pass YouTube's bot check.
 name: Research videos
 
 on:
@@ -22,7 +25,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PER_SHARD: 25
+  PER_SHARD: 20
 
 jobs:
   plan:
@@ -44,7 +47,7 @@ jobs:
     timeout-minutes: 150
     strategy:
       fail-fast: false
-      max-parallel: 10
+      max-parallel: 12
       matrix:
         shard: ${{ fromJson(needs.plan.outputs.shards) }}
     steps:
@@ -60,17 +63,22 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-          pipx install yt-dlp || pip install --user -U yt-dlp
+          pipx install "yt-dlp[default,curl-cffi]"
+          yt-dlp --version
 
       - name: Install
         working-directory: motion-kit
         run: npm ci --no-audit --no-fund
 
       - name: Download
+        env:
+          YT_COOKIES: ${{ secrets.YT_COOKIES }}
         run: |
           s=${{ matrix.shard }}
+          if [ -n "$YT_COOKIES" ]; then printf '%s\n' "$YT_COOKIES" > "$RUNNER_TEMP/cookies.txt"; export YT_COOKIES_FILE="$RUNNER_TEMP/cookies.txt"; fi
           grep . research/links.txt | sed -n "$(( s * PER_SHARD + 1 )),$(( (s + 1) * PER_SHARD ))p" > "$RUNNER_TEMP/shard.txt"
-          bash research/fetch.sh "$RUNNER_TEMP/shard.txt" "$RUNNER_TEMP/videos" "out/failures/s$s.txt" "s$(printf '%02d' "$s")"
+          bash research/fetch.sh "$RUNNER_TEMP/shard.txt" "$RUNNER_TEMP/videos" "out/failures/s$s.txt" "out/failures/s$s.map.tsv"
+          rm -f "$RUNNER_TEMP/cookies.txt"
 
       - name: Measure
         run: |
@@ -98,55 +106,88 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           pattern: shard-*
           merge-multiple: true
           path: ${{ runner.temp }}/out
 
-      - name: Assemble
+      - name: Switch to research-results
+        run: |
+          cp research/research-key.pub.pem "$RUNNER_TEMP/key.pub.pem"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Continue an existing results branch; start fresh if there is none or it predates urls.tsv.
+          if git fetch -q origin research-results && git cat-file -e FETCH_HEAD:urls.tsv 2>/dev/null; then
+            git checkout -q -B research-results FETCH_HEAD
+          else
+            git checkout -q --orphan research-results
+            git rm -rq --cached . >/dev/null
+            git clean -fdq
+            echo "FRESH=1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Add this run's results
         run: |
           OUT="$RUNNER_TEMP/out"
-          PUB="$RUNNER_TEMP/pub"
-          mkdir -p "$PUB/data"
-          # Measurements: one JSON per video, one combined summary table.
-          find "$OUT/data" -name '*.json' -exec cp {} "$PUB/data/" \; 2>/dev/null || true
-          first=1
-          for f in "$OUT"/data/*/summary.csv; do
-            [ -e "$f" ] || continue
-            if [ $first = 1 ]; then cat "$f"; first=0; else tail -n +2 "$f"; fi
-          done > "$PUB/summary.csv"
-          cat "$OUT"/failures/*.txt > "$PUB/failures.txt" 2>/dev/null || : > "$PUB/failures.txt"
-          cat "$OUT"/failures/*.log > "$PUB/failures.log" 2>/dev/null || : > "$PUB/failures.log"
+          RUN=${GITHUB_RUN_ID}
+          mkdir -p data sheets failures
+          # Measurements: one JSON per video; a re-run of the same link replaces its file.
+          find "$OUT/data" -name '*.json' -exec cp {} data/ \; 2>/dev/null || true
+          # id → url map, merged and de-duplicated.
+          cat urls.tsv "$OUT"/failures/*.map.tsv 2>/dev/null | sort -u -k1,1 > urls.tsv.new || true
+          mv urls.tsv.new urls.tsv
+          # This run's failures (latest run wins for failures-latest.txt).
+          cat "$OUT"/failures/*.txt 2>/dev/null > "failures/run-$RUN.txt" || true
+          cat "$OUT"/failures/*.log 2>/dev/null > "failures/run-$RUN.log" || true
+          cp "failures/run-$RUN.txt" failures-latest.txt
           # Contact sheets: AES-256 with a one-off key, the key itself sealed to the research public key.
           if [ -d "$OUT/sheets" ]; then
             key=$(openssl rand -hex 32)
-            tar -C "$OUT" -cf - sheets | openssl enc -aes-256-cbc -pbkdf2 -salt -pass "pass:$key" -out "$PUB/sheets.tar.enc"
-            printf '%s' "$key" | openssl pkeyutl -encrypt -pubin -inkey research/research-key.pub.pem -pkeyopt rsa_padding_mode:oaep -out "$PUB/sheets.key.enc"
+            tar -C "$OUT" -cf - sheets | openssl enc -aes-256-cbc -pbkdf2 -salt -pass "pass:$key" -out "sheets/run-$RUN.tar.enc"
+            printf '%s' "$key" | openssl pkeyutl -encrypt -pubin -inkey "$RUNNER_TEMP/key.pub.pem" -pkeyopt rsa_padding_mode:oaep -out "sheets/run-$RUN.key.enc"
             unset key
-            split -b 90m -d "$PUB/sheets.tar.enc" "$PUB/sheets.tar.enc.part"
-            rm "$PUB/sheets.tar.enc"
+            split -b 90m -d "sheets/run-$RUN.tar.enc" "sheets/run-$RUN.tar.enc.part"
+            rm "sheets/run-$RUN.tar.enc"
           fi
+          # Summary table rebuilt from every record so far.
+          python3 - <<'PY'
+          import csv, glob, json, os
+          urls = dict(line.rstrip("\n").split("\t", 1) for line in open("urls.tsv") if "\t" in line) if os.path.exists("urls.tsv") else {}
+          cols = ["id", "url", "file", "duration", "width", "height", "shots", "avgShot", "motion", "bpm", "brightness", "energy", "theme", "motionStyle", "pace", "transition", "palette"]
+          rows = []
+          for p in sorted(glob.glob("data/*.json")):
+              j = json.load(open(p))
+              vid = os.path.basename(p)[:8]
+              s = j.get("suggestion", {})
+              rows.append({
+                  "id": vid, "url": urls.get(vid, ""), "file": j.get("file"), "duration": j.get("duration"),
+                  "width": j.get("size", {}).get("width"), "height": j.get("size", {}).get("height"),
+                  "shots": len(j.get("cuts", [])) + 1, "avgShot": j.get("avgShot"), "motion": j.get("motion"), "bpm": j.get("bpm"),
+                  "brightness": j.get("brightness"), "energy": j.get("energy"), "theme": s.get("theme"), "motionStyle": s.get("motion"),
+                  "pace": s.get("pace"), "transition": s.get("transition"),
+                  "palette": " ".join(p["hex"] for p in j.get("palette", [])[:5]),
+              })
+          with open("summary.csv", "w", newline="") as f:
+              w = csv.DictWriter(f, fieldnames=cols)
+              w.writeheader()
+              w.writerows(rows)
+          print(f"{len(rows)} videos in summary.csv")
+          PY
           {
             echo "# Research results"
             echo
-            echo "Generated by .github/workflows/research.yml from research/links.txt at ${GITHUB_SHA}."
+            echo "Built by .github/workflows/research.yml from research/links.txt. Runs accumulate here."
             echo
-            echo "- summary.csv: one row per video (duration, shots, average shot, motion, tempo, suggested style)"
-            echo "- data/*.json: full measurements per video, including a 10 fps motion curve"
-            echo "- failures.txt: links that could not be downloaded"
-            echo "- sheets.*: encrypted contact sheets (2 frames per second), readable only with the research private key"
-          } > "$PUB/README.md"
-          echo "videos measured: $(ls "$PUB"/data/*.json 2>/dev/null | wc -l); failed: $(wc -l < "$PUB/failures.txt")"
+            echo "- summary.csv: one row per video (size, shots, average shot, motion, tempo, palette, suggested style)"
+            echo "- data/<id>-*.json: full measurements per video, including a 10 fps motion curve"
+            echo "- urls.tsv: video id to source link"
+            echo "- failures/: links each run could not download, with the downloader's errors"
+            echo "- sheets/run-*: encrypted contact sheets (2 frames per second), readable only with the research private key"
+          } > README.md
 
-      - name: Publish to research-results
+      - name: Push
         run: |
-          PUB="$RUNNER_TEMP/pub"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -q --orphan research-results
-          git rm -rq --cached . >/dev/null
-          git clean -fdq
-          cp -r "$PUB"/. .
-          git add -A
-          git commit -qm "Research results for ${GITHUB_SHA::7}"
-          git push -qf origin research-results
+          git add -A .
+          git commit -qm "Research results: run ${GITHUB_RUN_ID} (${GITHUB_SHA::7})" || { echo "nothing new"; exit 0; }
+          if [ "${FRESH:-0}" = 1 ]; then git push -qf origin research-results; else git push -q origin research-results; fi
