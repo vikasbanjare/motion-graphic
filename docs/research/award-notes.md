@@ -2,7 +2,7 @@
 
 Videos found by crawling motiondesignawards.com (`research/sites.txt`), downloaded and measured on GitHub's runners. Each review image is the first contact sheet (0-16 s at 2 fps) plus one sheet from the middle of the video. Frames stay encrypted on `research-results`; only these notes and the numbers are public.
 
-Review progress: 126 of 173 videos (the rest follow in later commits).
+Review progress: 142 of 173 videos (the rest follow in later commits).
 
 ## Index
 
@@ -560,3 +560,51 @@ Facebook blue + flat characters (roller-skaters) under "Stay connected with thos
 
 #### N127 Miniwood [3D-product-CGI][miniature]
 Tilt-shift miniature CGI: a "MINIWOOD" Hollywood-style sign builds on a hill, a night street scene, King Kong on the Empire State Building with biplanes, a snowy Kill-Bill style fight in a courtyard, a car chase exploding under a bridge. Movie tributes as miniature dioramas (shallow depth of field sells the scale).
+
+#### N128 "I should like to see my drawing" [flat-illustration][painterly]
+A painted portrait hangs on a sunlit wall; the camera pushes into the painting, which comes alive in thick oil-paint texture (lips biting a cigarette, a lighter flicks, smoke, eyes). Painting-comes-to-life via push-in; 2 shots / 34 s.
+
+#### N129 Metomic (data security) [flat-illustration][whitespace-UI][data-viz]
+Purple field with a flat character on a stool and app icons (Gmail, Slack, Drive) orbiting; ribbons of data connecting apps; a collage of key, lock, fingerprint and folders on white; "compliance" small text with floating gradient chips; gradient cards with numbers (26, 37, 115) and a cursor clicking; a grid of gradient tiles on dark; final table UI with "Public → Private" pill toggles. Gradient-card language for numbers.
+
+#### N130 Aurora BR-X keyboard [3D-product-CGI]
+A surreal blue-fur landscape with flowers, a single keycap falls into a cyan striped corridor and explodes into its switch parts, a neon "X" portal, the keyboard flies through a matrix of floating cyan squares, exploded layers (plate, foam, PCB), an RGB ring, the keyboard over an aurora night lake. Surreal world → exploded tech → hero.
+
+#### N131 Oh, Daisy (animated short) [3D-character]
+Black with a falling daisy and script "Oh, Daisy" title; a circular iris opens onto a dark garden; then filmic stop-motion-look CGI: a frog in a bucket hat lounging in a fur-like golden meadow with drinks, shallow focus, close-up of its face, tiny frog inside a brown car interior. Feature-quality miniature look; iris transitions.
+
+#### N132 Bullpadel Vertex 05 [3D-product-CGI][neon-glow]
+Robot camera rigs with red eyes surround a blue racket; logo melts onto the frame; the racket smashes balls that explode into fire and ice; electric blue lightning; "TOTAL PLAY MAX" chrome type around the racket. Elemental FX (fire, ice, lightning) as feature metaphors.
+
+#### N133 Mediterraneo [flat-illustration][editorial-swiss]
+Small square cards centred on large flat colour fields (terracotta, sage green, ochre): line drawings of olive branches and jars fill with flat colour, abstract landscapes with a blurred sun, a cocktail glass, ends on a soft blob and "MEDITERRANEO" spaced thin caps scattered letter by letter. Card-in-field framing + line-to-fill.
+
+#### N134 PlusOne manifesto [2D-character][kinetic-type]
+Coral / mint / navy cel animation: a character on a ball, "Nice to meet you" small text, a green booklet with the logo, hands, glasses, headphones with flowing paint, a pen drawing rivers of paint; big bold "Creatives That Love To Play" repeated and broken by flowers and blobs; an astronaut-like figure flying through ribbons, a monster mouth, "Craft" word at the end. Manifesto as playful character journey.
+
+#### N135 Overload (Karim Dabbèche) [3D-character][kinetic-type][brand-system]
+Electric blue + lime + magenta: huge italic lime "Overload" behind a blue blob character, a flower-face toy, ribbon type "FIGHT FOR YOUR RIGHTS" wrapping around a character, chains, checkerboard warp, eyeball clusters, snakes and tubes in orbit diagrams, B&W illustrated skull/face sequences, ends on pink "KarimDabbèche" type. Y2K-toy aesthetic, maximalist.
+
+#### N136 Bullpadel Vertex 04 [3D-product-CGI][kinetic-type]
+High-key white/grey/black with red accents: liquid carbon fibre ribbons, a racket mounted on a wall of screens with "04" outlined numerals, spec overlays (mono technical text) on a white board, macro of carbon layers, ball impact, "VERTEX 04" italic blue + outlined numerals, split-screen detail pairs (handle cap, logo, grip), a cyan grip, the range lineup on a screen wall, logo assembling. Split-screen detail diptychs + technical mono text.
+
+#### N137 Audi R8 CG commercial (duplicate theme of N033)
+Same film as N033 (dyno, wheel macro, exhaust, engine bay, rear lights, "Evolution on the outside").
+
+#### N138 Primordial Abyss [3D-product-CGI][abstract]
+Purple/teal bioluminescent macro: a giant eye with violet lashes, a glowing cell with tendrils, coral-like spikes, a pink fleshy opening, the eye iris in extreme macro. One continuous macro journey through a creature.
+
+#### N139 New Balance × Kawhi Leonard "Goosebumps" [3D-product-CGI][kinetic-type]
+Night horror set (moon, forest, lightning, cracked court): neon-green slime oozes from a hoop and trails over the asphalt, the shoe stomps through slime, spec callouts in small caps with leader lines ("FIT WEAVE LITE", "TPU CLIP", "FUELCELL", "MIDFOOT PLATE SUPPORT", "RESPONSIVE"), a monster hand grabs the shoe, slime "Goosebumps" logo. Spec callouts + theme world.
+
+#### N140 Carbyon "Capture the sky" [flat-illustration][paper-collage][editorial]
+Cream paper scientific-illustration style: a circle fills with engraved fossils, then leaves; a bowl cross-section of earth layers with tiny factories (handwritten labels, "Fig. 1"); black: glossy spheres; a steam train; a retro newsreader with "REWIND" over a globe; mint 3D blob "PLAY"; a flat-illustrated woman on an orange/blue isometric set; a machine cross-section on a paper card. Mixed scientific-engraving + 3D blobs + illustration.
+
+#### N141 Adidas Adizero Boston 13 [3D-product-CGI][kinetic-type][neon-glow]
+Dark lab with LED-matrix wall screens (cyan/lime): "TRAIN TRAIN TRAIN" stacked type on screens, X-ray of the shoe showing energy rods, big digital percentages "12.1% → 13.8%" with "LIGHTSTRIKE PRO", pressure-map sole, glowing woven fibres, "ENGINEERED MESH / REVAMPED" lime type on screens, a digital timer "TRAIN TO BE YOUR FASTEST 00:00:00", then "ADIZERO / BOSTON 13" on black and the logo. Screens in the set carry the typography.
+
+#### N142 Securiwiser (cyber security explainer) [3D-character][retro-UI]
+A clay 3D retro computer on a blue desk; zoom into the CRT; a fake OS "bananOS" boots; a flat 2D cartoon file-character walks across a desktop, gets attacked by purple tentacle creatures, "CYBER ATTACKS" popups, ransomware windows multiply in red, glitch, then the hero cleans up. 3D frame + 2D story inside a screen.
+
+#### N143 Make Mami Proud showreel 2025 [agency-reel][kinetic-type]
+Hot-pink 3D brush script "MAKE MAMI PROUD" over navy; then live-action clips with hand-drawn 2D FX overlaid (flames, smoke, lightning, cartoon monsters), a fighting-game HUD over a street scene with "K.O.", a jumping typographic set "bystanders", a neon skull drinking a can, "WAKE U" yellow type. 59 shots / 63 s. Live action + 2D FX doodles = signature.
