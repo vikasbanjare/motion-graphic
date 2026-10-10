@@ -1,0 +1,208 @@
+{
+ "seconds": 18.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "N01",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 1.0
+   },
+   "anchor": "air_riser",
+   "anchor_t": 0.05,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N02",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "lens_swell",
+   "anchor_t": 0.2,
+   "align": "start",
+   "over_bed_lu": -4.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N03",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 3.1,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N04",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 4.0,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N05",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 5.8,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N06",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "jet_pass",
+   "anchor_t": 6.4,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N07",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 7.9,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N08",
+   "sfx": "desk_bell",
+   "params": {
+    "dur": 1.0
+   },
+   "anchor": "desk_bell",
+   "anchor_t": 8.75,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N09",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 9.85,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N10",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 10.7,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N11",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 12.2,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N12",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 13.1,
+   "align": "start",
+   "over_bed_lu": -5.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N13",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "low_wash",
+   "anchor_t": 15.1,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N14",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 16.3,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N15",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "chord_bloom",
+   "anchor_t": 16.9,
+   "align": "start",
+   "over_bed_lu": -2.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N16",
+   "sfx": "end_bell",
+   "params": {
+    "dur": 0.9
+   },
+   "anchor": "end_bell",
+   "anchor_t": 17.1,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  }
+ ]
+}
