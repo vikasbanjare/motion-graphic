@@ -51,20 +51,22 @@ const T = {
 
 // ---- the anchor gem's path: position, size, shape, from scene to scene ----------------------
 type Key = { t: number; x: number; y: number; size: number; kind: GemKind; orb?: number };
+// Every resting spot and every path keeps clear of text (checked against each text block).
 const ANCHOR: Key[] = [
-  { t: 3.25, x: 960, y: 1180, size: 70, kind: "flower" },
-  { t: 4.05, x: 960, y: 372, size: 92, kind: "flower" },
+  { t: 3.25, x: 960, y: -120, size: 70, kind: "flower" }, // drops in from above as the title card wipes away
+  { t: 4.05, x: 960, y: 372, size: 92, kind: "flower" }, // above "Built to read"
   { t: 6.55, x: 960, y: 360, size: 92, kind: "flower" },
-  { t: 7.45, x: 1060, y: 130, size: 40, kind: "star" },
-  { t: 10.25, x: 1060, y: 130, size: 40, kind: "star" },
-  { t: 11.15, x: 1567, y: 345, size: 30, kind: "flower" }, // badge in the data card header
-  { t: 13.75, x: 1567, y: 345, size: 30, kind: "flower" },
+  { t: 7.45, x: 1310, y: 114, size: 40, kind: "star" }, // right of the "Forms · Complex tables · Handwriting" label
+  { t: 10.25, x: 1310, y: 114, size: 40, kind: "star" },
+  { t: 11.15, x: 1597, y: 341, size: 26, kind: "flower" }, // badge in the card header, right of its text
+  { t: 13.75, x: 1597, y: 341, size: 26, kind: "flower" },
   { t: 14.75, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 }, // becomes the orb
   { t: 18.25, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 },
   { t: 19.15, x: 960, y: 275, size: 78, kind: "diamond" }, // shrinks back, above the score
   { t: 21.75, x: 960, y: 275, size: 78, kind: "diamond" },
-  { t: 22.65, x: 744, y: 676, size: 46, kind: "flower" }, // beside the CTA pill
-  { t: 25.0, x: 744, y: 676, size: 46, kind: "flower" },
+  { t: 22.2, x: 440, y: 350, size: 60, kind: "diamond" }, // arcs out left, above and around the headline
+  { t: 22.75, x: 742, y: 668, size: 46, kind: "flower" }, // beside the CTA pill
+  { t: 25.0, x: 742, y: 668, size: 46, kind: "flower" },
 ];
 const anchorAt = (t: number) => {
   let i = ANCHOR.findIndex((k) => k.t > t);
@@ -467,7 +469,7 @@ const Live: React.FC = () => {
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 2, scale: String(1 + (f - a) * 0.0005) }}>
       <Words text="Sarvam Vision 2.1" at={a} size={76} />
       <Words text="Live now" at={a + 10} size={76} color={C.grey} />
-      <div style={{ marginTop: 40, position: "relative", overflow: "hidden", borderRadius: 999, padding: "16px 34px 16px 70px", background: C.blue, color: C.white, fontFamily: SANS, fontSize: 28, fontWeight: 400, transform: `scale(${0.88 + 0.12 * pill})`, opacity: Math.min(1, pill * 1.3), boxShadow: "0 8px 24px rgba(55,58,192,.25)" }}>
+      <div style={{ marginTop: 40, position: "relative", overflow: "hidden", borderRadius: 999, height: 64, padding: "0 40px", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1, background: C.blue, color: C.white, fontFamily: SANS, fontSize: 28, fontWeight: 400, transform: `scale(${0.88 + 0.12 * pill})`, opacity: Math.min(1, pill * 1.3), boxShadow: "0 8px 24px rgba(55,58,192,.25)" }}>
         sarvam.ai →
         <div style={{ position: "absolute", top: 0, bottom: 0, width: 90, left: mix(-120, 360, sweep), transform: "skewX(-18deg)", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent)" }} />
       </div>
@@ -484,7 +486,7 @@ const End: React.FC = () => {
   const radius = mix(0, 2300, r);
   const logo = p(f, a + 16, 26);
   const hold = (f - a) * 0.00035;
-  const gem = onScreen(a, 744, 676 + Math.sin(a / 20) * 12);
+  const gem = onScreen(a, 742, 668 + Math.sin(a / 20) * 12);
   return (
     <AbsoluteFill style={{ clipPath: `circle(${radius}px at ${gem.x}px ${gem.y}px)` }}>
       <AbsoluteFill style={{ backgroundImage: END_CARD, transform: `scale(${1.02 + hold})` }} />
