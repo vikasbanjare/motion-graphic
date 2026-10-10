@@ -17,6 +17,7 @@ import { F04_FRAMES, F04Watermark } from "./custom/cred/night/F04Watermark.tsx";
 import { F05_FRAMES, F05Loupe } from "./custom/cred/night/F05Loupe.tsx";
 import { F06_FRAMES, F06NeoPop } from "./custom/cred/night/F06NeoPop.tsx";
 import { F07_FRAMES, F07Swiss } from "./custom/cred/night/F07Swiss.tsx";
+import { B_FRAMES, BNumerals } from "./custom/cred/ten/BNumerals.tsx";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -59,6 +60,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Night05Loupe" component={F05Loupe} durationInFrames={F05_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="Night06NeoPop" component={F06NeoPop} durationInFrames={F06_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="Night07Swiss" component={F07Swiss} durationInFrames={F07_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="TenB" component={BNumerals} durationInFrames={B_FRAMES} fps={24} width={1920} height={1080} />
     </Folder>
     <Folder name="Examples">
       {EXAMPLES.map((e) => (

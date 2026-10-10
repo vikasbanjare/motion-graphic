@@ -43,7 +43,7 @@ export const World: React.FC<{ children: React.ReactNode; aa?: boolean; style?: 
   );
 };
 
-export type Live = { foilPhase?: number; dim?: number; opacity?: number; atmos?: number; pal?: Pal };
+export type Live = { foilPhase?: number; dim?: number; opacity?: number; atmos?: number; pal?: Pal; key?: [number, number, number]; lift?: number; ambient?: number; keyAmt?: number };
 
 const setPal = (m: THREE.Material, pal?: Pal) => {
   if (!pal) return;
@@ -58,7 +58,14 @@ const liveU = (l?: Live) => {
   if (l.dim !== undefined) u.uDim = l.dim;
   if (l.opacity !== undefined) u.uOpacity = l.opacity;
   if (l.atmos !== undefined) u.uAtmos = l.atmos;
+  if (l.lift !== undefined) u.uLift = l.lift;
+  if (l.ambient !== undefined) u.uAmbient = l.ambient;
+  if (l.keyAmt !== undefined) u.uKey = l.keyAmt;
   return u;
+};
+const setKey = (m: THREE.Material, key?: [number, number, number]) => {
+  if (!key) return;
+  ((m as THREE.ShaderMaterial).uniforms.uKeyWorld.value as THREE.Vector3).set(...key).normalize();
 };
 
 /** One engraved mesh. `m` is fixed per mesh (memoised by geometry); `live` uniforms may change per frame. */
@@ -82,6 +89,7 @@ export const EMesh: React.FC<{
   }, [g, width, height]);
   setU(mat, liveU(live));
   setPal(mat, live?.pal);
+  setKey(mat, live?.key);
   return <mesh geometry={g} material={mat} position={pos} rotation={rot} scale={scale} />;
 };
 
@@ -137,6 +145,7 @@ export const Gltf: React.FC<{
   for (const x of mats) {
     setU(x, liveU(live));
     setPal(x, live?.pal);
+    setKey(x, live?.key);
   }
   return (
     <group position={pos} rotation={rot}>

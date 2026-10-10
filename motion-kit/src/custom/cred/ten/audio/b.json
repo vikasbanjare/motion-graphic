@@ -1,0 +1,267 @@
+{
+ "seconds": 30.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "N01",
+   "sfx": "air_bed",
+   "params": {
+    "dur": 3.0
+   },
+   "anchor": "air_bed",
+   "anchor_t": 0.0,
+   "align": "start",
+   "over_bed_lu": -14.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N02",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 2.4,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N03",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "low_wash",
+   "anchor_t": 3.2,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N04",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 4.4,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N05",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "paper_flick",
+   "anchor_t": 5.5,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N06",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "air_riser",
+   "anchor_t": 7.2,
+   "align": "peak",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N07",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "lens_swell",
+   "anchor_t": 8.0,
+   "align": "start",
+   "over_bed_lu": -5.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N08",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 2.2
+   },
+   "anchor": "jet_pass",
+   "anchor_t": 8.6,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N09",
+   "sfx": "desk_bell",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "desk_bell",
+   "anchor_t": 11.4,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N10",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "sparkle",
+   "anchor_t": 12.2,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N11",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 13.0,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N12",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 15.0,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N13",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 15.4,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N14",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 15.8,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N15",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.35
+   },
+   "anchor": "whip",
+   "anchor_t": 18.1,
+   "align": "peak",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N16",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "low_wash",
+   "anchor_t": 18.4,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N17",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "reverse_swell",
+   "anchor_t": 21.3,
+   "align": "start",
+   "over_bed_lu": -5.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N18",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 22.1,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N19",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 25.3,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N20",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "chord_bloom",
+   "anchor_t": 28.0,
+   "align": "start",
+   "over_bed_lu": -2.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N21",
+   "sfx": "end_bell",
+   "params": {
+    "dur": 1.0
+   },
+   "anchor": "end_bell",
+   "anchor_t": 28.3,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  }
+ ]
+}
