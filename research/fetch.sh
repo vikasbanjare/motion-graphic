@@ -21,7 +21,9 @@ while IFS= read -r url || [ -n "$url" ]; do
   case "$url" in
   *.mp4 | *.mp4\?*)
     slug=$(basename "${url%%\?*}" .mp4 | python3 -c 'import re,sys,urllib.parse; print(re.sub(r"[^A-Za-z0-9_-]+", "-", urllib.parse.unquote(sys.stdin.read().strip()))[:60])')
-    if ! curl -fsSL --max-time 300 -o "$out/$id-$slug.mp4" "$url"; then
+    # Some hosts (showreel.design) refuse requests without a browser user agent and referer.
+    if ! curl -fsSL --max-time 300 -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15" \
+      -e "https://$(echo "$url" | awk -F/ '{print $3}' | sed 's/^video\.//')/" -o "$out/$id-$slug.mp4" "$url" 2>>"$fail.log"; then
       echo -e "$url\tcurl failed" >>"$fail"
       rm -f "$out/$id-$slug.mp4"
     fi

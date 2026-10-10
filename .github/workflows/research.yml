@@ -116,6 +116,7 @@ jobs:
             if [ $first = 1 ]; then cat "$f"; first=0; else tail -n +2 "$f"; fi
           done > "$PUB/summary.csv"
           cat "$OUT"/failures/*.txt > "$PUB/failures.txt" 2>/dev/null || : > "$PUB/failures.txt"
+          cat "$OUT"/failures/*.log > "$PUB/failures.log" 2>/dev/null || : > "$PUB/failures.log"
           # Contact sheets: AES-256 with a one-off key, the key itself sealed to the research public key.
           if [ -d "$OUT/sheets" ]; then
             key=$(openssl rand -hex 32)

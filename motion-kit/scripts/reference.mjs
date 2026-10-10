@@ -22,9 +22,15 @@ const probe = (file) => {
   return { duration: Number(j.format.duration) || 0, width: video.width, height: video.height, audio: j.streams.some((s) => s.codec_type === "audio") };
 };
 
-/** Hard cuts: ffmpeg's scene score above a threshold, at least 0.25 s apart. */
+/**
+ * Hard cuts: ffmpeg's scene score above a threshold, at least 0.25 s apart. showinfo logs at
+ * info level, so this call cannot use ff()'s "-v error" or every video reads as one shot.
+ */
 export const cutsOf = (file) => {
-  const r = ff(["-i", file, "-an", "-vf", "scale=160:-2,select='gt(scene,0.30)',showinfo", "-f", "null", "-"], { encoding: "utf8" });
+  const r = spawnSync("ffmpeg", ["-v", "info", "-nostdin", "-i", file, "-an", "-vf", "scale=160:-2,select='gt(scene,0.30)',showinfo", "-f", "null", "-"], {
+    encoding: "utf8",
+    maxBuffer: 1 << 30,
+  });
   const times = [...String(r.stderr).matchAll(/pts_time:([\d.]+)/g)].map((m) => Number(m[1]));
   return times.filter((t, i) => i === 0 || t - times[i - 1] >= 0.25);
 };
