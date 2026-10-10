@@ -1,0 +1,126 @@
+{
+  "_note": "Spec ad (unofficial) for Sarvam Vision 2.1, v2 in Sarvam's PRODUCT-film language (from their Saaras V4 / Voice agents / Content Studio videos): white canvas with a lavender glow rising from the bottom, light sans in sentence case, Sarvam Blue only for emphasis, 'Introducing' title card on the blue-to-peach gradient, fades not cuts, calm pace. Colours sampled from those videos (canvas #FFFFFF -> #D2DCFC; title card #4340D1 -> #EEBCB3) and the brand video's named swatches (Sarvam Blue #373AC0, Sarvam Orange #D5630E). Logo: official files. Facts: Sarvam's launch post (x.com/SarvamAI/status/2103113064338149439) and press: live since 24 Sep 2026; structured extraction, complex tables, Indic handwriting; English + 22 Indian languages; olmOCR-Bench 87.3 (state of the art, Sarvam-reported). Type: Inter Light as a stand-in for the brand sans.",
+  "format": "landscape",
+  "theme": "clean",
+  "motion": "calm",
+  "pace": "relaxed",
+  "transition": "fade",
+  "brand": {
+    "name": "Sarvam",
+    "accent": "#373AC0",
+    "accent2": "#D5630E",
+    "exact": true,
+    "logo": "brand/sarvam/wordmark-light.svg"
+  },
+  "look": {
+    "displayFont": "Inter",
+    "displayWeight": 300,
+    "uppercase": false,
+    "bodyFont": "Inter",
+    "bg": "#FFFFFF",
+    "text": "#141414",
+    "background": "plain",
+    "grain": false,
+    "kicker": "plain",
+    "ctaStyle": "link",
+    "gradient": [
+      "#FFFFFF",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#FDFDFD",
+      "#F9FAFD",
+      "#F2F5FF",
+      "#E2E9FF",
+      "#D2DCFC"
+    ],
+    "gradientText": "#141414",
+    "gradient2": [
+      "#4340D1",
+      "#544ED2",
+      "#665DCF",
+      "#7C6ED1",
+      "#8F80CF",
+      "#A58FCF",
+      "#B69FCE",
+      "#D3B1C2",
+      "#EEBCB3"
+    ],
+    "gradient2Text": "#FFFFFF"
+  },
+  "audio": {
+    "sfx": true,
+    "voiceover": "voice/sarvam-vision-v2.mp3",
+    "timing": "voice/sarvam-vision-v2.timing.json",
+    "music": "music/sarvam-vision-v2-bed.mp3",
+    "musicStart": 0.933,
+    "musicVolume": 0.15,
+    "beats": "music/sarvam-vision-v2-bed.beats.json"
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "bg": "gradient2",
+      "say": "Introducing Sarvam Vision two point one.",
+      "kicker": "Introducing",
+      "headline": "Sarvam Vision 2.1"
+    },
+    {
+      "type": "title",
+      "bg": "gradient",
+      "say": "Built to read India's documents.",
+      "headline": "Built to read *India's documents*"
+    },
+    {
+      "type": "kinetic",
+      "bg": "gradient",
+      "say": "Forms. Complex tables. Even handwriting.",
+      "lines": [
+        "Forms.",
+        "Complex tables.",
+        "Even *handwriting.*"
+      ]
+    },
+    {
+      "type": "prompt",
+      "bg": "gradient",
+      "say": "Upload a handwritten page, and get structured data back.",
+      "label": "Sarvam Vision 2.1",
+      "prompt": "handwritten-form-hindi.jpg",
+      "button": "Extract",
+      "result": "Name · Address · Amount → *structured data*"
+    },
+    {
+      "type": "orb",
+      "bg": "gradient",
+      "say": "In English, and twenty two Indian languages.",
+      "headline": "*22* Indian languages",
+      "sub": "plus English",
+      "colors": [
+        "#373AC0",
+        "#EEBCB3"
+      ]
+    },
+    {
+      "type": "stat",
+      "bg": "gradient",
+      "say": "And it's state of the art on olmOCR-Bench, at eighty seven point three.",
+      "kicker": "olmOCR-Bench",
+      "value": "87.3",
+      "label": "state of the art (Sarvam-reported)"
+    },
+    {
+      "type": "cta",
+      "bg": "gradient",
+      "say": "Sarvam Vision two point one. Live now.",
+      "kicker": "Sarvam Vision 2.1 is *live*",
+      "action": "sarvam.ai"
+    },
+    {
+      "type": "logo",
+      "bg": "gradient2",
+      "name": "Sarvam",
+      "wordmark": true
+    }
+  ]
+}

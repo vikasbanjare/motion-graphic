@@ -1,0 +1,1 @@
+Fonts in this folder: Kalam (Indian Type Foundry) and Noto Sans Indic scripts (Google), from @fontsource, SIL Open Font License 1.1.

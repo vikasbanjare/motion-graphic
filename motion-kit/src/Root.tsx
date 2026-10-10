@@ -4,6 +4,7 @@ import { calculateVideoMetadata, Video } from "./engine/Video.tsx";
 import { calculateSheetMetadata, ContactSheet } from "./engine/ContactSheet.tsx";
 import { videoSchema, type VideoSpec } from "./engine/schema.ts";
 import { EXAMPLES } from "./examples.ts";
+import { SARVAM_VISION_FRAMES, SarvamVision } from "./custom/sarvam/SarvamVision.tsx";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -32,6 +33,9 @@ export const RemotionRoot: React.FC = () => (
       width={1080}
       height={1080}
     />
+    <Folder name="Custom">
+      <Composition id="SarvamVision" component={SarvamVision} durationInFrames={SARVAM_VISION_FRAMES} fps={30} width={1920} height={1080} />
+    </Folder>
     <Folder name="Examples">
       {EXAMPLES.map((e) => (
         <Composition

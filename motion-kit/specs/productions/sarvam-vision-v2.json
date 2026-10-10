@@ -1,0 +1,54 @@
+{
+  "_note": "Sarvam Vision 2.1 v2 (product-film language), free tier: calm English narrator, soft UI SFX, calm 75 BPM bed (half of the ~150 BPM measured in Sarvam's Saaras V4 film).",
+  "spec": "specs/sarvam-vision-v2.json",
+  "voices": {
+    "gapMs": 260,
+    "beats": [
+      {
+        "voice": "af_heart",
+        "speed": 0.98,
+        "speak": "Introducing Sarvam Vision 2.1."
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.0
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.0
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.02,
+        "after": [
+          {
+            "sfx": "chime",
+            "gain": 0.45
+          }
+        ]
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.0,
+        "speak": "In English, and 22 Indian languages."
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.0,
+        "speak": "And it's state of the art on olm O C R bench, at 87.3."
+      },
+      {
+        "voice": "af_heart",
+        "speed": 0.96,
+        "speak": "Sarvam Vision 2.1. Live now."
+      }
+    ]
+  },
+  "music": {
+    "mood": "calm",
+    "bpm": 75,
+    "key": "D",
+    "volume": 0.15,
+    "prompt": "Light, airy product-launch bed, soft plucks and pads, gentle and optimistic, ~75 BPM (150 half-time), no vocals"
+  }
+}
