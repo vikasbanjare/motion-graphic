@@ -1,0 +1,122 @@
+{
+  "_note": "Kit showcase: every number is from docs/research/dataset.md (562 reference films; cuts per minute by part of the film). Made with npm run produce -- specs/productions/showcase.json --tier free.",
+  "format": "reel",
+  "theme": "neon",
+  "motion": "snappy",
+  "pace": "fast",
+  "brand": {
+    "name": "motion-kit"
+  },
+  "audio": {
+    "sfx": true,
+    "voiceover": "voice/showcase.mp3",
+    "timing": "voice/showcase.timing.json",
+    "music": "music/showcase-bed.mp3",
+    "musicStart": 0.1,
+    "musicVolume": 0.16,
+    "beats": "music/showcase-bed.beats.json"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "A thirty second film? Two weeks. Now? One prompt.",
+      "setup": "A 30 s film:",
+      "strike": "2 weeks",
+      "punch": "Now? *One prompt.*"
+    },
+    {
+      "type": "kinetic",
+      "say": "Script. Voice. Music. Cut.",
+      "lines": [
+        "Script.",
+        "Voice.",
+        "Music.",
+        "*Cut.*"
+      ]
+    },
+    {
+      "type": "prompt",
+      "say": "Describe it once, and the kit makes the rest.",
+      "label": "Describe your video",
+      "prompt": "Dark 30 s reel, warm music, Hindi voice",
+      "button": "Make it",
+      "result": "Rendered · *1080×1920*"
+    },
+    {
+      "type": "stat",
+      "say": "Every cut is timed from five hundred sixty two films, studied frame by frame.",
+      "kicker": "Studied frame by frame",
+      "value": "562",
+      "label": "award and launch *films*"
+    },
+    {
+      "type": "bars",
+      "say": "Cutting peaks a third of the way in, then slows to land the ending.",
+      "title": "Cuts per minute",
+      "bars": [
+        {
+          "label": "Opening",
+          "value": 12.5
+        },
+        {
+          "label": "One third in",
+          "value": 16.7
+        },
+        {
+          "label": "Middle",
+          "value": 12.6
+        },
+        {
+          "label": "Near the end",
+          "value": 8.2
+        }
+      ],
+      "highlight": 1
+    },
+    {
+      "type": "wave",
+      "say": "Hindi mein bhi. Bilkul offline.",
+      "label": "Voice · Hindi · offline",
+      "tags": [
+        "Hindi",
+        "English",
+        "Free"
+      ]
+    },
+    {
+      "type": "grid",
+      "say": "Scenes, voices, music and sound effects, all in one command.",
+      "title": "One command",
+      "items": [
+        {
+          "icon": "🎬",
+          "label": "Scenes"
+        },
+        {
+          "icon": "🎙️",
+          "label": "Voices"
+        },
+        {
+          "icon": "🎵",
+          "label": "Music"
+        },
+        {
+          "icon": "🔊",
+          "label": "Sound effects"
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "say": "Free with Claude Code. Run it yourself.",
+      "kicker": "Free with Claude Code",
+      "action": "npm run produce",
+      "sub": "Open source · *motion-kit*"
+    },
+    {
+      "type": "logo",
+      "name": "motion-kit",
+      "tagline": "Made with code, not stock"
+    }
+  ]
+}

@@ -182,7 +182,7 @@ export const Prompt: React.FC<{ scene: SceneOf<"prompt"> }> = ({ scene }) => {
             fontSize: btnSize,
           }}
         >
-          {generating ? <Shimmer text="Generating…" frame={frame} start={b.click} color={c.muted} highlight={c.bg} /> : btnLabel}
+          {generating ? <Shimmer text="Generating…" frame={frame} start={b.click} color={c.bg} highlight={c.bg} /> : btnLabel}
         </div>
         {/* Click ripple */}
         {frame >= b.click ? (
