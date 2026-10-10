@@ -79,6 +79,19 @@ light, texture. Never ask a generator for readable words or a real logo; they co
 - `docs/research/ai-video-production.md`: model choice by shot type, cost-saving habits, model switching, keyframes / frame-by-frame, the series bible (characters, products, worlds, voices), genres, Freepik / Magnific.
 - `docs/research/RESEARCH-REPORT.md`: the one-page summary of all research. Read it first if context was lost.
 
+## Brand-matched or "pro-level" films
+
+The 17 template scenes make clean explainers, but they look basic next to a brand's own films. When the user shares a brand's videos or asks for premium quality:
+1. **Measure their reference films.** Run `python3 -I tools/film_qa.py <ref>.mp4` to get their motion, still-frame share and sound levels. Read their transitions frame by frame.
+2. **Build a bespoke composition** in `src/custom/<brand>/` from their visual system, following `docs/research/pro-film-rules.md`:
+   - one continuous stage, with scenes that overlap and hand over;
+   - a morphing anchor element;
+   - expo-out entrances and quick ease-in exits;
+   - drift on every hold;
+   - a mix with a continuous bed, ducking, and SFX timed to frames at bed +2…+6 dB.
+   - Example: `src/custom/sarvam/SarvamVisionV4.tsx`.
+3. **Render the film, then run `tools/film_qa.py <film> --ref <their films>` until every check passes.** Only then show it.
+
 ## Step 1: Pick the tier (ask once, with a recommendation)
 
 Ask which tools they have, unless they already said. Then recommend:

@@ -31,7 +31,7 @@ const FPS = 30;
 const s = (sec: number) => Math.round(sec * FPS);
 
 // ---- palette -------------------------------------------------------------------------------
-const C = {
+export const C = {
   ink: "#141414",
   grey: "#8C8C99",
   blue: "#373AC0", // Sarvam Blue (brand video swatch)
@@ -40,12 +40,12 @@ const C = {
   paper: "#FFFDF7",
   pencil: "#2B2F6B",
 };
-const CANVAS = "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 46%, #F9FAFD 62%, #F2F5FF 72%, #E2E9FF 86%, #D2DCFC 100%)";
-const TITLE_CARD = "linear-gradient(180deg, #4340D1 0%, #544ED2 12%, #665DCF 25%, #7C6ED1 38%, #8F80CF 50%, #A58FCF 62%, #B69FCE 74%, #D3B1C2 87%, #EEBCB3 100%)";
-const END_CARD = "linear-gradient(180deg, #282858 0%, #2D2E6E 12%, #323486 25%, #3839A0 36%, #4B4FB5 48%, #616ACA 60%, #7786E7 72%, #8DA0F9 84%, #A8B6FA 92%, #BBCBFA 100%)";
+export const CANVAS = "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 46%, #F9FAFD 62%, #F2F5FF 72%, #E2E9FF 86%, #D2DCFC 100%)";
+export const TITLE_CARD = "linear-gradient(180deg, #4340D1 0%, #544ED2 12%, #665DCF 25%, #7C6ED1 38%, #8F80CF 50%, #A58FCF 62%, #B69FCE 74%, #D3B1C2 87%, #EEBCB3 100%)";
+export const END_CARD = "linear-gradient(180deg, #282858 0%, #2D2E6E 12%, #323486 25%, #3839A0 36%, #4B4FB5 48%, #616ACA 60%, #7786E7 72%, #8DA0F9 84%, #A8B6FA 92%, #BBCBFA 100%)";
 
-const SANS = "Inter, 'Noto Sans Devanagari', sans-serif";
-const HAND = "Kalam, 'Noto Sans Devanagari', cursive";
+export const SANS = "Inter, 'Noto Sans Devanagari', sans-serif";
+export const HAND = "Kalam, 'Noto Sans Devanagari', cursive";
 
 // ---- timeline (seconds) ----------------------------------------------------------------------
 const T = {
@@ -74,7 +74,7 @@ const FONTS: [string, string, string][] = [
   ["Noto Sans Gurmukhi", "fonts/sarvam/noto-sans-gurmukhi-gurmukhi-400-normal.woff2", "400"],
   ["Noto Sans Oriya", "fonts/sarvam/noto-sans-oriya-oriya-400-normal.woff2", "400"],
 ];
-const useFonts = () => {
+export const useFonts = () => {
   const [handle] = useState(() => delayRender("sarvam fonts"));
   useEffect(() => {
     Promise.all(FONTS.map(([family, file, weight]) => loadFont({ family, url: staticFile(file), weight })))
@@ -131,15 +131,15 @@ const Words: React.FC<{ text: string; start: number; color?: string; size: numbe
 };
 
 // ---- gems ----------------------------------------------------------------------------------
-type GemKind = "flower" | "star" | "diamond" | "clover" | "scallop";
-const GEM_COLORS: Record<GemKind, [string, string]> = {
+export type GemKind = "flower" | "star" | "diamond" | "clover" | "scallop";
+export const GEM_COLORS: Record<GemKind, [string, string]> = {
   flower: ["#8E8BF0", "#373AC0"],
   star: ["#FBB264", "#D5630E"],
   diamond: ["#F7A8C8", "#D63C7C"],
   clover: ["#B7E07C", "#3E8E3E"],
   scallop: ["#F3D2E8", "#9D8CE6"],
 };
-const gemPath = (k: GemKind) => {
+export const gemPath = (k: GemKind) => {
   switch (k) {
     case "flower": // four rounded petals
       return "M50 8 C64 8 66 30 58 42 C70 34 92 36 92 50 C92 64 70 66 58 58 C66 70 64 92 50 92 C36 92 34 70 42 58 C30 66 8 64 8 50 C8 36 30 34 42 42 C34 30 36 8 50 8 Z";
@@ -242,13 +242,13 @@ const Built: React.FC<{ len: number }> = ({ len }) => {
 };
 
 /** The hero: a handwritten Hindi application form is scanned and becomes structured data. */
-const FORM_LINES: { label: string; value: string; key: string; out: string }[] = [
+export const FORM_LINES: { label: string; value: string; key: string; out: string }[] = [
   { label: "नाम", value: "सुनीता वर्मा", key: "name", out: "Sunita Verma" },
   { label: "पता", value: "14, गोमती नगर, लखनऊ", key: "address", out: "14, Gomti Nagar, Lucknow" },
   { label: "मोबाइल", value: "98xxxxxx21", key: "mobile", out: "98xxxxxx21" },
   { label: "राशि", value: "₹ 25,000", key: "amount", out: "25000" },
 ];
-const TABLE = [
+export const TABLE = [
   ["महीना", "किस्त"],
   ["जनवरी", "₹ 5,000"],
   ["फ़रवरी", "₹ 5,000"],
@@ -365,7 +365,7 @@ const Form: React.FC<{ len: number }> = ({ len }) => {
   );
 };
 
-const SCRIPTS: [string, string][] = [
+export const SCRIPTS: [string, string][] = [
   ["हिन्दी", "Noto Sans Devanagari"],
   ["தமிழ்", "Noto Sans Tamil"],
   ["বাংলা", "Noto Sans Bengali"],
