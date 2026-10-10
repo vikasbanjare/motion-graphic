@@ -360,9 +360,6 @@ export const CredCardV3: React.FC = () => {
         <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 70% at 50% 45%, #f3f1e4 0%, #e6e8d6 100%)" }} />
       )}
       {f >= B.shop - 8 && f < B.fee + 30 && <StageBackdrop f={f} />}
-      {f >= B.fee - 8 && f < B.fee + 30 && (
-        <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 70% at 50% 45%, #f3f1e4 0%, #e6e8d6 100%)", clipPath: `inset(0 ${(1 - clamp01((p.cx + p.w / 2) / 1920)) * 100}% 0 0)` }} />
-      )}
       {f >= 580 && (
         <AbsoluteFill style={{ background: "linear-gradient(180deg, #efede8 0%, #dedad2 60%, #cbc6bc 100%)", opacity: studio }}>
           <AbsoluteFill style={{ background: "radial-gradient(ellipse 26% 4% at 51% 82%, rgba(40,36,30,0.3), rgba(40,36,30,0) 100%)" }} />
@@ -375,6 +372,11 @@ export const CredCardV3: React.FC = () => {
         <World>
           <Stage f={f} />
         </World>
+      )}
+
+      {/* the green paper wipes in over the stage, led by the returning card's edge */}
+      {f >= B.fee - 8 && f < B.fee + 30 && (
+        <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 70% at 50% 45%, #f3f1e4 0%, #e6e8d6 100%)", clipPath: `inset(0 ${(1 - clamp01((p.cx + p.w / 2) / 1920)) * 100}% 0 0)` }} />
       )}
 
       {/* beat 1: pen draws the card */}
