@@ -2,6 +2,16 @@
 
 Index of every file in this research set. Start with the master document; open the genre guideline for the film type you are making; use the prompt system to turn a brief into a production package.
 
+## Reference-video study (frame by frame)
+
+| File | What it is |
+|---|---|
+| [`style-playbook.md`](style-playbook.md) | 13 motion styles taken from 251 reference videos. Covers measured shot lengths and brightness per style, ten rules, the look, motion, edit and evidence for each style, how to build it with motion-kit (including the `style-*` recipes), variations, pitfalls, and the kit's gaps. |
+| [`motion-techniques.md`](motion-techniques.md) | 39 signature moves with kit support and Remotion code, plus palettes, gradient CSS, type pairings and sizes, timing and easing, transitions, camera, sound defaults, a glossary, and how to brief Claude. |
+| [`reference-notes.md`](reference-notes.md) | Index of every reviewed video (length, shots, average shot, brightness, link) and the frame-by-frame notes. |
+
+Measurements come from `.github/workflows/research.yml`; results live on the `research-results` branch (contact sheets encrypted).
+
 ## Start here
 
 | File | Size | What it is |

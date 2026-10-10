@@ -196,9 +196,21 @@ mention they can send a licensed track to add.
 | `before-after-transformation` | A result: fitness, makeover, bill, growth | reel · pop · fast |
 | `stats-report` | Year / quarter in numbers, impact or investor update | landscape · corporate · relaxed |
 | `real-estate-or-food` | Premium property, café, restaurant, stay | reel · editorial |
+| `style-dark-gradient-launch` | AI model / API launch on black: gradient type, orb, benchmark bars | landscape · studio-dark · relaxed |
+| `style-whitespace-ui` | Quiet light product film: warm paper, tiny type, one UI card at a time | landscape · studio · relaxed |
+| `style-kinetic-manifesto` | Type-only statement or teaser, one phrase per beat, hard cuts | reel · mono · fast |
+| `style-editorial-serif` | Report, research tool or premium B2B: cream, serif, one red accent | landscape · editorial · relaxed |
+| `style-year-recap` | Milestones or a year told in counters and bars | landscape · neon · normal |
 
 `npm run new` with no arguments lists them. Each recipe's `_recipe` block holds the purpose of
 every beat and copy tips (alternatives, what must be a real fact).
+
+The `style-*` recipes come from a frame-by-frame review of 251 reference videos. When the user
+names a look ("like ElevenLabs", "Apple-style", "editorial", "kinetic") or asks which style
+fits, read `docs/research/style-playbook.md` (13 styles with their measured shot lengths, palettes,
+type and what the kit can and cannot do) and `docs/research/motion-techniques.md` (moves, colour,
+type, timing, terms). If a look needs 3D, live action or collage plates, say so and offer the
+closest kit style or the `motion-creative-director` skill for plate prompts.
 
 ## Theme by industry
 

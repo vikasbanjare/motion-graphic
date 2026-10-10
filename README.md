@@ -88,7 +88,7 @@ npm run studio            # then open http://localhost:5173
 ```
 
 Seven steps, each with the real video playing beside it:
-1. **Brief**: name, format (9:16 / 4:5 / 1:1 / 16:9), pace, brand name; start from one of 12 recipes.
+1. **Brief**: name, format (9:16 / 4:5 / 1:1 / 16:9), pace, brand name; start from one of 17 recipes.
 2. **References**: upload a logo (brand colours + which themes suit it), mood-board images
    (palette) and reference videos. A video is measured (how often it cuts, how much moves,
    its colours, its music tempo) and turned into a matching style you can apply in one click.

@@ -91,9 +91,11 @@ palette, brightness and music tempo, plus the theme, motion, pace and transition
 
 ## Recipes
 
-`specs/recipes/` holds 12 production-ready storyboards: product launch reel, launch film
+`specs/recipes/` holds 17 production-ready storyboards: product launch reel, launch film
 16:9, app demo, Hinglish creator explainer, tips listicle, festive local offer, testimonials,
-event promo, hiring, before/after, stats report, real estate / food. Each one has a hook,
+event promo, hiring, before/after, stats report, real estate / food, and five `style-*` looks
+from the reference study (dark gradient launch, whitespace UI, kinetic manifesto, editorial
+serif, year recap; see `docs/research/style-playbook.md`). Each one has a hook,
 5-9 beats, a CTA, a deliberate theme / motion / pace, and a `_recipe` block with the purpose
 of every beat and copy tips. Facts are `[CAPS]` slots to fill in; chart values have to be
 numbers, so the stats recipe's bars are samples to replace.

@@ -1,0 +1,85 @@
+{
+  "_recipe": {
+    "title": "Style: year in numbers",
+    "when": "A recap or milestone film told in counters: the Sanctum / Wrapped look. Big numbers that roll, short labels, a mascot-bright accent and a 'what's next' close.",
+    "beats": [
+      "Hook: the headline of the year, one word per beat.",
+      "Number 1: the biggest real number, counting up.",
+      "Number 2: growth as a percentage with a meter.",
+      "Breakdown: three to five real values as bars.",
+      "Highlights: three wins as checks.",
+      "What's next: one line about next year.",
+      "CTA and logo."
+    ],
+    "copyTips": [
+      "Every number must come from the user with its period (\"2025\", \"Jan-Dec\"). Never invent or round up.",
+      "One number per beat. If two numbers matter, they get two beats.",
+      "Measured on 8 data-viz references: median 9 s per shot; numbers need time to finish counting and be read.",
+      "Bright accent on dark (blue, lime) reads as celebration; keep labels to 3-5 words.",
+      "Vertical for socials: --format reel."
+    ]
+  },
+  "format": "landscape",
+  "theme": "neon",
+  "motion": "bouncy",
+  "pace": "normal",
+  "transition": "zoom",
+  "brand": { "name": "[BRAND]", "accent": "#3FA0FF", "accent2": "#B8F35A" },
+  "look": { "displayFont": "Space Grotesk", "background": "aurora", "grain": true },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "say": "This was [BRAND]'s biggest year yet. Here it is in numbers.",
+      "lines": ["[BRAND]'s", "biggest", "*year*", "yet."]
+    },
+    {
+      "type": "stat",
+      "say": "[THE BIGGEST NUMBER IN WORDS] [WHAT IT COUNTS].",
+      "kicker": "[METRIC] · [YEAR]",
+      "value": "[14.36]M",
+      "label": "[WHAT IT *COUNTS*]"
+    },
+    {
+      "type": "stat",
+      "say": "Up [GROWTH IN WORDS] percent year on year.",
+      "kicker": "Growth · [YEAR]",
+      "value": "+[96]%",
+      "label": "[METRIC] *year on year*"
+    },
+    {
+      "type": "bars",
+      "say": "[WHAT THE BARS SHOW] grew every single quarter, from the first to the last.",
+      "title": "[METRIC] by quarter",
+      "unit": "M",
+      "bars": [
+        { "label": "Q1", "value": 0.8 },
+        { "label": "Q2", "value": 1.2 },
+        { "label": "Q3", "value": 1.7 },
+        { "label": "Q4", "value": 2.4 }
+      ]
+    },
+    {
+      "type": "list",
+      "say": "[WIN ONE]. [WIN TWO]. [WIN THREE].",
+      "title": "Highlights",
+      "style": "checks",
+      "items": ["[WIN ONE]", "[WIN TWO]", "[WIN THREE]"]
+    },
+    {
+      "type": "title",
+      "say": "Up next in [NEXT YEAR]: [WHAT'S COMING].",
+      "kicker": "Up next in [NEXT YEAR]",
+      "headline": "[WHAT'S *COMING*]"
+    },
+    {
+      "type": "cta",
+      "say": "[ACTION] at [WEBSITE].",
+      "action": "[ACTION]",
+      "handle": "[WEBSITE]"
+    },
+    {
+      "type": "logo",
+      "name": "[BRAND]"
+    }
+  ]
+}
