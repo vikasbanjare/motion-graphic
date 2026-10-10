@@ -2,7 +2,7 @@
 
 This playbook is built from the reference links in `research/links.txt`. GitHub runners downloaded each video, measured it and made contact sheets (`.github/workflows/research.yml`, with the results on the `research-results` branch). Every unique video was then reviewed frame by frame at 2 frames per second. The per-video notes are in [`reference-notes.md`](reference-notes.md).
 
-The companion file [`motion-techniques.md`](motion-techniques.md) holds the technique library: signature moves with Remotion code, colour and gradient recipes, type, timing, transitions, a glossary, and how to brief Claude.
+[`production-routes.md`](production-routes.md) shows how to build every style three ways: with Claude Code only, with AI-generated images and video (Higgsfield and similar), or from Claude Design frames. The companion file [`motion-techniques.md`](motion-techniques.md) holds the technique library: signature moves with Remotion code, colour and gradient recipes, type, timing, transitions, a glossary, and how to brief Claude.
 
 ## Read this first: the uncomfortable part
 

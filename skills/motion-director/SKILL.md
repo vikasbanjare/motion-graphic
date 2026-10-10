@@ -209,7 +209,8 @@ The `style-*` recipes come from a frame-by-frame review of 251 reference videos.
 names a look ("like ElevenLabs", "Apple-style", "editorial", "kinetic") or asks which style
 fits, read `docs/research/style-playbook.md` (13 styles with their measured shot lengths, palettes,
 type and what the kit can and cannot do) and `docs/research/motion-techniques.md` (moves, colour,
-type, timing, terms). If a look needs 3D, live action or collage plates, say so and offer the
+type, timing, terms). For looks that need 3D, characters or cinematic shots, `docs/research/production-routes.md`
+lists the plate prompts and how to composite AI-generated images and clips in `image` / `clip` scenes. If a look needs 3D, live action or collage plates, say so and offer the
 closest kit style or the `motion-creative-director` skill for plate prompts.
 
 ## Theme by industry
