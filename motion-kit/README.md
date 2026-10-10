@@ -135,7 +135,7 @@ npm run voice -- specs/x.json --tts --voice <id>      # ElevenLabs (ELEVENLABS_A
 npm run voice -- --voices                             # every engine with its cost, licence and best voices
 npm run voice -- specs/x.json --align voice/x.mp3     # your recording / downloaded MP3
 npm run voice -- specs/x.json --import subs.srt       # existing subtitles
-npm run frames -- refs/x.mp4 --fps 10                 # every frame of a reference video + a frame at each cut (out/frames/x/)
+npm run frames -- refs/ --fps 10                    # every frame of every video in refs/ + a frame at each cut (out/frames/<name>/)
 ```
 
 Scenes then cut on the spoken beat and words reveal as they are said. Free engines speak
