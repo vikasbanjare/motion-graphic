@@ -1,0 +1,11 @@
+{
+  "_about": "Example shot list for npm run route: a 30 s story ad with one recurring character.",
+  "shots": [
+    { "id": "01-world", "type": "establishing-world", "seconds": 3 },
+    { "id": "02-hero-intro", "type": "character-intro", "seconds": 4, "character": "mira" },
+    { "id": "03-line", "type": "dialogue", "seconds": 5, "character": "mira" },
+    { "id": "04-product", "type": "product-hero", "seconds": 4 },
+    { "id": "05-transform", "type": "product-transform", "seconds": 4 },
+    { "id": "06-title", "type": "ui-text-numbers-logo" }
+  ]
+}

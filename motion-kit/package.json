@@ -22,7 +22,8 @@
     "research": "node scripts/research.mjs",
     "lint": "eslint src && tsc",
     "test": "node --test scripts/test-*.mjs tests/*.test.mjs",
-    "plates": "node scripts/plates.mjs"
+    "plates": "node scripts/plates.mjs",
+    "route": "node scripts/route.mjs"
   },
   "sideEffects": [
     "*.css"

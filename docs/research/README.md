@@ -2,6 +2,12 @@
 
 Index of every file in this research set. Start with the master document; open the genre guideline for the film type you are making; use the prompt system to turn a brief into a production package.
 
+**Start with [`RESEARCH-REPORT.md`](RESEARCH-REPORT.md)**: one page with every finding, where it came from, what was built from it, and what is still open.
+
+| File | What it is |
+|---|---|
+| [`ai-video-production.md`](ai-video-production.md) | How to make AI shots: model choice per shot type, cost-saving habits, switching models mid-shot, keyframes, character / product / voice consistency across a series, genres (ads, story, series), Freepik / Magnific. Backed by `research/models.json` and `npm run route`. |
+
 ## Reference-video study (frame by frame)
 
 | File | What it is |

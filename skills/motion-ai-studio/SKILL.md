@@ -1,6 +1,6 @@
 ---
 name: motion-ai-studio
-description: Make a motion-graphics video in one of two ways. Route 1, Claude Code only, is free with a Claude subscription: type, UI, charts, orbs and logo moves rendered by motion-kit. Route 2, AI plates, connects an AI image/video tool over MCP (Higgsfield, which also serves Seedance, Kling, Veo and more) or any tool the user has, generates the 3D, product, character, texture and cinematic shots code cannot draw, and composites them with exact code-rendered text. Use whenever someone wants a video "with AI images/video", "using Higgsfield / Seedance / Kling / Veo", "with 3D or realistic shots", or asks which route is cheapest, or wants both versions of the same video.
+description: Make a motion-graphics video in one of two ways. Route 1, Claude Code only, is free with a Claude subscription: type, UI, charts, orbs and logo moves rendered by motion-kit. Route 2, AI plates, connects an AI image/video tool over MCP (Higgsfield, which also serves Seedance, Kling, Veo and more) or any tool the user has, generates the 3D, product, character, texture and cinematic shots code cannot draw, and composites them with exact code-rendered text. Also covers realistic and story video: performance-marketing / UGC ads, short films, and short series with consistent characters, products and voices. It picks a model per shot (npm run route), keeps credits low (stills first, cheap drafts, keyframes) and switches models mid-shot when one does a step better. Use whenever someone wants a video "with AI images/video", "using Higgsfield / Seedance / Kling / Veo / Freepik / Magnific", "with 3D or realistic shots", an ad, a story, a series or a character that must stay the same, or asks which model or route is cheapest.
 ---
 
 # Motion AI Studio
@@ -26,6 +26,8 @@ light, texture. Never ask a generator for readable words or a real logo; they co
 - `docs/research/production-routes.md`: every style × route, with plate prompts.
 - `skills/motion-director/SKILL.md` and its `references/scenes.md`: the spec format. Never invent fields.
 - `references/plates.md` (this skill): prompt shape, model choice, consistency, cost.
+- `docs/research/ai-video-production.md`: model choice by shot type, cost-saving habits, model switching, keyframes / frame-by-frame, the series bible (characters, products, worlds, voices), genres, Freepik / Magnific.
+- `docs/research/RESEARCH-REPORT.md`: the one-page summary of all research. Read it first if context was lost.
 
 ## Step 1: Pick the route (ask once, with a recommendation)
 
@@ -65,6 +67,18 @@ including the `style-*` recipes (`npm run new` lists them). Free extras that sta
    with "no text, no logos, no watermark".
 4. Show the user the plate list with an estimated cost (Step 2.2) before generating anything.
 
+### 2.1b Pick models and estimate cost
+
+Write the plate list as a shot list (`specs/<name>.shots.json`, shot types from `research/models.json`) and run:
+
+```bash
+cd motion-kit && npm run route -- specs/<name>.shots.json --budget balanced   # low | balanced | best
+```
+
+It prints per shot: the pipeline (stills-first, first-last-frame, element-then-stills, still-then-cutout, motion-transfer or a Higgsfield workflow), the image, video, voice and finish models, the expected generations, and relative cost units. Show the user the low and best totals, then preflight the real cost of the chosen plan.
+
+For anything with a recurring character, product or place, write `specs/<series>.bible.json` first (`ai-video-production.md` §6) and create the Elements before any shot.
+
 ### 2.2 Generate: with an AI tool connected over MCP (Higgsfield)
 
 Check what is connected: tools named `mcp__higgsfield__*`. Higgsfield gives access to many
@@ -89,6 +103,10 @@ one connection covers image, image-to-video, cut-outs and upscaling.
 6. Copy each result URL into its plate's `url` in `<name>.plates.json`.
 
 On a transport timeout, never resubmit blindly. Check the returned job ids first.
+
+**Switching models mid-shot** is normal: a cheap draft still, then the final still on the first-choice model, then an edit pass for hands and props (`nano_banana_pro`), then animation, then upscale. Use the symptom → model table in `ai-video-production.md` §4. For exact poses or transformations, use keyframes: each keyframe is an edit of the previous one, and a first-last-frame model fills the gaps (§5).
+
+**Freepik / Magnific over MCP:** if connected, list its tools first and update `research/models.json` (its entries are `unverified` until then). Use Magnific mainly as the finish step (creative upscale, relight, style match) on approved stills.
 
 ### 2.3 Generate: without MCP (any tool, by hand)
 
