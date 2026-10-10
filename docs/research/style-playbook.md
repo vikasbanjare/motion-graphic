@@ -49,15 +49,15 @@ How to read it:
 - **Agency reels cut every 1.5 s**, always on the beat. Use `pace: "fast"`, `transition: "cut"` and a music track with a beat grid (`npm run music`).
 - **Whitespace UI is light (25 of 39).** Dark premium is dark (20 of 26). Editorial is never dark (0 of 8). Mixing those up is the most common reason a "premium" film looks wrong.
 
-### Over time (per-frame dataset, 496 videos)
+### Over time (per-frame dataset, 562 videos)
 
 The data is in [`dataset.md`](dataset.md).
-- The median first cut comes at 4.1 s.
+- The median first cut comes at 4.0 s.
 - Cutting peaks about a third of the way in (16.7 cuts per minute).
-- The last 10% moves at 0.31× the film's average.
-- 34% of films end on near-black, and the final still hold is a median 1.6 s.
+- The last 10% moves at 0.32× the film's average.
+- 33% of films end on near-black, and the final still hold is a median 1.6 s.
 - A quarter of all frames are still.
-- Median saturation is 0.23, and 22% of films are mostly greyscale.
+- Median saturation is 0.25, and 20% of films are mostly greyscale.
 
 ## 2. Ten rules the top 1% follow
 

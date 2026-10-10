@@ -36,15 +36,15 @@ _Last updated: 2026-10-10 (three-tier production pipeline added)._
    - Agency reels cut every 1.5 s.
    - Dark AI launch films hold 16.7 s, and half of them are one continuous shot.
    (`style-playbook.md` §1, §6)
-2. **The shape of a film over time** (496 videos, `dataset.md`):
-   - The first cut comes at 4.1 s.
+2. **The shape of a film over time** (562 videos, `dataset.md`):
+   - The first cut comes at 4.0 s.
    - Cutting peaks about a third of the way in, at 16.7 cuts per minute.
-   - The last tenth moves at 0.31× the film's average.
-   - The final still hold is 1.6 s, and 34% end on near-black.
+   - The last tenth moves at 0.32× the film's average.
+   - The final still hold is 1.6 s, and 33% end on near-black.
    - A quarter of all frames are still.
 3. **Colour is restrained.**
-   - Median saturation is 0.23.
-   - 22% of films are mostly greyscale.
+   - Median saturation is 0.25.
+   - 20% of films are mostly greyscale.
    - The dominant hue is most often warm red/orange (this includes skin and wood), then blue/azure.
    - Green, yellow, violet and magenta appear as accents, rarely as the dominant colour.
 4. **Brightness depends on genre.**

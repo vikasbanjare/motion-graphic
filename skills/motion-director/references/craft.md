@@ -10,8 +10,8 @@ that pass first time.
 - Hook: something on screen at frame 0 (it is the thumbnail), payoff inside 3 s.
 - Reels: 15-35 s, 5-9 beats. Launch films (16:9, ElevenLabs/Apple style): 35-50 s, ~9 beats
   (recipe `launch-film-16x9`). Per-platform guide: `copy.md` → Length by platform.
-- Shape of the film, measured frame by frame on 496 reference videos (`docs/research/dataset.md`):
-  - Calm opening: the median first cut comes at 4.1 s. Reels still need the hook on screen at frame 0, but open on one held frame, not a flurry of cuts.
+- Shape of the film, measured frame by frame on 562 reference videos (`docs/research/dataset.md`):
+  - Calm opening: the median first cut comes at 4.0 s. Reels still need the hook on screen at frame 0, but open on one held frame, not a flurry of cuts.
   - Busiest beats about a third of the way in: the demo or features montage.
   - The last tenth moves at a third of the average. End on a still logo or card held at least 1.5 s.
   - About a quarter of frames are still. Don't animate everything all the time.
