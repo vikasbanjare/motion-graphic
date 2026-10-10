@@ -23,13 +23,13 @@ const faceTexture = (back = false) => {
   c.height = H;
   const x = c.getContext("2d")!;
   const g = x.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, "#3a3a41");
-  g.addColorStop(0.5, "#24242a");
-  g.addColorStop(1, "#3d3d45");
+  g.addColorStop(0, "#5b5b64");
+  g.addColorStop(0.5, "#3c3c44");
+  g.addColorStop(1, "#60606a");
   x.fillStyle = g;
   x.fillRect(0, 0, W, H);
   // guilloche rings from the top-right (the film's opening family)
-  x.strokeStyle = "rgba(215,215,230,0.3)";
+  x.strokeStyle = "rgba(225,225,238,0.34)";
   x.lineWidth = 2;
   for (let i = 0; i < 70; i++) {
     x.beginPath();
@@ -189,7 +189,7 @@ export const StudioTake: React.FC = () => {
       <World>
         <Cam pos={[0, 0.6, 16]} target={[0, 0.3, 0]} fov={34} />
         <Env />
-        <ambientLight intensity={0.25} />
+        <ambientLight intensity={0.5} />
         <directionalLight position={[-6 + Math.sin(keyAng) * 3, 5, 6]} intensity={1.8} color="#fff6ea" />
         <directionalLight position={[8, 2, -6]} intensity={2.4} color="#874bf9" />
         <directionalLight position={[-8, 3, -5]} intensity={1.6} color="#ffffff" />
@@ -197,8 +197,7 @@ export const StudioTake: React.FC = () => {
       </World>
       <Paper id="studio" mottle={0.02} grain={0.06} />
       <div style={{ position: "absolute", left: 0.585 * 1920 + (0.03 * (1 - copyIn) + 0.05 * copyOut) * 1920, top: 0.4 * 1080, opacity: copyIn * (1 - copyOut) }}>
-        <Sheen t={lf / 24} ink="#2e2e33" sheen="#a7a7b4" boxW={800}
-          style={{ fontFamily: SERIF, fontWeight: 600, fontSize: 112, letterSpacing: "-0.03em", lineHeight: 1.0, fontVariationSettings: "'opsz' 72", paddingBottom: 12 }}>
+        <Sheen t={lf / 24} ink="#2e2e33" sheen="#a7a7b4" boxW={800} fontSize={112} fontFamily={SERIF} letterSpacing="-0.03em" opsz>
           zero joining fee
         </Sheen>
       </div>

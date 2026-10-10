@@ -91,7 +91,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
         );
       })}
       {/* pedestals with products */}
-      <group position={[-7.6, -2.2, -9]}>
+      <group position={[-6.0, -2.2, -2.5]}>
         <EMesh g={g.pedTall} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
         <group position={[0, 2.2, 0]} rotation={[0, 0.7 + lf * 0.004, 0]}>
           <Gltf url={M.camera} size={2.4} m={mk({ seed: 81, mapAmt: 0.8, spec: 0.3 })} live={gl} />
@@ -116,7 +116,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       {/* hero: gift box approaching, pearl foil on the ribbon only */}
       <group position={[2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={1.5 * approach}>
         <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45 })} live={gl} />
-        <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.85, spec: 0.5, angleDeg: 38 })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
+        <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.6, spec: 0.5, angleDeg: 38 })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
       </group>
     </>
   );
@@ -218,8 +218,7 @@ export const ProductsTake: React.FC = () => {
         <GlassCard f={f} />
         {/* headline top-left; locked, revealed by the wipe (no entrance); a near balloon later rises in front of it */}
         <div style={{ position: "absolute", left: 0.05 * 1920, top: 0.07 * 1080 }}>
-          <Sheen t={lf / 24} ink="#6e2a22" sheen="#e8957a" boxW={900}
-            style={{ fontFamily: SERIF, fontWeight: 600, fontSize: 116, letterSpacing: "-0.03em", lineHeight: 1.0, fontVariationSettings: "'opsz' 72", paddingBottom: 12 }}>
+          <Sheen t={lf / 24} ink="#6e2a22" sheen="#e8957a" boxW={900} fontSize={116} fontFamily={SERIF} letterSpacing="-0.03em" opsz>
             2,000+ products
           </Sheen>
           <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 38, color: "#4d1c16", marginTop: 8, letterSpacing: "-0.01em" }}>on CRED store</div>

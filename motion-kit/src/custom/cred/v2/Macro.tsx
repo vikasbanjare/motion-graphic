@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
-import { World } from "./three.tsx";
+import { RefDepth, World } from "./three.tsx";
 import { AssemblyWorld } from "./Assembly.tsx";
 import { Field } from "./Opening.tsx";
 import { BandLines, LensRim, LensVignette, LinePattern, Paper, bandGradient } from "./fx.tsx";
@@ -39,7 +39,9 @@ export const MacroTake: React.FC = () => {
         </AbsoluteFill>
         <AbsoluteFill style={{ background: "#bfe3ee", mixBlendMode: "multiply", opacity: 0.55 }} />
         <World>
-          <AssemblyWorld f={T.reveal} settled inks={inks} periodFrac={0.02} camZ={6.2} camX={-1.4 + lf * 0.004} camY={-1.6} fov={34} roll={0.3} />
+          <RefDepth.Provider value={8}>
+            <AssemblyWorld f={T.reveal} settled inks={inks} periodFrac={0.02} camZ={6.2} camX={-1.4 + lf * 0.004} camY={-1.6} fov={34} roll={0.3} />
+          </RefDepth.Provider>
         </World>
         {/* the strip, read along its length */}
         <div style={{ position: "absolute", left: 960 - 1800, top: 560 - BH / 2, width: 3600, height: BH, transform: `rotate(${ANG}deg)`, transformOrigin: "50% 50%" }}>

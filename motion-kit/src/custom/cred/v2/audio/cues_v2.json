@@ -11,10 +11,10 @@
    "id": "Q01",
    "sfx": "pen_scribble",
    "params": {
-    "dur": 2.71
+    "dur": 2.79
    },
    "anchor": "first line drawn (f4) -> hard stop before the wash wipe",
-   "anchor_t": 0.25,
+   "anchor_t": 0.17,
    "align": "start",
    "over_bed_lu": -60,
    "floor_lufs": -26.0
@@ -25,8 +25,8 @@
    "params": {
     "dur": 0.7
    },
-   "anchor": "after the 0.21 s dead gap (2.96-3.17); swells into the parcels landing and the music intro (3.84)",
-   "anchor_t": 3.17,
+   "anchor": "after a short dead gap (2.96-3.05, swell rises from silence); swells into the parcels landing and the music intro (3.84)",
+   "anchor_t": 3.05,
    "align": "start",
    "over_bed_lu": -60,
    "floor_lufs": -22.6

@@ -180,8 +180,7 @@ export const TravelTake: React.FC = () => {
       {/* headline, bottom-left, centre-out mask reveal + 2.5 % H rise */}
       <div style={{ position: "absolute", left: 0.05 * 1920, top: 0.062 * 1080 + rise, opacity: f >= 340 ? 1 : 0 }}>
         <div style={{ clipPath: `inset(0 ${50 * (1 - hl)}% 0 ${50 * (1 - hl)}%)` }}>
-          <Sheen t={(f - 340) / 24} ink="#262c66" sheen="#8a93d6" boxW={1000}
-            style={{ fontFamily: SERIF, fontWeight: 600, fontSize: 104, letterSpacing: "-0.03em", lineHeight: 1.0, fontVariationSettings: "'opsz' 72", paddingBottom: 14 }}>
+          <Sheen t={(f - 340) / 24} ink="#262c66" sheen="#8a93d6" boxW={1300} fontSize={104} fontFamily={SERIF} letterSpacing="-0.03em" opsz>
             redeem on flights and hotels
           </Sheen>
         </div>

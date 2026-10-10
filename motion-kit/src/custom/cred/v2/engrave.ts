@@ -112,8 +112,8 @@ void main(){
   if (uAtmos > 0.0) col = mix(col, uAtmosColor, uAtmos * 0.35);
   if (uFoil > 0.0) {
     // thin-film hue attached to the surface; phase only moves with the object / camera (uFoilPhase)
-    float h = fract(0.58 + 0.35 * dot(N, vec3(0.7, 0.5, 0.2)) + 0.18 * fbm(vPosO.xy * 1.3 + vPosO.z, 2, uSeed + 9.0) + uFoilPhase);
-    vec3 film = hsv2rgb(vec3(h, 0.62, 0.95));
+    float h = fract(0.58 + 0.35 * dot(N, vec3(0.7, 0.5, 0.2)) + 0.45 * fbm(vPosO.xy * 2.6 + vPosO.z * 1.9, 2, uSeed + 9.0) + 0.12 * (frag.x - frag.y) / H + uFoilPhase);
+    vec3 film = hsv2rgb(vec3(h, 0.5, 0.95));
     float mask = smoothstep(0.12, 0.45, v) * (1.0 - smoothstep(0.92, 1.0, v));
     col = mix(col, overlay(col, film), uFoil * mask);
   }
@@ -194,7 +194,7 @@ export const engrave = (o: EOpts) => {
       uAlbedoNoise: { value: o.albedoNoise ?? 0.25 },
       uNoiseScale: { value: o.noiseScale ?? 3.0 },
       uPeriodFrac: { value: o.periodFrac ?? 0.0068 },
-      uAngle: { value: THREE.MathUtils.degToRad(o.angleDeg ?? 45) },
+      uAngle: { value: THREE.MathUtils.degToRad(o.angleDeg ?? 45) }, // 45 = "/" rising to the right (FFT-checked)
       uToneGamma: { value: o.toneGamma ?? 1.3 },
       uDmax: { value: 0.8 },
       uTHi: { value: 0.75 },
@@ -211,7 +211,7 @@ export const engrave = (o: EOpts) => {
       uSeed: { value: o.seed ?? 3 },
       uEdge: { value: o.edge ?? 0.85 },
       uSpace: { value: o.space ?? 1 },
-      uRefDepth: { value: o.refDepth ?? 10 },
+      uRefDepth: { value: o.refDepth ?? 15 },
       uPoster: { value: o.poster ? 1 : 0 },
       uFoil: { value: o.foil ?? 0 },
       uFoilPhase: { value: 0 },

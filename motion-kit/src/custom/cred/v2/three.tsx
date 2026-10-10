@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { staticFile, useVideoConfig } from "remotion";
 import { ThreeCanvas } from "@remotion/three";
 import { useLoader, useThree } from "@react-three/fiber";
@@ -7,6 +7,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { engrave, hexToVec3, setU, type EOpts, type Pal } from "./engrave.ts";
 
 type V3 = [number, number, number];
+
+/** Camera distance at which the object-anchored screen has its nominal period (per world). */
+export const RefDepth = createContext(15);
 
 /** Camera driven by the Remotion frame only (deterministic). roll in radians about the view axis. */
 export const Cam: React.FC<{ pos: V3; target: V3; fov?: number; roll?: number }> = ({ pos, target, fov = 35, roll = 0 }) => {
@@ -69,9 +72,10 @@ export const EMesh: React.FC<{
   double?: boolean;
 }> = ({ g, m, pos, rot, scale, live, double }) => {
   const { width, height } = useVideoConfig();
+  const rd = useContext(RefDepth);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const mat = useMemo(() => {
-    const x = engrave({ res: [width, height], ...m });
+    const x = engrave({ res: [width, height], refDepth: rd, ...m });
     if (double) x.side = THREE.DoubleSide;
     if (m.opacity !== undefined || live?.opacity !== undefined) x.transparent = true;
     return x;
@@ -95,6 +99,7 @@ export const Gltf: React.FC<{
 }> = ({ url, size, m, pos, rot, live, pick, perMaterial }) => {
   const { width, height } = useVideoConfig();
   const gltf = useLoader(GLTFLoader, staticFile(url));
+  const rd = useContext(RefDepth);
   const { obj, mats } = useMemo(() => {
     const root = gltf.scene.clone(true);
     const mats: THREE.ShaderMaterial[] = [];
@@ -111,7 +116,7 @@ export const Gltf: React.FC<{
       const map = src.map ?? null;
       if (map) map.colorSpace = THREE.NoColorSpace;
       const extra = perMaterial ? perMaterial(src.name) : {};
-      const mat = engrave({ res: [width, height], albedoNoise: 0.15, noiseScale: 30, mapAmt: 0.8, ...m, ...extra, map });
+      const mat = engrave({ res: [width, height], refDepth: rd, albedoNoise: 0.15, noiseScale: 30, mapAmt: 0.8, ...m, ...extra, map });
       mat.side = THREE.DoubleSide;
       mesh.material = mat;
       mats.push(mat);

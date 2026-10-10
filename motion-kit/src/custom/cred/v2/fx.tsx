@@ -90,23 +90,41 @@ export const Vignette: React.FC<{ strength?: number; color?: string }> = ({ stre
 );
 
 // ---- Headline sheen -------------------------------------------------------------------------------------------------
-/** A highlight band travelling through the letters (measured 2.5-17 % W/s, sigma ~5 % W, +33 %). Local coordinates:
- * background-position in the element's own box, so it survives transformed parents. */
-export const Sheen: React.FC<{ children: React.ReactNode; t: number; ink: string; sheen: string; boxW: number; speed?: number; sigma?: number; style?: React.CSSProperties }> = ({
-  children,
-  t,
-  ink,
-  sheen,
-  boxW,
-  speed = 0.08 * 1920,
-  sigma = 0.05 * 1920,
-  style,
-}) => {
+/** A highlight band travelling through the letters (measured 2.5-17 % W/s, sigma ~5 % W, +33 %). Drawn as SVG text
+ * with a userSpace gradient fill (CSS background-clip:text drops out in multi-frame headless renders). */
+export const Sheen: React.FC<{
+  children: string;
+  t: number;
+  ink: string;
+  sheen: string;
+  boxW: number;
+  fontSize: number;
+  fontFamily: string;
+  fontWeight?: number;
+  letterSpacing?: string;
+  opsz?: boolean;
+  speed?: number;
+  sigma?: number;
+}> = ({ children, t, ink, sheen, boxW, fontSize, fontFamily, fontWeight = 600, letterSpacing, opsz, speed = 0.08 * 1920, sigma = 0.05 * 1920 }) => {
   const span = boxW + 6 * sigma;
   const c = ((t * speed) % span) - 3 * sigma;
-  const bg = `linear-gradient(90deg, ${ink} 0px, ${ink} ${c - 2.5 * sigma}px, ${sheen} ${c - 0.4 * sigma}px, ${sheen} ${c + 0.4 * sigma}px, ${ink} ${c + 2.5 * sigma}px, ${ink} ${boxW + 10}px)`;
+  const id = `sheen-${children.replace(/[^a-z0-9]/gi, "")}`;
+  const h = Math.round(fontSize * 1.32);
   return (
-    <span style={{ background: bg, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", display: "inline-block", ...style }}>{children}</span>
+    <svg width={boxW} height={h} style={{ display: "block", overflow: "visible" }}>
+      <defs>
+        <linearGradient id={id} gradientUnits="userSpaceOnUse" x1={c - 2.5 * sigma} x2={c + 2.5 * sigma} y1={0} y2={0}>
+          <stop offset="0" stopColor={ink} />
+          <stop offset="0.42" stopColor={sheen} />
+          <stop offset="0.58" stopColor={sheen} />
+          <stop offset="1" stopColor={ink} />
+        </linearGradient>
+      </defs>
+      <text x={0} y={fontSize * 0.98} fill={`url(#${id})`} fontFamily={fontFamily} fontWeight={fontWeight} fontSize={fontSize}
+        style={{ letterSpacing, fontVariationSettings: opsz ? "'opsz' 72" : undefined }}>
+        {children}
+      </text>
+    </svg>
   );
 };
 
