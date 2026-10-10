@@ -21,7 +21,8 @@
     "frames": "node scripts/frames.mjs",
     "research": "node scripts/research.mjs",
     "lint": "eslint src && tsc",
-    "test": "node --test scripts/test-*.mjs tests/*.test.mjs"
+    "test": "node --test scripts/test-*.mjs tests/*.test.mjs",
+    "plates": "node scripts/plates.mjs"
   },
   "sideEffects": [
     "*.css"

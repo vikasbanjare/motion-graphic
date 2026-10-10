@@ -36,6 +36,7 @@ With Claude Code, just describe the video; the `motion-director` skill
 | Command | What it does |
 |---|---|
 | `npm run new -- <name> [--recipe <recipe>]` | Creates `specs/<name>.json` from a recipe in `specs/recipes/` ([Recipes](#recipes)). |
+| `npm run plates -- specs/<name>.plates.json` | Brings AI-generated or hand-made plates (images, clips) into `public/plates/<name>/`, checks each one and fills in its `src` for `image` / `clip` scenes (see `skills/motion-ai-studio`). |
 | `npm run check -- specs/x.json [--theme t] [--format f]` | Validates the spec and lints it against the timing, copy and contrast rules; prints the timeline. Instant, no browser. Exit 1 on errors. |
 | `npm run qa -- specs/x.json [--theme t] [--format f] [--json]` | Renders the key frames in memory and checks what is really on screen; writes no files. Exit 1 on errors ([Visual QA](#visual-qa)). |
 | `npm run preview -- specs/x.json [--theme t] [--format f]` | `out/x.sheet.jpg`: one settled frame per scene, platform-UI zones tinted red. |

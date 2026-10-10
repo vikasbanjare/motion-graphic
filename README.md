@@ -152,6 +152,16 @@ gives a full production package: concept, direction, a timed storyboard, a promp
 shot, a continuity bible so shots match, and a quality check. Parts the engine can render
 are handed to `motion-director`.
 
+### Two ways to make it: Claude Code only, or with AI images and video
+
+> Make our launch film twice: one with just code, one with Higgsfield 3D product shots.
+
+The `motion-ai-studio` skill runs either route:
+- **Claude Code only (free with a Claude subscription).** Type, UI, charts, orbs and logo moves, all rendered by motion-kit.
+- **With an AI tool over MCP.** Higgsfield, which also serves Seedance, Kling and others, generates the 3D, product, character and cinematic shots that code can't draw. `npm run plates` brings them in, and the engine adds the exact text, numbers and logo on top.
+
+It shows the credit cost and waits for a yes before generating anything. Without an MCP connection, it gives you the prompts to run in any tool by hand.
+
 ## What you get
 
 - **The video**: `motion-kit/out/<name>.mp4`, 1080p, 30 fps, ready to upload. Ask for
@@ -217,8 +227,15 @@ are handed to `motion-director`.
   per-shot prompts for AI video tools. Its `references/` hold the Master SaaS Motion Design
   System (11 parts plus a condensed digest), 12 format guidelines, prompt templates and a
   worked example. `.claude/skills/motion-creative-director` links to it.
-- **`docs/research/`**: the evidence behind it: frame-by-frame teardowns of 8 reference
-  films, and catalogues from Superside, Raivcoo, Showreel.design and motion.so.
+- **`skills/motion-ai-studio/`**: the two-route skill. Route 1 is Claude Code only. Route 2 adds AI plates from Higgsfield, Seedance, Kling or Veo, either over MCP or by hand, composited with code-rendered text. `references/plates.md` holds the prompt shape, per-style starters, model choice and cost rules. `.claude/skills/motion-ai-studio` links to it.
+- **`docs/research/`**: the evidence behind it. It has frame-by-frame teardowns of 8 reference
+  films, catalogues from Superside, Raivcoo, Showreel.design and motion.so, and the reference-video study:
+  - `style-playbook.md`: 13 styles from 251 reviewed videos.
+  - `motion-techniques.md`: animation moves, colour, type and timing.
+  - `production-routes.md`: every style built three ways.
+  - `reference-notes.md`: the per-video notes.
+
+  The measurements and the per-frame dataset are on the `research-results` branch.
 - **`.claude-plugin/`**: makes the repository installable as a Claude Code plugin
   (`motion-kit@motion-graphic`). Plugin users receive a change only after `version` in
   `.claude-plugin/plugin.json` goes up, so raise it with every release.
