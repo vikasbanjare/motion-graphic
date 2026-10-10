@@ -74,6 +74,10 @@ HEX = re.compile(r"#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b")
 RGB = re.compile(r"rgba?\(\s*(\d{1,3})[,\s]+(\d{1,3})[,\s]+(\d{1,3})")
 FONT_FAMILY = re.compile(r"font-family\s*:\s*([^;}{]+)", re.I)
 FONT_FACE = re.compile(r"@font-face\s*{[^}]*font-family\s*:\s*['\"]?([^;'\"}]+)", re.I)
+# Fonts that are not the brand's type: icon, math, video-player and fallback faces.
+NOT_BRAND_FONT = re.compile(r"videojs|katex|icon|awesome|material symbols|glyph|emoji|fallback|swiper|slick", re.I)
+# Colours of other companies' logos (social icons on the page), not the brand's palette.
+SOCIAL_COLORS = {"#0a66c2", "#0077b5", "#ff0000", "#5865f2", "#e4405f", "#1da1f2", "#1877f2", "#25d366", "#ff4500", "#bd081c", "#000000", "#c13584", "#833ab4", "#fd1d1d", "#fcaf45", "#6441a5", "#1db954", "#ea4335", "#4285f4", "#34a853", "#fbbc05"}
 GENERIC = {"sans-serif", "serif", "monospace", "system-ui", "inherit", "initial", "-apple-system", "blinkmacsystemfont", "segoe ui", "roboto", "helvetica", "arial", "ui-sans-serif", "ui-serif", "ui-monospace", "apple color emoji", "segoe ui emoji", "segoe ui symbol", "noto color emoji", "var", "cursive", "fantasy", "emoji", "math", "fangsong", "menlo", "monaco", "consolas", "courier new", "liberation mono", "sfmono-regular", "helvetica neue", "noto sans", "ubuntu", "cantarell", "fira sans", "droid sans", "oxygen"}
 
 
@@ -184,9 +188,10 @@ def assets(pages, out):
     for decl in FONT_FAMILY.findall(css_text) + FONT_FACE.findall(css_text):
         for fam in decl.split(","):
             fam = fam.strip().strip("'\"").strip()
-            if fam and fam.lower() not in GENERIC and not fam.startswith("var(") and len(fam) < 40:
+            fam = re.sub(r"^_+|_[0-9a-f]{5,}$", "", fam).replace("_", " ").strip()  # next/font hashed names
+            if fam and fam.lower() not in GENERIC and not fam.startswith("var(") and len(fam) < 40 and not NOT_BRAND_FONT.search(fam):
                 families[fam] += 1
-    brand_colors = [(c, n) for c, n in colors.most_common(60) if hsl_info(c)[0] > 0.25 and 0.12 < hsl_info(c)[1] < 0.9][:10]
+    brand_colors = [(c, n) for c, n in colors.most_common(80) if c not in SOCIAL_COLORS and hsl_info(c)[0] > 0.25 and 0.12 < hsl_info(c)[1] < 0.9][:10]
     neutrals = [(c, n) for c, n in colors.most_common(60) if hsl_info(c)[0] <= 0.25][:6]
     # save logo files (private)
     os.makedirs(os.path.join(out, "private", "logos"), exist_ok=True)
