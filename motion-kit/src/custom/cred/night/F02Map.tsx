@@ -40,6 +40,12 @@ const cam = (f: number) => {
   const [, x, y, s] = KEYS[KEYS.length - 1];
   return { x, y, s };
 };
+/** Keep the view inside the map. */
+const camC = (f: number) => {
+  const c = cam(f);
+  const hx = 960 / c.s, hy = 540 / c.s;
+  return { s: c.s, x: hx * 2 >= MW ? MW / 2 : Math.min(MW - hx, Math.max(hx, c.x)), y: hy * 2 >= MH ? MH / 2 : Math.min(MH - hy, Math.max(hy, c.y)) };
+};
 
 const rnd = (i: number) => {
   const v = Math.sin(i * 127.1 + 311.7) * 43758.5453;
@@ -66,12 +72,16 @@ const MapArt: React.FC = () => {
     let river = "M -50 1950";
     for (let x = 0; x <= MW + 50; x += 60) river += ` L ${x} ${1950 - 0.18 * x + 90 * Math.sin(x / 260)}`;
     const blocks: [number, number, number, number][] = [];
-    for (let i = 0; i < 90; i++) {
+    const marks = [P.card, P.toll, P.shops, P.airport, P.hotel, P.store];
+    for (let i = 0; i < 160 && blocks.length < 34; i++) {
       const near = [P.shops, P.hotel, P.store, P.toll][i % 4];
-      blocks.push([near[0] + (rnd(i) - 0.5) * 760, near[1] + (rnd(i + 99) - 0.5) * 520, 50 + rnd(i + 7) * 90, 40 + rnd(i + 3) * 70]);
+      const x = Math.round((near[0] + (rnd(i) - 0.5) * 900) / 120) * 120, y = Math.round((near[1] + (rnd(i + 99) - 0.5) * 640) / 110) * 110;
+      if (marks.some((m) => Math.hypot(m[0] - x, m[1] - y) < 300)) continue;
+      if (blocks.some((b) => Math.abs(b[0] - x) < 130 && Math.abs(b[1] - y) < 120)) continue;
+      blocks.push([x, y, 70 + rnd(i + 7) * 30, 56 + rnd(i + 3) * 30]);
     }
     const trees: [number, number, number][] = [];
-    for (let i = 0; i < 160; i++) trees.push([rnd(i + 500) * MW, rnd(i + 900) * MH, 14 + rnd(i + 40) * 22]);
+    for (let i = 0; i < 90; i++) trees.push([rnd(i + 500) * MW, rnd(i + 900) * MH, 14 + rnd(i + 40) * 22]);
     return { topo, river, blocks, trees };
   }, []);
   const roads = [
@@ -100,7 +110,7 @@ const MapArt: React.FC = () => {
         <rect x={0} y={60} width={300} height={90} rx={12} fill="#f4f8ec" stroke={INK} strokeWidth={5} />
         <text x={150} y={130} textAnchor="middle" fontFamily={SERIF} fontWeight={700} fontSize={70} fill={INK}>₹0</text>
       </g>
-      {[[P.shops, "bag", 260], [P.airport, "globe", 0], [P.hotel, "bell", 230], [P.store, "box", 240]].map(([p, k, sz], i) =>
+      {[[P.shops, "bag", 380], [P.airport, "globe", 0], [P.hotel, "bell", 360], [P.store, "box", 380]].map(([p, k, sz], i) =>
         (sz as number) > 0 ? (
           <g key={i} transform={`translate(${(p as unknown as number[])[0] - (sz as number) / 2}, ${(p as unknown as number[])[1] - (sz as number) - 20}) scale(${(sz as number) / 200})`}>
             <Icon kind={k as never} h="mp" ink={INK} sw={3} />
@@ -133,7 +143,7 @@ const Legend: React.FC<{ f: number; from: number; to: number; big: string[]; sma
 export const F02Map: React.FC = () => {
   useFonts();
   const f = useCurrentFrame();
-  const c = cam(f);
+  const c = camC(f);
   const routeP = interpolate(f, [40, 80, 150, 225, 290, 350, 400], [0, 0.18, 0.4, 0.62, 0.8, 1, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const routePts = [P.card, P.toll, P.shops, P.airport, P.hotel, P.store];
   const routeD = "M " + routePts.map((p) => `${p[0]} ${p[1]}`).join(" L ");

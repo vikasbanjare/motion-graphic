@@ -12,6 +12,8 @@ import { CRED_V3_FRAMES, CredCardV3 } from "./custom/cred/CredCardV3.tsx";
 import { CRED_V4_FRAMES, CredCardV4 } from "./custom/cred/CredCardV4.tsx";
 import { F01_FRAMES, F01Press } from "./custom/cred/night/F01Press.tsx";
 import { F02_FRAMES, F02Map } from "./custom/cred/night/F02Map.tsx";
+import { F03_FRAMES, F03Mint } from "./custom/cred/night/F03Mint.tsx";
+import { F04_FRAMES, F04Watermark } from "./custom/cred/night/F04Watermark.tsx";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -49,6 +51,8 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="CredCardV4" component={CredCardV4} durationInFrames={CRED_V4_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="Night01Press" component={F01Press} durationInFrames={F01_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="Night02Map" component={F02Map} durationInFrames={F02_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="Night03Mint" component={F03Mint} durationInFrames={F03_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="Night04Watermark" component={F04Watermark} durationInFrames={F04_FRAMES} fps={24} width={1920} height={1080} />
     </Folder>
     <Folder name="Examples">
       {EXAMPLES.map((e) => (
