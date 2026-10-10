@@ -41,6 +41,12 @@ Tags: [C] Certain, [L] Likely, [G] Guessing. Full source lists are in the two re
 | Match cut | Scene 1's end shape equals scene 2's start shape, at the same place and size, and keeps moving | 0 |
 | Text-to-UI | A headline word shrinks into its slot in the UI, and the UI builds around it | 18–24 |
 
+- **Never let the camera snap.** A per-scene push must ease back to rest before the scene changes, e.g. `scale = 1 + A·(1 − cos 2πt)/2`. A push that resets on the cut jolts the whole frame: v4's first cut had 5 visible snaps, exactly at the scene changes, and the user called it "jerk".
+- **Morphs need gentle curves and time.**
+  - Size and shape morphs use a symmetric curve with no steep middle, e.g. `cubic-bezier(0.45,0,0.55,1)`, over ≥ 0.9 s for a 4× size change.
+  - Rotation speed stays constant; a rate change mid-film jumps the angle.
+  - Bursts glide on a decelerating curve. A spring starts too fast for a premium film.
+  - Masks and reveals open from an element's *on-screen* position, after the camera transform.
 - **Vary the transitions.** All fades, or all slides, reads as amateur [L].
 
 ### 2. Easing, springs, timing

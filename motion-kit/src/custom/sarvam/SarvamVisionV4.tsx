@@ -27,6 +27,8 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const expoOut = Easing.bezier(0.16, 1, 0.3, 1);
 const easeIn = Easing.bezier(0.3, 0, 0.8, 0.15);
 const inOut = Easing.bezier(0.65, 0, 0.35, 1);
+/** Gentle symmetric ease for size / shape morphs: no steep middle, zero speed at both ends. */
+const morph = Easing.bezier(0.45, 0, 0.55, 1);
 const p = (f: number, a: number, d: number, e = expoOut) => interpolate(f, [a, a + d], [0, 1], { ...clamp, easing: e });
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const spr = (f: number, at: number, damping = 21) => spring({ frame: f - at, fps: FPS, config: { stiffness: 158, damping, mass: 1 } });
@@ -41,7 +43,7 @@ const T = {
   shift: 10.4, // paper slides left, data card arrives
   toOrb: 13.85, // badge gem grows into the orb
   toGem: 18.35, // orb shrinks back to a gem
-  burst: 18.9,
+  burst: 19.05,
   toLive: 21.85,
   toEnd: 25.05, // circle mask from the gem into the end card
   end: 29,
@@ -50,18 +52,18 @@ const T = {
 // ---- the anchor gem's path: position, size, shape, from scene to scene ----------------------
 type Key = { t: number; x: number; y: number; size: number; kind: GemKind; orb?: number };
 const ANCHOR: Key[] = [
-  { t: 3.3, x: 960, y: 1180, size: 70, kind: "flower" },
-  { t: 3.9, x: 960, y: 372, size: 92, kind: "flower" },
-  { t: 6.6, x: 960, y: 360, size: 92, kind: "flower" },
-  { t: 7.3, x: 1060, y: 130, size: 40, kind: "star" },
-  { t: 10.3, x: 1060, y: 130, size: 40, kind: "star" },
-  { t: 11.0, x: 1567, y: 345, size: 30, kind: "flower" }, // badge in the data card header
-  { t: 13.8, x: 1567, y: 345, size: 30, kind: "flower" },
-  { t: 14.55, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 }, // becomes the orb
-  { t: 18.3, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 },
-  { t: 18.95, x: 960, y: 275, size: 78, kind: "diamond" }, // shrinks back, above the score
-  { t: 21.8, x: 960, y: 275, size: 78, kind: "diamond" },
-  { t: 22.5, x: 744, y: 676, size: 46, kind: "flower" }, // beside the CTA pill
+  { t: 3.25, x: 960, y: 1180, size: 70, kind: "flower" },
+  { t: 4.05, x: 960, y: 372, size: 92, kind: "flower" },
+  { t: 6.55, x: 960, y: 360, size: 92, kind: "flower" },
+  { t: 7.45, x: 1060, y: 130, size: 40, kind: "star" },
+  { t: 10.25, x: 1060, y: 130, size: 40, kind: "star" },
+  { t: 11.15, x: 1567, y: 345, size: 30, kind: "flower" }, // badge in the data card header
+  { t: 13.75, x: 1567, y: 345, size: 30, kind: "flower" },
+  { t: 14.75, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 }, // becomes the orb
+  { t: 18.25, x: 960, y: 420, size: 320, kind: "scallop", orb: 1 },
+  { t: 19.15, x: 960, y: 275, size: 78, kind: "diamond" }, // shrinks back, above the score
+  { t: 21.75, x: 960, y: 275, size: 78, kind: "diamond" },
+  { t: 22.65, x: 744, y: 676, size: 46, kind: "flower" }, // beside the CTA pill
   { t: 25.0, x: 744, y: 676, size: 46, kind: "flower" },
 ];
 const anchorAt = (t: number) => {
@@ -71,8 +73,8 @@ const anchorAt = (t: number) => {
   const a = ANCHOR[i - 1];
   const b = ANCHOR[i];
   const k = b.t === a.t ? 1 : Math.min(1, Math.max(0, (t - a.t) / (b.t - a.t)));
-  const e = inOut(k);
-  return { x: mix(a.x, b.x, e), y: mix(a.y, b.y, e), size: mix(a.size, b.size, e), blend: k, from: a, to: b };
+  const e = morph(k);
+  return { x: mix(a.x, b.x, e), y: mix(a.y, b.y, e), size: mix(a.size, b.size, e), blend: morph(k), from: a, to: b };
 };
 
 const GemShape: React.FC<{ kind: GemKind; size: number; id: string; orb?: boolean; rot?: number; opacity?: number }> = ({ kind, size, id, orb, rot = 0, opacity = 1 }) => {
@@ -106,15 +108,15 @@ const GemShape: React.FC<{ kind: GemKind; size: number; id: string; orb?: boolea
 const Anchor: React.FC = () => {
   const f = useCurrentFrame();
   const t = f / FPS;
-  if (t < 3.3 || t > T.toEnd + 0.6) return null;
+  if (t < 3.25 || t > T.toEnd + 0.7) return null;
   const a = anchorAt(t);
   const shapeMix = a.from.kind === a.to.kind ? 1 : Math.min(1, Math.max(0, (a.blend - 0.25) / 0.5));
-  const breathe = 1 + 0.03 * Math.sin(f / 10);
+  const breathe = 1 + 0.025 * Math.sin(f / 14);
   const bob = Math.sin(f / 20) * 12;
-  const orb = (a.from.orb ?? 0) * (1 - a.blend) + (a.to.orb ?? 0) * a.blend;
-  const rot = f * (orb > 0.5 ? 0.3 : 0.6);
+  const rot = f * 0.4; // one constant speed: no jump when the gem becomes the orb
+  const fade = 1 - p(f, s(T.toEnd), 18, inOut);
   return (
-    <div style={{ position: "absolute", left: a.x, top: a.y + bob, transform: `scale(${breathe})` }}>
+    <div style={{ position: "absolute", left: a.x, top: a.y + bob, transform: `scale(${breathe})`, opacity: fade }}>
       {a.from.kind !== a.to.kind ? <GemShape kind={a.from.kind} size={a.size} id="anc-a" orb={!!a.from.orb} rot={rot} opacity={1 - shapeMix} /> : null}
       <GemShape kind={a.to.kind} size={a.size} id="anc-b" orb={!!a.to.orb} rot={rot} opacity={a.from.kind !== a.to.kind ? shapeMix : 1} />
     </div>
@@ -128,8 +130,10 @@ const Satellite: React.FC<Sat & { id: string; out: number; from?: { x: number; y
   const k = spr(f, at, 23);
   const par = [1, 0.6, 0.3][depth];
   const drift = Math.sin((f + at * 3) / 22) * 22 * par;
-  const ox = from ? mix(from.x, x, k) : x;
-  const oy = from ? mix(from.y, y, k) : y + (1 - k) * 40;
+  // Burst gems glide out on a smooth decelerating curve (a spring starts too fast: reads as a jolt).
+  const g = from ? p(f, at, 34, Easing.bezier(0.25, 0.1, 0.25, 1)) : 0;
+  const ox = from ? mix(from.x, x, g) : x;
+  const oy = from ? mix(from.y, y, g) : y + (1 - k) * 40;
   const blur = [0, 3, 9][depth];
   const exit = 1 - out;
   return (
@@ -139,7 +143,7 @@ const Satellite: React.FC<Sat & { id: string; out: number; from?: { x: number; y
         left: ox + (out * (x - 960)) * 0.25 + Math.cos((f + at * 5) / 34) * 14 * par,
         top: oy + drift - out * 30,
         transform: `scale(${(0.85 + 0.15 * k) * (depth === 0 ? 1 : depth === 1 ? 0.9 : 0.75)})`,
-        opacity: Math.min(1, k * 1.3) * exit,
+        opacity: (from ? Math.min(1, g * 2) : Math.min(1, k * 1.3)) * exit,
         filter: `blur(${blur}px)`,
       }}
     >
@@ -480,8 +484,9 @@ const End: React.FC = () => {
   const radius = mix(0, 2300, r);
   const logo = p(f, a + 16, 26);
   const hold = (f - a) * 0.00035;
+  const gem = onScreen(a, 744, 676 + Math.sin(a / 20) * 12);
   return (
-    <AbsoluteFill style={{ clipPath: `circle(${radius}px at 744px 676px)` }}>
+    <AbsoluteFill style={{ clipPath: `circle(${radius}px at ${gem.x}px ${gem.y}px)` }}>
       <AbsoluteFill style={{ backgroundImage: END_CARD, transform: `scale(${1.02 + hold})` }} />
       <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center" }}>
         <div style={{ width: 1200, height: 700, borderRadius: "50%", background: "radial-gradient(closest-side, rgba(168,182,250,0.45), transparent)", transform: `translate(${Math.sin(f / 34) * 160}px, ${250 + Math.sin(f / 26) * 40}px) scale(${1 + 0.1 * Math.sin(f / 30)})`, filter: "blur(20px)" }} />
@@ -497,12 +502,12 @@ const End: React.FC = () => {
 const DIR = "custom/sarvam-v4/";
 const VO: [string, number, number][] = [
   // key, start (s), length (s)
-  ["a", 0.55, 2.44],
+  ["a", 0.4, 2.92],
   ["b", 3.85, 1.87],
   ["c", 7.25, 4.44],
   ["d", 14.45, 2.58],
   ["e", 18.75, 2.36],
-  ["f", 22.25, 2.62],
+  ["f", 22.2, 2.77],
 ];
 /** Music gain per frame: -10 dB duck under the voice, 60 ms attack / 450 ms release, 0.6 s fade in,
  * ring-out (not silence) over the last 3 s. */
@@ -563,20 +568,32 @@ const Sound: React.FC = () => (
   </>
 );
 
+// ---- camera --------------------------------------------------------------------------------
+/** Scale and drift of the whole stage at frame f. Inside each scene it pushes in ~4.5% and eases
+ * back out (1 - cos), so it is at rest exactly on every scene change: no snap, no jump. */
+const camAt = (f: number) => {
+  const cuts = [0, T.built, T.toForm, T.toOrb, T.toGem, T.toLive, T.toEnd, T.end].map(s);
+  let i = cuts.findIndex((c) => c > f);
+  if (i <= 0) i = cuts.length - 1;
+  const a = cuts[i - 1];
+  const b = cuts[i];
+  const local = Math.min(1, Math.max(0, (f - a) / Math.max(1, b - a)));
+  return { scale: 1 + 0.045 * (1 - Math.cos(local * Math.PI * 2)) * 0.5, tx: Math.sin(f / 90) * 22, ty: Math.cos(f / 110) * 10 };
+};
+/** Where a stage point lands on screen (scale around the centre, then drift). */
+const onScreen = (f: number, x: number, y: number) => {
+  const c = camAt(f);
+  return { x: (x - W / 2) * c.scale + W / 2 + c.tx, y: (y - H / 2) * c.scale + H / 2 + c.ty };
+};
+
 // ---- film ----------------------------------------------------------------------------------
 export const SarvamVisionV4: React.FC = () => {
   useFonts();
   const f = useCurrentFrame();
-  // Camera: a 5% push inside every scene (eased, resets under each transition) + slow lateral drift.
-  const cuts = [T.built, T.toForm, T.toOrb, T.toGem, T.toLive, T.toEnd, T.end].map(s);
-  const i = cuts.findIndex((c) => c > f);
-  const a = i <= 0 ? 0 : cuts[i - 1];
-  const b = i === -1 ? s(T.end) : cuts[i];
-  const local = Math.min(1, Math.max(0, (f - a) / Math.max(1, b - a)));
-  const cam = 1 + 0.05 * Easing.inOut(Easing.sin)(local);
+  const cam = camAt(f);
   return (
     <AbsoluteFill style={{ background: C.white }}>
-      <AbsoluteFill style={{ transform: `scale(${cam}) translate(${Math.sin(f / 90) * 22}px, ${Math.cos(f / 110) * 10}px)` }}>
+      <AbsoluteFill style={{ transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${cam.scale})` }}>
         <Glow />
         <Built />
         <FormScene />
