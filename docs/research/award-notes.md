@@ -2,7 +2,7 @@
 
 Videos found by crawling motiondesignawards.com (`research/sites.txt`), downloaded and measured on GitHub's runners. Each review image is the first contact sheet (0-16 s at 2 fps) plus one sheet from the middle of the video. Frames stay encrypted on `research-results`; only these notes and the numbers are public.
 
-Review progress: 77 of 173 videos (the rest follow in later commits).
+Review progress: 126 of 173 videos (the rest follow in later commits).
 
 ## Index
 
@@ -415,3 +415,148 @@ Night-vision green palette: aircraft carrier deck, pilots, Rafale jets at sunset
 
 #### N078 Ikebana (illo) [3D-character][kinetic-type]
 Soft lavender 3D: toy-like characters made of blobs and cylinders arrange flowers in yellow and white vases; then a violet card with big dark-green serif "ikebana" typed letter by letter, the film playing in a small square, body copy "is an asian technique of flower arrangement" in tight serif with an image block inserted into the paragraph, "& our first mini—film in three-d", logo "illo". Editorial-typographic end card around a 3D short.
+
+#### N079 Claviio Gold [3D-product-CGI]
+Black + gold only: a single spark falls, gold dust explodes over black rock, liquid gold silk fabric ripples, split screen silk vs polished gold bar, a gold nugget forming from particles, molten gold flowing over obsidian and pooling into a mould, ending on a black and gold monolith on rock. One material in five states (dust, cloth, nugget, liquid, ingot).
+
+#### N080 Hamilton Ventura Edge Skeleton (Kutuko) [3D-product-CGI]
+Monochrome black/grey with lume-green hands: camera flies through a mountain landscape inside a kaleidoscopic triangular frame (the watch's shape as a portal), macro gears, X-ray white pass, triangular strap, mountain peaks reflected in the case, the watch on a horizon. Product shape becomes the world's frame.
+
+#### N081 Discord Kawaii mode drops [kinetic-type][2D-character][brand-system]
+Discord blurple / pink / butter-yellow / mint, rounded geometric sans: "We teamed up with Discord to drop" word by word, a word in a white pill ("cute", "sweet", "vibrant"), cute icons (cat, headphones, plant, chat bubble) with labels, phone UI on dark, "7 unique Avatar Decorations", bubbles flooding the screen "to flood your screen perfectly", boba straw sliding in, "A full-on explosion of", list words spreading across the frame ("style animation color"), "blending, gaming, design, and motion to the next level". Caption pill + mascot icons + colour-per-beat.
+
+#### N082 OFFF Mexico titles [3D-product-CGI][kinetic-type]
+Each speaker = one 3D object scene: orange sponge on white stairs, blue ring, Google Creative Lab blue room with toy primitives, orange/blue staircases on black, a fuzzy orange "X" shape with HUD labels "Boldtron ◂ ▸ Cocolab", a glass bubble with objects "Volvox Labs / David Carson", yellow blobs vs chrome "ManvsMachine", a row of objects on a timeline track, a final explosion of every object. Name super in small white type with tick-mark HUD. Conference titles = object per name.
+
+#### N083 Decathlon Inesis Fer 500 (irons) [3D-product-CGI]
+Thermal-camera palette (black → red → orange → yellow): lava, molten metal pouring, the club head forging, a golf course rendered in heat-map colours, sparks; then neutral studio macros of the iron (loft "28°", "500 FORGED"), "Power inside" text; end on white "INESIS Iron set 500". Heat-map grade as concept.
+
+#### N084 Idea Academy [2D-character][flat-illustration]
+Cartoon-network style flat 2D: a strong red-haired girl, jungle temple with a stone face, vines, a drop through a dark shaft with spikes, a kid scientist with a blackboard, totem-mask character, tribe of kids. Bold flat palettes per scene (jungle green, navy shaft, teal classroom).
+
+#### N085 Showreel 4 [agency-reel][3D-character][kinetic-type]
+3D toy characters with lime swoosh type; space scenes with psychedelic patterns; white spheres with pink snake; vinyl record; drummer portrait on wavy stripes; op-art eye with checkered sphere; a pink illustrated chef with dessert; white luxury cosmetic jar set with gold; blue octopus mascot; giant lime distorted type "MORE…" with a cartoon skater; orange spheres on dark with blue type; "STRENGTH" condensed black type with green rope and white rock. Huge range, each case one look.
+
+#### N086 Select Sector SPDRs 2022 spot [kinetic-type][3D-product-CGI][editorial-swiss]
+Warm orange/yellow/cream material world: condensed bold sans phrases one by one ("YOU COULD / BUY A SINGLE STOCK / AND GO ALL-IN"), the type sitting on panels inside a 3D set (wood, terrazzo, felt, orange balls), "OR OWN THE SECTOR" with extruded cube wall, "KEEPING GOOD COMPANY" over a ball pit, "IS IT SO RADICAL TO BE SO… RATIONAL?" on collage panels, end card. Typography placed inside a physical material set.
+
+#### N087 Threads of Identity [3D-product-CGI]
+Red string threads on black weave together, form a star, then the whole Syrian independence flag assembles from stitched threads and waves. One continuous 17 s shot: thread-weaving reveal of a symbol.
+
+#### N088 Maido Hollo reel 2026 [agency-reel][3D-product-CGI]
+Blurred pink "REEL", a pastel 3D lounge with the studio name on the wall, then material studies on flat colour fields: pink fur balls on yellow silk, a blue chair frame, wooden and rattan shapes, velvet tubes, glass, granite; black glitch tiles with "XPL"/"RTN" wordmarks; mirrored kaleidoscope sculptures; white clay knots; blue ribbed spirals; confetti discs; "DRIFT" with a multicolour petal mass. 1.1 s per shot. Texture-first CGI reel.
+
+#### N089 Cartoons on the Bay 2025 [2D-character][kinetic-type]
+A purple desk lamp over a chat UI typing "Creiamo qualcosa insieme" (let's make something together), the "Ciao" logo wraps in paint strokes; black: white line shapes (circle, triangle) become a character; painterly, saturated purple/orange/yellow brush-texture worlds, a bird flying, a child on a hill under swirly Van Gogh skies; ends with the festival lock-up and logos on white. AI-chat prompt as the narrative opener of a hand-painted film.
+
+#### N090 Hamilton Cinema (Kutuko) [3D-product-CGI]
+Sand-gold palette with floating dust: "HAMILTON / AT THE HEART OF CINEMA SINCE 1932" tiny white caps; each film tribute = a set: a Dune desert with a sand-pouring watch, Indiana Jones temple with a gold seal, an Interstellar bookcase room, light-streak tunnel; film title as a small super top-left. One product, many movie worlds, same warm grade.
+
+#### N091 Chef's Cut: Oakley Unity collection [3D-product-CGI]
+Thousands of multicolour thread lines (hair-like) flowing on pale mint, forming a red triangular lattice that becomes the goggle strap, white "O" logo extruding, macro of the lens and "ARC 5" helmet, final helmet in the thread sculpture with "WE ARE LIMITLESS TOGETHER". Generative strand sim as the brand idea.
+
+#### N092 UNUM 2024 Unwrapped (duplicate of N021)
+
+#### N093 Google Chrome Enterprise [kinetic-type][whitespace-UI][brand-system]
+White with Google blue/red/yellow/green: tiny grey sentence typed in a URL bar "if you need a browser that"; full-frame colour shapes (blue quarter-circles, green blocks, yellow wedges) wipe in and the sentence continues inside each; key words coloured ("security breaches" red, "compliance" green); a grid of "anyplace" tiles in four colours; "everything" repeated vertically in grey; role words cycling ("System Admin / CIO / Director of IT" in brand colours); app and extension icons replace words inline; a final word "manage" spins letters around. Brand-colour geometry + one small sentence = the whole film.
+
+#### N094 Bell & Ross BR-X3 [3D-product-CGI]
+White hangar: a block opens into an exploded watch assembly, parts flying in blue/silver, a full-frame lume-green interlude (X-ray glow), macro of the blue dial, the watch assembled face-on, colourways on white, logo. White → green → blue rhythm.
+
+#### N095 The Season: opening titles [3D-product-CGI][paper-collage]
+Layered paper-cut / diorama look in cobalt blue and gold: an envelope with a wax seal opens into a scalloped window onto a gold paper city, blue paper waves with sailboats, an art-deco sunburst arch, a superyacht, a silhouette woman with martini by a porthole, a racecourse with gold horses, dancers in spotlight, a boxing ring inside a round door. Small gold cast names in corners. One continuous camera fly-through; the window/porthole shape transitions every scene.
+
+#### N096 Nantes: bicycle trip [live-action][2D-character][flat-illustration]
+Live-action cyclist riding through Nantes; flat colourful 2D illustration is tracked onto the city (road turns into a tiled pool, an elephant drawn over the real mechanical elephant, flowers bloom from a greenhouse, a fish flies beside the bike, a ring sculpture fills with painted water), ends with a brush-ink wipe to "NANTES" multicolour letters. Tracked 2D overlays on live action = city campaign.
+
+#### N097 Merry Christmas (UNUM, vertical) [3D-product-CGI][device-mockup]
+Drone shot of the Statue of Liberty where the pedestal is replaced by a giant phone showing the app (UI scrolls on the monument), then a small greeting card and the logo on black. Fake-OOH: product UI composited onto a landmark.
+
+#### N098 Iris [flat-illustration][kinetic-type]
+Handwritten white script "the hand is the mirror of the soul" writes on over a glowing blue swirl; painted watercolour hands in pink/peach (holding, pinching, reaching), piano keys with translucent blue hands, broken glass fragments, glass bottles. Soft painterly hand-drawn short; script typography written in real time.
+
+#### N099 MINI Vision Urbanaut "Wanderlust" [live-action][paper-collage][3D-product-CGI]
+Live action: designer sketching a car in a notebook; the page becomes a flat retro travel-poster illustration (orange sky, mountain), a round porthole of it sits in the car's interior; the passengers turn into pencil-sketch figures; the car drives out of a collage landscape made of maps, rocks and paper, a floating island with waterfall, autumn leaves, a moon over a bay city. Sketch → poster → collage → CGI blend in one journey.
+
+#### N100 BAM is back [live-action][kinetic-type]
+Dark concert hall: one spotlight on an empty stage, dust in the beam, a score on a music stand, chandeliers. Minimal, cinematic, almost still: 2 cuts / 67 s. Silence + light as the "return" message.
+
+#### N101 E39 M5 vs Koenigsegg Agera RS [3D-product-CGI][live-action]
+Salt flat, bleached white haze: the hypercar powers through with dust, glowing brake discs; then an old BMW M5 sits in the haze with "The fastest saloon car on the planet. The BMW M5." small white text. Speed told by dust and haze, punchline small.
+
+#### N102 Fall in love again and again [3D-character][kinetic-type]
+A vinyl record seen from above on black, tiny 3D people dancing and lying on it as it spins; huge serif words over it one at a time ("fall", "everything", "is") with soft glow. One-shot loop; lyrics as giant serif on a single object.
+
+#### N103 Sadness: emotions chapter 01 [3D-product-CGI][abstract]
+Deep blue/magenta marbled fluid sky over a dark sea with a setting moon; a black ink wave rises and spirals the frame; liquid chrome-glass blobs with swirling interiors; a porcelain-like crumpled form with blue patterns cracks; a glowing crystal splits with light rays. Emotion = colour + fluid behaviour, no characters.
+
+#### N104 SKL Robotics Humanoid HMND01 [3D-product-CGI]
+Black → icy white with cobalt rim light: "HUMANOID" tiny tracked caps under a light bar; a logo rising from liquid; macro of robot joints, fingers and a faceless head; a translucent fabric/particle shroud blowing around the robot; particle skin forming on the torso; final full figure in a white corridor. Apple-grade restraint: grey + one blue.
+
+#### N105 Nike MadReady Mercurial Dream Speed 7 [3D-product-CGI][kinetic-type]
+Boot emerges through blue light slats, flies through a speed tunnel of light streaks and a vortex, then floats on a soft pink-blue gradient; "MERCURIAL DREAM SPEED 7" italic wordmark reveals by mask, condenses to "MDS 7 ✓". 15 s, speed tunnel + gradient-sky hero.
+
+#### N106 The Yellow Dot (Ricci) [3D-product-CGI][editorial-swiss][kinetic-type]
+Chapters on violet: giant cropped numerals "01 / 02 / 03" with small labels ("Matter", "The Net Effect", "Movement"); between them photoreal tennis CGI: macro felt ball, balls on pink and green courts, pink glass bubbles passing through a net, "EFFECT" wide type over the scene, a ball multiplying into a coloured cluster that scatters on white courts. Editorial chaptering + surreal product.
+
+#### N107 Nike MadReady Tiempo [3D-product-CGI][kinetic-type]
+Light grey studio: a needle-and-loop graphic draws, the teal/purple boot spins, macro of leather and the "TIEMPO" tab, end card "Tuned for Touch" hand script beside the boot. 11 s, 7 cuts, script end-line.
+
+#### N108 Redmi N16U "Echoes from depth" [3D-product-CGI]
+Blue underwater caustics: the phone sinks through light shafts, then white: water splash around the camera bump, macro lenses, chip on a gold circuit board, charging cable glow "51%", screen wallpaper, colourway trio, "Redmi N16U" small type on black. Standard phone launch grammar: dark reveal → light macros → specs → lineup.
+
+#### N109 Checker: Tobi space sequence [live-action][3D-product-CGI]
+Cinematic CGI/live: Earth from orbit, an astronaut tumbling, a space station, a face inside the helmet with lights. Feature-film VFX shot list, 31 shots / 180 s.
+
+#### N110 Taschen presents Arnold Schwarzenegger [3D-product-CGI]
+Dark gallery of statues: "TASCHEN PRESENTS" small gold serif over a bodybuilder's shoulder; a marble Ionic column becomes the book stand; the teal book with gold "ARNOLD" foil, embossed spine, a flip through B&W photo spreads. Book as a museum object.
+
+#### N111 Christie's Luxury Week [3D-product-CGI][editorial-swiss]
+Each beat = a small inset window (letterboxed rectangle) on a flat colour field (sage, violet, terracotta, forest green) with venetian-blind shadows; inside, a minimal architectural room with a single object (glass, bracelet, ring) in raking light; end on charcoal: "LUXURY WEEK / CHRISTIE'S" tiny serif caps. Window-in-colour-field framing = gallery calm.
+
+#### N112 Roger & Gallet savons (Clim Studio) [3D-product-CGI][brand-system]
+Pill-shaped / rounded-rect frames inside bold colour borders (violet, yellow, orange, pink) that change per shot; inside, a pastel still-life set (vases, clock, soaps, flowers) where soaps and petals pop and float; end "Welcome to The Happiness Factory" white serif on a purple rounded card, logo on orange card. Frame colour = beat colour.
+
+#### N113 Nike Air Zoom Mercurial × Rocket League, Piccadilly screen [3D-product-CGI][anamorphic-OOH]
+Real Piccadilly Circus curved billboard footage: yellow "FAST IS IN THE AIR" type, an anamorphic 3D boot that seems to burst out of the screen, morphs into a Rocket League car, Nike and Rocket League lockups; then the boot on a stadium pitch transforms into the car. Anamorphic forced-perspective billboard (fake 3D OOH).
+
+#### N114 Hamilton "Timing the action" [3D-product-CGI]
+Same system as N090 but blue/sky: Earth sunrise with the Hamilton name embossed on a spaceship ring, 2001 pod scene with the concept watch, biplane loop with the watch strapped on a wing, "MISSION: IMPOSSIBLE" small caps, a pink comet over a frozen sea, a watch embedded in ice with a red cape ("SUPERMAN"). Movie-tribute vignettes, title small bottom-left.
+
+#### N115 Chinatown [3D-product-CGI][illustration-3D]
+Misty pastel CGI: a cave mouth opens onto junk ships with patterned sails, a figure in red on deck, giant white rings in ice cliffs, the sun breaking through, a fleet in fog. Painterly CGI with one red figure.
+
+#### N116 MINI Vision Urbanaut "Vibe" [live-action][3D-product-CGI][paper-collage]
+Designer with a jukebox and wheels, glowing wheel macro becoming the MINI badge, the car on a pastel sunset boulevard; B&W line-drawn people (rotoscoped sketch style) dance around the car, sit inside it, a girl hugging a cat; a basketball scene. Sketch-people over CGI car = the "vibe" mode.
+
+#### N117 Found (health / weight loss) [flat-illustration][data-viz][kinetic-type]
+Rows of colourful pill-like and vase-like shapes (pattern grid); food blobs with numbers (103, 115, 126) and icons; dark green: "People don't fail diets" small white with a highlight box re-arranging to "diets fail"; capsules, particles; wavy ribbon lanes labelled "Blood pressure / Cholesterol / Weight loss"; rainbow stripes racing, data lines like a bar race; "For the long run." with a toggle pill and food icon. Flat shapes + ribbon lanes as data.
+
+#### N118 Nobjects (Clim Studio) [3D-character][3D-product-CGI]
+A sunlit terracotta room where furniture are characters: a green bendy chair walks, a yellow folding chair, a blue tulip stool, a table; little chat bubbles above them ("Bonjour, how you doing?", "Well, well, well…", "Table Testing again?", "Let's all have a seat"). Products as characters with speech bubbles = catalogue as story.
+
+#### N119 BMW i Vision Dee "The birth of Dee" [3D-product-CGI][3D-character]
+Dark studio with a light-bar grille slowly glowing up, the car sweeping light; a stylised 3D girl in an egg chair holding a tablet beside the car; then pure white: the car's headlights become cartoon eyes and it talks/emotes with the girl; long white-cyc shots. Product given a face = personality launch.
+
+#### N120 Tango Calor [3D-product-CGI][2D-character]
+Blue sky with a soft sun; title painted on Mediterranean ceramic tiles; a warm CGI terrace (arches, plants, blue tiles); a hand-drawn line character (peach fill, red outline) melts in the heat over the 3D set, drinks a cold green drink through a red straw. 2D line character over 3D set.
+
+#### N121 Etos "Luchtpost" Christmas [2D-character]
+Painterly 2D feature-style: a girl with a bear plush in snowy streets, a glowing shop window, a paper lantern released to an elderly woman's window, a gift tag; end "mooi wat iets kleins kan doen" white serif on bokeh, "liefs, Etos". Warm-cold contrast (orange windows vs violet snow).
+
+#### N122 Very Noise (duplicate of N013)
+
+#### N123 Split-the-bill app (untitled) [whitespace-UI][device-mockup]
+Soft grey 3D-tilted app card with avatars, a per-person amount rolling "$1… → $32.87", a +/- stepper, tip chips 0%/10%/15%/20% with 15% selected, a Continue button; camera pulls back to the whole card, logo "a". 13 s, one shot. Pure UI micro-interactions on a grey studio.
+
+#### N124 Contruent [3D-product-CGI][whitespace-UI][logo-sting]
+White clay isometric mining world (trucks in a blue pit), orange glass discs labelled "Precision / Efficiency" drop in; a whole white industrial city with roads; then glass dashboard UI panels floating in a soft lavender space; glass "C" logo assembled from UI shards. Clay world → glass UI → logo.
+
+#### N125 Rage: emotions chapter 02 [3D-product-CGI][abstract]
+Red/magenta/purple: a canyon fly-through at sunset, rainbow light trails, a bubble dropping into molten magenta, rocks shattering into crystal shards, explosions of red glass, a dark red river with water drops, starfield. Colour + destruction as emotion (pairs with N103 "Sadness" in blue).
+
+#### N126 Better Feeds (Facebook) [flat-illustration][2D-character][whitespace-UI]
+Facebook blue + flat characters (roller-skaters) under "Stay connected with those that matter most" with bold keywords; big illustrated hands holding phones, heart reactions popping; Favorites list UI with "Add/Added" toggles; white cards "See more from Favorites in your Feed" with bold key words; "Post hidden. You'll see fewer posts like this."; "Fine tune your Feed." Product-feature explainer: illustration hands + real UI + one line of copy per feature.
+
+#### N127 Miniwood [3D-product-CGI][miniature]
+Tilt-shift miniature CGI: a "MINIWOOD" Hollywood-style sign builds on a hill, a night street scene, King Kong on the Empire State Building with biplanes, a snowy Kill-Bill style fight in a courtyard, a car chase exploding under a bridge. Movie tributes as miniature dioramas (shallow depth of field sells the scale).
