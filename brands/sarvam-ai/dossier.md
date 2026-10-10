@@ -24,33 +24,33 @@ Brand colours from the site's CSS (count = uses):
 - `#83c040` × 49
 - `#a5460f` × 47
 - `#818cf8` × 32
-- `#3333cc` × 30
+- `#3333cc` × 29
 - `#c7d2fe` × 25
 - `#e96c2f` × 25
 
 Neutrals:
 
-- `#000000` × 269
-- `#ffffff` × 84
+- `#000000` × 317
+- `#ffffff` × 157
 - `#181717` × 58
 - `#13121e` × 51
-- `#999999` × 36
-- `#141414` × 32
+- `#999999` × 35
+- `#141414` × 28
 
 Named CSS colour tokens:
 
 - `--hover-color`: `#0a66c2`
-- `--color-tx-inverse`: `#faf8f5`
-- `--tw-ring-offset-color`: `#ffffff`
 - `--color-white`: `#ffffff`
+- `--tw-ring-offset-color`: `#ffffff`
 - `--accent-contrast`: `#ffffff`
 - `--accent-contrast`: `#311921`
-- `--color-st-tertiary`: `#d4d0c8`
-- `--color-epoch-ink`: `#141414`
-- `--color-epoch-paper`: `#faf8f5`
-- `--color-epoch-gray`: `#6b6558`
-- `--color-epoch-gray-2`: `#46423a`
-- `--color-epoch-red`: `#c20d26`
+- `--text-primary`: `#0f0f0f`
+- `--text-secondary`: `#606060`
+- `--icon-color`: `#656565`
+- `--text-primary`: `#ffffff`
+- `--text-secondary`: `#aaaaaa`
+- `--icon-color`: `#ffffff`
+- `--color-accent`: `#0d9aff`
 
 Colours measured in their own films (share of pixels):
 
@@ -70,12 +70,11 @@ Colours measured in their own films (share of pixels):
 Font families named in the site's CSS (licensed fonts: names only; pick the closest free match):
 
 - Matter Mono × 5
-- Kalice × 4
-- Season Mix × 4
 - monospace) × 3
-- monospace!important × 2
 - Matter × 2
 - Matter Semi Mono × 2
+- Season Mix × 2
+- monospace!important × 2
 
 ## Logos found
 

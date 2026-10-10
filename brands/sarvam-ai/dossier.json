@@ -396,7 +396,7 @@
    ],
    [
     "#3333cc",
-    30
+    29
    ],
    [
     "#c7d2fe",
@@ -410,11 +410,11 @@
   "neutral": [
    [
     "#000000",
-    269
+    317
    ],
    [
     "#ffffff",
-    84
+    157
    ],
    [
     "#181717",
@@ -426,11 +426,11 @@
    ],
    [
     "#999999",
-    36
+    35
    ],
    [
     "#141414",
-    32
+    28
    ]
   ],
   "css_custom_properties": [
@@ -440,17 +440,12 @@
     58
    ],
    [
-    "color-tx-inverse",
-    "#faf8f5",
-    2
+    "color-white",
+    "#ffffff",
+    3
    ],
    [
     "tw-ring-offset-color",
-    "#ffffff",
-    2
-   ],
-   [
-    "color-white",
     "#ffffff",
     2
    ],
@@ -465,73 +460,78 @@
     2
    ],
    [
-    "color-st-tertiary",
-    "#d4d0c8",
+    "text-primary",
+    "#0f0f0f",
     1
    ],
    [
-    "color-epoch-ink",
-    "#141414",
+    "text-secondary",
+    "#606060",
     1
    ],
    [
-    "color-epoch-paper",
-    "#faf8f5",
+    "icon-color",
+    "#656565",
     1
    ],
    [
-    "color-epoch-gray",
-    "#6b6558",
+    "text-primary",
+    "#ffffff",
     1
    ],
    [
-    "color-epoch-gray-2",
-    "#46423a",
+    "text-secondary",
+    "#aaaaaa",
     1
    ],
    [
-    "color-epoch-red",
-    "#c20d26",
+    "icon-color",
+    "#ffffff",
     1
    ],
    [
-    "color-epoch-pink-100",
-    "#ff97c0",
+    "color-accent",
+    "#0d9aff",
     1
    ],
    [
-    "color-epoch-pink-200",
-    "#fa71aa",
+    "color-base",
+    "#000000",
     1
    ],
    [
-    "color-epoch-pink-300",
-    "#eb60a5",
+    "color-text",
+    "#ffffff",
     1
    ],
    [
-    "color-epoch-pink-400",
-    "#e82d82",
+    "color-error-bg",
+    "#90a0b3",
     1
    ],
    [
-    "color-epoch-pink-500",
-    "#c5317b",
+    "color-base",
+    "#ffffff",
     1
    ],
    [
-    "color-epoch-pink-600",
-    "#a01f5f",
+    "color-text",
+    "#000000",
     1
    ],
    [
-    "color-epoch-purple-100",
-    "#8d4581",
+    "color-black",
+    "#000000",
     1
    ],
    [
-    "color-epoch-purple-200",
-    "#883e7b",
+    "color-tx",
+    "#1f1f1f",
+    1
+   ],
+   [
+    "color-tx-secondary",
+    "#3d3d3d",
     1
    ]
   ]
@@ -542,20 +542,8 @@
    5
   ],
   [
-   "Kalice",
-   4
-  ],
-  [
-   "Season Mix",
-   4
-  ],
-  [
    "monospace)",
    3
-  ],
-  [
-   "monospace!important",
-   2
   ],
   [
    "Matter",
@@ -563,6 +551,14 @@
   ],
   [
    "Matter Semi Mono",
+   2
+  ],
+  [
+   "Season Mix",
+   2
+  ],
+  [
+   "monospace!important",
    2
   ]
  ],
