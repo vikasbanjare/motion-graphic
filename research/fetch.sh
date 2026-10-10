@@ -58,9 +58,13 @@ while IFS= read -r line || [ -n "$line" ]; do
       # Vimeo embeds often answer 401 to yt-dlp from datacenter IPs; ask the player config instead.
       stream=""
       case "$url" in *vimeo.com/*) stream=$(python3 "$(dirname "$0")/vimeo_config.py" "$url" "${page_ref:-https://vimeo.com/}" 2>>"$fail.log") ;; esac
+      # Still refused: play it in headless Chromium and record the stream the player requests.
+      if [ -z "$stream" ] && [ "${BROWSER_GRAB:-0}" = 1 ]; then
+        stream=$(timeout 120 python3 "$(dirname "$0")/browser_grab.py" "$url" "${page_ref:-$url}" 2>>"$fail.log")
+      fi
       if [ -n "$stream" ] && yt-dlp --quiet --no-warnings --referer "${page_ref:-https://vimeo.com/}" \
         -f "$FORMAT" --merge-output-format mp4 --download-sections "*0-180" \
-        -o "$out/$id-vimeo-config.%(ext)s" "$stream" 2>>"$fail.log"; then
+        -o "$out/$id-stream.%(ext)s" "$stream" 2>>"$fail.log"; then
         :
       else
         echo -e "$url\tyt-dlp failed (see failures log)" >>"$fail"

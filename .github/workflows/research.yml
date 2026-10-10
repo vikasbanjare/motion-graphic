@@ -15,7 +15,7 @@ name: Research videos
 on:
   push:
     branches: [claude/youthful-darwin-n1lt7l]
-    paths: [research/links.txt, research/sites.txt, research/crawl.py, research/fetch.sh, research/vimeo_config.py]
+    paths: [research/links.txt, research/sites.txt, research/crawl.py, research/fetch.sh, research/vimeo_config.py, research/browser_grab.py, research/frames.py]
   workflow_dispatch:
     inputs:
       all:
@@ -58,8 +58,12 @@ jobs:
           # on research-results (unless re-measuring everything).
           { grep -v '^\s*$' research/links.txt; cat plan/found.tsv; } | awk -F'\t' '!seen[$1]++' > plan/all.txt
           : > plan/done.txt
+          : > plan/has-data.txt
           if [ "${ALL:-false}" != true ] && git fetch -q origin research-results 2>/dev/null; then
-            git ls-tree --name-only FETCH_HEAD data/ | sed 's|data/||' | cut -c1-8 | sort -u > plan/done.txt
+            # Done = has measurements AND per-frame features.
+            git ls-tree --name-only FETCH_HEAD data/ | sed 's|data/||' | cut -c1-8 | sort -u > plan/has-data.txt
+            git ls-tree --name-only FETCH_HEAD frames/ 2>/dev/null | sed 's|frames/||' | cut -c1-8 | sort -u > plan/has-frames.txt
+            comm -12 plan/has-data.txt plan/has-frames.txt > plan/done.txt
           fi
           while IFS= read -r line; do
             id=$(printf '%s' "${line%%$'\t'*}" | xargs | tr -d '\n' | sha1sum | cut -c1-8)
@@ -105,6 +109,10 @@ jobs:
           sudo apt-get install -y -qq ffmpeg
           pipx install "yt-dlp[default,curl-cffi]"
           yt-dlp --version
+          # Headless Chromium for players that refuse plain requests (research/browser_grab.py).
+          python3 -m pip install --quiet --break-system-packages numpy playwright
+          python3 -m playwright install --with-deps chromium >/dev/null && echo "BROWSER_GRAB=1" >> "$GITHUB_ENV" || echo "playwright unavailable"
+
 
       - name: Install
         working-directory: motion-kit
@@ -126,8 +134,21 @@ jobs:
             node motion-kit/scripts/research.mjs "$RUNNER_TEMP/videos" --out "$GITHUB_WORKSPACE/out/data/s${{ matrix.shard }}"
           fi
 
+      - name: Per-frame features
+        run: |
+          if ls "$RUNNER_TEMP"/videos/*.mp4 >/dev/null 2>&1; then
+            python3 research/frames.py "$RUNNER_TEMP/videos" out/frames
+          fi
+
       - name: Contact sheets
-        run: bash research/sheets.sh "$RUNNER_TEMP/videos" out/sheets
+        run: |
+          # Only videos without sheets yet (a backfill re-downloads measured videos for frames).
+          mkdir -p "$RUNNER_TEMP/new"
+          for f in "$RUNNER_TEMP"/videos/*.mp4; do
+            [ -e "$f" ] || continue
+            grep -qx "$(basename "$f" | cut -c1-8)" "$RUNNER_TEMP/plan/has-data.txt" 2>/dev/null || ln -s "$f" "$RUNNER_TEMP/new/"
+          done
+          bash research/sheets.sh "$RUNNER_TEMP/new" out/sheets
 
       - uses: actions/upload-artifact@v4
         with:
@@ -177,9 +198,11 @@ jobs:
         run: |
           OUT="$RUNNER_TEMP/out"
           RUN=${GITHUB_RUN_ID}
-          mkdir -p data sheets failures
+          mkdir -p data sheets failures frames
           # Measurements: one JSON per video; a re-run of the same link replaces its file.
           find "$OUT/data" -name '*.json' -exec cp {} data/ \; 2>/dev/null || true
+          # Per-frame features (numbers only): one gzipped CSV per video.
+          find "$OUT/frames" -name '*.csv.gz' -exec cp {} frames/ \; 2>/dev/null || true
           # id → url map, merged and de-duplicated.
           cat urls.tsv "$OUT"/failures/*.map.tsv 2>/dev/null | sort -u -k1,1 > urls.tsv.new || true
           mv urls.tsv.new urls.tsv
@@ -230,6 +253,7 @@ jobs:
             echo
             echo "- summary.csv: one row per video (size, shots, average shot, motion, tempo, palette, suggested style)"
             echo "- data/<id>-*.json: full measurements per video, including a 10 fps motion curve"
+            echo "- frames/<id>-*.csv.gz: one row per frame at 10 fps (t, luma, contrast, dark, light, sat, hue, hue_share, colorful, edges, motion, cut); see research/frames.py"
             echo "- urls.tsv: video id to source link"
             echo "- discovered.tsv: videos found by crawling research/sites.txt, with the page each was on"
             echo "- failures/: links each run could not download, with the downloader's errors"
