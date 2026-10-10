@@ -1,0 +1,1032 @@
+{
+ "company": "Sarvam AI",
+ "site": "https://www.sarvam.ai",
+ "scouted": "2026-10-10",
+ "socials": {
+  "youtube": [
+   "https://youtube.com/@sarvamai"
+  ],
+  "x": [
+   "https://x.com/SarvamAI"
+  ],
+  "linkedin": [
+   "https://www.linkedin.com/company/sarvam-ai"
+  ],
+  "instagram": [
+   "https://www.instagram.com/sarvam.ai_official"
+  ]
+ },
+ "site_videos": [
+  {
+   "url": "https://assets.sarvam.ai/Pages/home/india-can.mp4?updatedAt=1777885741173",
+   "found_on": "https://www.sarvam.ai"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/solutions/indian-art-mask.mp4",
+   "found_on": "https://www.sarvam.ai"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/edge/demos/bosch.mp4",
+   "found_on": "https://www.sarvam.ai/products/edge"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/brand/Brand%20Video.mp4",
+   "found_on": "https://www.sarvam.ai/brand-guidelines"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/dub/6-sixes/original.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-dub"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/dub/man-ki-baat/hindi.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-dub"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/dub/iit-madras/english.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-dub"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/dub/republic-tv/republic-budget-with-arnab.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-dub"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/edge/edge-laptop-demo.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/edge/edge-laptop-demo.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/edge/edge-stock-video.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/edge/edge-stock-video.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/edge/edge-translation-demo.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/edge/edge-translation-demo.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-edge"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/akshar/Sarvam_Akshar_FHD_30fps.mp4",
+   "found_on": "https://www.sarvam.ai/products/doc-agents"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/akshar/akshar-layout-demo.mov/ik-video.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-akshar"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/akshar/akshar-layout-demo.mov/ik-video.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-akshar"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/studio/dubbing-edit-flow.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/studio/dubbing-edit-flow.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/studio/ai-document-edit.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/studio/ai-document-edit.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/studio/ncert-dubbed/ncert-original.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://www.youtube.com/embed/Snlq1jwyOxg",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/voice-agents/voice-agents-demo.mp4",
+   "found_on": "https://www.sarvam.ai/products/voice-agents"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/voice-agents/features/scroll/va-1-create.webm",
+   "found_on": "https://www.sarvam.ai/products/voice-agents"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/voice-agents/features/scroll/va-3-natural.webm",
+   "found_on": "https://www.sarvam.ai/products/voice-agents"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/voice-agents/features/scroll/va-4-liveactions.webm",
+   "found_on": "https://www.sarvam.ai/products/voice-agents"
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/voice-agents/features/scroll/va-5-analytics.webm",
+   "found_on": "https://www.sarvam.ai/products/voice-agents"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/biswa-dub/hindi-lipsync.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"telugu\"],\"label\":[0,\"Telugu\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/biswa-dub/telugu-lipsync.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"bengali\"],\"label\":[0,\"Bengali\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/biswa-dub/bengali-lipsync.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"punjabi\"],\"label\":[0,\"Punjabi\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/biswa-dub/punjabi-lipsync.mp4?tr=orig-true\"]}]]]}],[0,{\"id\":[0,\"cricket\"],\"label\":[0,\"Cricket\"],\"languages\":[1,[[0,{\"id\":[0,\"hindi\"],\"label\":[0,\"Hindi\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/ind-vs-sl-world-cup/hindi.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"bengali\"],\"label\":[0,\"Bengali\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/ind-vs-sl-world-cup/bengali.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"gujarati\"],\"label\":[0,\"Gujarati\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/ind-vs-sl-world-cup/gujarati.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"malayalam\"],\"label\":[0,\"Malayalam\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/ind-vs-sl-world-cup/malayalam.mp4?tr=orig-true\"]}]]]}],[0,{\"id\":[0,\"lecture\"],\"label\":[0,\"Lecture\"],\"languages\":[1,[[0,{\"id\":[0,\"english\"],\"label\":[0,\"English\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/iit-madras/english.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"tamil\"],\"label\":[0,\"Tamil\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/iit-madras/tamil.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"odia\"],\"label\":[0,\"Odia\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/iit-madras/odia.mp4?tr=orig-true\"]}],[0,{\"id\":[0,\"punjabi\"],\"label\":[0,\"Punjabi\"],\"videoSrc\":[0,\"https://assets.sarvam.ai/Pages/content-agents/iit-madras/punjabi.mp4?tr=orig-true\"]}]]]}]]],\"data-astro-cid-uolwd6sp\":[0,true]}",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/biswa-dub/hindi-lipsync.mp4?tr=orig-true",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/sarvam-content-agents-demo.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/man-ki-baat/hindi.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/man-ki-baat/telugu.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/man-ki-baat/malayalam.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/man-ki-baat/gujarati.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/iit-madras/english.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/iit-madras/tamil.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/iit-madras/punjabi.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/content-agents/iit-madras/odia.mp4",
+   "found_on": "https://www.sarvam.ai/products/content-studio"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/sarvam-vision-2-1/kv-extraction-from-tables.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/sarvam-vision-2-1/kv-extraction-from-tables.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/sarvam-vision-2-1/kv-extraction-from-forms.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/sarvam-vision-2-1/kv-extraction-from-forms.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/sarvam-vision-2-1/indic-handwritten-recognition.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/sarvam-vision-2-1/indic-handwritten-recognition.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/sarvam-vision-2-1/indic-handwritten-extraction.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/sarvam-vision-2-1/indic-handwritten-extraction.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/sarvam-vision-2-1"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/arya/arya-graph.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/introducing-sarvam-arya"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/arya/arya-graph.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/introducing-sarvam-arya"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/arya/arya-outro.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/introducing-sarvam-arya"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/arya/arya-outro.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/introducing-sarvam-arya"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/partnerships/sarvam-x-odisha.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/partnerships-with-indian-states"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/partnerships/sarvam-x-odisha.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/partnerships-with-indian-states"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Blogs/partnerships/sarvam-x-tamil-nadu.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/partnerships-with-indian-states"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Blogs/partnerships/sarvam-x-tamil-nadu.mp4",
+   "found_on": "https://www.sarvam.ai/blogs/partnerships-with-indian-states"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Events/healthplix/webinar-recap.mp4?updatedAt=1781795188430\"],\"duration\":[0,\"50",
+   "found_on": "https://www.sarvam.ai/events"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=LxCuO0t5cz0",
+   "found_on": "https://www.sarvam.ai/events"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/vision-odia.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/saaras-v4-multispeaker-asr.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/bulbul-v4-navarasa.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/content-agents-dubbing.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/kivi-demo.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Epoch/summary/smart-glasses-preview.mp4",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://assets.sarvam.ai/tr:w-1280,c-at_max,f-mp4/Epoch/summary/smart-glasses-yogitha.mov",
+   "found_on": "https://www.sarvam.ai/epoch/summary"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Stories/ekatra/ekatra-akshar-video.mp4?updatedAt=1774999733675\"],\"url\":[0,\"https://ik.imagekit.io/5amcq3scj/Stories/ekatra/ekatra-akshar-video.mp4?updatedAt=1774999733675\"],\"versionInfo\":[0,{\"id\":[0,\"69cc58b25c7cd75eb8f18022\"],\"name\":[0,\"Version",
+   "found_on": "https://www.sarvam.ai/stories/ekatra"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Stories/ekatra/ekatra-akshar-video.mp4",
+   "found_on": "https://www.sarvam.ai/stories/ekatra"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Stories/ekatra/ekatra-akshar-video.mp4?updatedAt=1774999733675",
+   "found_on": "https://www.sarvam.ai/stories/ekatra"
+  },
+  {
+   "url": "https://ik.imagekit.io/5amcq3scj/Epoch/partnerships/hp-mou-v1.mp4",
+   "found_on": "https://www.sarvam.ai/partnerships/hp"
+  }
+ ],
+ "logos": [
+  {
+   "kind": "img",
+   "file": "private/logos/img-0.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/brand/logos/sarvam-wordmark-black.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-1.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/brand/logos/sarvam-wordmark-white.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-2.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/aadhaar.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-3.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/axis-bank.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-4.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/cred.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-5.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/cred-resolve.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-6.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/decentro.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-7.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/idfc.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-8.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/india-mart.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-9.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/infosys.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-10.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/lic.svg"
+  },
+  {
+   "kind": "img",
+   "file": "private/logos/img-11.svg",
+   "found_on": "https://www.sarvam.ai",
+   "src": "https://assets.sarvam.ai/assets/logos/customers/mahindra-finance.svg"
+  }
+ ],
+ "colors": {
+  "brand": [
+   [
+    "#6a88e2",
+    343
+   ],
+   [
+    "#e6651b",
+    300
+   ],
+   [
+    "#f59970",
+    282
+   ],
+   [
+    "#a5bbfc",
+    59
+   ],
+   [
+    "#0a66c2",
+    58
+   ],
+   [
+    "#ff0000",
+    58
+   ],
+   [
+    "#5865f2",
+    58
+   ],
+   [
+    "#e4405f",
+    58
+   ],
+   [
+    "#a5460f",
+    51
+   ],
+   [
+    "#83c040",
+    50
+   ]
+  ],
+  "neutral": [
+   [
+    "#000000",
+    310
+   ],
+   [
+    "#ffffff",
+    164
+   ],
+   [
+    "#181717",
+    58
+   ],
+   [
+    "#13121e",
+    53
+   ],
+   [
+    "#999999",
+    38
+   ],
+   [
+    "#fafafa",
+    32
+   ]
+  ],
+  "css_custom_properties": [
+   [
+    "hover-color",
+    "#0a66c2",
+    58
+   ],
+   [
+    "color-white",
+    "#ffffff",
+    3
+   ],
+   [
+    "tw-ring-offset-color",
+    "#ffffff",
+    2
+   ],
+   [
+    "color-black",
+    "#000000",
+    2
+   ],
+   [
+    "color-tx",
+    "#1f1f1f",
+    2
+   ],
+   [
+    "color-tx-secondary",
+    "#3d3d3d",
+    2
+   ],
+   [
+    "color-tx-tertiary",
+    "#666666",
+    2
+   ],
+   [
+    "color-tx-inverse",
+    "#faf8f5",
+    2
+   ],
+   [
+    "color-tx-brand",
+    "#29211d",
+    2
+   ],
+   [
+    "color-tx-accent",
+    "#c4733d",
+    2
+   ],
+   [
+    "color-sf",
+    "#fcfcfc",
+    2
+   ],
+   [
+    "color-sf-secondary",
+    "#f5f5f5",
+    2
+   ],
+   [
+    "color-sf-tertiary",
+    "#f0f0f0",
+    2
+   ],
+   [
+    "color-sf-quaternary",
+    "#e6e6e6",
+    2
+   ],
+   [
+    "color-st",
+    "#e6e6e6",
+    2
+   ],
+   [
+    "color-st-secondary",
+    "#f0f0f0",
+    2
+   ],
+   [
+    "color-br-orange",
+    "#d5650f",
+    2
+   ],
+   [
+    "color-br-blue",
+    "#393cc1",
+    2
+   ],
+   [
+    "color-br-green",
+    "#4cd964",
+    2
+   ],
+   [
+    "color-br-purple",
+    "#9b5de5",
+    2
+   ]
+  ]
+ },
+ "fonts": [
+  [
+   "VideoJS",
+   50
+  ],
+  [
+   "KaTeX_Main",
+   12
+  ],
+  [
+   "KaTeX_SansSerif",
+   10
+  ],
+  [
+   "Matter Mono",
+   10
+  ],
+  [
+   "KaTeX_Fraktur",
+   6
+  ],
+  [
+   "KaTeX_Math",
+   6
+  ],
+  [
+   "KaTeX_Caligraphic",
+   5
+  ],
+  [
+   "KaTeX_Size1",
+   5
+  ]
+ ],
+ "brand_pages": [
+  {
+   "url": "https://www.sarvam.ai/brand",
+   "text": "Brand | Sarvam AI Products Developers Resources Company Log In Contact Us Log In Sarvam AI Brand Guidelines and Assets A New Identity for Sarvam Sarvam is dedicated to developing world-class AI from India, with the depth, rigor, and ambition required to lead at the frontier. What excites us is the opportunity to build AI that reflects how this country thinks, speaks, reasons, and solves problems, and to do so at a level of technical excellence that stands alongside the best in the world. As our work has evolved, our brand identity has evolved with it. The update reflects both our mission and the Sarvam we are building today. The vision AI for all from India Sarvam means all. It is a Sanskrit word that carries the idea of wholeness, everything, everyone, everywhere, and it sits at the core of our vision. As Sarvam evolved, it became obvious that our identity needed to do more than look contemporary or polished. It needed to feel like an extension of the same thinking that guides our models and products. If our work is about building AI that reflects the country it serves, then the brand had to do the same. It had to feel grounded, familiar, and modern at the same time, without leaning on nostalgia or spectacle. Designing for Breadth and Depth The brand needed to hold many things at once. It had to be comprehensive enough to span multiple products and use cases. It had to be cohesive enough to earn trust across audiences. It had to be flexible enough to evolve without losing its identity. And it had to feel rooted in India without relying on nostalgia or symbolism for its own sake. The design process followed this logic. We studied language, form, rhythm, and structure. We looked across regions, crafts, scripts, and everyday visual systems. We paid close attention to how information is presented, how complexity is handled, and how meaning is conveyed without explanation. The goal was to design something that feels natural in its context, familiar, legible, and capable of carrying the scale of what Sarvam is building. We explored a wide range of symbols, languages, monuments, motifs, textiles, tiles, regional references, and cultural forms, spanning different places and periods. Many directions felt too region-specific. Others were visually rich but overly decorative. Some carried meaning on their own but could not scale as a system. What we were looking for was something that could connect across generations. Something that felt shared rather than selective, and broad enough to belong to everyone. The Gateway Between Worlds After extensive exploration and iteration, one idea consistently brought everything together. The gateway. Architectural gateways are a familiar presence across Indian life. They appear in public spaces, streets, shops, and graphic culture, not as decoration, but as structure. They are widely recognizable without being tied to a specific region or tradition, and they scale naturally from the everyday to the monumental. For us, the gateway became a way to express inclusivity and openness while retaining clarity and discipline. A gateway is more than a form. It represents a moment of transition, where two worlds move toward each other. Human and machine. Culture and computation. What already exists and what is still emerging. The Visual System The visual system uses a blue-to-orange spectrum as a foundational language. Instead of relying on fixed color blocks, it operates through continuous transitions in light and tone. These shifts communicate motion, energy, and progression, reflecting how interactions evolve over time. The visual system is built on a simple construction logic, drawing inspiration from the mandala. A mandala is intricate, multi-layered, and deeply intentional. Each pattern interlocks with another, each layer reveals more meaning. What looks abstract at first gains coherence only when viewed as a whole. You don’t rush a mandala. You build it with patience, knowing it will eventually turn into something meaningful and complete. Monogram Timeless construction, contemporary meaning The monogram is formed from repeated circles, arranged with geometric discipline and guided by the same underlying principles found in mandala construction. From this repetition emerges a lotus-like form that reflects a balance we kept returning to throughout the process. This idea of layered meaning carries through the rest of the system. Our visual behavior emphasizes movement and transformation. A blue-to-orange gradient forms a continuous spectrum rather than a set of discrete blocks. Transitions in light and color express motion, change, and shifting states of interaction. These transitions are not decorative. They function as signals of flow, helping the system feel responsive and alive. Wordmark A modern expression The wordmark is designed as a contemporary expression of Sarvam. Wider letterforms give it clarity and presence, while balanced proportions and carefully refined curves ensure consistency across contexts. Every detail, from spacing to structure, is tuned to perform reliably across digital products, brand communication, and physical environments. A brand can’t do the work itself, but it can shape how people understand the work and whether they see themselves in it. We built this identity to grow with Sarvam and to hold the breadth of what we’re building while staying true to where we come from. AI for all from India. The work continues. This is how we show up for it. AI for all from India Find us at © 2026 Axonwise Private Limited. All rights reserved. 732, Chinmaya Mission Hospital Road, Indiranagar Stage 1, Bengaluru, Karnataka 560038 Products Voice Agents Content Studio Doc Agents Work Agents Coding Agents Sarvam Edge Model Training APIs Text to Speech Speech to Text Doc Digitisation Translation Models Resources Blogs Building AI Agents Events Customer Stories Documentation API Pricing Integrations Startup Program Sarvam Champions Company About Us Careers Con"
+  },
+  {
+   "url": "https://www.sarvam.ai/brand-guidelines",
+   "text": "Brand Guidelines | Sarvam AI Products Developers Resources Company Log In Contact Us Log In Sarvam Design Guidelines Official Sarvam AI brand guidelines - logos, usage rules, and brand assets. Download resources What's included Wordmark (SVG, PNG) Logomark (SVG, PNG) I agree to the trademark & usage terms of Sarvam. Download resources How to use the Sarvam brand 01 How to use the logo 02 Wordmark 03 Logomark 04 How to use it with other brands 05 How to use it with governments 06 Language guidelines 07 Press releases About these guidelines This page covers how to correctly use the Sarvam AI name, logo, and other brand assets in third-party materials. For the story behind our brand, the meaning of the logo, and our visual philosophy, visit the Sarvam AI Brand page . The Sarvam AI name, logo, and other Sarvam trademarks are the property of Sarvam AI. These guidelines apply to all partners, customers, developers, and third parties. How to use the logo Download the approved logo files from the resources section above. Always use the original files as provided; never recreate the logo from scratch or modify any element of it. The Sarvam brand uses a wordmark and a logomark. Keep their usage independent; do not combine them in a single lockup. Use our marks only when they directly relate to Sarvam AI products or services, and only with permission under these guidelines. Maintain clear space around the logo and follow the wordmark and logomark rules below for format-specific guidance. Wordmark Use the wordmark when the logomark alone is not sufficient. The wordmark must always appear in its approved form: black on light backgrounds and white on dark backgrounds. What to avoid Add effects to the wordmark like shadow or border. Use the wordmark in any accent colour. Black and white only. Rearrange the sizes of the individual elements of the wordmark. Fill gradients in the wordmark. Place the wordmark on backgrounds with low contrast. Use the wordmark from the official logo pack. Use black on light backgrounds and white on dark backgrounds. Logomark Use the logomark where the Sarvam brand is already established: product UI, app icons, and social media profiles. Do not use the wordmark and logomark together. What to avoid Add effects to the logomark like shadow or border. Use the wordmark and logomark together. Place the logomark on backgrounds with low contrast. Alter the width of the strokes. Crop the logomark. Keep the logomark at its original size and proportions. Use the logomark in product UI where the brand is already established. How to use it with other brands When pairing the Sarvam wordmark with a partner logo, maintain balanced spacing and clear hierarchy. Use the wordmark only, not the logomark, in partnership lockups. Display the Sarvam mark at a very different size from the partner logo. Use the logomark in a partnership lockup. Place the lockup over a busy image. Match the visual weight of both wordmarks. Submit all co-branded materials for approval before publishing. How to use it with governments When pairing the Sarvam wordmark with a government emblem or ministry lockup, follow the prescribed vertical hierarchy and spacing. All government co-branded materials must be approved before use. Reorder or alter the government emblem hierarchy. Use the logomark in a government lockup. Place the lockup over a busy or photographic background. Maintain the vertical stack with the government emblem above the Sarvam wordmark. Submit all government co-branded materials for approval before publishing. Language guidelines How to refer to Sarvam AI, our products, and our technology in your materials. Product names Modify or abbreviate product names (Doc Agents, Voice Agents, etc.). Use product names in your own product or company names. Refer to products by their exact names as published. Use 'powered by Sarvam AI' when integrating our APIs. API and developer attribution Claim ownership of models or technology developed by Sarvam AI. Use 'Sarvam' as a descriptor for your own models or services. Attribute models accurately (e.g., 'built with Sarvam AI's speech-to-text API'). Link back to sarvam.ai when referencing our technology in documentation. General naming rules Use the Sarvam AI name to imply endorsement of your product. Create social media handles or domains that include our brand name. Refer to us as 'Sarvam AI' on first mention, 'Sarvam' thereafter. Describe Sarvam AI as an Indic language AI company. Press releases When mentioning our company in press materials, please identify Sarvam AI as an Indic language AI company. Sarvam AI's mission is to make artificial intelligence accessible and useful for every Indian language speaker. For announcements or communications that go beyond the cases outlined here, reach out to the Sarvam AI communications team at [email protected] . Usage terms The term \"Marks\" includes anything we use to identify our goods or services, including our names, logos, icons, and design elements. By using Sarvam AI's Marks, you agree that we own them and that any goodwill generated by your use benefits us. Permission to use our Marks is limited in the following ways: Only use our Marks if they adhere to these brand guidelines. The permission we grant is non-exclusive (we can give it to others) and non-transferable (you cannot give it to others). Do not feature our Marks more prominently than your own company's name or marks. We may update the guide, and changes must be made within a reasonable time. We can review the use of our Marks and require changes if needed. We may terminate permission to use our Marks at any time, and usage must stop promptly. Please ensure your application follows all Sarvam AI usage policies. We do not permit model names in application titles as this may confuse end users. Contact For legal inquiries, please contact [email protected] . For permission requests, questions about these guidelines, or co-branding approvals, please contact [email pro"
+  }
+ ],
+ "news": [
+  {
+   "date": "2026-09-29",
+   "title": "Building AI Agents: A First-Principles Guide | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/building-ai-agents",
+   "summary": "A first-principles guide to building AI agents: system prompts, tools, skills, memory and domain knowledge, with a worked support-agent example."
+  },
+  {
+   "date": "2026-09-25",
+   "title": "Introducing Saaras V4 speech recognition | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/introducing-saaras-v4",
+   "summary": "Introducing Saaras V4, the next leap in ASR for a multilingual world, with stronger accuracy across Indian languages and real-world audio."
+  },
+  {
+   "date": "2026-09-24",
+   "title": "Sarvam Vision 2.1 document intelligence | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/sarvam-vision-2-1",
+   "summary": "Achieves state-of-the-art on global and Indic benchmarks with new capabilities for structured extraction and Indic handwritten recognition"
+  },
+  {
+   "date": "2026-08-11",
+   "title": "Indic DiarBench: joint diarization-ASR benchmark | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/indic-diarbench",
+   "summary": "Open benchmark for speaker-attributed ASR across 22 Indian languages. 108 hours of multi-speaker speech with verified transcripts and diarization."
+  },
+  {
+   "date": "2026-08-05",
+   "title": "Introducing Sarvam Circle | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/introducing-sarvam-circle",
+   "summary": "Sarvam Circle is our partnership programme to bring India"
+  },
+  {
+   "date": "2026-04-02",
+   "title": "Indic ASR evaluation: beyond WER to LLM & semantic metrics | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/evaluating-indian-language-asr",
+   "summary": "Why WER/CER misjudge Indian-language ASR when scripts mix and spellings vary. Covers LLM-WER, LLM-CER, Intent, Entity, and COMET-plus open evaluation tooling."
+  },
+  {
+   "date": "2026-03-06",
+   "title": "Open-sourcing Sarvam 30B & 105B models | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+   "summary": "Sarvam open-sources 30B and 105B reasoning models trained in India: MoE LLMs with leading Indian-language benchmarks; weights on AI Kosh and Hugging Face."
+  },
+  {
+   "date": "2026-02-20",
+   "title": "Introducing Indus for Indian languages | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/introducing-indus",
+   "summary": "Indus is Sarvam"
+  },
+  {
+   "date": "2026-02-15",
+   "title": "Introducing Sarvam Akshar | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/sarvam-akshar",
+   "summary": "Akshar is a document intelligence workbench built on Sarvam Vision, enabling grounded reasoning, layout-aware extraction, and automated proofreading."
+  },
+  {
+   "date": "2026-02-14",
+   "title": "Announcing Sarvam Edge | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/sarvam-edge",
+   "summary": "Announcing Sarvam Edge: on-device intelligence that brings Sarvam models to the edge for low-latency, private AI."
+  },
+  {
+   "date": "2026-02-13",
+   "title": "Introducing Sarvam Studio AI platform | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/sarvam-studio",
+   "summary": "Sarvam Studio is our AI platform for building, testing, and deploying Indic language applications in one place."
+  },
+  {
+   "date": "2026-02-11",
+   "title": "Introducing Saaras V3 speech recognition | Sarvam AI",
+   "url": "https://www.sarvam.ai/blogs/asr",
+   "summary": "Introducing Saaras V3, speech recognition built for the way India speaks, with strong accuracy across Indian languages and code-mixed speech."
+  }
+ ],
+ "channels": [
+  "https://www.youtube.com/@SarvamAI",
+  "https://youtube.com/@sarvamai"
+ ],
+ "videos": [
+  {
+   "url": "https://www.youtube.com/watch?v=2G2JZWcj-XY",
+   "title": "Introducing Kivi for Mac, Powered by Saaras V4",
+   "duration": 78,
+   "rank": 1,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=vdApEwSASJA",
+   "title": "Introducing Saaras V4",
+   "duration": 74,
+   "rank": 2,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=iZmupXyPlH4",
+   "title": "Introducing Sarvam Content Studio",
+   "duration": 88,
+   "rank": 5,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=35lJOv0LZas",
+   "title": "Introducing Saaras V4 Multi-speaker",
+   "duration": 37,
+   "rank": 8,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=wKeCqqOpOhI",
+   "title": "Presenting Bulbul V4",
+   "duration": 114,
+   "rank": 9,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=GsT4c27eSsY",
+   "title": "Meet the Epoch Buildathon judges",
+   "duration": 23,
+   "rank": 11,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=YDbmRDyaLfU",
+   "title": "Introducing Saaras V3: Speech to Text, Perfected for India",
+   "duration": 33,
+   "rank": 19,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://www.youtube.com/watch?v=aLBQZcu7swY",
+   "title": "Sarvam x Nokia: Bringing AI to feature phones",
+   "duration": 122,
+   "rank": 23,
+   "source": "https://www.youtube.com/@SarvamAI/videos",
+   "status": "download failed"
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/home/india-can.mp4?updatedAt=1777885741173",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://www.sarvam.ai",
+   "status": "ok",
+   "mg_score": 0.856,
+   "mg_parts": {
+    "flat": 0.731,
+    "crisp": 0.032,
+    "texture": 0.132,
+    "skin": 0.066
+   },
+   "palette": [
+    [
+     "#e4e4e4",
+     0.239
+    ],
+    [
+     "#0c0c0c",
+     0.122
+    ],
+    [
+     "#e4e4fc",
+     0.094
+    ],
+    [
+     "#fcfcfc",
+     0.063
+    ],
+    [
+     "#e49c54",
+     0.017
+    ],
+    [
+     "#242424",
+     0.015
+    ],
+    [
+     "#e4843c",
+     0.013
+    ],
+    [
+     "#fcb46c",
+     0.012
+    ]
+   ],
+   "metrics": {
+    "duration": 133.4,
+    "still_pct": 17.8,
+    "longest_still_s": 5.8,
+    "motion_median": 0.0107,
+    "empty_pct": 0.7,
+    "lufs": -11.8,
+    "true_peak": 1.8,
+    "longest_silence_ms": 680,
+    "onsets_per_s": 2.69,
+    "hit_prominence_db": 2.4,
+    "first_100ms_db": -73.5,
+    "tail_drop_db": 17.3,
+    "clicks": 2
+   },
+   "sheet": "private/sheets/01.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/solutions/indian-art-mask.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://www.sarvam.ai",
+   "status": "ok",
+   "mg_score": -1.18,
+   "mg_parts": {
+    "flat": 0.136,
+    "crisp": 0.0878,
+    "texture": 0.511,
+    "skin": 0.298
+   },
+   "palette": [
+    [
+     "#3c3c24",
+     0.026
+    ],
+    [
+     "#848484",
+     0.023
+    ],
+    [
+     "#6c543c",
+     0.018
+    ],
+    [
+     "#9c9c9c",
+     0.018
+    ],
+    [
+     "#24240c",
+     0.018
+    ],
+    [
+     "#543c24",
+     0.017
+    ],
+    [
+     "#b4846c",
+     0.015
+    ],
+    [
+     "#545424",
+     0.015
+    ]
+   ],
+   "metrics": {
+    "error": "a cannot be empty"
+   }
+  },
+  {
+   "url": "https://assets.sarvam.ai/assets/products/edge/demos/bosch.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://www.sarvam.ai/products/edge",
+   "status": "ok",
+   "mg_score": 0.609,
+   "mg_parts": {
+    "flat": 0.538,
+    "crisp": 0.0565,
+    "texture": 0.177,
+    "skin": 0.018
+   },
+   "palette": [
+    [
+     "#fcfcfc",
+     0.214
+    ],
+    [
+     "#0c0c0c",
+     0.125
+    ],
+    [
+     "#e4e4e4",
+     0.118
+    ],
+    [
+     "#b4b4cc",
+     0.096
+    ],
+    [
+     "#242424",
+     0.052
+    ],
+    [
+     "#9c9cb4",
+     0.045
+    ],
+    [
+     "#3c3c3c",
+     0.044
+    ],
+    [
+     "#cccccc",
+     0.042
+    ]
+   ],
+   "metrics": {
+    "duration": 83.4,
+    "still_pct": 28.5,
+    "longest_still_s": 1.5,
+    "motion_median": 0.0043,
+    "empty_pct": 0.3,
+    "lufs": -16.2,
+    "true_peak": 3.6,
+    "longest_silence_ms": 710,
+    "onsets_per_s": 2.42,
+    "hit_prominence_db": 7.5,
+    "first_100ms_db": -120.0,
+    "tail_drop_db": 9.0,
+    "clicks": 0
+   },
+   "sheet": "private/sheets/02.jpg",
+   "kept": true
+  },
+  {
+   "url": "https://assets.sarvam.ai/Pages/brand/Brand%20Video.mp4",
+   "title": "",
+   "duration": null,
+   "rank": 0,
+   "from_site": true,
+   "referer": "https://www.sarvam.ai/brand-guidelines",
+   "status": "ok",
+   "mg_score": 1.019,
+   "mg_parts": {
+    "flat": 0.788,
+    "crisp": 0.0272,
+    "texture": 0.082,
+    "skin": 0.08
+   },
+   "palette": [
+    [
+     "#fcfcfc",
+     0.304
+    ],
+    [
+     "#242424",
+     0.04
+    ],
+    [
+     "#0c0c0c",
+     0.032
+    ],
+    [
+     "#3c3ccc",
+     0.021
+    ],
+    [
+     "#b4540c",
+     0.018
+    ],
+    [
+     "#0c0c24",
+     0.017
+    ],
+    [
+     "#0c2424",
+     0.013
+    ],
+    [
+     "#243c6c",
+     0.011
+    ]
+   ],
+   "metrics": {
+    "duration": 44.8,
+    "still_pct": 26.8,
+    "longest_still_s": 2.4,
+    "motion_median": 0.0121,
+    "empty_pct": 1.5,
+    "lufs": -14.2,
+    "true_peak": 0.0,
+    "longest_silence_ms": 120,
+    "onsets_per_s": 2.36,
+    "hit_prominence_db": 6.4,
+    "first_100ms_db": -44.6,
+    "tail_drop_db": 21.8,
+    "clicks": 1
+   },
+   "sheet": "private/sheets/00.jpg",
+   "kept": true
+  }
+ ],
+ "house_style": {
+  "still_pct": 26.8,
+  "longest_still_s": 2.4,
+  "motion_median": 0.0107,
+  "lufs": -14.2,
+  "hit_prominence_db": 6.4,
+  "onsets_per_s": 2.42,
+  "duration": 83.4
+ },
+ "film_palette": [
+  [
+   "#fcfcfc",
+   0.194
+  ],
+  [
+   "#e4e4e4",
+   0.119
+  ],
+  [
+   "#0c0c0c",
+   0.093
+  ],
+  [
+   "#242424",
+   0.036
+  ],
+  [
+   "#b4b4cc",
+   0.032
+  ],
+  [
+   "#e4e4fc",
+   0.031
+  ],
+  [
+   "#9c9cb4",
+   0.015
+  ],
+  [
+   "#3c3c3c",
+   0.015
+  ],
+  [
+   "#cccccc",
+   0.014
+  ],
+  [
+   "#3c3ccc",
+   0.007
+  ]
+ ]
+}
