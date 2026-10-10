@@ -1,0 +1,288 @@
+{
+ "_about": "Measured SFX practice of the CRED Money reference (69.06 s), one rule per VISUAL BEAT TYPE. offset_s = where the sound's align point sits relative to the visual anchor frame (negative = before). level.rel_bed_lu = SFX max momentary loudness minus the music bed's median momentary loudness over the 2 s before (calibrated so each cue's in-band peak matches the reference, scripts: proto2/calibrate.py --hybrid). level.rel_film_lu = SFX max momentary loudness minus the film's integrated loudness (reference -16.9 LUFS). Tags: [C] certain (measured directly), [L] likely, [G] guess.",
+ "global": {
+  "voiceover": "none [C] (Silero VAD max p=0.31 on the mix; positive control: our VO mixed 9 dB under this music is flagged in 82% of frames)",
+  "sfx_count": "28 discrete SFX in 69 s = 0.41/s; never more than 2 starts in any 1 s window [C]",
+  "text_entrance": "NO dedicated SFX on any of the 9 text entrances; text rides a transition sound or nothing [C, SFX-layer spectrogram]",
+  "ui_cards": "NO UI ticks/clicks/pops anywhere (bank cards, tablet, phone UI are silent) [C]",
+  "mono_vs_wide": "transition whooshes are MONO (side-mid -18 to -33 dB) [C]; beds, swells and shimmers are wide (side-mid -4 to +4.6 dB) [C]",
+  "band_strategy": "the score is dark above 6 kHz (-31 to -36 dB of total energy in grooves) so whooshes/air/glints own 3-15 kHz and can sit 11-27 LU under the bed in loudness yet read clearly [C]",
+  "music_vs_picture": "music drops land MID-SHOT (29.00 s and 51.45 s, no cut within 1 s) [C]; cuts are tied to SFX, not to drops; 6 of 10 hard cuts fall 64-97 ms after a strong musical onset (chance ~1e-4) [L: editorial habit or a ~2-frame A/V offset in the upload, cannot tell which]",
+  "silence": "two deliberate silences: 0-0.54 s head and a 0.15 s dead gap (4.10-4.25 s) between the drawing foley's hard stop and the reveal swell [C]"
+ },
+ "beats": {
+  "draw_open": {
+   "sfx": "pen_scribble",
+   "align": "start",
+   "offset_s": 0.21,
+   "dur": "until the drawing completes, then HARD stop (no fade-out tail)",
+   "level": {
+    "rel_film_lu": -12.0
+   },
+   "stereo": "mono",
+   "evidence": "first stroke visible 0.33 s; foley 0.54-3.99 s, 1-15 kHz broadband, flatness 0.8-0.96, mono (side=-inf) [C]"
+  },
+  "pre_reveal_gap": {
+   "sfx": null,
+   "silence_s": 0.15,
+   "evidence": "4.10-4.25 s broadband < -85 dBFS between foley stop (4.05) and swell onset (4.23) [C]"
+  },
+  "reveal": {
+   "sfx": "reverse_swell",
+   "align": "peak",
+   "offset_s": 0.2,
+   "params": {
+    "dur": 1.6
+   },
+   "level": {
+    "rel_film_lu": -8.6
+   },
+   "stereo": "wide (side-mid +1.2 dB)",
+   "evidence": "onset 4.23, peak 5.38, end 5.90; flowers pop in at 5.17 (peak +0.2 s); 40-2000 Hz [C]"
+  },
+  "nature_bed": {
+   "sfx": "air_bed",
+   "align": "start",
+   "offset_s": -0.7,
+   "params": {
+    "dur": 5.0
+   },
+   "level": {
+    "rel_film_lu": -25.0
+   },
+   "stereo": "wide (side-mid +4.6 dB)",
+   "evidence": "4.3-6.3 kHz band 5.31-10.29 s under the flower/bird scene, 2.1 s in, 2.9 s out [C]"
+  },
+  "creature_move": {
+   "sfx": "wing_flutter",
+   "align": "start",
+   "offset_s": 0.33,
+   "level": {
+    "rel_bed_lu": -6.0
+   },
+   "evidence": "bird motion onset 7.17, flutter 7.24-7.64 s, 7-15 kHz [C]"
+  },
+  "creature_voice": {
+   "sfx": "bird_chirps",
+   "align": "start",
+   "offset_s": 0.0,
+   "level": {
+    "rel_bed_lu": 6.0
+   },
+   "evidence": "4 chirps 8.27/8.58/8.91/9.28 s (spacing 0.31-0.37 s ~ quarter-note triplets), each ~0.1-0.23 s, pitch 3564->3386->3262->3149 Hz (about a semitone down each) [C]; level trimmed 2 dB under calibration because the ref bump is +3.8 LU vs ours +7.7 [L]"
+  },
+  "lens_arrive": {
+   "sfx": "lens_swell",
+   "align": "start",
+   "offset_s": 0.02,
+   "params": {
+    "dur": 0.45
+   },
+   "level": {
+    "rel_bed_lu": 0.0
+   },
+   "evidence": "lens edge enters 9.67, swell 9.69-10.43, peak 10.10, 86-904 Hz [C]"
+  },
+  "groove_in_cut": {
+   "sfx": null,
+   "rule": "start the groove (first sub/808 hit) 0.2 s BEFORE the first hard cut into the new world",
+   "evidence": "first sub 13.25-13.30 s, hard cut 13.458 s [C]"
+  },
+  "foil_shimmer": {
+   "sfx": "glass_shimmer",
+   "align": "start",
+   "offset_s": 0.66,
+   "params": {
+    "dur": 1.63
+   },
+   "level": {
+    "rel_bed_lu": -10.0
+   },
+   "stereo": "mostly centred (side-mid -4 dB)",
+   "evidence": "holo band cut 13.458; partials C7/E7/G7 2095/2641/3117 Hz + G6 1570 from ~14.12 s, sustained to ~16.6 s with tremolo [C]; note the ref's shimmer is a C-major triad over an Eb track (not key-matched) [C]; we recommend key-matched partials [G]"
+  },
+  "whip_cut": {
+   "sfx": "whip",
+   "align": "end",
+   "offset_s": -0.05,
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "answer": {
+    "sfx": "whip",
+    "align": "start",
+    "offset_s": 0.08,
+    "params": {
+     "dur": 0.26
+    },
+    "optional": true
+   },
+   "level": {
+    "rel_bed_lu_groove": -13.0,
+    "rel_bed_lu_breakdown": -5.0,
+    "rel_film_lu": -12.0
+   },
+   "stereo": "mono",
+   "evidence": "whips 3-5 (10 ms envelopes): 20-30 ms tick, 30-50 ms gap, 0.24-0.26 s flat 3-15 kHz noise plateau ending 25/42/75 ms before the cut frame; whip 3 also has an answer plateau 80 ms after the cut [C]. Variant (whips 1-2): plateau straddles the cut (starts 90-110 ms before) [C]"
+  },
+  "camera_pullback_reveal": {
+   "sfx": "air_riser",
+   "align": "start",
+   "offset_s": -0.14,
+   "level": {
+    "rel_bed_lu": -26.0
+   },
+   "evidence": "pull-back through columns 21.67-22.17; riser 21.53-22.29 peak 21.96, 5-15 kHz [C]"
+  },
+  "foreground_wipe": {
+   "sfx": "low_wash",
+   "align": "start",
+   "offset_s": -0.06,
+   "params": {
+    "dur": 1.03
+   },
+   "level": {
+    "rel_bed_lu": -5.5
+   },
+   "evidence": "column wipe 27.10; wash 27.05-28.09, 300-3000 Hz [C]"
+  },
+  "place_tone": {
+   "sfx": "foghorn",
+   "align": "start",
+   "offset_s": 0.2,
+   "params": {
+    "dur": 3.0
+   },
+   "level": {
+    "rel_bed_lu": -9.0
+   },
+   "with": {
+    "sfx": "gull_cries",
+    "rel_bed_lu": -18.0
+   },
+   "evidence": "hard cut 32.542 to lighthouse; 126 Hz tone (+252/379 harmonics) from ~32.75 s for ~3.7 s [C]; gull-like calls 34.5-35.8 s [L: identity of the sound is a guess]"
+  },
+  "riser_into_cut": {
+   "sfx": "rising_tone",
+   "align": "peak",
+   "offset_s": -0.03,
+   "level": {
+    "rel_bed_lu": -1.5
+   },
+   "evidence": "250-600 Hz tonal riser 35.13-36.40 peaking 35.72, cut 35.75 [C]; exact pitch path not tracked [L]"
+  },
+  "submerge": {
+   "sfx": "submerge",
+   "align": "start",
+   "offset_s": 0.08,
+   "level": {
+    "rel_bed_lu": -8.5
+   },
+   "evidence": "dissolve to underwater 38.96; 39.04-39.59, slow 0.45 s rise, 345-2370 Hz, flatness 0.52 [C]"
+  },
+  "glint": {
+   "sfx": "sparkle",
+   "align": "start",
+   "offset_s": 0.55,
+   "level": {
+    "rel_bed_lu_breakdown": -1.5,
+    "rel_bed_lu_drop": -17.0
+   },
+   "evidence": "seal settles 49.75 -> sparkle 50.24-50.95 (3 bursts, 2.1-12.5 kHz); pearl glint 42.58-44.0 partials 3.5-5.3 kHz [C]"
+  },
+  "music_drop": {
+   "sfx": "drop_impact",
+   "optional": true,
+   "level": {
+    "rel_bed_lu": -18.0
+   },
+   "rule": "land the drop INSIDE a held or slowly moving shot (not on a cut); a 0.5 s sub-free gap precedes it",
+   "evidence": "drop 2 sub returns 51.45-51.50 after a sub gap 50.9-51.4 s; picture is a held seal (frame diff < 0.003) [C]"
+  },
+  "object_slide_text": {
+   "sfx": "whip",
+   "align": "start",
+   "offset_s": 0.01,
+   "params": {
+    "dur": 0.58
+   },
+   "level": {
+    "rel_bed_lu": -15.0
+   },
+   "evidence": "bill wraps phone + text 56.11; whoosh 56.12-56.72, 3-15 kHz [C]"
+  },
+  "logo_bloom": {
+   "sfx": "chord_bloom",
+   "align": "start",
+   "offset_s": 0.05,
+   "level": {
+    "rel_bed_lu": 2.0
+   },
+   "evidence": "logo ring ripple 61.83; bloom 61.88-62.47, peak 62.23, partials Eb3 Bb3 Eb4 Eb5 F5 Bb5 Eb6 F6 [C]"
+  },
+  "wordmark": {
+   "sfx": null,
+   "rule": "let the score's outro section change carry it (outro hit 63.35, wordmark 63.43-63.60)",
+   "evidence": "[C]"
+  },
+  "end_button": {
+   "sfx": "end_bell",
+   "align": "start",
+   "offset_s": 0.92,
+   "with": {
+    "sfx": "end_riser",
+    "align": "end",
+    "offset_s": 1.16,
+    "rel_bed_lu": -27.0
+   },
+   "level": {
+    "rel_bed_lu": -12.5
+   },
+   "rule": "anchor = start of the logo fade-out; two last 808 hits, then a pitched bell chord (in key) with 8th-note (0.24 s) echoes decaying -11.6 dB/s for ~2 s",
+   "evidence": "fade 66.0-67.0; 808 66.44/66.81; bell partials 1040/1246/1402/1562 Hz from 66.92; tail -11.6 dB/s [C]"
+  }
+ },
+ "ours_object_signatures": {
+  "_note": "ORIGINAL sounds for our film's subjects, built in the same language (one signature sound per object, nature/world foley, no UI clicks). Levels: start from the closest measured beat type. rel_bed_lu here is a [G] starting level (these sounds are not in the reference): set by ear against the measured neighbours (whips -13, place tone -9, glint -17..-1.5).",
+  "card_set_down": {
+   "sfx": "card_clink",
+   "like": "glint",
+   "rel_bed_lu": -10.0
+  },
+  "card_foil": {
+   "sfx": "glass_shimmer",
+   "params": {
+    "notes_hz": [
+     2489.0,
+     3136.0,
+     3729.0,
+     4978.0
+    ]
+   },
+   "like": "foil_shimmer",
+   "note": "Eb7 G7 Bb7 Eb8, key-matched",
+   "rel_bed_lu": -10.0
+  },
+  "online_shopping": {
+   "sfx": "paper_flick",
+   "like": "creature_move",
+   "rel_bed_lu": -6.0
+  },
+  "flights": {
+   "sfx": "jet_pass",
+   "like": "place_tone",
+   "rel_bed_lu": -9.0
+  },
+  "hotels": {
+   "sfx": "desk_bell",
+   "like": "creature_voice",
+   "rel_bed_lu": -7.0
+  },
+  "store_products": {
+   "sfx": "sparkle",
+   "like": "glint",
+   "rel_bed_lu": -12.0
+  }
+ }
+}

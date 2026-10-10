@@ -1,0 +1,661 @@
+{
+ "units": "fractions of frame W/H unless noted; px@360 = measured on the 640x360 reference; x3 for 1080p",
+ "foil": {
+  "blend": "overlay (cards decisive: err 0.249 vs 0.519 next; shell marginal 0.209 vs softlight 0.222)",
+  "motion": "colour attached to object; 0.0 deg hue change in a static hold (17.9-18.7 s). Drive phase from object/camera motion, never from time alone",
+  "palettes_hue_share": {
+   "turtle_pearl": {
+    "180-210": 0.117,
+    "210-240": 0.64,
+    "240-270": 0.238
+   },
+   "shell": {
+    "0-30": 0.109,
+    "30-60": 0.149,
+    "150-180": 0.078,
+    "180-210": 0.24,
+    "210-240": 0.304,
+    "240-270": 0.096
+   },
+   "card_glint": {
+    "0-30": 0.475,
+    "30-60": 0.114,
+    "150-180": 0.028,
+    "180-210": 0.108,
+    "210-240": 0.105,
+    "270-300": 0.045,
+    "300-330": 0.047,
+    "330-360": 0.079
+   }
+  },
+  "measured_sat_p50_p90": {
+   "shell": [
+    0.35,
+    0.47
+   ],
+   "turtle": [
+    0.46,
+    0.6
+   ],
+   "cards": [
+    0.62,
+    0.72
+   ]
+  },
+  "base_luma_p2_p50_p98": {
+   "shell": [
+    0.15,
+    0.45,
+    0.75
+   ],
+   "turtle": [
+    0.23,
+    0.43,
+    0.9
+   ]
+  },
+  "spatial": "1-1.5 hue cycles across object; shell: coherent blue (hue 200-222) for r<0.45R from hinge, mixed rainbow ring at 0.5-0.6R, pale cyan rim",
+  "shader_presets": {
+   "pearl": {
+    "sat": 0.82,
+    "val": 0.55,
+    "alpha": 1.0,
+    "levels": [
+     0.2,
+     0.85,
+     1.4
+    ],
+    "cycles": 1.25,
+    "viewGain": 0.9,
+    "result_vs_turtle": "hue-hist intersection 0.87, chroma|luma RMSE 0.066"
+   },
+   "shell": {
+    "sat": 0.66,
+    "val": 0.5,
+    "alpha": 0.95,
+    "levels": [
+     0.15,
+     0.75,
+     1.5
+    ],
+    "cycles": 2.2,
+    "viewGain": 1.1,
+    "ribs": 24,
+    "ribDepth": 0.35,
+    "result_vs_shell": "hue-hist intersection 0.63, chroma|luma RMSE 0.041"
+   }
+  },
+  "card_glint": {
+   "fade_in_s": 0.25,
+   "hold_s": [
+    0.4,
+    0.6
+   ],
+   "fade_out_s": 0.12,
+   "drift_W_per_s": {
+    "range": [
+     0.009,
+     0.058
+    ],
+    "typical": 0.04,
+    "how": "centroid of sat>0.45 pixels per card, 24 fps, 23.25-25.5 s"
+   },
+   "hue_turn_deg_during_hold": {
+    "range": [
+     5,
+     100
+    ],
+    "median_approx": 40
+   },
+   "sigma_x_W": [
+    0.017,
+    0.039
+   ],
+   "peak_sat": [
+    0.6,
+    0.7
+   ],
+   "repeat_s": [
+    1.0,
+    1.2
+   ],
+   "stagger": "never in sync across cards",
+   "blend": "overlay (decisive)"
+  }
+ },
+ "lens": {
+  "R50_over_H": 0.814,
+  "diameter_over_H": 1.63,
+  "centre_offset": {
+   "x_W": "0..+0.013 (cx 320-328 px of 640)",
+   "y_H": "0..+0.055 (cy 180-200 px of 360)"
+  },
+  "edge_alpha_by_offset_from_R50_in_H": [
+   [
+    -0.1667,
+    0.001
+   ],
+   [
+    -0.1389,
+    0.017
+   ],
+   [
+    -0.1111,
+    0.037
+   ],
+   [
+    -0.0833,
+    0.093
+   ],
+   [
+    -0.0556,
+    0.173
+   ],
+   [
+    -0.0278,
+    0.307
+   ],
+   [
+    -0.0139,
+    0.395
+   ],
+   [
+    0.0,
+    0.486
+   ],
+   [
+    0.0139,
+    0.584
+   ],
+   [
+    0.0278,
+    0.686
+   ],
+   [
+    0.0417,
+    0.779
+   ],
+   [
+    0.0556,
+    0.871
+   ],
+   [
+    0.0694,
+    0.941
+   ],
+   [
+    0.0833,
+    0.987
+   ],
+   [
+    0.0972,
+    0.991
+   ],
+   [
+    0.1111,
+    1.014
+   ]
+  ],
+  "edge_10_90_width_H": 0.139,
+  "outside_colour": "#0b0d0c (luma 10-13/255)",
+  "barrel_k_norm": "<0.025 (none)",
+  "chromatic_aberration": "none systematic (|dR50| <4px@360, inconsistent sign)",
+  "rim_softening": {
+   "blur_sigma_px_1080": 2.2,
+   "ramp_r_over_R": [
+    0.45,
+    0.85
+   ],
+   "sat_scale": 0.75
+  },
+  "iris_in": {
+   "keys_t_s_radius_rel": [
+    [
+     0,
+     1.33
+    ],
+    [
+     0.083,
+     1.21
+    ],
+    [
+     0.125,
+     1.15
+    ],
+    [
+     0.208,
+     1.098
+    ],
+    [
+     0.375,
+     1.04
+    ],
+    [
+     0.625,
+     1.0
+    ]
+   ],
+   "ease": "fast-out"
+  },
+  "iris_out": {
+   "duration_s": [
+    0.33,
+    0.95
+   ],
+   "curve": "r=1+0.24*u^2.6 (accelerating)"
+  },
+  "blink_cut": "single near-black frame at 18.75 s and 20.375 s between lens scenes",
+  "magnification": "by camera push under a fixed lens, not by the lens"
+ },
+ "paper_grain": {
+  "animated_grain": "none (static-hold frame diff 0.02-0.17 levels)",
+  "intro_paper_dog_std_levels_by_sigma_px@360": {
+   "0.7": 1.1,
+   "1.4": 0.94,
+   "2.8": 0.94,
+   "5.6": 0.87,
+   "11.2": 0.66,
+   "22.4": 0.51
+  },
+  "paper_component_defaults_1080": {
+   "mottle": 0.035,
+   "mottleFreq": 0.015,
+   "grain": 0.1,
+   "grainFreq": 0.1,
+   "fit": "per-octave ratio 0.87-1.28, RMS log err 0.17"
+  },
+  "banknote_paper": "much stronger mottle (~12-15 levels, sibling engraving study); scale mottle x5"
+ },
+ "duotone_luts": {
+  "intro_grey_paper": {
+   "shadow": "#5f5f5f",
+   "mid": "#ababab",
+   "highlight": "#ebebeb",
+   "two_stop_max_dev_dE": 0.0,
+   "median_resid_dE": 0.7,
+   "inks": []
+  },
+  "hummingbird_green_purple": {
+   "shadow": "#5e4090",
+   "mid": "#a48dbf",
+   "highlight": "#e7e7e7",
+   "two_stop_max_dev_dE": 52.3,
+   "median_resid_dE": 10.0,
+   "inks": [
+    [
+     0.51,
+     "#5a6b34",
+     "#c4d0a2",
+     "#dbddb6"
+    ],
+    [
+     0.29,
+     "#5f4095",
+     "#b288d6",
+     "#d7b3f4"
+    ]
+   ]
+  },
+  "banknote_tilted_lens": {
+   "shadow": "#0c1816",
+   "mid": "#317e5d",
+   "highlight": "#e6eceb",
+   "two_stop_max_dev_dE": 44.9,
+   "median_resid_dE": 4.8,
+   "inks": [
+    [
+     0.521,
+     "#3ba06f",
+     "#67cf94",
+     "#9ce5a2"
+    ],
+    [
+     0.166,
+     "#162b24",
+     "#294b44",
+     "#cef1e1"
+    ]
+   ]
+  },
+  "lens_green_closeup": {
+   "shadow": "#63985a",
+   "mid": "#63cd91",
+   "highlight": "#cffcc6",
+   "two_stop_max_dev_dE": 17.7,
+   "median_resid_dE": 5.7,
+   "inks": [
+    [
+     0.343,
+     "#689b5c",
+     "#a3d096",
+     "#c8f8bd"
+    ],
+    [
+     0.552,
+     "#4bae74",
+     "#61d092",
+     "#82e39f"
+    ],
+    [
+     0.067,
+     "#8995c1",
+     "#a2bacc",
+     "#f0dacf"
+    ]
+   ]
+  },
+  "lens_peach": {
+   "shadow": "#97634d",
+   "mid": "#cea580",
+   "highlight": "#fbe6b9",
+   "two_stop_max_dev_dE": 8.0,
+   "median_resid_dE": 4.2,
+   "inks": [
+    [
+     0.956,
+     "#bf916e",
+     "#eeca95",
+     "#fae0b2"
+    ]
+   ]
+  },
+  "columns_terracotta": {
+   "shadow": "#84353a",
+   "mid": "#b87c69",
+   "highlight": "#e3cdb3",
+   "two_stop_max_dev_dE": 10.4,
+   "median_resid_dE": 7.6,
+   "inks": [
+    [
+     0.376,
+     "#a48583",
+     "#d7c1a7",
+     "#dcc6ac"
+    ],
+    [
+     0.232,
+     "#86343b",
+     "#aa5a5f",
+     "#eaa8a1"
+    ],
+    [
+     0.34,
+     "#96593f",
+     "#d8a27a",
+     "#f5c096"
+    ]
+   ]
+  },
+  "turtle_lavender": {
+   "shadow": "#41366c",
+   "mid": "#847db3",
+   "highlight": "#dcd5f0",
+   "two_stop_max_dev_dE": 8.2,
+   "median_resid_dE": 2.6,
+   "inks": [
+    [
+     0.167,
+     "#40346d",
+     "#7a6fb2",
+     "#a69dd1"
+    ],
+    [
+     0.791,
+     "#6c668a",
+     "#b5b2cc",
+     "#d9d1ed"
+    ]
+   ]
+  },
+  "lighthouse_mint": {
+   "shadow": "#3e5a34",
+   "mid": "#7f9f79",
+   "highlight": "#c6e8b3",
+   "two_stop_max_dev_dE": 11.4,
+   "median_resid_dE": 4.1,
+   "inks": [
+    [
+     0.886,
+     "#5b7652",
+     "#c2e4af",
+     "#c5e7b2"
+    ],
+    [
+     0.106,
+     "#4ea573",
+     "#83d992",
+     "#8ee9a8"
+    ]
+   ]
+  },
+  "seabed_grey": {
+   "shadow": "#111615",
+   "mid": "#67706e",
+   "highlight": "#dce6dd",
+   "two_stop_max_dev_dE": 2.7,
+   "median_resid_dE": 2.6,
+   "inks": []
+  },
+  "lens_grey_shell": {
+   "shadow": "#1f2125",
+   "mid": "#656c6d",
+   "highlight": "#c0c9c4",
+   "two_stop_max_dev_dE": 1.9,
+   "median_resid_dE": 2.3,
+   "inks": [
+    [
+     0.076,
+     "#1f2539",
+     "#4f5f70",
+     "#babfd6"
+    ]
+   ]
+  },
+  "lens_green_rock": {
+   "shadow": "#122314",
+   "mid": "#667d5f",
+   "highlight": "#d8ebc2",
+   "two_stop_max_dev_dE": 6.2,
+   "median_resid_dE": 3.6,
+   "inks": [
+    [
+     0.646,
+     "#2a4926",
+     "#bfd2aa",
+     "#d6ebc2"
+    ],
+    [
+     0.321,
+     "#162b19",
+     "#91a488",
+     "#d8e6c5"
+    ]
+   ]
+  },
+  "money_seal_lens": {
+   "shadow": "#1e532e",
+   "mid": "#7b9d76",
+   "highlight": "#f7f3db",
+   "two_stop_max_dev_dE": 6.2,
+   "median_resid_dE": 3.5,
+   "inks": [
+    [
+     0.609,
+     "#cfc6af",
+     "#e8dbc4",
+     "#f5f1d9"
+    ],
+    [
+     0.358,
+     "#1b5730",
+     "#c9daa2",
+     "#d3e3b4"
+    ]
+   ]
+  },
+  "bill_on_black": {
+   "shadow": "#020202",
+   "mid": "#3e6e3f",
+   "highlight": "#e3d6c2",
+   "two_stop_max_dev_dE": 32.2,
+   "median_resid_dE": 4.4,
+   "inks": [
+    [
+     0.369,
+     "#316335",
+     "#79a068",
+     "#bed797"
+    ],
+    [
+     0.172,
+     "#546951",
+     "#cbbfa9",
+     "#e5d7c3"
+    ]
+   ]
+  },
+  "phone_grey": {
+   "shadow": "#0a0a0a",
+   "mid": "#6f6f6f",
+   "highlight": "#ffffff",
+   "two_stop_max_dev_dE": 0.0,
+   "median_resid_dE": 1.4,
+   "inks": []
+  }
+ },
+ "duotone_roundtrip_dE": {
+  "lens_peach": {
+   "median_dE": 10.7,
+   "p90_dE": 44.0
+  },
+  "columns_terracotta": {
+   "median_dE": 8.4,
+   "p90_dE": 19.8
+  },
+  "turtle_lavender": {
+   "median_dE": 2.3,
+   "p90_dE": 11.2
+  },
+  "lighthouse_mint": {
+   "median_dE": 4.1,
+   "p90_dE": 14.1
+  },
+  "seabed_grey": {
+   "median_dE": 2.4,
+   "p90_dE": 7.1
+  },
+  "money_seal_lens": {
+   "median_dE": 8.3,
+   "p90_dE": 26.4
+  }
+ },
+ "band": {
+  "height_H": {
+   "far": 0.055,
+   "close": 0.27
+  },
+  "stops_close_t18": [
+   "#f1caca",
+   "#fbd8b9",
+   "#fcd8a3",
+   "#fadba3",
+   "#ebdbaf",
+   "#c7e5d2",
+   "#a3c8e4",
+   "#8daad3",
+   "#89a0c8",
+   "#889bbc"
+  ],
+  "sat_p50": 0.27,
+  "val_p50": 0.89,
+  "cycles_along_band": 2,
+  "wavy_lines": {
+   "pitch_bh": 0.124,
+   "period_bh": 2.0,
+   "amplitude_bh": 0.17,
+   "stroke": "white ~40% opacity"
+  },
+  "text": {
+   "case": "UPPERCASE white",
+   "cap_height_bh": 0.5,
+   "tracking_em": {
+    "Lexend 500": 0.43,
+    "Poppins 500/600": 0.46,
+    "Montserrat 600": 0.41
+   }
+  },
+  "hue_sweep": "none in static hold"
+ },
+ "headline_sheen": {
+  "speed_W_per_s": 0.025,
+  "sigma_W": 0.047,
+  "share_of_ink": 0.26,
+  "colours": {
+   "turtle": [
+    "#49298c ink",
+    "teal sheen ~#4fb6c8"
+   ],
+   "columns": [
+    "#8e2d4a ink",
+    "#b5737b light"
+   ]
+  }
+ },
+ "type": {
+  "serif": {
+   "reference_metrics": {
+    "xheight_over_ascender": 0.683,
+    "stem_over_xheight": 0.304
+   },
+   "picks": [
+    {
+     "font": "Newsreader (variable, opsz 72) wght 600",
+     "ls_em": -0.03,
+     "xh": 0.696,
+     "stem": 0.309,
+     "width_err": "+1.8%",
+     "IoU": 0.632
+    },
+    {
+     "font": "Frank Ruhl Libre 700",
+     "ls_em": -0.03,
+     "xh": 0.696,
+     "stem": 0.309,
+     "width_err": "+8.1% (tighten)",
+     "IoU": 0.731
+    },
+    {
+     "font": "Source Serif 4 700 static",
+     "ls_em": -0.03,
+     "xh": 0.671,
+     "stem": 0.358,
+     "width_err": "+8.6%",
+     "IoU": 0.748
+    }
+   ],
+   "current_kit_font": "Instrument Serif: IoU 0.541, stem 0.161 (half weight), width -18%: poor match"
+  },
+  "sans": {
+   "picks": [
+    {
+     "font": "Lexend 500",
+     "ls_em": -0.02,
+     "IoU": 0.792,
+     "width_err": "-1.5%"
+    },
+    {
+     "font": "Poppins 500 (already in kit)",
+     "ls_em": -0.01,
+     "IoU": 0.764,
+     "width_err": "-4.5%"
+    }
+   ],
+   "features": "single-storey a, straight-tail y, geometric"
+  },
+  "npm": [
+   "@fontsource-variable/newsreader",
+   "@fontsource/lexend",
+   "@fontsource/frank-ruhl-libre"
+  ]
+ }
+}

@@ -1,0 +1,97 @@
+{
+ "video": "/home/user/motion-graphic/motion-kit/out/cred-card-test.mp4",
+ "fps": 30.0,
+ "duration": 15.02,
+ "flow_sound_film_qa": {
+  "still_pct": 14.7,
+  "longest_still_s": 0.6,
+  "motion_median": 0.0045,
+  "onsets_per_s": 2.66,
+  "hit_prominence_db": 3.8,
+  "longest_silence_ms": 90
+ },
+ "loudness": {
+  "lufs_i": -13.8,
+  "lra_lu": 1.4,
+  "true_peak_dbtp": -2.7
+ },
+ "cuts": {
+  "times_s": [
+   11.5
+  ],
+  "count": 1,
+  "asl_s": 7.5,
+  "median_shot_s": 7.5,
+  "longest_shot_s": 11.5,
+  "cuts_per_10s": 0.67
+ },
+ "shots": [
+  {
+   "name": "shot1",
+   "start": 0.0,
+   "end": 11.5,
+   "axis1_share": 0.85,
+   "ink": "#74846b",
+   "paper": "#ded8c6",
+   "sat_share": 0.01,
+   "screen": {
+    "tiles": 1934,
+    "mode_share": 0.52,
+    "period_px640": 2.2,
+    "period_pctH": 0.612,
+    "angle_deg": 0.1,
+    "all_tiles_median_period": 2.42
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 3.3,
+    "zoom_median_abs_pct_s": 0.16,
+    "zoom_net_pct": 8.6,
+    "pan_p90_pctW_s": 3.5,
+    "pan_median_pctW_s": 0.21,
+    "roll_p90_abs_deg_s": 0.76,
+    "camera_moving_share": 0.29,
+    "inlier_median": 0.92
+   }
+  },
+  {
+   "name": "shot2",
+   "start": 11.5,
+   "end": 15.0,
+   "axis1_share": 0.889,
+   "ink": "#293228",
+   "paper": "#e6e4d0",
+   "sat_share": 0.015,
+   "screen": {
+    "tiles": 422,
+    "mode_share": 0.19,
+    "period_px640": 6.4,
+    "period_pctH": 1.778,
+    "angle_deg": 90.6,
+    "all_tiles_median_period": 5.33
+   },
+   "lens": {
+    "lens_frames": 6,
+    "lens_share": 1.0,
+    "centre_pctW": 47.8,
+    "centre_pctH": 41.8,
+    "R50_over_W": 0.139,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 9.9,
+    "outside_luma": 2.0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.4,
+    "zoom_median_abs_pct_s": 0.09,
+    "zoom_net_pct": -0.1,
+    "pan_p90_pctW_s": 0.4,
+    "pan_median_pctW_s": 0.14,
+    "roll_p90_abs_deg_s": 0.08,
+    "camera_moving_share": 0.05,
+    "inlier_median": 0.93
+   }
+  }
+ ]
+}

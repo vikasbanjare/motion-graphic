@@ -1,0 +1,24 @@
+n frames 1656
+median frame diff (motion) 0.0097
+cut? t=13.458s frame 323  diff=0.223 med=0.002 histdiff=0.391
+cut? t=18.750s frame 450  diff=0.243 med=0.032 histdiff=0.317
+cut? t=18.792s frame 451  diff=0.437 med=0.032 histdiff=0.269
+cut? t=18.833s frame 452  diff=0.229 med=0.032 histdiff=0.267
+cut? t=18.875s frame 453  diff=0.101 med=0.032 histdiff=0.117
+cut? t=20.375s frame 489  diff=0.265 med=0.029 histdiff=0.357
+cut? t=20.417s frame 490  diff=0.449 med=0.029 histdiff=0.176
+cut? t=20.458s frame 491  diff=0.227 med=0.029 histdiff=0.262
+cut? t=20.500s frame 492  diff=0.102 med=0.029 histdiff=0.131
+cut? t=32.542s frame 781  diff=0.168 med=0.014 histdiff=0.435
+cut? t=35.750s frame 858  diff=0.106 med=0.006 histdiff=0.233
+cut? t=40.583s frame 974  diff=0.224 med=0.018 histdiff=0.299
+cut? t=46.917s frame 1126  diff=0.143 med=0.036 histdiff=0.166
+cut? t=46.958s frame 1127  diff=0.294 med=0.036 histdiff=0.172
+cut? t=47.000s frame 1128  diff=0.337 med=0.036 histdiff=0.194
+cut? t=48.250s frame 1158  diff=0.188 med=0.041 histdiff=0.226
+cut? t=48.292s frame 1159  diff=0.303 med=0.041 histdiff=0.181
+cut? t=48.333s frame 1160  diff=0.354 med=0.041 histdiff=0.351
+cut? t=49.583s frame 1190  diff=0.173 med=0.037 histdiff=0.216
+cut? t=49.625s frame 1191  diff=0.357 med=0.037 histdiff=0.270
+cut? t=49.667s frame 1192  diff=0.389 med=0.037 histdiff=0.328
+cut? t=49.708s frame 1193  diff=0.139 med=0.037 histdiff=0.158

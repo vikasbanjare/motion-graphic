@@ -1,0 +1,106 @@
+{
+ "sphere": {
+  "ours": {
+   "hist": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.116,
+    0.677,
+    0.205,
+    0.002,
+    0.0,
+    0.0
+   ],
+   "sat50": 0.45,
+   "sat90": 0.94,
+   "foil_frac": 0.67,
+   "Y": [
+    0.03,
+    0.36,
+    0.76
+   ],
+   "curve": [
+    0.16,
+    0.16,
+    0.16,
+    0.16,
+    0.16,
+    0.16,
+    0.16,
+    0.15,
+    null,
+    null
+   ]
+  },
+  "vs": {
+   "shell": {
+    "hue_hist_intersection": 0.517,
+    "chroma_curve_rmse": 0.07843137010932054
+   },
+   "turtle": {
+    "hue_hist_intersection": 0.939,
+    "chroma_curve_rmse": 0.05640694733508691
+   },
+   "card_axis": {
+    "hue_hist_intersection": 0.0,
+    "chroma_curve_rmse": 0.27393214561910645
+   }
+  }
+ },
+ "card": {
+  "ours": {
+   "hist": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.028,
+    0.679,
+    0.293,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sat50": 0.4,
+   "sat90": 0.79,
+   "foil_frac": 0.71,
+   "Y": [
+    0.03,
+    0.41,
+    0.71
+   ],
+   "curve": [
+    0.18,
+    0.18,
+    0.17,
+    0.17,
+    0.17,
+    0.18,
+    0.17,
+    0.16,
+    null,
+    null
+   ]
+  },
+  "vs": {
+   "shell": {
+    "hue_hist_intersection": 0.429,
+    "chroma_curve_rmse": 0.0909072497903363
+   },
+   "turtle": {
+    "hue_hist_intersection": 0.901,
+    "chroma_curve_rmse": 0.05074823663959019
+   },
+   "card_axis": {
+    "hue_hist_intersection": 0.0,
+    "chroma_curve_rmse": 0.2647799264875523
+   }
+  }
+ }
+}

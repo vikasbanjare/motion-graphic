@@ -1,0 +1,28 @@
+track                         LUFS   bpm   key(r)            sub/60-250/250-2k/2-6k/>6k dB    side-mid  onsets/s  centroid
+REF pluck intro 6-12.9          -24.8  126.0  Bb maj (0.68)   -20.9/ -4.2/ -3.2/ -9.1/-23.8      0.6    8.84     2496
+REF A groove 13-29              -17.6  126.0  Eb maj (0.51)    -2.2/ -5.2/-10.7/-21.2/-36.2    -11.4    6.75     1302
+REF B drop 29-44.4              -15.4  126.0  Eb maj (0.66)    -2.2/ -5.0/-11.3/-22.9/-35.8    -11.0    7.53     1026
+REF B2 51.4-63.3                -15.6  126.0  Eb maj (0.73)    -1.5/ -6.6/-11.5/-21.4/-32.6    -11.2    7.23     1294
+REF whole film                  -17.0  126.0  Eb maj (0.81)    -2.0/ -5.5/-11.1/-21.5/-31.2    -10.9    6.49     1631
+ours music_bed warm             -17.8   83.4  D maj  (0.78)   -22.6/ -3.0/ -3.1/-29.7/-55.7    -17.2    3.31      643
+ours music_bed tech             -18.6  112.3  F maj  (0.71)    -6.7/ -1.1/-19.1/-30.7/-27.7    -17.5    6.03      814
+ours music_bed calm             -17.3   76.0  F maj  (0.94)   -56.3/ -9.6/ -0.5/-28.6/-68.5    -16.9    1.57      544
+ours music_bed tense            -20.6   95.7  C maj  (0.52)    -2.7/ -3.4/-20.3/-54.1/-72.0    -14.0    2.30      190
+ours cred-test bed (calm D 92)  -17.3   92.3  D maj  (0.85)   -54.8/ -3.1/ -2.9/-29.1/-68.9    -16.6    1.44      542
+ours cred-test film mix         -13.8   92.3  D maj  (0.87)   -44.8/ -3.0/ -3.1/-23.9/-28.5    -16.6    3.53      928
+
+SFX files: dur, centroid, flatness(200-12k), 10-90% attack, -20dB release, band(5-95% energy), mono?
+custom/sarvam-v4/sfx-chime.wav      0.82s  cen   1327  flat 0.02  att 0.016s  rel  0.33s  band   867- 1781 Hz
+custom/sarvam-v4/sfx-scribble.wav   1.20s  cen   4180  flat 0.01  att 0.736s  rel  0.34s  band  2062- 6234 Hz
+custom/sarvam-v4/sfx-shimmer.wav    1.40s  cen   3639  flat 0.14  att 0.187s  rel  0.52s  band  2086- 5273 Hz
+custom/sarvam-v4/sfx-swell.wav      1.60s  cen    461  flat 0.03  att 0.704s  rel  0.13s  band    94- 1195 Hz
+custom/sarvam-v4/sfx-tick.wav       0.06s  cen   2265  flat 0.04  att 0.005s  rel  0.04s  band  2156- 2250 Hz
+custom/sarvam-v4/sfx-whoosh.wav     0.80s  cen   7574  flat 0.81  att 0.181s  rel  0.29s  band  3211-11578 Hz
+sfx/soft/click.wav                  0.06s  cen   4027  flat 0.80  att 0.003s  rel  0.02s  band    47-16500 Hz
+sfx/soft/ding.wav                   1.40s  cen    821  flat 0.01  att 0.008s  rel  0.50s  band   750-  844 Hz
+sfx/soft/impact.wav                 1.40s  cen     88  flat 0.09  att 0.011s  rel  0.83s  band    47-  141 Hz
+sfx/soft/pop.wav                    0.22s  cen    562  flat 0.00  att 0.005s  rel  0.13s  band   375-  703 Hz
+sfx/soft/riser.wav                  1.60s  cen   3933  flat 0.83  att 0.451s  rel  0.05s  band  1406- 9516 Hz
+sfx/soft/typing.wav                 2.00s  cen   2284  flat 0.41  att 0.117s  rel  0.01s  band  1547- 3797 Hz
+sfx/soft/whoosh-soft.wav            0.60s  cen   2040  flat 0.70  att 0.131s  rel  0.26s  band   469- 5953 Hz
+sfx/soft/whoosh.wav                 0.75s  cen   2385  flat 0.75  att 0.168s  rel  0.29s  band   516- 6984 Hz

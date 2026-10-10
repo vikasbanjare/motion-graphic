@@ -1,0 +1,11 @@
+WHOOSH vs whip-pan cut (cut = frame of max picture difference). 3-15 kHz band of SFX layer; run = above local median+10 dB
+  whip1 cut 18.792: run -0.088..+0.155s, peak -0.030s (+21 dB); run +0.298..+0.556s, peak +0.542s (+22 dB)
+  whip2 cut 20.417: run -0.111..+0.014s, peak -0.082s (+26 dB); run +0.075..+0.316s, peak +0.295s (+21 dB)
+  whip3 cut 46.958: run -0.306..-0.042s, peak -0.239s (+33 dB); run +0.080..+0.358s, peak +0.332s (+33 dB)
+  whip4 cut 48.292: run -0.703..-0.636s, peak -0.668s (+34 dB); run -0.352..-0.296s, peak -0.322s (+30 dB); run -0.276..-0.006s, peak -0.035s (+40 dB); run +0.095..+0.156s, peak +0.127s (+30 dB)
+  whip5 cut 49.625: run -0.320..-0.077s, peak -0.120s (+19 dB); run +0.664..+0.797s, peak +0.742s (+28 dB)
+
+hard cuts -> nearest strong musical onset (s): 13.46:-0.072 18.79:-0.074 20.42:-0.097 32.54:-0.078 35.75:-0.064 40.58:+0.159 46.96:+0.097 48.29:+0.119 49.62:-0.303 54.54:-0.077
+  median |dist| 87 ms; within 1 frame (42ms): 0%
+  chance (random times 13-63 s): median |dist| 89 ms; within 42ms: 26%  (strong onsets/s = 2.62)
+hard cuts -> nearest sub-kick/808 onset: 13.46:+0.15 18.79:+0.34 20.42:-0.56 32.54:-3.57 35.75:-6.78 40.58:+10.87 46.96:+4.50 48.29:+3.16 49.62:+1.83 54.54:-2.73

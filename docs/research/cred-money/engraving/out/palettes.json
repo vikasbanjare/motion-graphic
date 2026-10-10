@@ -1,0 +1,156 @@
+[
+ {
+  "name": "flowers_purple",
+  "t": 6.0,
+  "ink": "#69458f",
+  "mid": "#b280d4",
+  "paper": "#f6e1fb",
+  "var_explained_pc1": 0.937,
+  "rms_off_axis": 13.25,
+  "mid_bend": 23.4,
+  "n": 27901
+ },
+ {
+  "name": "leaves_green",
+  "t": 6.0,
+  "ink": "#51692c",
+  "mid": "#bed59f",
+  "paper": "#e5f3c8",
+  "var_explained_pc1": 0.992,
+  "rms_off_axis": 6.11,
+  "mid_bend": 5.1,
+  "n": 71571
+ },
+ {
+  "name": "bird_purple",
+  "t": 8.0,
+  "ink": "#4c2e7c",
+  "mid": "#997cbf",
+  "paper": "#d0b8eb",
+  "var_explained_pc1": 0.968,
+  "rms_off_axis": 11.36,
+  "mid_bend": 3.3,
+  "n": 18925
+ },
+ {
+  "name": "scene_bg_paper",
+  "t": 6.0,
+  "ink": "#50682c",
+  "mid": "#9cab81",
+  "paper": "#e1f0c7",
+  "var_explained_pc1": 0.929,
+  "rms_off_axis": 18.61,
+  "mid_bend": 5.5,
+  "n": 4800
+ },
+ {
+  "name": "bill_lens_green",
+  "t": 15.0,
+  "ink": "#49b16d",
+  "mid": "#77de94",
+  "paper": "#c6fcbf",
+  "var_explained_pc1": 0.739,
+  "rms_off_axis": 22.3,
+  "mid_bend": 15.2,
+  "n": 124888
+ },
+ {
+  "name": "columns",
+  "t": 23.0,
+  "ink": "#782b31",
+  "mid": "#c1876e",
+  "paper": "#e2d0bc",
+  "var_explained_pc1": 0.946,
+  "rms_off_axis": 16.51,
+  "mid_bend": 21.3,
+  "n": 35200
+ },
+ {
+  "name": "columns_wide",
+  "t": 24.5,
+  "ink": "#7b2b37",
+  "mid": "#d8a88d",
+  "paper": "#e7ccb8",
+  "var_explained_pc1": 0.93,
+  "rms_off_axis": 17.85,
+  "mid_bend": 16.6,
+  "n": 210826
+ },
+ {
+  "name": "turtle_seabed",
+  "t": 29.5,
+  "ink": "#52466c",
+  "mid": "#b5afcc",
+  "paper": "#e6ddf8",
+  "var_explained_pc1": 0.987,
+  "rms_off_axis": 6.28,
+  "mid_bend": 4.3,
+  "n": 58669
+ },
+ {
+  "name": "turtle_scene_all",
+  "t": 30.5,
+  "ink": "#4c4068",
+  "mid": "#b4aecc",
+  "paper": "#e9dff9",
+  "var_explained_pc1": 0.987,
+  "rms_off_axis": 6.34,
+  "mid_bend": 4.7,
+  "n": 91113
+ },
+ {
+  "name": "lighthouse",
+  "t": 33.5,
+  "ink": "#3b5a2e",
+  "mid": "#adce9e",
+  "paper": "#caf1b8",
+  "var_explained_pc1": 0.991,
+  "rms_off_axis": 6.19,
+  "mid_bend": 5.3,
+  "n": 69300
+ },
+ {
+  "name": "lh_close",
+  "t": 36.5,
+  "ink": "#395a2f",
+  "mid": "#bbe6aa",
+  "paper": "#e1f9d3",
+  "var_explained_pc1": 0.962,
+  "rms_off_axis": 15.52,
+  "mid_bend": 16.3,
+  "n": 65525
+ },
+ {
+  "name": "seabed_grey",
+  "t": 41.0,
+  "ink": "#101715",
+  "mid": "#8f9593",
+  "paper": "#c2cbc7",
+  "var_explained_pc1": 0.997,
+  "rms_off_axis": 4.52,
+  "mid_bend": 3.5,
+  "n": 99326
+ },
+ {
+  "name": "green_rock",
+  "t": 47.5,
+  "ink": "#112812",
+  "mid": "#80997b",
+  "paper": "#def3d0",
+  "var_explained_pc1": 0.984,
+  "rms_off_axis": 12.6,
+  "mid_bend": 2.6,
+  "n": 54600
+ },
+ {
+  "name": "money_paper",
+  "t": 52.0,
+  "ink": "#1e592b",
+  "mid": "#ccd9a2",
+  "paper": "#e6e5cc",
+  "var_explained_pc1": 0.969,
+  "rms_off_axis": 15.24,
+  "mid_bend": 20.4,
+  "n": 57600
+ }
+]
