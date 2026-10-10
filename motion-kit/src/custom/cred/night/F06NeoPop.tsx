@@ -25,9 +25,10 @@ const T = {
 /** A NeoPOP elevated surface: face + hard bottom and right edges (depth px). `press` 0..1 pushes it down. */
 const Pop: React.FC<{ x: number; y: number; w: number; h: number; c: string; d: string; depth?: number; press?: number; children?: React.ReactNode; o?: number }> = ({ x, y, w, h, c, d, depth = 16, press = 0, children, o = 1 }) => {
   const k = depth * (1 - 0.8 * press);
+  const fl = 5 * Math.sin((x + y) * 0.01 + useCurrentFrame() / 9);
   const dx = depth - k;
   return (
-    <div style={{ position: "absolute", left: x + dx, top: y + dx, width: w + k, height: h + k, opacity: o }}>
+    <div style={{ position: "absolute", left: x + dx, top: y + dx + fl, width: w + k, height: h + k, opacity: o }}>
       <div style={{ position: "absolute", left: k, top: h, width: w, height: k, background: d, transform: "skewX(45deg)", transformOrigin: "0 0" }} />
       <div style={{ position: "absolute", left: w, top: k, width: k, height: h, background: d, filter: "brightness(0.8)", transform: "skewY(45deg)", transformOrigin: "0 0" }} />
       <div style={{ position: "absolute", left: 0, top: 0, width: w, height: h, background: c, border: `2px solid ${T.white}`, boxSizing: "border-box", overflow: "hidden" }}>{children}</div>
@@ -49,7 +50,7 @@ export const F06NeoPop: React.FC = () => {
   const cardIn = ramp(f, 44, 58, expoOut);
   const pressAt = 112;
   const press = f >= pressAt - 4 ? Math.sin(Math.PI * ramp(f, pressAt - 4, pressAt + 8)) : 0;
-  const cursor = { x: lerp(1500, 1080, ramp(f, 92, pressAt - 4, inOut)), y: lerp(1000, 640, ramp(f, 92, pressAt - 4, inOut)) };
+  const cursor = { x: lerp(900, 460, ramp(f, 92, pressAt - 4, inOut)), y: lerp(1060, 780, ramp(f, 92, pressAt - 4, inOut)) };
   const tiles = [
     { at: 168, label: "flights", c: T.purple, d: T.purpleD, fg: T.white },
     { at: 180, label: "hotels", c: T.orange, d: T.orangeD, fg: T.black },
@@ -57,13 +58,14 @@ export const F06NeoPop: React.FC = () => {
   ];
   const fee = drop(f, 238);
   const stack = ramp(f, 292, 314, inOut);
-  const outA = 1 - ramp(f, 150, 160, easeIn); // first page leaves
+  const outA = 1 - ramp(f, 122, 130, easeIn); // first page leaves after the press
   const outB = 1 - ramp(f, 226, 234, easeIn);
   const outC = 1 - ramp(f, 284, 292, easeIn);
   return (
     <AbsoluteFill style={{ background: T.black }}>
-      {/* floor grid */}
-      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, opacity: 0.12 }}>
+     <AbsoluteFill style={{ transform: `translate(${14 * Math.sin(f / 31)}px, ${8 * Math.cos(f / 27)}px) scale(${1.02 + 0.02 * Math.sin(f / 45)})` }}>
+      {/* floor grid, scrolling */}
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, opacity: 0.12, transform: `translate(${-((f * 1.5) % 60)}px, ${-((f * 0.8) % 60)}px)` }}>
         {Array.from({ length: 33 }, (_, i) => <line key={`v${i}`} x1={i * 60} y1={0} x2={i * 60} y2={1080} stroke={T.white} strokeWidth={1} />)}
         {Array.from({ length: 19 }, (_, i) => <line key={`h${i}`} x1={0} y1={i * 60} x2={1920} y2={i * 60} stroke={T.white} strokeWidth={1} />)}
       </svg>
@@ -84,7 +86,7 @@ export const F06NeoPop: React.FC = () => {
           {/* the press: a pink 5% button, pushed by the cursor */}
           {f >= 84 && (
             <div style={{ opacity: ramp(f, 84, 92) }}>
-              <Pop x={760} y={560} w={520} h={130} c={T.pink} d={T.pinkD} depth={20} press={press}><Label t="5% rewards" size={56} color={T.white} /></Pop>
+              <Pop x={120} y={700} w={520} h={130} c={T.pink} d={T.pinkD} depth={20} press={press}><Label t="5% rewards" size={56} color={T.white} /></Pop>
               <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
                 <path d={`M ${cursor.x} ${cursor.y} l 0 70 l 18 -16 l 14 30 l 14 -6 l -14 -30 l 24 -2 Z`} fill={T.white} stroke={T.black} strokeWidth={3} transform={`translate(${press * 8} ${press * 8})`} />
               </svg>
@@ -94,7 +96,7 @@ export const F06NeoPop: React.FC = () => {
       )}
       {/* 2: after the press: the 5% statement fills the frame */}
       {f >= pressAt + 2 && f < 236 && (
-        <div style={{ opacity: f < 160 ? ramp(f, pressAt + 2, pressAt + 10) : outB }}>
+        <div style={{ opacity: f < 160 ? 1 : outB }}>
           {f >= 156 && (
             <>
               <div style={{ position: "absolute", left: 120, top: 120, fontFamily: SANS, fontWeight: 700, fontSize: 64, color: T.white, textTransform: "uppercase", opacity: ramp(f, 156, 166) }}>redeem on</div>
@@ -111,9 +113,18 @@ export const F06NeoPop: React.FC = () => {
               <div style={{ position: "absolute", left: 1280, top: 760, fontFamily: SANS, fontWeight: 700, fontSize: 40, color: T.green, textTransform: "uppercase", opacity: ramp(f, 200, 210) }}>on CRED store</div>
             </>
           )}
-          {f < 160 && (
-            <div style={{ position: "absolute", left: 120, top: 820, fontFamily: SANS, fontWeight: 700, fontSize: 52, color: T.paccha, textTransform: "uppercase", opacity: ramp(f, pressAt + 4, pressAt + 14) }}>on online shopping</div>
-          )}
+          {f < 160 && (() => {
+            const big = drop(f, 132);
+            const o = 1 - ramp(f, 150, 158, easeIn);
+            return (
+              <div style={{ opacity: o }}>
+                <div style={{ transform: `translateY(${big.y}px)`, opacity: big.o }}>
+                  <Pop x={360} y={220} w={1200} h={420} c={T.pink} d={T.pinkD} depth={30}><Label t="5% rewards" size={150} color={T.white} /></Pop>
+                </div>
+                <div style={{ position: "absolute", left: 0, right: 0, top: 760, textAlign: "center", fontFamily: SANS, fontWeight: 700, fontSize: 60, color: T.paccha, textTransform: "uppercase", opacity: ramp(f, 136, 144) }}>on online shopping</div>
+              </div>
+            );
+          })()}
         </div>
       )}
       {/* 3: ₹0 */}
@@ -139,6 +150,7 @@ export const F06NeoPop: React.FC = () => {
           {f >= 316 && <Logo f={f} at={316} y={700} h={96} />}
         </>
       )}
+     </AbsoluteFill>
       <Audio src={staticFile("custom/cred-night/f06.wav")} />
     </AbsoluteFill>
   );

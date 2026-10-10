@@ -1,0 +1,169 @@
+{
+ "seconds": 15.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "N01",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "air_riser",
+   "anchor_t": 0.0,
+   "align": "start",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N02",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 0.96,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N03",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 1.92,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N04",
+   "sfx": "drop_impact",
+   "params": {},
+   "anchor": "drop_impact",
+   "anchor_t": 2.88,
+   "align": "start",
+   "over_bed_lu": -3.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N05",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 3.84,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N06",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "low_wash",
+   "anchor_t": 4.8,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N07",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 6.48,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N08",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 7.2,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N09",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.2
+   },
+   "anchor": "whip",
+   "anchor_t": 7.92,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N10",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "paper_flick",
+   "anchor_t": 11.52,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N11",
+   "sfx": "drop_impact",
+   "params": {},
+   "anchor": "drop_impact",
+   "anchor_t": 11.76,
+   "align": "start",
+   "over_bed_lu": -2.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N12",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 12.96,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N13",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "chord_bloom",
+   "anchor_t": 14.64,
+   "align": "start",
+   "over_bed_lu": -2.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  }
+ ]
+}
