@@ -228,14 +228,20 @@ NEG = re.compile(r"podcast|interview|webinar|panel|keynote|live|episode|talk|fir
 POS = re.compile(r"introduc|launch|announc|new|meet|demo|product|feature|explainer|how it works|now available|v\d|\d\.\d|teaser|trailer", re.I)
 
 
+def cookie_args(cookies):
+    """yt-dlp cookie flags: a cookies.txt file, or read straight from a browser on this machine."""
+    if cookies:
+        return ["--cookies", cookies]
+    browser = os.environ.get("YT_COOKIES_BROWSER")
+    return ["--cookies-from-browser", browser] if browser else []
+
+
 def channel_videos(urls, cookies):
     out = []
     for ch in urls:
         tabs = [ch.rstrip("/") + t for t in ("/videos", "/shorts")] if "youtube.com" in ch else [ch]
         for tab in tabs:
-            cmd = ["yt-dlp", "--flat-playlist", "-J", "--playlist-end", "60", tab]
-            if cookies:
-                cmd[1:1] = ["--cookies", cookies]
+            cmd = ["yt-dlp", *cookie_args(cookies), "--flat-playlist", "-J", "--playlist-end", "60", tab]
             r = subprocess.run(cmd, capture_output=True, text=True, timeout=240)
             if r.returncode != 0:
                 log(f"  ✖ {tab}: {r.stderr.strip().splitlines()[-1][:160] if r.stderr.strip() else 'failed'}")
@@ -275,12 +281,16 @@ def pick(cands, n):
 
 
 def download(url, dest, cookies, referer=None):
-    cmd = ["yt-dlp", "-q", "--no-warnings", "-f", "bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720]/b", "--merge-output-format", "mp4", "-o", dest, url]
-    if cookies:
-        cmd[1:1] = ["--cookies", cookies]
+    cmd = ["yt-dlp", *cookie_args(cookies), "-q", "--no-warnings", "-f", "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080]/b", "--merge-output-format", "mp4", "-o", dest, url]
     if referer:
         cmd[1:1] = ["--referer", referer]
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    if r.returncode != 0 and "cookie" in r.stderr.lower() and cookie_args(cookies):
+        # the browser's cookie store is unreadable (wrong browser, locked keychain): try without it
+        log(f"  ! cookies unusable ({r.stderr.strip().splitlines()[-1][:120]}); retrying without")
+        r = subprocess.run([c for c in cmd if c not in cookie_args(cookies)], capture_output=True, text=True, timeout=600)
+    if r.returncode != 0:
+        log(f"  ✖ {url}: {r.stderr.strip().splitlines()[-1][:160] if r.stderr.strip() else 'failed'}")
     return r.returncode == 0 and os.path.exists(dest)
 
 
@@ -333,7 +343,8 @@ def contact_sheet(path, dest):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--company", required=True)
-    ap.add_argument("--site", required=True)
+    ap.add_argument("--site", default=None, help="company website (omit for a video-only job)")
+    ap.add_argument("--keep-media", action="store_true", help="keep the downloaded films in private/media (encrypted when published)")
     ap.add_argument("--channel", action="append", default=[])
     ap.add_argument("--video", action="append", default=[], help="extra video URLs to consider")
     ap.add_argument("--out", default=None)
@@ -348,14 +359,17 @@ def main():
     cookies = os.environ.get("YT_COOKIES_FILE")
 
     log(f"Scouting {a.company} · {a.site}")
-    pages = crawl(a.site, a.max_pages, a.delay)
-    info = assets(pages, out)
+    if a.site:
+        pages = crawl(a.site, a.max_pages, a.delay)
+        info = assets(pages, out)
+    else:  # video-only job: just the links given
+        info = {"socials": {}, "site_videos": [], "logos": [], "colors": {"brand": [], "neutral": [], "css_custom_properties": []}, "fonts": [], "brand_pages": [], "news": []}
     channels = list(dict.fromkeys(a.channel + info["socials"].get("youtube", [])[:1] + info["socials"].get("vimeo", [])[:1]))
     log(f"  channels: {channels}")
     cands = channel_videos(channels, cookies)
     cands += [{"url": v["url"], "title": "", "duration": None, "rank": 0, "from_site": True, "referer": v["found_on"]} for v in info["site_videos"]]
-    cands += [{"url": u, "title": "", "duration": None, "rank": 0, "from_site": True} for u in a.video]
-    chosen = pick(cands, a.max_videos)
+    given = [{"url": u, "title": "", "duration": None, "rank": 0, "given": True} for u in a.video]
+    chosen = given + [c for c in pick(cands, a.max_videos) if c["url"] not in set(a.video)][: max(0, a.max_videos - len(given))]
     log(f"  {len(cands)} candidate videos, downloading {len(chosen)}")
 
     from film_qa import measure  # motion-kit/tools/film_qa.py
@@ -378,7 +392,9 @@ def main():
         log(f"  · {c['url']}  mg {score:.2f}  {m.get('duration', '?')} s")
     ok = [v for v in vids if v.get("status") == "ok"]
     ok.sort(key=lambda v: v["mg_score"], reverse=True)
-    kept = [v for v in ok if v["mg_score"] > 0.4][: a.keep] or ok[:3]
+    # links the user gave are always kept; the rest only when they look like motion graphics
+    kept = [v for v in ok if v.get("given")] + [v for v in ok if not v.get("given") and v["mg_score"] > 0.4][: a.keep]
+    kept = kept or ok[:3]
     for j, v in enumerate(kept):
         sheet = os.path.join(out, "private", "sheets", f"{j:02d}.jpg")
         contact_sheet(v["file"], sheet)
@@ -386,7 +402,13 @@ def main():
         v["kept"] = True
     for v in vids:
         if "file" in v:
-            os.remove(v["file"])
+            if a.keep_media and v.get("kept"):
+                os.makedirs(os.path.join(out, "private", "media"), exist_ok=True)
+                dest = os.path.join(out, "private", "media", os.path.basename(v["file"]))
+                os.replace(v["file"], dest)
+                v["media"] = os.path.relpath(dest, out)
+            else:
+                os.remove(v["file"])
             del v["file"]
     try:
         os.rmdir(tmp)
@@ -405,7 +427,7 @@ def main():
             film_palette[c] += share
     dossier = {
         "company": a.company,
-        "site": a.site,
+        "site": a.site or "",
         "scouted": time.strftime("%Y-%m-%d"),
         **info,
         "channels": channels,
@@ -419,7 +441,7 @@ def main():
 
 
 def render_md(d):
-    L = [f"# Brand dossier: {d['company']}", "", f"Scouted {d['scouted']} from {d['site']} by research/scout/scout.py. Facts and measurements only; logo files and contact sheets are in the encrypted bundle.", ""]
+    L = [f"# Brand dossier: {d['company']}", "", f"Scouted {d['scouted']} from {d['site'] or 'the given video links'} by research/scout/scout.py. Facts and measurements only; logo files and contact sheets are in the encrypted bundle.", ""]
     L += ["## Latest launches / news", ""] + ([f"- {n['date']} · [{n['title']}]({n['url']}): {n['summary']}" for n in d["news"][:8]] or ["- none found on the site (search the web)"]) + [""]
     L += ["## Colours", "", "Brand colours from the site's CSS (count = uses):", ""] + [f"- `{c}` × {n}" for c, n in d["colors"]["brand"]] + ["", "Neutrals:", ""] + [f"- `{c}` × {n}" for c, n in d["colors"]["neutral"]]
     if d["colors"]["css_custom_properties"]:

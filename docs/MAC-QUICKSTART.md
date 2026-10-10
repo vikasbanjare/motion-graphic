@@ -58,3 +58,22 @@ Then run `npm run produce -- specs/productions/<name>.json --tier local`. Each c
 ## 5. Paid tools instead (optional)
 
 To use **Higgsfield or Magnific**, connect them in Claude and use `--tier mcp`. Claude prices every job first and asks you before spending credits.
+
+## 6. Let Claude download videos itself (the fetch agent)
+
+GitHub's servers can't download from YouTube (they get a bot check), and Claude's session can't reach it at all. Your Mac can. Set this up once:
+
+```bash
+brew install git ffmpeg yt-dlp openssl@3 && pip3 install numpy
+cd motion-kit && npm run agent -- --install --browser chrome   # or safari, firefox, edge, brave
+```
+
+From then on, when Claude needs a video, it writes a job to `brands/queue/` and pushes it. The agent on your Mac fetches the job within a minute and downloads it using the YouTube login from your browser. It encrypts the result and publishes it to the `brand-scout` branch. Claude reads it from there, so you never download or upload anything.
+
+- **Log:** `~/.motion-kit/agent/agent.log`.
+- **Stop it:** `npm run agent -- --uninstall`.
+- **Run it by hand instead:** `npm run agent`.
+
+The agent needs this clone to be able to `git push` to GitHub.
+
+**Without the agent:** run `npm run youtube:cookies` once. It gives GitHub's servers your YouTube cookies as the `YT_COOKIES` secret. Use a spare Google account, and run it again when the cookies expire (every few weeks).

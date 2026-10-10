@@ -62,7 +62,7 @@ jobs:
             args=$(python3 - "$req" <<'PY'
           import json, shlex, sys
           r = json.load(open(sys.argv[1]))
-          a = ["--company", r["company"], "--site", r["site"]]
+          a = ["--company", r["company"]] + (["--site", r["site"]] if r.get("site") else [])
           for c in r.get("channels", []): a += ["--channel", c]
           for v in r.get("videos", []): a += ["--video", v]
           print(" ".join(shlex.quote(x) for x in a))

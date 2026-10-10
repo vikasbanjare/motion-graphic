@@ -27,6 +27,8 @@
     "produce": "node scripts/produce.mjs",
     "local:doctor": "python3 tools/local/doctor.py",
     "scout": "python3 ../research/scout/scout.py",
+    "agent": "python3 ../research/agent/agent.py",
+    "youtube:cookies": "bash tools/local/youtube_cookies.sh",
     "local:setup": "bash tools/local/setup_mac.sh"
   },
   "sideEffects": [

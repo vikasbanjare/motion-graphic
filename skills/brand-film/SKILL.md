@@ -21,11 +21,12 @@ Ask at most one question, and only when it changes the film (e.g. two equally ne
 - **The scout** (`research/scout/scout.py`) needs open internet:
   - **GitHub runner:** push `brands/requests/<slug>.json`, and `.github/workflows/brand-scout.yml` runs it.
   - **The user's Mac:** `cd motion-kit && npm run scout -- --company "X" --site https://x.com`. Add `YT_COOKIES_FILE` from `yt-dlp --cookies-from-browser chrome` for YouTube.
+  - **The user's Mac, automatically (the fetch agent):** for anything the runner can't fetch (YouTube, a link the user names), write `brands/queue/<slug>.json` (`{"company", "videos": [...], "channels": [...], "site"?, "keep_media": true}`) and push. The agent (`research/agent/agent.py`, installed once with `npm run agent -- --install`) downloads it with the user's browser login within about a minute and publishes the encrypted films to `brand-scout/brands/<slug>/`. Never ask the user to download or upload a video: queue it, then read the result. If nothing appears after ~5 minutes, the agent isn't running: say so once and give the one-line install.
 - **Known blocks:**
   - YouTube's bot check on GitHub (needs the `YT_COOKIES` secret);
   - Vimeo's bot wall for some embeds;
   - X and LinkedIn videos behind login.
-  - **The fallback when no films come through:** say so, then ask the user for 2–4 video links or files.
+  - **The fallback when no films come through:** queue them for the fetch agent; only if the agent isn't installed, ask for 2–4 video links or files.
 
 ## 1. Find (web search, in this session)
 
@@ -63,7 +64,12 @@ Read it with:
 git fetch origin brand-scout && git show origin/brand-scout:brands/<slug>/dossier.md
 ```
 
-The private bundle opens with the research key, if this session has it (the same scheme as `research-results`).
+The private bundle opens with the research key, if this session has it (the same scheme as `research-results`):
+
+```bash
+openssl pkeyutl -decrypt -inkey <research-key.pem> -pkeyopt rsa_padding_mode:oaep -in private-<id>.key.enc > k
+cat private-<id>.tar.enc.part* | openssl enc -d -aes-256-cbc -pbkdf2 -pass file:k | tar -x   # private/media/*.mp4, sheets, logos
+```
 
 ## 3. Study the brand (before writing anything)
 
