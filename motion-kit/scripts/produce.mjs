@@ -83,6 +83,7 @@ if (prod.voices) {
       save: `public/${b.file}`,
       prompt: `${b.speak || spoken}${b.voiceNote ? ` — ${b.voiceNote}` : ""}`,
       use: describe(picks("voice-line", "voice")),
+      job: { type: "voice", id: `voice-${i + 1}`, text: b.speak || spoken, lang: b.lang || (/[ऀ-ॿ]/.test(b.speak || "") ? "hi" : "en"), character: b.character, ref: b.ref, note: b.voiceNote, out: b.file, engines: picks("voice-line", "voice") },
     });
   }
   const spec = readSpec();
@@ -135,6 +136,7 @@ for (const p of plates) {
     save: `public/plates/${name}/${p.id}.${p.kind === "video" ? "mp4" : "png"} — or put the result \`url\` in the production file`,
     prompt: `${p.prompt}${prod.bible ? ` ${prod.bible}` : ""} No text, no logos, no watermark.`,
     use: describe(picks(p.shot || "establishing-world", field)) || "see docs/research/free-open-models.md",
+    job: { type: p.kind === "video" ? "video" : "image", id: p.id, prompt: `${p.prompt}${prod.bible ? ` ${prod.bible}` : ""} No text, no logos, no watermark.`, seconds: p.seconds || 5, aspect: p.aspect || ({ reel: "9:16", portrait: "4:5", square: "1:1", landscape: "16:9" }[readSpec().format] || "9:16"), from: p.from, out: `plates/${name}/${p.id}.${p.kind === "video" ? "mp4" : "png"}`, engines: picks(p.shot || "establishing-world", field) },
   });
 }
 
@@ -142,15 +144,19 @@ for (const p of plates) {
 const music = prod.music;
 const bedRel = `music/${name}-bed.mp3`;
 let track = null;
+// A generated track saved at the default path counts without editing the production file.
+const musicDefault = ["wav", "mp3", "flac"].map((e) => `music/${name}-music.${e}`).find((f) => fs.existsSync(pub(f)));
 if (music) {
   if (music.file && fs.existsSync(pub(music.file))) track = music.file;
+  else if (!music.file && musicDefault) track = musicDefault;
   else {
     if (tier !== "free")
       jobs.push({
         what: "Music bed",
-        save: `public/${music.file || `music/${name}-music.wav`} (set music.file to it)`,
+        save: `public/${music.file || `music/${name}-music.wav`}`,
         prompt: music.prompt || `${music.mood} instrumental bed`,
         use: describe(picks("music-bed", "music")),
+        job: { type: "music", id: "music", prompt: music.prompt || `${music.mood} instrumental bed, no vocals`, seconds: null, out: music.file || `music/${name}-music.wav`, engines: picks("music-bed", "music") },
       });
     if (music.mood) track = bedRel; // free synth bed: the free tier's music, and the stand-in elsewhere
   }
@@ -177,6 +183,11 @@ if (jobs.length) {
   ].join("\n");
   fs.mkdirSync(path.dirname(sheet), { recursive: true });
   fs.writeFileSync(sheet, md);
+  // Machine-readable twin for tools/local/run_jobs.py and the Colab notebook. Paths are relative to public/.
+  const { plan } = await check(readSpec(), { quiet: true });
+  const filmSeconds = plan ? Math.ceil(plan.durationInFrames / 30) + 1 : 32;
+  const list = jobs.map((j) => j.job).filter(Boolean).map((j) => (j.type === "music" ? { ...j, seconds: filmSeconds } : j));
+  fs.writeFileSync(sheet.replace(/\.md$/, ".json"), JSON.stringify({ video: name, tier, jobs: list }, null, 2));
 }
 
 // ---- 5. Render -------------------------------------------------------------------------------

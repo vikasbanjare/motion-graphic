@@ -39,7 +39,11 @@
             "sfx": "night",
             "gain": 0.8
           }
-        ]
+        ],
+        "file": "voice/takes/sarvam-samvaad/02-dadi.wav",
+        "character": "dadi",
+        "lang": "hi",
+        "voiceNote": "Elderly Lucknow grandmother, tired then patient, soft warm voice"
       },
       {
         "voice": "hf_alpha",
@@ -56,7 +60,11 @@
             "sfx": "silence",
             "ms": 450
           }
-        ]
+        ],
+        "file": "voice/takes/sarvam-samvaad/03-agent.wav",
+        "character": "agent",
+        "lang": "hi",
+        "voiceNote": "Warm young woman, bank voice agent, clear and kind, natural Hindi"
       },
       {
         "voice": "hf_alpha",
@@ -68,7 +76,11 @@
             "sfx": "chime",
             "gain": 0.7
           }
-        ]
+        ],
+        "file": "voice/takes/sarvam-samvaad/04-agent.wav",
+        "character": "agent",
+        "lang": "hi",
+        "voiceNote": "Same agent voice, reassuring"
       },
       {
         "voice": "hf_beta",
@@ -88,7 +100,11 @@
             "sfx": "silence",
             "ms": 250
           }
-        ]
+        ],
+        "file": "voice/takes/sarvam-samvaad/05-dadi.wav",
+        "character": "dadi",
+        "lang": "hi",
+        "voiceNote": "Same grandmother, relieved, smiling as she speaks"
       },
       {
         "voice": "am_eric",
