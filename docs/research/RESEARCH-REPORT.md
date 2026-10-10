@@ -84,6 +84,7 @@ _Last updated: 2026-10-10 (three-tier production pipeline added)._
 | Router | `motion-kit/scripts/route.mjs` (`npm run route --provider higgsfield\|magnific\|local\|free`) | Shot list → models, pipeline steps, relative cost |
 | Open-model picks | `docs/research/free-open-models.md` | Best free video / voice / music / SFX models by blind arenas and listening tests, licences, VRAM |
 | One-command pipeline | `motion-kit/scripts/produce.mjs` (`npm run produce -- specs/productions/x.json --tier free\|local\|mcp`) | Production file → voices, plates, music → job sheet for what is missing → rendered MP4 with free stand-ins |
+| Local tier on a Mac / Colab | `motion-kit/tools/local/` (`doctor.py`, `setup_mac.sh`, `run_jobs.py`), `motion-kit/colab/motion_kit_video.ipynb`, `docs/MAC-QUICKSTART.md`, `docs/research/local-mac-colab.md` | Run the job sheet with open models: Chatterbox Hindi voices with per-character cloning, Stable Audio 3 MLX music, FastMetal / Draw Things / Colab video, with free fallbacks |
 | Free audio | `motion-kit/tools/cast_voices.py`, `sfx_synth.py`, `music_bed.py` | Multi-voice cast with phone filter, 17 synthesized story SFX, 4 synthesized music moods (CPU only) |
 | Plates importer | `motion-kit/scripts/plates.mjs` (`npm run plates`) | Generated files → `public/plates/`, checked |
 | 5 `style-*` recipes | `motion-kit/specs/recipes/` | Ready storyboards (pass check and QA) |
@@ -120,7 +121,7 @@ _Last updated: 2026-10-10 (three-tier production pipeline added)._
 ## 5. Open questions and next steps
 
 - **Free tier upgrades that need Hugging Face access** (blocked in the cloud container): goonj-1-82M (Hindi Kokoro fine-tune, CPU) as a drop-in Hindi voice, Supertonic-3 (CPU, ONNX) and Stable Audio 3 Small (CPU music and SFX). Wire them in once a machine can download them, and judge them by ear first.
-- **Local tier not yet run on a GPU:** the picks in `free-open-models.md` are researched, not tested here.
+- **Local tier not yet run on real hardware:** the Mac runner and the Colab notebook were tested here only through their free fallbacks (no Mac, GPU or Hugging Face in the container). The user's MacBook Pro M3 is the first real test.
 - **YouTube:** needs the `YT_COOKIES` secret from the repo owner.
 - **Freepik / Magnific MCP:** connect it, list its tools, and replace the `unverified` entries in `research/models.json`.
 - **Higgsfield:** run a real model list (`models_explore`) and cost preflights, and record actual relative costs in `models.json`. The user stopped these calls on 2026-10-10, so they haven't been run.

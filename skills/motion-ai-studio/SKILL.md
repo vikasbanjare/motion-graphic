@@ -50,7 +50,21 @@ To upgrade, do the jobs and run `produce` again. Example: `specs/productions/sar
 
 **MCP tier:** read the job sheet, then preflight every job's cost: Magnific `simulate_cost`, Higgsfield `get_cost: true`. Show the total and get a yes. Only then generate (steps 2.2 below) and put each result `url` into the plate, or the saved path into the voice beat or `music.file`. Then run `produce` again.
 
-**Local tier:** the user runs the job sheet on their GPU (ComfyUI, Wan2GP, diffusers, Colab, a Space), saves the files at the paths given, and runs `produce` again.
+**Local tier:** `npm run local:doctor` shows what the machine can run.
+
+On an **Apple Silicon Mac**, `npm run local:setup` installs the open models once, and `produce … --tier local --run` makes the voices and music on the Mac:
+- **Voice:** Chatterbox Hindi with per-character cloning, then Supertonic, then Kokoro.
+- **Music:** Stable Audio 3 MLX, falling back to the synth bed.
+- **Video:** FastMetal Wan 2.2 5B on 16 GB+ Macs.
+
+Video plates otherwise go to:
+- **Draw Things** (a free Mac app);
+- **`colab/motion_kit_video.ipynb`** (Wan 2.2 5B on a free T4);
+- a **ZeroGPU Space**.
+
+On an NVIDIA machine, the user runs the job sheet in ComfyUI or Wan2GP. Save every file at the path the sheet gives, then run `produce` again.
+
+Guides: `docs/MAC-QUICKSTART.md`, `docs/research/local-mac-colab.md`.
 
 **The rule for both:** anything that must be exact is rendered by code: text, numbers, logos,
 UI, the cursor, charts. AI generates only what code cannot draw: objects, people, places,

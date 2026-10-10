@@ -1,4 +1,5 @@
-// npm run produce -- specs/productions/<name>.json --tier free|local|mcp [--strict] [--fresh] [--dry]
+// npm run produce -- specs/productions/<name>.json --tier free|local|mcp [--run] [--strict] [--fresh] [--dry]
+//   --run (local tier): run the jobs on this machine with open models (tools/local/run_jobs.py), then render
 //
 // One command from production file to finished MP4, on any of three tiers:
 //
@@ -83,7 +84,7 @@ if (prod.voices) {
       save: `public/${b.file}`,
       prompt: `${b.speak || spoken}${b.voiceNote ? ` — ${b.voiceNote}` : ""}`,
       use: describe(picks("voice-line", "voice")),
-      job: { type: "voice", id: `voice-${i + 1}`, text: b.speak || spoken, lang: b.lang || (/[ऀ-ॿ]/.test(b.speak || "") ? "hi" : "en"), character: b.character, ref: b.ref, note: b.voiceNote, out: b.file, engines: picks("voice-line", "voice") },
+      job: { type: "voice", id: `voice-${i + 1}`, text: b.speak || spoken, lang: b.lang || (/[ऀ-ॿ]/.test(b.speak || "") ? "hi" : "en"), character: b.character, ref: b.ref, kokoroVoice: b.voice, speed: b.speed, note: b.voiceNote, out: b.file, engines: picks("voice-line", "voice") },
     });
   }
   const spec = readSpec();
@@ -210,6 +211,14 @@ for (const d of done) console.log(c.green("✔ ") + d);
 if (jobs.length) {
   console.log(c.yellow(`\n○ ${jobs.length} job(s) for the ${tier} tier → ${path.relative(process.cwd(), sheet)}`));
   for (const j of jobs) console.log(c.dim(`   - ${j.what}`));
+  if (args.run && tier === "local") {
+    // Run the jobs here with open models (tools/local/run_jobs.py), then produce again without --run.
+    const venv = path.join(process.env.HOME || "", ".motion-kit", "venv", "bin", "python");
+    const py = fs.existsSync(venv) ? venv : "python3";
+    run(py, ["tools/local/run_jobs.py", sheet.replace(/\.md$/, ".json"), ...(args.voice ? ["--voice", String(args.voice)] : []), ...(args.music ? ["--music", String(args.music)] : [])], "local jobs");
+    run("node", ["scripts/produce.mjs", file, "--tier", "local", ...(args.format ? ["--format", String(args.format)] : [])], "produce");
+    process.exit(0);
+  }
   if (args.strict) {
     console.log(c.yellow("--strict: not rendering until the jobs are done."));
     process.exit(2);
