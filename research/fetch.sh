@@ -8,6 +8,7 @@
 # replaces its earlier result instead of duplicating it. <map.tsv> records id → url.
 #
 #   bash research/fetch.sh <links.txt> <out-dir> <failures.txt> <map.tsv>
+# Lines are "url" or "url<TAB>referer".
 #   YT_COOKIES_FILE=cookies.txt bash research/fetch.sh …   (optional, for YouTube's bot check)
 set -u
 links=$1
@@ -24,8 +25,12 @@ cookies=()
 if [ -n "${YT_COOKIES_FILE:-}" ] && [ -s "$YT_COOKIES_FILE" ]; then cookies=(--cookies "$YT_COOKIES_FILE"); fi
 
 n=0
-while IFS= read -r url || [ -n "$url" ]; do
-  url=$(printf '%s' "$url" | tr -d '\r' | xargs)
+while IFS= read -r line || [ -n "$line" ]; do
+  line=$(printf '%s' "$line" | tr -d '\r')
+  # A line is "url" or "url<TAB>referer" (research/crawl.py writes the page the video was on).
+  url=$(printf '%s' "${line%%$'\t'*}" | xargs)
+  page_ref=""
+  case "$line" in *$'\t'*) page_ref=$(printf '%s' "${line#*$'\t'}" | xargs) ;; esac
   [ -z "$url" ] && continue
   n=$((n + 1))
   id=$(printf '%s' "$url" | sha1sum | cut -c1-8)
@@ -34,7 +39,7 @@ while IFS= read -r url || [ -n "$url" ]; do
   *.mp4 | *.mp4\?*)
     slug=$(basename "${url%%\?*}" .mp4 | python3 -c 'import re,sys,urllib.parse; print(re.sub(r"[^A-Za-z0-9_-]+", "-", urllib.parse.unquote(sys.stdin.read().strip()))[:50])')
     dest="$out/$id-$slug.mp4"
-    referer="https://$(echo "$url" | awk -F/ '{print $3}' | sed 's/^video\.//')/"
+    referer=${page_ref:-"https://$(echo "$url" | awk -F/ '{print $3}' | sed 's/^video\.//')/"}
     if ! curl -fsSL --max-time 300 -A "$UA" -e "$referer" -o "$dest" "$url" 2>>"$fail.log"; then
       rm -f "$dest"
       # Hosts behind bot protection refuse curl's TLS fingerprint; yt-dlp can impersonate Chrome.
@@ -45,7 +50,9 @@ while IFS= read -r url || [ -n "$url" ]; do
     fi
     ;;
   *)
-    if ! yt-dlp --quiet --no-warnings --no-playlist --socket-timeout 30 "${cookies[@]}" \
+    ref=()
+    if [ -n "$page_ref" ]; then ref=(--referer "$page_ref"); fi
+    if ! yt-dlp --quiet --no-warnings --no-playlist --socket-timeout 30 "${cookies[@]}" "${ref[@]}" \
       -f "$FORMAT" --merge-output-format mp4 --download-sections "*0-180" --js-runtimes node \
       -o "$out/$id-%(extractor)s-%(id)s.%(ext)s" "$url" 2>>"$fail.log"; then
       echo -e "$url\tyt-dlp failed (see failures log)" >>"$fail"

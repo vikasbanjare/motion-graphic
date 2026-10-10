@@ -1,4 +1,5 @@
-# Reference-video research. Downloads every link in research/links.txt on GitHub's runners,
+# Reference-video research. Crawls the sites in research/sites.txt for videos (research/crawl.py),
+# then downloads every new link (research/links.txt + the crawl) on GitHub's runners,
 # measures each video (cuts, shot length, motion, a 10 fps motion curve, colours, tempo) and
 # makes contact sheets for frame-by-frame review. Results accumulate on the research-results
 # branch: re-running a link replaces that video's record, other videos are kept.
@@ -14,8 +15,13 @@ name: Research videos
 on:
   push:
     branches: [claude/youthful-darwin-n1lt7l]
-    paths: [research/links.txt]
+    paths: [research/links.txt, research/sites.txt]
   workflow_dispatch:
+    inputs:
+      all:
+        description: "Re-measure links that already have results"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -34,15 +40,43 @@ jobs:
       shards: ${{ steps.split.outputs.shards }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-      - id: split
+      - name: Crawl sites for videos
         run: |
-          n=$(grep -c . research/links.txt)
+          mkdir -p plan
+          : > plan/found.tsv
+          if grep -qv '^\s*\(#\|$\)' research/sites.txt 2>/dev/null; then
+            python3 research/crawl.py research/sites.txt > plan/found.tsv
+          fi
+          echo "$(grep -c . plan/found.tsv) videos found on crawled sites"
+      - id: split
+        env:
+          ALL: ${{ inputs.all }}
+        run: |
+          # This run's list: research/links.txt plus what the crawl found, one per line
+          # ("url" or "url<TAB>referer"), without links that already have measurements
+          # on research-results (unless re-measuring everything).
+          { grep -v '^\s*$' research/links.txt; cat plan/found.tsv; } | awk -F'\t' '!seen[$1]++' > plan/all.txt
+          : > plan/done.txt
+          if [ "${ALL:-false}" != true ] && git fetch -q origin research-results 2>/dev/null; then
+            git ls-tree --name-only FETCH_HEAD data/ | sed 's|data/||' | cut -c1-8 | sort -u > plan/done.txt
+          fi
+          while IFS= read -r line; do
+            id=$(printf '%s' "${line%%$'\t'*}" | xargs | tr -d '\n' | sha1sum | cut -c1-8)
+            grep -qx "$id" plan/done.txt || printf '%s\n' "$line"
+          done < plan/all.txt > plan/links.txt
+          n=$(grep -c . plan/links.txt || true)
           count=$(( (n + PER_SHARD - 1) / PER_SHARD ))
           echo "shards=$(python3 -c "import json; print(json.dumps(list(range($count))))")" >> "$GITHUB_OUTPUT"
-          echo "$n links in $count shards"
+          echo "$(grep -c . plan/all.txt) links, $(grep -c . plan/done.txt) already measured, $n to fetch in $count shards"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan
+          path: plan/
+          retention-days: 3
 
   measure:
     needs: plan
+    if: needs.plan.outputs.shards != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     strategy:
@@ -52,6 +86,11 @@ jobs:
         shard: ${{ fromJson(needs.plan.outputs.shards) }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan
 
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
@@ -76,7 +115,7 @@ jobs:
         run: |
           s=${{ matrix.shard }}
           if [ -n "$YT_COOKIES" ]; then printf '%s\n' "$YT_COOKIES" > "$RUNNER_TEMP/cookies.txt"; export YT_COOKIES_FILE="$RUNNER_TEMP/cookies.txt"; fi
-          grep . research/links.txt | sed -n "$(( s * PER_SHARD + 1 )),$(( (s + 1) * PER_SHARD ))p" > "$RUNNER_TEMP/shard.txt"
+          grep . "$RUNNER_TEMP/plan/links.txt" | sed -n "$(( s * PER_SHARD + 1 )),$(( (s + 1) * PER_SHARD ))p" > "$RUNNER_TEMP/shard.txt"
           bash research/fetch.sh "$RUNNER_TEMP/shard.txt" "$RUNNER_TEMP/videos" "out/failures/s$s.txt" "out/failures/s$s.map.tsv"
           rm -f "$RUNNER_TEMP/cookies.txt"
 
@@ -112,6 +151,12 @@ jobs:
           merge-multiple: true
           path: ${{ runner.temp }}/out
 
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan
+
       - name: Switch to research-results
         run: |
           cp research/research-key.pub.pem "$RUNNER_TEMP/key.pub.pem"
@@ -141,6 +186,9 @@ jobs:
           cat "$OUT"/failures/*.txt 2>/dev/null > "failures/run-$RUN.txt" || true
           cat "$OUT"/failures/*.log 2>/dev/null > "failures/run-$RUN.log" || true
           cp "failures/run-$RUN.txt" failures-latest.txt
+          # Videos found by crawling research/sites.txt (url, page it was found on), merged.
+          cat discovered.tsv "$RUNNER_TEMP/plan/found.tsv" 2>/dev/null | awk -F'\t' 'NF && !seen[$1]++' > discovered.tsv.new || true
+          mv discovered.tsv.new discovered.tsv
           # Contact sheets: AES-256 with a one-off key, the key itself sealed to the research public key.
           if [ -d "$OUT/sheets" ]; then
             key=$(openssl rand -hex 32)
@@ -182,6 +230,7 @@ jobs:
             echo "- summary.csv: one row per video (size, shots, average shot, motion, tempo, palette, suggested style)"
             echo "- data/<id>-*.json: full measurements per video, including a 10 fps motion curve"
             echo "- urls.tsv: video id to source link"
+            echo "- discovered.tsv: videos found by crawling research/sites.txt, with the page each was on"
             echo "- failures/: links each run could not download, with the downloader's errors"
             echo "- sheets/run-*: encrypted contact sheets (2 frames per second), readable only with the research private key"
           } > README.md
