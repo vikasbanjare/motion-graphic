@@ -47,7 +47,7 @@ const useFonts = () => {
 };
 
 // ---- headlines ------------------------------------------------------------------------------------------------------
-const Head: React.FC<{
+export const Head: React.FC<{
   f: number; from: number; to: number; big: string[]; small?: string; x: number; y: number; ink: string; sheen: string;
   size?: number; center?: boolean;
 }> = ({ f, from, to, big, small, x, y, ink, sheen, size = 96, center }) => {
@@ -305,14 +305,39 @@ const Card3D: React.FC<{ f: number }> = ({ f }) => {
     const ptex = face("print").tex.clone();
     ptex.colorSpace = THREE.NoColorSpace;
     ptex.needsUpdate = true;
-    const print = new THREE.MeshBasicMaterial({ map: ptex, transparent: true });
     const metal = new THREE.MeshPhysicalMaterial({ map: face("metal").tex, roughness: 0.34, metalness: 0.5, clearcoat: 1, clearcoatRoughness: 0.12 });
     const back = new THREE.MeshPhysicalMaterial({ color: "#26272c", roughness: 0.4, metalness: 0.6, clearcoat: 0.6 });
     const edge = new THREE.MeshPhysicalMaterial({ color: "#b9b9c4", roughness: 0.22, metalness: 1 });
-    return { print, metal, back, edge };
+    // the reveal: the print face is cut into strips; each flips (foil on its back), lifts and flies off
+    const fc = document.createElement("canvas");
+    fc.width = 64;
+    fc.height = 512;
+    const fx = fc.getContext("2d")!;
+    const fg = fx.createLinearGradient(0, 0, 0, 512);
+    ["#f1caca", "#fbd8b9", "#fcd8a3", "#ebdbaf", "#c7e5d2", "#a3c8e4", "#8daad3", "#a49cd7", "#f1caca"].forEach((c, i, a) => fg.addColorStop(i / (a.length - 1), c));
+    fx.fillStyle = fg;
+    fx.fillRect(0, 0, 64, 512);
+    const ftex = new THREE.CanvasTexture(fc);
+    ftex.colorSpace = THREE.NoColorSpace;
+    const strips = Array.from({ length: STRIPS }, (_, k) => {
+      const w = 8.56 / STRIPS;
+      const g = new THREE.PlaneGeometry(w, 5.398);
+      const uv = g.getAttribute("uv") as THREE.BufferAttribute;
+      for (let i = 0; i < uv.count; i++) uv.setX(i, (k + uv.getX(i)) / STRIPS);
+      const fb = new THREE.PlaneGeometry(w, 5.398);
+      const fuv = fb.getAttribute("uv") as THREE.BufferAttribute;
+      for (let i = 0; i < fuv.count; i++) fuv.setY(i, (fuv.getY(i) + k / STRIPS) % 1);
+      return {
+        x: -4.28 + w * (k + 0.5),
+        g,
+        fb,
+        front: new THREE.MeshBasicMaterial({ map: ptex, transparent: true }),
+        foil: new THREE.MeshBasicMaterial({ map: ftex, transparent: true }),
+      };
+    });
+    return { metal, back, edge, strips };
   }, []);
-  mats.print.opacity = 1 - ramp(f, 594, 620, inOut);
-  const turn = ramp(f, 596, 640, inOut);
+  const turn = ramp(f, 616, 648, inOut);
   const toLock = ramp(f, B.lock, B.lock + 30, inOut);
   const yaw = THREE.MathUtils.degToRad(lerp(0, -24, turn) + lerp(0, 16, toLock) + Math.sin(f / 30) * 1.5 * turn);
   const pitch = THREE.MathUtils.degToRad(lerp(0, -9, turn) + lerp(0, 4, toLock));
@@ -323,18 +348,34 @@ const Card3D: React.FC<{ f: number }> = ({ f }) => {
     <group position={[lerp(0, 0.4, turn) * (1 - toLock), y, 0]} rotation={[pitch, yaw, roll]} scale={s}>
       <mesh geometry={geo.body} material={mats.edge} />
       <mesh geometry={geo.face} material={mats.metal} position={[0, 0, 0.0425]} />
-      <mesh geometry={geo.face} material={mats.print} position={[0, 0, 0.0435]} />
+      {mats.strips.map((st, k) => {
+        const t0 = 594 + k * 0.62;
+        const flip = ramp(f, t0, t0 + 12, inOut);
+        const fly = ramp(f, t0 + 7, t0 + 26, easeIn);
+        if (fly >= 1) return null;
+        st.front.opacity = 1 - fly;
+        st.foil.opacity = 1 - fly;
+        return (
+          <group key={k} position={[st.x + 1.6 * fly, 3.2 * fly * fly, 0.0435 + 0.9 * Math.sin(Math.PI * flip) + 1.4 * fly]} rotation={[0.5 * fly, Math.PI * flip, -0.6 * fly]}>
+            <mesh geometry={st.g} material={st.front} />
+            <mesh geometry={st.fb} material={st.foil} rotation={[0, Math.PI, 0]} />
+          </group>
+        );
+      })}
       <mesh geometry={geo.face} material={mats.back} position={[0, 0, -0.0425]} rotation={[0, Math.PI, 0]} />
     </group>
   );
 };
 
+const STRIPS = 36;
 const LOGO = staticFile("custom/cred-v2/cred-logo.png"); // CRED's own file, 192 x 228, unmodified
 
 // ---- the film -------------------------------------------------------------------------------------------------------
-export const CredCardV3: React.FC = () => {
+export const CredCardV3: React.FC = () => <V3Film f={useCurrentFrame()} audio />;
+
+/** The v3 film at an arbitrary (possibly fractional, retimed) frame; v4 replays parts of it faster. */
+export const V3Film: React.FC<{ f: number; audio?: boolean }> = ({ f, audio }) => {
   useFonts();
-  const f = useCurrentFrame();
   const p = pose2D(f);
   // beat 6/7: one lens move onto the fee tag and back
   const zoom = ramp(f, 492, 530, inOut) * (1 - ramp(f, B.hero, B.hero + 26, inOut));
@@ -427,7 +468,7 @@ export const CredCardV3: React.FC = () => {
       )}
      </AbsoluteFill>
       <AbsoluteFill style={{ background: "#000", opacity: endFade }} />
-      <Audio src={staticFile("custom/cred-v3/mix.wav")} />
+      {audio && <Audio src={staticFile("custom/cred-v3/mix.wav")} />}
     </AbsoluteFill>
   );
 };
