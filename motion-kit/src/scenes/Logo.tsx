@@ -22,14 +22,16 @@ export const Logo: React.FC<{ scene: SceneOf<"logo"> }> = ({ scene }) => {
           <Img src={resolveMedia(scene.src)} style={{ height: 220 * u, maxWidth: box.width * 0.7, objectFit: "contain" }} />
         </div>
       ) : null}
-      <FitText
-        label="name"
-        text={scene.name}
-        start={b.name}
-        maxWidth={box.width}
-        maxHeight={box.height * 0.3}
-        maxSize={(landscape ? 190 : 210) * u}
-      />
+      {scene.src && scene.wordmark ? null : (
+        <FitText
+          label="name"
+          text={scene.name}
+          start={b.name}
+          maxWidth={box.width}
+          maxHeight={box.height * 0.3}
+          maxSize={(landscape ? 190 : 210) * u}
+        />
+      )}
       <div style={{ width: 260 * u * line, height: 6 * u, borderRadius: 99, background: c.accent }} />
       {scene.tagline ? (
         <div

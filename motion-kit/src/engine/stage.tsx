@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { CAMERA_PUSH, useEnv, type SceneEnv } from "./context.ts";
+import { CAMERA_PUSH, sceneGradient, useEnv, type SceneEnv } from "./context.ts";
 import { fitText } from "./fit.ts";
 import { prog, rise } from "./motion.ts";
 import { richWords } from "./rich.ts";
@@ -17,14 +17,15 @@ export const Stage: React.FC<{
   still?: boolean;
 }> = ({ children, align = "center", gap = 40, still }) => {
   const frame = useCurrentFrame();
-  const { scene, format, c, u, box } = useEnv();
+  const { scene, format, c, u, box, theme } = useEnv();
   const push = still
     ? 1
     : interpolate(frame, [0, scene.duration], [1, 1 + CAMERA_PUSH], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const fill = scene.scene.bg && scene.scene.bg !== "default";
+  const sky = sceneGradient(theme, scene.scene.bg);
   return (
     <AbsoluteFill>
-      {fill ? <AbsoluteFill style={{ backgroundColor: c.bg }} /> : null}
+      {fill ? <AbsoluteFill style={sky ? { backgroundImage: `linear-gradient(180deg, ${sky.join(", ")})` } : { backgroundColor: c.bg }} /> : null}
       <AbsoluteFill
         style={{
           // Push in around the content's centre: the layout box leaves exactly the room it needs.

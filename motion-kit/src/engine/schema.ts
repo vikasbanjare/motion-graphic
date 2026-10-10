@@ -27,7 +27,7 @@ const common = {
   /** Seconds. Leave empty and the engine times the scene from its word count (or the voice-over). */
   duration: z.number().min(0.8).max(20).optional(),
   /** Background for this scene only. "accent" makes a full-colour emphasis beat. */
-  bg: z.enum(["default", "accent", "inverse"]).optional(),
+  bg: z.enum(["default", "accent", "inverse", "gradient", "gradient2"]).optional(),
   /** Set false to silence this scene's sound effects. */
   sfx: z.boolean().optional(),
 };
@@ -224,6 +224,8 @@ const logoScene = z.object({
   tagline: z.string().optional(),
   /** Optional logo image inside public/. Defaults to brand.logo. */
   src: z.string().optional(),
+  /** The logo file is a wordmark that already spells the name: show the file only, never retype the name next to it. */
+  wordmark: z.boolean().optional(),
   ...common,
 });
 
@@ -267,6 +269,8 @@ export const videoSchema = z.object({
        */
       accent: hex.optional(),
       accent2: hex.optional(),
+      /** Keep brand colours exactly (brand guidelines) instead of nudging them for the 4.5:1 button-text rule; they must still reach 3:1 on the background. */
+      exact: z.boolean().optional(),
       /** Logo file inside public/ (e.g. "brand/logo.png"). "logo" scenes without a src use it. */
       logo: z.string().optional(),
       handle: z.string().optional(),
@@ -293,6 +297,13 @@ export const videoSchema = z.object({
       corners: z.enum(Object.keys(CORNER_RADIUS) as ["sharp", "soft", "round"]).optional(),
       ctaStyle: z.enum(["button", "link"]).optional(),
       kicker: z.enum(["pill", "plain"]).optional(),
+      /** Brand sky, top -> bottom colour stops, for scenes with bg "gradient". */
+      gradient: z.array(hex).min(2).max(10).optional(),
+      /** Second sky for scenes with bg "gradient2". */
+      gradient2: z.array(hex).min(2).max(10).optional(),
+      /** Text colour on the "gradient" / "gradient2" skies (default: the most readable theme colour). */
+      gradientText: hex.optional(),
+      gradient2Text: hex.optional(),
     })
     .optional(),
   audio: z

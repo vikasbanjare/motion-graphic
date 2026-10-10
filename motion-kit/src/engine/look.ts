@@ -76,6 +76,13 @@ export type Look = {
   corners?: keyof typeof CORNER_RADIUS;
   ctaStyle?: "button" | "link";
   kicker?: "pill" | "plain";
+  /** Brand sky: vertical colour stops (top -> bottom) painted behind scenes with bg "gradient". */
+  gradient?: string[];
+  /** A second sky for scenes with bg "gradient2" (e.g. a dusk end card). */
+  gradient2?: string[];
+  /** Text colour on the gradient skies (default: the most readable of the theme's colours). */
+  gradientText?: string;
+  gradient2Text?: string;
 };
 
 export type LookChange = { field: string; from?: string; to: string; message: string };
@@ -171,6 +178,7 @@ export const resolveLook = (theme: Theme, look?: Look): { theme: Theme; changes:
       radius: look.corners ? CORNER_RADIUS[look.corners] : theme.radius,
       ctaStyle: look.ctaStyle ?? theme.ctaStyle,
       kicker: look.kicker ?? theme.kicker,
+      ...(look.gradient || look.gradient2 ? { gradients: { gradient: look.gradient, gradient2: look.gradient2, gradientText: look.gradientText, gradient2Text: look.gradient2Text } } : {}),
     },
     changes,
   };

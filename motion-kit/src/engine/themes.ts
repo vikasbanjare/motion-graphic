@@ -71,6 +71,8 @@ export type Theme = {
   kicker: "pill" | "plain";
   /** Two colours for the orb scene (colour ramp: dark -> c1 -> c2 -> white). */
   orb: [string, string];
+  /** Vertical colour stops (top -> bottom) for scenes with bg "gradient" / "gradient2" (from look). */
+  gradients?: { gradient?: string[]; gradient2?: string[]; gradientText?: string; gradient2Text?: string };
 };
 
 const DEVANAGARI_DISPLAY = "Teko";
@@ -563,7 +565,7 @@ export const nearestPassing = (hex: string, ok: (hex: string) => boolean, prefer
 // its lightness moves just far enough (hue and chroma kept) to pass. text, bg,
 // surface, line and muted always stay the theme's own.
 
-export type Brand = { accent?: string; accent2?: string };
+export type Brand = { accent?: string; accent2?: string; exact?: boolean };
 
 /** Accent against the theme background and surface (accent2: background); WCAG 2.x graphics / large text. */
 export const MIN_ACCENT_CONTRAST = 3;
@@ -623,7 +625,7 @@ const retint = (color: string, from: string, to: string, same: string) =>
 export type BrandChange = {
   field: "accent" | "accent2";
   /** "adjusted" = the brand's colour was moved for contrast; "derived" = none was given. */
-  kind: "adjusted" | "derived";
+  kind: "adjusted" | "derived" | "kept";
   /** The brand colour as given (absent when derived). */
   from?: string;
   to: string;
@@ -671,7 +673,14 @@ export const resolveBrand = (theme: Theme, brand?: Brand): BrandReport => {
   let accent = t.accent;
   let onAccent = t.onAccent;
   const given = brand.accent?.toUpperCase();
-  if (given) {
+  if (given && brand.exact && onBack(given) >= MIN_ACCENT_CONTRAST) {
+    // Brand guidelines win over the 4.5:1 button-text rule: keep the exact colour, pick the
+    // most readable button text, and say so (QA still measures the rendered pixels).
+    accent = given;
+    onAccent = bestTextOn(given, "#FFFFFF", darkInk);
+    if (contrast(given, onAccent) < MIN_TEXT_CONTRAST)
+      changes.push({ field: "accent", kind: "kept", from: given, to: given, message: `brand accent ${given} kept exact (brand.exact); text on it is ${ratio(contrast(given, onAccent))}, under 4.5:1, so keep words on accent fills large.` });
+  } else if (given) {
     const fit = nearestPassing(given, (x) => onBack(x) >= MIN_ACCENT_CONTRAST && textOn(x) !== null, away);
     if (fit) {
       accent = fit;

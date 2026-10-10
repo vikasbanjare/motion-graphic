@@ -233,6 +233,7 @@ As scene 1 with narration, start its `say` with the headline so it is on screen 
 | `name` | plain, ≤ 32 chars, **required** | |
 | `tagline` | plain, optional | |
 | `src` | plain, optional | Logo file inside `public/` (e.g. `"brand/logo.png"`); defaults to `brand.logo` |
+| `wordmark` | boolean, optional | `true` when the logo file already spells the name (a wordmark): the file is shown alone and `name` is not typed next to it. Brands usually forbid recreating the wordmark in type. |
 
 ## Video-level fields
 

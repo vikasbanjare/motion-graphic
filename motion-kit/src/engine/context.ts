@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import { contentBox, textFloor, unit, type Format } from "./formats.ts";
 import type { ScenePlan, VideoPlan } from "./plan.ts";
-import type { Theme } from "./themes.ts";
+import { contrast, type Theme } from "./themes.ts";
 import type { MotionTokens } from "./tokens.ts";
 
 export type SceneEnv = {
@@ -68,9 +68,26 @@ export const useEnv = (): SceneEnv => {
   }, [plan, scene]);
 };
 
-/** "accent" scenes flip to a full-colour background; "inverse" swaps light/dark. */
-export const sceneColors = (theme: Theme, bg?: "default" | "accent" | "inverse"): Theme["colors"] => {
+/** The stops behind a "gradient" / "gradient2" scene, or null when the look has none. */
+export const sceneGradient = (theme: Theme, bg?: string): string[] | null =>
+  bg === "gradient" || bg === "gradient2" ? (theme.gradients?.[bg] ?? null) : null;
+
+/**
+ * "accent" scenes flip to a full-colour background; "inverse" swaps light/dark; "gradient" /
+ * "gradient2" sit on the look's brand sky, with text in whichever of the theme's text, canvas or
+ * accent colours reads best on the middle of the sky (where the text sits).
+ */
+export const sceneColors = (theme: Theme, bg?: "default" | "accent" | "inverse" | "gradient" | "gradient2"): Theme["colors"] => {
   const c = theme.colors;
+  const stops = sceneGradient(theme, bg);
+  if (stops) {
+    const mid = stops.slice(Math.floor(stops.length * 0.3), Math.ceil(stops.length * 0.7) || 1);
+    const worst = (x: string) => Math.min(...mid.map((s) => contrast(x, s)));
+    const pinned = theme.gradients?.[bg === "gradient" ? "gradientText" : "gradient2Text"];
+    const text = pinned ?? [c.text, c.bg, c.accent, "#FFFFFF", "#000000"].reduce((a, b) => (worst(b) > worst(a) ? b : a));
+    const base = stops[Math.floor(stops.length / 2)];
+    return { ...c, bg: base, surface: text + "14", line: text + "33", text, muted: text + "CC", accent: text, onAccent: base, mark: text, onMark: base };
+  }
   if (bg === "accent") {
     return { ...c, bg: c.accent, surface: c.onAccent + "14", line: c.onAccent + "33", text: c.onAccent, muted: c.onAccent + "CC", accent: c.onAccent, onAccent: c.accent, mark: c.onAccent, onMark: c.accent };
   }

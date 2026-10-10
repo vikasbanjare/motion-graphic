@@ -91,9 +91,12 @@ export const check = async (inputSpec, { quiet = false } = {}) => {
     return logoFits.get(src);
   };
   const clashOf = (fit, name) => fit?.themes.find((t) => t.name === name)?.clash ?? null;
-  for (const src of new Set(plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src).map((s) => s.scene.src))) {
+  // Only logos drawn on the theme's own canvas: on an accent / inverse / gradient fill the theme
+  // check doesn't apply (QA measures those pixels instead).
+  const onCanvas = (s) => !s.scene.bg || s.scene.bg === "default";
+  for (const src of new Set(plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src && onCanvas(s)).map((s) => s.scene.src))) {
     const fit = await logoFit(src);
-    const scenes = plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src === src).map((s) => s.index + 1);
+    const scenes = plan.scenes.filter((s) => s.scene.type === "logo" && s.scene.src === src && onCanvas(s)).map((s) => s.index + 1);
     const where = `Logo "${src.startsWith("data:") ? "data: URL" : src}" (scene ${scenes.join(", ")}) on theme ${theme.name}`;
     const clash = clashOf(fit, theme.name);
     if (!clash) {
