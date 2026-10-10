@@ -15,7 +15,7 @@ name: Research videos
 on:
   push:
     branches: [claude/youthful-darwin-n1lt7l]
-    paths: [research/links.txt, research/sites.txt]
+    paths: [research/links.txt, research/sites.txt, research/crawl.py]
   workflow_dispatch:
     inputs:
       all:
@@ -36,6 +36,7 @@ env:
 jobs:
   plan:
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     outputs:
       shards: ${{ steps.split.outputs.shards }}
     steps:
@@ -45,7 +46,7 @@ jobs:
           mkdir -p plan
           : > plan/found.tsv
           if grep -qv '^\s*\(#\|$\)' research/sites.txt 2>/dev/null; then
-            python3 research/crawl.py research/sites.txt > plan/found.tsv
+            python3 research/crawl.py research/sites.txt --max-pages 4000 --delay 0.3 > plan/found.tsv
           fi
           echo "$(grep -c . plan/found.tsv) videos found on crawled sites"
       - id: split

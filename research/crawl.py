@@ -24,7 +24,7 @@ from collections import deque
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15"
 SKIP_EXT = re.compile(r"\.(jpe?g|png|gif|webp|avif|svg|ico|css|js|json|xml|pdf|zip|woff2?|ttf|mp3|wav|mp4|webm|m3u8|mov)(\?|$)", re.I)
 VIDEO_EXT = re.compile(r"\.(mp4|webm|m3u8)$", re.I)
-HREF = re.compile(r"""(?:href|src|data-src|data-video|data-url|content)\s*=\s*["']([^"'<>]+)["']""", re.I)
+HREF = re.compile(r"""(?:href|src|data-src|data-video|data-url)\s*=\s*["']([^"'<>]+)["']""", re.I)
 VIDEO_PATTERNS = [
     (re.compile(r"(?:https?:)?//(?:player\.)?vimeo\.com/(?:video/)?(\d{5,})(?:/|\?h=|#)?([0-9a-f]{6,})?", re.I),
      lambda m: f"https://player.vimeo.com/video/{m.group(1)}" + (f"?h={m.group(2)}" if m.group(2) else "")),
@@ -61,6 +61,10 @@ def crawl(start, max_pages, delay):
             for m in rx.finditer(text):
                 found.setdefault(norm(m), url)
         for link in HREF.findall(text):
+            link = link.strip()
+            # Skip text that only looks like a link: spaces, "www.site.com" without a scheme, "@handle".
+            if " " in link or link.startswith(("@", "mailto:", "tel:", "javascript:")) or re.match(r"^(www\.|[\w-]+\.(com|net|org|io|tv|it|co)\b)", link):
+                continue
             nxt = urllib.parse.urljoin(url, link.strip()).split("#")[0]
             parts = urllib.parse.urlsplit(nxt)
             if VIDEO_EXT.search(parts.path):
