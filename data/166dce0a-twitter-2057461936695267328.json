@@ -1,0 +1,123 @@
+{
+  "source": "../../../_temp/videos/166dce0a-twitter-2057461936695267328.mp4",
+  "file": "166dce0a-twitter-2057461936695267328.mp4",
+  "duration": 5.97,
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "cuts": [
+    1,
+    1.8,
+    3.4
+  ],
+  "avgShot": 1.49,
+  "motion": 0.016,
+  "palette": [
+    {
+      "hex": "#F9F8F7",
+      "share": 0.704
+    },
+    {
+      "hex": "#F4B413",
+      "share": 0.069
+    },
+    {
+      "hex": "#3B3B3C",
+      "share": 0.068
+    },
+    {
+      "hex": "#B4B2AD",
+      "share": 0.06
+    },
+    {
+      "hex": "#7A7165",
+      "share": 0.058
+    },
+    {
+      "hex": "#030302",
+      "share": 0.043
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#F9F8F7"
+    },
+    "why": [
+      "a cut every 1.5 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained picture → theme \"clean\"",
+      "its canvas is #F9F8F7 (70% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.141,
+    0.101,
+    0.067,
+    0.044,
+    0.016,
+    0.027,
+    0.025,
+    0.069,
+    0.101,
+    0.316,
+    0.09,
+    0.055,
+    0.028,
+    0.023,
+    0.025,
+    0.014,
+    0.064,
+    0.286,
+    0.145,
+    0.11,
+    0.114,
+    0.092,
+    0.071,
+    0.137,
+    0.053,
+    0.015,
+    0.09,
+    0.009,
+    0.049,
+    0.009,
+    0.003,
+    0.031,
+    0.011,
+    0.222,
+    0.065,
+    0.019,
+    0.027,
+    0.016,
+    0.022,
+    0.016,
+    0.01,
+    0.014,
+    0.006,
+    0.011,
+    0.014,
+    0.004,
+    0.009,
+    0.005,
+    0.012,
+    0.006,
+    0.004,
+    0.006,
+    0.007,
+    0.008,
+    0.005,
+    0.002,
+    0.004,
+    0.005,
+    0.004
+  ]
+}

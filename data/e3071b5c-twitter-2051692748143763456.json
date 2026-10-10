@@ -1,0 +1,73 @@
+{
+  "source": "../../../_temp/videos/e3071b5c-twitter-2051692748143763456.mp4",
+  "file": "e3071b5c-twitter-2051692748143763456.mp4",
+  "duration": 1.81,
+  "size": {
+    "width": 426,
+    "height": 240
+  },
+  "cuts": [],
+  "avgShot": 1.81,
+  "motion": 0.008,
+  "palette": [
+    {
+      "hex": "#171717",
+      "share": 0.604
+    },
+    {
+      "hex": "#232323",
+      "share": 0.185
+    },
+    {
+      "hex": "#0A0A0A",
+      "share": 0.183
+    },
+    {
+      "hex": "#373737",
+      "share": 0.014
+    },
+    {
+      "hex": "#494949",
+      "share": 0.014
+    }
+  ],
+  "brightness": "dark",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#171717"
+    },
+    "why": [
+      "a cut every 1.8 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "its canvas is #171717 (60% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.01,
+    0.008,
+    0.005,
+    0.006,
+    0.017,
+    0.022,
+    0.014,
+    0.003,
+    0.003,
+    0.006,
+    0.009,
+    0.008,
+    0.005,
+    0.006,
+    0.018,
+    0.022,
+    0.013
+  ]
+}

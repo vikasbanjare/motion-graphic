@@ -1,0 +1,132 @@
+{
+  "source": "../../../_temp/videos/e68ce8f9-html5-cdfb2394-a9a7-4dff-a458-dd8271bead36-1.mp4",
+  "file": "e68ce8f9-html5-cdfb2394-a9a7-4dff-a458-dd8271bead36-1.mp4",
+  "duration": 7.67,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 7.67,
+  "motion": 0.011,
+  "palette": [
+    {
+      "hex": "#EBEBEB",
+      "share": 0.829
+    },
+    {
+      "hex": "#D8D8D8",
+      "share": 0.07
+    },
+    {
+      "hex": "#B19F94",
+      "share": 0.041
+    },
+    {
+      "hex": "#373639",
+      "share": 0.032
+    },
+    {
+      "hex": "#756D68",
+      "share": 0.028
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {
+      "bg": "#EBEBEB"
+    },
+    "why": [
+      "a cut every 7.7 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #EBEBEB (83% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.03,
+    0.036,
+    0.04,
+    0.021,
+    0.015,
+    0.014,
+    0.015,
+    0.006,
+    0.003,
+    0.001,
+    0.001,
+    0,
+    0.007,
+    0.012,
+    0.017,
+    0.029,
+    0.059,
+    0.023,
+    0.011,
+    0.007,
+    0.003,
+    0.001,
+    0.002,
+    0.001,
+    0,
+    0.001,
+    0,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.001,
+    0.003,
+    0.003,
+    0.004,
+    0.006,
+    0.015,
+    0.011,
+    0.015,
+    0.019,
+    0.026,
+    0.084,
+    0.058,
+    0.051,
+    0.039,
+    0.032,
+    0.045,
+    0.022,
+    0.019,
+    0.018,
+    0.017,
+    0.016,
+    0.027,
+    0.013,
+    0.012,
+    0.013,
+    0.028,
+    0.017,
+    0.02,
+    0.024,
+    0.031,
+    0.082,
+    0.01,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "source": "../../../_temp/videos/1d70c0e1-html5-b357af7d-0889-41c3-8344-f2dc8839a62b-1.mp4",
+  "file": "1d70c0e1-html5-b357af7d-0889-41c3-8344-f2dc8839a62b-1.mp4",
+  "duration": 6.58,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [
+    2.17,
+    2.92,
+    3.63,
+    4.29,
+    4.67
+  ],
+  "avgShot": 1.1,
+  "motion": 0.029,
+  "palette": [
+    {
+      "hex": "#EAE8E7",
+      "share": 0.396
+    },
+    {
+      "hex": "#FCFCFC",
+      "share": 0.24
+    },
+    {
+      "hex": "#F17B0A",
+      "share": 0.178
+    },
+    {
+      "hex": "#878989",
+      "share": 0.099
+    },
+    {
+      "hex": "#464649",
+      "share": 0.07
+    },
+    {
+      "hex": "#0B0B0B",
+      "share": 0.017
+    }
+  ],
+  "brightness": "light",
+  "energy": "high",
+  "bpm": 109.21,
+  "suggestion": {
+    "theme": "editorial",
+    "motion": "snappy",
+    "pace": "fast",
+    "transition": "whip",
+    "look": {},
+    "why": [
+      "a cut every 1.1 s → pace \"fast\"",
+      "high on-screen movement → \"snappy\" motion",
+      "→ \"whip\" transitions",
+      "light, restrained, warm picture → theme \"editorial\"",
+      "music around 109 BPM: pick a track near that tempo in the Sound step"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.013,
+    0.012,
+    0.01,
+    0.006,
+    0.021,
+    0.047,
+    0.005,
+    0.024,
+    0.127,
+    0.03,
+    0.01,
+    0.012,
+    0.006,
+    0.004,
+    0.004,
+    0.003,
+    0,
+    0.001,
+    0.001,
+    0.006,
+    0.022,
+    0.166,
+    0.103,
+    0.096,
+    0.082,
+    0.085,
+    0,
+    0.079,
+    0.316,
+    0.015,
+    0.009,
+    0.01,
+    0.006,
+    0.001,
+    0.015,
+    0.318,
+    0.001,
+    0.07,
+    0.082,
+    0,
+    0,
+    0.082,
+    0.069,
+    0.116,
+    0.104,
+    0,
+    0.119,
+    0.007,
+    0.046,
+    0.063,
+    0.045,
+    0.177,
+    0.082,
+    0.038,
+    0.089,
+    0.105,
+    0.036,
+    0.049,
+    0.075,
+    0.041,
+    0.029,
+    0.043,
+    0.04,
+    0.009,
+    0.04
+  ]
+}

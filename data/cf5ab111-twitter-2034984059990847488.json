@@ -1,0 +1,121 @@
+{
+  "source": "../../../_temp/videos/cf5ab111-twitter-2034984059990847488.mp4",
+  "file": "cf5ab111-twitter-2034984059990847488.mp4",
+  "duration": 6.21,
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "cuts": [],
+  "avgShot": 6.21,
+  "motion": 0.001,
+  "palette": [
+    {
+      "hex": "#010101",
+      "share": 0.487
+    },
+    {
+      "hex": "#FCFCFC",
+      "share": 0.483
+    },
+    {
+      "hex": "#E8E8E8",
+      "share": 0.011
+    },
+    {
+      "hex": "#575757",
+      "share": 0.008
+    },
+    {
+      "hex": "#979797",
+      "share": 0.006
+    },
+    {
+      "hex": "#181818",
+      "share": 0.005
+    }
+  ],
+  "brightness": "mixed",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "corporate",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {
+      "bg": "#010101"
+    },
+    "why": [
+      "a cut every 6.2 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "mixed, restrained picture → theme \"corporate\"",
+      "its canvas is #010101 (49% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.005,
+    0.004,
+    0.003,
+    0.003,
+    0.002,
+    0.002,
+    0.001,
+    0.001,
+    0.006,
+    0.002,
+    0.001,
+    0.002,
+    0.003,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.184,
+    0.45,
+    0.185,
+    0.089,
+    0.054,
+    0.02,
+    0.018,
+    0.001,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.003,
+    0.008,
+    0.008,
+    0.005,
+    0.003,
+    0.002,
+    0.001,
+    0.001,
+    0.002,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

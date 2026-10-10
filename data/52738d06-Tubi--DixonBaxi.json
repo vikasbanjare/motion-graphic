@@ -1,0 +1,86 @@
+{
+  "source": "../../../_temp/videos/52738d06-Tubi--DixonBaxi.mp4",
+  "file": "52738d06-Tubi--DixonBaxi.mp4",
+  "duration": 3.04,
+  "size": {
+    "width": 4628,
+    "height": 3008
+  },
+  "cuts": [],
+  "avgShot": 3.04,
+  "motion": 0.001,
+  "palette": [
+    {
+      "hex": "#9F8FA0",
+      "share": 0.319
+    },
+    {
+      "hex": "#D1D8CC",
+      "share": 0.305
+    },
+    {
+      "hex": "#2E193B",
+      "share": 0.167
+    },
+    {
+      "hex": "#380096",
+      "share": 0.082
+    },
+    {
+      "hex": "#8300E2",
+      "share": 0.079
+    },
+    {
+      "hex": "#F7FC25",
+      "share": 0.047
+    }
+  ],
+  "brightness": "mixed",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "corporate",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {},
+    "why": [
+      "a cut every 3.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "mixed, restrained picture → theme \"corporate\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.001,
+    0,
+    0.001,
+    0.002,
+    0.001,
+    0.159,
+    0.002,
+    0.001,
+    0.001,
+    0,
+    0,
+    0.002,
+    0.156,
+    0.002,
+    0.001,
+    0,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.001
+  ]
+}

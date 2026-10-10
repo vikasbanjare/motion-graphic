@@ -1,0 +1,117 @@
+{
+  "source": "../../../_temp/videos/982b3f82-html5-0eb1bae5-9e59-40f0-a457-b8b78611708d-1.mp4",
+  "file": "982b3f82-html5-0eb1bae5-9e59-40f0-a457-b8b78611708d-1.mp4",
+  "duration": 5.83,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 5.83,
+  "motion": 0.039,
+  "palette": [
+    {
+      "hex": "#E7E2D7",
+      "share": 0.725
+    },
+    {
+      "hex": "#ED3009",
+      "share": 0.117
+    },
+    {
+      "hex": "#D7B49F",
+      "share": 0.069
+    },
+    {
+      "hex": "#0B6246",
+      "share": 0.036
+    },
+    {
+      "hex": "#247CBD",
+      "share": 0.029
+    },
+    {
+      "hex": "#3C00C2",
+      "share": 0.023
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "editorial",
+    "motion": "smooth",
+    "pace": "relaxed",
+    "transition": "push",
+    "look": {
+      "bg": "#E7E2D7"
+    },
+    "why": [
+      "a cut every 5.8 s → pace \"relaxed\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained, warm picture → theme \"editorial\"",
+      "its canvas is #E7E2D7 (73% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.08,
+    0.062,
+    0.059,
+    0.025,
+    0.024,
+    0.014,
+    0.012,
+    0.03,
+    0.03,
+    0.054,
+    0.057,
+    0.085,
+    0.082,
+    0.072,
+    0.036,
+    0.011,
+    0.009,
+    0.025,
+    0.058,
+    0.08,
+    0.027,
+    0.023,
+    0.048,
+    0.018,
+    0.018,
+    0.032,
+    0.049,
+    0.081,
+    0.154,
+    0.097,
+    0.062,
+    0.047,
+    0.039,
+    0.017,
+    0.021,
+    0.012,
+    0.017,
+    0.04,
+    0.043,
+    0.073,
+    0.085,
+    0.057,
+    0.091,
+    0.031,
+    0.018,
+    0.009,
+    0.015,
+    0.065,
+    0.067,
+    0.044,
+    0.023,
+    0.036,
+    0.033,
+    0.012,
+    0.036,
+    0.049,
+    0.064
+  ]
+}

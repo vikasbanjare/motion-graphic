@@ -1,0 +1,87 @@
+{
+  "source": "../../../_temp/videos/27d748bc-html5-5cadda5c-f7ab-4cb7-92ee-427f338c9ee7-1.webm",
+  "file": "27d748bc-html5-5cadda5c-f7ab-4cb7-92ee-427f338c9ee7-1.webm",
+  "duration": 2.8,
+  "size": {
+    "width": 1080,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2.8,
+  "motion": 0.035,
+  "palette": [
+    {
+      "hex": "#262626",
+      "share": 0.716
+    },
+    {
+      "hex": "#3EE475",
+      "share": 0.112
+    },
+    {
+      "hex": "#D8D7D7",
+      "share": 0.07
+    },
+    {
+      "hex": "#E8E7E8",
+      "share": 0.044
+    },
+    {
+      "hex": "#8F928C",
+      "share": 0.039
+    },
+    {
+      "hex": "#4D5A4E",
+      "share": 0.019
+    }
+  ],
+  "brightness": "dark",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#262626"
+    },
+    "why": [
+      "a cut every 2.8 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "its canvas is #262626 (72% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.028,
+    0.046,
+    0.035,
+    0.042,
+    0.028,
+    0.04,
+    0.028,
+    0.043,
+    0.031,
+    0.049,
+    0.032,
+    0.042,
+    0.027,
+    0.04,
+    0.032,
+    0.046,
+    0.03,
+    0.043,
+    0.03,
+    0.043,
+    0.031,
+    0.047,
+    0.033,
+    0.048,
+    0.032,
+    0.041,
+    0.031
+  ]
+}

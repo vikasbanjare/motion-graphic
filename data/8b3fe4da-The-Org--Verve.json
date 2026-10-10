@@ -1,0 +1,119 @@
+{
+  "source": "../../../_temp/videos/8b3fe4da-The-Org--Verve.mp4",
+  "file": "8b3fe4da-The-Org--Verve.mp4",
+  "duration": 5.87,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [
+    1.8
+  ],
+  "avgShot": 2.93,
+  "motion": 0.009,
+  "palette": [
+    {
+      "hex": "#F3F6EE",
+      "share": 0.835
+    },
+    {
+      "hex": "#010101",
+      "share": 0.122
+    },
+    {
+      "hex": "#474746",
+      "share": 0.013
+    },
+    {
+      "hex": "#969894",
+      "share": 0.011
+    },
+    {
+      "hex": "#B8BAB5",
+      "share": 0.011
+    },
+    {
+      "hex": "#171716",
+      "share": 0.008
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {
+      "bg": "#F3F6EE"
+    },
+    "why": [
+      "a cut every 2.9 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #F3F6EE (84% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.401,
+    0.214,
+    0.105,
+    0.037,
+    0.059,
+    0.048,
+    0.289,
+    0.337,
+    0.076,
+    0.011,
+    0.081,
+    0.065,
+    0.013,
+    0.125,
+    0.132,
+    0.037,
+    0.013,
+    0.214,
+    0,
+    0.068,
+    0.01,
+    0.08,
+    0.088,
+    0.014,
+    0.005,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.098,
+    0.068,
+    0.048,
+    0.06,
+    0.019,
+    0.009,
+    0.006,
+    0.003,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

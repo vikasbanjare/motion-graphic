@@ -1,0 +1,105 @@
+{
+  "source": "../../../_temp/videos/d8e133bb-0x--Tubik-Studio.mp4",
+  "file": "d8e133bb-0x--Tubik-Studio.mp4",
+  "duration": 5.03,
+  "size": {
+    "width": 2800,
+    "height": 1600
+  },
+  "cuts": [],
+  "avgShot": 5.03,
+  "motion": 0.005,
+  "palette": [
+    {
+      "hex": "#F5F8FD",
+      "share": 0.965
+    },
+    {
+      "hex": "#BAB8EC",
+      "share": 0.016
+    },
+    {
+      "hex": "#C3D398",
+      "share": 0.015
+    },
+    {
+      "hex": "#7B7589",
+      "share": 0.002
+    },
+    {
+      "hex": "#2F3136",
+      "share": 0.002
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {
+      "bg": "#F5F8FD"
+    },
+    "why": [
+      "a cut every 5.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #F5F8FD (97% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.002,
+    0.002,
+    0.003,
+    0.004,
+    0.004,
+    0.003,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.002,
+    0.004,
+    0.008,
+    0.01,
+    0.011,
+    0.012,
+    0.018,
+    0.014,
+    0.013,
+    0.012,
+    0.011,
+    0.01,
+    0.011,
+    0.013,
+    0.012,
+    0.012,
+    0.01,
+    0.008,
+    0.006,
+    0.005,
+    0.004,
+    0.006,
+    0.006,
+    0.005,
+    0.005,
+    0.008,
+    0.01,
+    0.008,
+    0.007,
+    0.005,
+    0.004,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.002,
+    0.002
+  ]
+}

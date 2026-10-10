@@ -1,0 +1,79 @@
+{
+  "source": "../../../_temp/videos/7a00d025-html5-39c4e50d-5098-49ed-9d25-03a2335bfca3-1.mp4",
+  "file": "7a00d025-html5-39c4e50d-5098-49ed-9d25-03a2335bfca3-1.mp4",
+  "duration": 1.97,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 1.97,
+  "motion": 0.003,
+  "palette": [
+    {
+      "hex": "#FDFDFD",
+      "share": 0.957
+    },
+    {
+      "hex": "#8CABBE",
+      "share": 0.01
+    },
+    {
+      "hex": "#98D8FD",
+      "share": 0.009
+    },
+    {
+      "hex": "#648498",
+      "share": 0.009
+    },
+    {
+      "hex": "#3E6177",
+      "share": 0.008
+    },
+    {
+      "hex": "#E7E8E9",
+      "share": 0.007
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#FDFDFD"
+    },
+    "why": [
+      "a cut every 2.0 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained picture → theme \"clean\"",
+      "its canvas is #FDFDFD (96% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.002,
+    0.003,
+    0.005,
+    0.011,
+    0.01,
+    0.008,
+    0.008,
+    0.007,
+    0.006,
+    0.003,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.003,
+    0.004,
+    0.005
+  ]
+}

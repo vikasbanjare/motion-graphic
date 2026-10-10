@@ -1,0 +1,139 @@
+{
+  "source": "../../../_temp/videos/9b86a238-Capacity--Pentagram.mp4",
+  "file": "9b86a238-Capacity--Pentagram.mp4",
+  "duration": 8,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 8,
+  "motion": 0.008,
+  "palette": [
+    {
+      "hex": "#000000",
+      "share": 0.881
+    },
+    {
+      "hex": "#171717",
+      "share": 0.049
+    },
+    {
+      "hex": "#272727",
+      "share": 0.046
+    },
+    {
+      "hex": "#484848",
+      "share": 0.011
+    },
+    {
+      "hex": "#363636",
+      "share": 0.01
+    },
+    {
+      "hex": "#777777",
+      "share": 0.004
+    }
+  ],
+  "brightness": "dark",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {
+      "bg": "#000000"
+    },
+    "why": [
+      "a cut every 8.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "its canvas is #000000 (88% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.002,
+    0.005,
+    0.014,
+    0.014,
+    0.025,
+    0.021,
+    0.033,
+    0.033,
+    0.039,
+    0.032,
+    0.033,
+    0.026,
+    0.028,
+    0.026,
+    0.029,
+    0.024,
+    0.027,
+    0.02,
+    0.023,
+    0.021,
+    0.022,
+    0.022,
+    0.023,
+    0.023,
+    0.024,
+    0.018,
+    0.027,
+    0.023,
+    0.03,
+    0.021,
+    0.02,
+    0.013,
+    0.014,
+    0.008,
+    0.009,
+    0.005,
+    0.006,
+    0.003,
+    0.004,
+    0.002,
+    0.004,
+    0.003,
+    0.008,
+    0.007,
+    0.01,
+    0.008,
+    0.01,
+    0.008,
+    0.008,
+    0.006,
+    0.008,
+    0.005,
+    0.004,
+    0.003,
+    0.002,
+    0.001,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.001
+  ]
+}

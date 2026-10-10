@@ -1,0 +1,106 @@
+{
+  "source": "../../../_temp/videos/63f61128-html5-97f23d3f-a7a4-4b5d-ac58-392b72d81dd8-1.mp4",
+  "file": "63f61128-html5-97f23d3f-a7a4-4b5d-ac58-392b72d81dd8-1.mp4",
+  "duration": 4.96,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 4.96,
+  "motion": 0.013,
+  "palette": [
+    {
+      "hex": "#1B1924",
+      "share": 0.674
+    },
+    {
+      "hex": "#272536",
+      "share": 0.195
+    },
+    {
+      "hex": "#0B0B0D",
+      "share": 0.084
+    },
+    {
+      "hex": "#694C3E",
+      "share": 0.031
+    },
+    {
+      "hex": "#CFB48A",
+      "share": 0.016
+    }
+  ],
+  "brightness": "dark",
+  "energy": "calm",
+  "bpm": 132.92,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {
+      "bg": "#1B1924"
+    },
+    "why": [
+      "a cut every 5.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "music around 133 BPM: pick a track near that tempo in the Sound step",
+      "its canvas is #1B1924 (67% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.016,
+    0.016,
+    0,
+    0.019,
+    0.001,
+    0.027,
+    0.057,
+    0.001,
+    0.03,
+    0.001,
+    0.035,
+    0.036,
+    0.001,
+    0.026,
+    0.001,
+    0.022,
+    0.046,
+    0.001,
+    0.042,
+    0.001,
+    0.015,
+    0.011,
+    0.001,
+    0.012,
+    0.001,
+    0.014,
+    0.015,
+    0.001,
+    0.016,
+    0.001,
+    0.016,
+    0.017,
+    0.001,
+    0.016,
+    0.001,
+    0.016,
+    0.018,
+    0.001,
+    0.032,
+    0.001,
+    0.028,
+    0.015,
+    0.001,
+    0.013,
+    0.001,
+    0.009,
+    0.001,
+    0.008,
+    0.007
+  ]
+}

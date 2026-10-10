@@ -1,0 +1,86 @@
+{
+  "source": "../../../_temp/videos/364c90e2-twitter-1762569770757480448.mp4",
+  "file": "364c90e2-twitter-1762569770757480448.mp4",
+  "duration": 3,
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "cuts": [],
+  "avgShot": 3,
+  "motion": 0.011,
+  "palette": [
+    {
+      "hex": "#97A3A3",
+      "share": 0.285
+    },
+    {
+      "hex": "#FDF6E6",
+      "share": 0.198
+    },
+    {
+      "hex": "#C1C6C3",
+      "share": 0.186
+    },
+    {
+      "hex": "#6B797A",
+      "share": 0.165
+    },
+    {
+      "hex": "#3E4746",
+      "share": 0.098
+    },
+    {
+      "hex": "#1C1F1D",
+      "share": 0.067
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {},
+    "why": [
+      "a cut every 3.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.012,
+    0.007,
+    0.011,
+    0.008,
+    0.011,
+    0.007,
+    0.008,
+    0.012,
+    0.008,
+    0.014,
+    0.009,
+    0.008,
+    0.012,
+    0.009,
+    0.011,
+    0.009,
+    0.009,
+    0.015,
+    0.01,
+    0.015,
+    0.012,
+    0.013,
+    0.02,
+    0.014,
+    0.02,
+    0.013,
+    0.013,
+    0.018,
+    0.01
+  ]
+}

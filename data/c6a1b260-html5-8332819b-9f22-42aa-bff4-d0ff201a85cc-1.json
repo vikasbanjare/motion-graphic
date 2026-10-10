@@ -1,0 +1,93 @@
+{
+  "source": "../../../_temp/videos/c6a1b260-html5-8332819b-9f22-42aa-bff4-d0ff201a85cc-1.mp4",
+  "file": "c6a1b260-html5-8332819b-9f22-42aa-bff4-d0ff201a85cc-1.mp4",
+  "duration": 4.47,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 4.47,
+  "motion": 0.004,
+  "palette": [
+    {
+      "hex": "#38889C",
+      "share": 0.759
+    },
+    {
+      "hex": "#28758C",
+      "share": 0.154
+    },
+    {
+      "hex": "#B1D2D4",
+      "share": 0.045
+    },
+    {
+      "hex": "#83B0B6",
+      "share": 0.043
+    }
+  ],
+  "brightness": "mixed",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "corporate",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {},
+    "why": [
+      "a cut every 4.5 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "mixed, restrained picture → theme \"corporate\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.002,
+    0.005,
+    0.003,
+    0.003,
+    0.003,
+    0.005,
+    0.002,
+    0.002,
+    0.005,
+    0.005,
+    0.003,
+    0.005,
+    0.003,
+    0.004,
+    0.002,
+    0.007,
+    0.003,
+    0.003,
+    0.002,
+    0.004,
+    0.003,
+    0.003,
+    0.004,
+    0.011,
+    0.006,
+    0.007,
+    0.007,
+    0.012,
+    0.046,
+    0.016,
+    0.005,
+    0.003,
+    0.003,
+    0.008,
+    0.005,
+    0.004,
+    0.004,
+    0.008,
+    0.003,
+    0.002,
+    0.002,
+    0.001,
+    0.002,
+    0.002
+  ]
+}

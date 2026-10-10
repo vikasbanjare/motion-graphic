@@ -1,0 +1,99 @@
+{
+  "source": "../../../_temp/videos/06ac01ec-html5-ad2e1277-148f-4001-84a9-23a1e33bb008-1.mp4",
+  "file": "06ac01ec-html5-ad2e1277-148f-4001-84a9-23a1e33bb008-1.mp4",
+  "duration": 4,
+  "size": {
+    "width": 1080,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 4,
+  "motion": 0.015,
+  "palette": [
+    {
+      "hex": "#EFEEDA",
+      "share": 0.824
+    },
+    {
+      "hex": "#C1B8E5",
+      "share": 0.045
+    },
+    {
+      "hex": "#C3C6AB",
+      "share": 0.037
+    },
+    {
+      "hex": "#8E938A",
+      "share": 0.034
+    },
+    {
+      "hex": "#6C61B5",
+      "share": 0.031
+    },
+    {
+      "hex": "#86EAA9",
+      "share": 0.029
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {
+      "bg": "#EFEEDA"
+    },
+    "why": [
+      "a cut every 4.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #EFEEDA (82% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.011,
+    0.014,
+    0.017,
+    0.01,
+    0.017,
+    0.014,
+    0.007,
+    0.016,
+    0.016,
+    0.017,
+    0.012,
+    0.014,
+    0.019,
+    0.012,
+    0.019,
+    0.015,
+    0.009,
+    0.017,
+    0.018,
+    0.014,
+    0.01,
+    0.013,
+    0.018,
+    0.012,
+    0.019,
+    0.016,
+    0.008,
+    0.018,
+    0.016,
+    0.016,
+    0.01,
+    0.013,
+    0.016,
+    0.01,
+    0.017,
+    0.015,
+    0.01,
+    0.017,
+    0.018
+  ]
+}

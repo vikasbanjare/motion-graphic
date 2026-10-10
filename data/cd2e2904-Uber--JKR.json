@@ -1,0 +1,139 @@
+{
+  "source": "../../../_temp/videos/cd2e2904-Uber--JKR.mp4",
+  "file": "cd2e2904-Uber--JKR.mp4",
+  "duration": 8.09,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 8.09,
+  "motion": 0,
+  "palette": [
+    {
+      "hex": "#000000",
+      "share": 0.968
+    },
+    {
+      "hex": "#FDFDFD",
+      "share": 0.015
+    },
+    {
+      "hex": "#141414",
+      "share": 0.005
+    },
+    {
+      "hex": "#C6C6C6",
+      "share": 0.005
+    },
+    {
+      "hex": "#999999",
+      "share": 0.004
+    },
+    {
+      "hex": "#7A7A7A",
+      "share": 0.003
+    }
+  ],
+  "brightness": "dark",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {
+      "bg": "#000000"
+    },
+    "why": [
+      "a cut every 8.1 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "its canvas is #000000 (97% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0,
+    0,
+    0,
+    0.002,
+    0.005,
+    0.005,
+    0.005,
+    0.003,
+    0.003,
+    0.002,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.001,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.001,
+    0.002,
+    0.003,
+    0.007,
+    0.009,
+    0.007,
+    0.009,
+    0.003,
+    0.003,
+    0.002,
+    0.001,
+    0.001,
+    0,
+    0.018,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

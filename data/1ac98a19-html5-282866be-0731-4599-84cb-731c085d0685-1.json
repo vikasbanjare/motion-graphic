@@ -1,0 +1,69 @@
+{
+  "source": "../../../_temp/videos/1ac98a19-html5-282866be-0731-4599-84cb-731c085d0685-1.mp4",
+  "file": "1ac98a19-html5-282866be-0731-4599-84cb-731c085d0685-1.mp4",
+  "duration": 1.7,
+  "size": {
+    "width": 1080,
+    "height": 1920
+  },
+  "cuts": [],
+  "avgShot": 1.7,
+  "motion": 0.005,
+  "palette": [
+    {
+      "hex": "#0A1728",
+      "share": 0.339
+    },
+    {
+      "hex": "#043878",
+      "share": 0.286
+    },
+    {
+      "hex": "#052647",
+      "share": 0.223
+    },
+    {
+      "hex": "#032B57",
+      "share": 0.109
+    },
+    {
+      "hex": "#3B98C1",
+      "share": 0.043
+    }
+  ],
+  "brightness": "dark",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "neon",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {},
+    "why": [
+      "a cut every 1.7 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "dark, colourful picture → theme \"neon\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.031,
+    0.012,
+    0.001,
+    0.007,
+    0.006,
+    0.004,
+    0.004,
+    0.005,
+    0.012,
+    0.017,
+    0.007,
+    0.003,
+    0.003,
+    0.002,
+    0,
+    0.001
+  ]
+}

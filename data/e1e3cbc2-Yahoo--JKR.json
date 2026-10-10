@@ -1,0 +1,85 @@
+{
+  "source": "../../../_temp/videos/e1e3cbc2-Yahoo--JKR.mp4",
+  "file": "e1e3cbc2-Yahoo--JKR.mp4",
+  "duration": 2.93,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2.93,
+  "motion": 0,
+  "palette": [
+    {
+      "hex": "#7B2DFD",
+      "share": 0.963
+    },
+    {
+      "hex": "#FEFDFD",
+      "share": 0.019
+    },
+    {
+      "hex": "#9756FE",
+      "share": 0.006
+    },
+    {
+      "hex": "#FBD8FF",
+      "share": 0.004
+    },
+    {
+      "hex": "#8565BF",
+      "share": 0.004
+    },
+    {
+      "hex": "#B9A8D7",
+      "share": 0.004
+    }
+  ],
+  "brightness": "dark",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "neon",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {},
+    "why": [
+      "a cut every 2.9 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "dark, colourful picture → theme \"neon\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.029,
+    0.03,
+    0.011,
+    0.004,
+    0.001,
+    0,
+    0,
+    0,
+    0.001,
+    0.001,
+    0.003,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

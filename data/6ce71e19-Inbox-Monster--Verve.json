@@ -1,0 +1,106 @@
+{
+  "source": "../../../_temp/videos/6ce71e19-Inbox-Monster--Verve.mp4",
+  "file": "6ce71e19-Inbox-Monster--Verve.mp4",
+  "duration": 5.02,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 5.02,
+  "motion": 0.002,
+  "palette": [
+    {
+      "hex": "#00D94D",
+      "share": 0.961
+    },
+    {
+      "hex": "#2A9154",
+      "share": 0.012
+    },
+    {
+      "hex": "#3F2C4B",
+      "share": 0.009
+    },
+    {
+      "hex": "#646174",
+      "share": 0.009
+    },
+    {
+      "hex": "#FFFEFF",
+      "share": 0.005
+    },
+    {
+      "hex": "#C295BF",
+      "share": 0.003
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {},
+    "why": [
+      "a cut every 5.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, colourful picture → theme \"clean\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.001,
+    0.001,
+    0.002,
+    0.007,
+    0.01,
+    0.003,
+    0.008,
+    0.003,
+    0.001,
+    0,
+    0.001,
+    0,
+    0.007,
+    0.007,
+    0.009,
+    0.007,
+    0.005,
+    0.007,
+    0.006,
+    0.004,
+    0.004,
+    0.002,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.001,
+    0.001,
+    0,
+    0,
+    0,
+    0.006,
+    0.003,
+    0.005,
+    0.007,
+    0.004,
+    0.006,
+    0.007,
+    0.008,
+    0.005,
+    0.001,
+    0.002,
+    0.001,
+    0.001
+  ]
+}

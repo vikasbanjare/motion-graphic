@@ -1,0 +1,121 @@
+{
+  "source": "../../../_temp/videos/5428ad87-html5-cb9fd633-1c20-4bf1-b80c-28890431fe13-1.mp4",
+  "file": "5428ad87-html5-cb9fd633-1c20-4bf1-b80c-28890431fe13-1.mp4",
+  "duration": 6.25,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 6.25,
+  "motion": 0.001,
+  "palette": [
+    {
+      "hex": "#000000",
+      "share": 0.487
+    },
+    {
+      "hex": "#FCFCFC",
+      "share": 0.483
+    },
+    {
+      "hex": "#E8E8E8",
+      "share": 0.012
+    },
+    {
+      "hex": "#575757",
+      "share": 0.008
+    },
+    {
+      "hex": "#979797",
+      "share": 0.006
+    },
+    {
+      "hex": "#272727",
+      "share": 0.005
+    }
+  ],
+  "brightness": "mixed",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "corporate",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {
+      "bg": "#000000"
+    },
+    "why": [
+      "a cut every 6.3 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "mixed, restrained picture → theme \"corporate\"",
+      "its canvas is #000000 (49% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.006,
+    0.005,
+    0.004,
+    0.004,
+    0.003,
+    0.002,
+    0.002,
+    0.001,
+    0.006,
+    0.002,
+    0.001,
+    0.002,
+    0.003,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.184,
+    0.447,
+    0.185,
+    0.092,
+    0.057,
+    0.016,
+    0.025,
+    0.001,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.003,
+    0.008,
+    0.008,
+    0.005,
+    0.003,
+    0.002,
+    0.001,
+    0.001,
+    0.002,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

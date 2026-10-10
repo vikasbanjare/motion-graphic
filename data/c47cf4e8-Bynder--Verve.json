@@ -1,0 +1,96 @@
+{
+  "source": "../../../_temp/videos/c47cf4e8-Bynder--Verve.mp4",
+  "file": "c47cf4e8-Bynder--Verve.mp4",
+  "duration": 4.02,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 4.02,
+  "motion": 0.014,
+  "palette": [
+    {
+      "hex": "#182964",
+      "share": 0.915
+    },
+    {
+      "hex": "#0B6662",
+      "share": 0.025
+    },
+    {
+      "hex": "#FBD43B",
+      "share": 0.02
+    },
+    {
+      "hex": "#AE7DED",
+      "share": 0.017
+    },
+    {
+      "hex": "#116CFC",
+      "share": 0.015
+    },
+    {
+      "hex": "#FDFEFE",
+      "share": 0.008
+    }
+  ],
+  "brightness": "dark",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {},
+    "why": [
+      "a cut every 4.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "dark, restrained picture → theme \"studio-dark\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.014,
+    0.009,
+    0.007,
+    0.009,
+    0.009,
+    0.016,
+    0.013,
+    0.003,
+    0.001,
+    0.001,
+    0.001,
+    0.002,
+    0.002,
+    0.002,
+    0.004,
+    0.014,
+    0.008,
+    0.002,
+    0.008,
+    0.028,
+    0.053,
+    0.086,
+    0.103,
+    0.093,
+    0.093,
+    0.064,
+    0.04,
+    0.053,
+    0.023,
+    0.013,
+    0.016,
+    0.042,
+    0.097,
+    0.125,
+    0.067,
+    0.111,
+    0.092,
+    0.028
+  ]
+}

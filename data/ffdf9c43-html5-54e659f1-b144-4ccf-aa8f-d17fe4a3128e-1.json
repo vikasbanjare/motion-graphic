@@ -1,0 +1,119 @@
+{
+  "source": "../../../_temp/videos/ffdf9c43-html5-54e659f1-b144-4ccf-aa8f-d17fe4a3128e-1.mp4",
+  "file": "ffdf9c43-html5-54e659f1-b144-4ccf-aa8f-d17fe4a3128e-1.mp4",
+  "duration": 5.96,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 5.96,
+  "motion": 0,
+  "palette": [
+    {
+      "hex": "#F5F6F3",
+      "share": 0.864
+    },
+    {
+      "hex": "#A6A8A5",
+      "share": 0.044
+    },
+    {
+      "hex": "#1C663E",
+      "share": 0.041
+    },
+    {
+      "hex": "#B4CCC3",
+      "share": 0.022
+    },
+    {
+      "hex": "#D8DAD6",
+      "share": 0.015
+    },
+    {
+      "hex": "#484849",
+      "share": 0.014
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "fade",
+    "look": {
+      "bg": "#F5F6F3"
+    },
+    "why": [
+      "a cut every 6.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #F5F6F3 (86% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.002,
+    0.005,
+    0.004,
+    0.003,
+    0.003,
+    0.002,
+    0.002,
+    0.005,
+    0.003,
+    0.005,
+    0.003,
+    0.006,
+    0.003,
+    0.006,
+    0.003,
+    0.002,
+    0.003,
+    0.005,
+    0.003,
+    0.005,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "source": "../../../_temp/videos/d4a7736c-html5-638d69a7-34aa-40f4-a27e-f65180dfbc73-1.mp4",
+  "file": "d4a7736c-html5-638d69a7-34aa-40f4-a27e-f65180dfbc73-1.mp4",
+  "duration": 4.8,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [
+    1.4
+  ],
+  "avgShot": 2.4,
+  "motion": 0.003,
+  "palette": [
+    {
+      "hex": "#EAD7AA",
+      "share": 0.416
+    },
+    {
+      "hex": "#F4F6EB",
+      "share": 0.186
+    },
+    {
+      "hex": "#C09C7C",
+      "share": 0.111
+    },
+    {
+      "hex": "#9C6D55",
+      "share": 0.104
+    },
+    {
+      "hex": "#462526",
+      "share": 0.096
+    },
+    {
+      "hex": "#76402E",
+      "share": 0.086
+    }
+  ],
+  "brightness": "light",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio",
+    "motion": "calm",
+    "pace": "normal",
+    "transition": "fade",
+    "look": {
+      "bg": "#EAD7AA"
+    },
+    "why": [
+      "a cut every 2.4 s → pace \"normal\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"fade\" transitions",
+      "light, restrained picture → theme \"studio\"",
+      "its canvas is #EAD7AA (42% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.001,
+    0.001,
+    0.001,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.269,
+    0.003,
+    0.004,
+    0.003,
+    0.003,
+    0.003,
+    0.004,
+    0.003,
+    0.002,
+    0.003,
+    0.004,
+    0.002,
+    0.002,
+    0.002,
+    0.004,
+    0.002,
+    0.003,
+    0.003,
+    0.004,
+    0.003,
+    0.002,
+    0.003,
+    0.005,
+    0.002,
+    0.003,
+    0.003,
+    0.004,
+    0.003,
+    0.003,
+    0.003,
+    0.004,
+    0.002,
+    0.002,
+    0.002
+  ]
+}

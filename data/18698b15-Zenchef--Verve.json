@@ -1,0 +1,105 @@
+{
+  "source": "../../../_temp/videos/18698b15-Zenchef--Verve.mp4",
+  "file": "18698b15-Zenchef--Verve.mp4",
+  "duration": 5,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 5,
+  "motion": 0.004,
+  "palette": [
+    {
+      "hex": "#676916",
+      "share": 0.801
+    },
+    {
+      "hex": "#C4D6E8",
+      "share": 0.062
+    },
+    {
+      "hex": "#E3D4B9",
+      "share": 0.048
+    },
+    {
+      "hex": "#B7C7D8",
+      "share": 0.043
+    },
+    {
+      "hex": "#979770",
+      "share": 0.039
+    },
+    {
+      "hex": "#583213",
+      "share": 0.009
+    }
+  ],
+  "brightness": "mixed",
+  "energy": "calm",
+  "bpm": null,
+  "suggestion": {
+    "theme": "corporate",
+    "motion": "calm",
+    "pace": "relaxed",
+    "transition": "blur",
+    "look": {},
+    "why": [
+      "a cut every 5.0 s → pace \"relaxed\"",
+      "calm on-screen movement → \"calm\" motion",
+      "→ \"blur\" transitions",
+      "mixed, restrained picture → theme \"corporate\""
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0,
+    0.001,
+    0,
+    0,
+    0.001,
+    0.001,
+    0.001,
+    0.002,
+    0.002,
+    0.004,
+    0.006,
+    0.008,
+    0.011,
+    0.012,
+    0.014,
+    0.014,
+    0.015,
+    0.013,
+    0.012,
+    0.063,
+    0.06,
+    0.033,
+    0.02,
+    0.013,
+    0.008,
+    0.004,
+    0.003,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0,
+    0.001,
+    0.005,
+    0.009,
+    0.013,
+    0.019,
+    0.043,
+    0.087,
+    0.044,
+    0.008,
+    0,
+    0,
+    0
+  ]
+}

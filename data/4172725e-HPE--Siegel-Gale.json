@@ -1,0 +1,75 @@
+{
+  "source": "../../../_temp/videos/4172725e-HPE--Siegel-Gale.mp4",
+  "file": "4172725e-HPE--Siegel-Gale.mp4",
+  "duration": 2,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2,
+  "motion": 0.002,
+  "palette": [
+    {
+      "hex": "#262B37",
+      "share": 0.784
+    },
+    {
+      "hex": "#343A46",
+      "share": 0.124
+    },
+    {
+      "hex": "#3E4451",
+      "share": 0.072
+    },
+    {
+      "hex": "#309685",
+      "share": 0.012
+    },
+    {
+      "hex": "#FCFDFD",
+      "share": 0.009
+    }
+  ],
+  "brightness": "dark",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "studio-dark",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#262B37"
+    },
+    "why": [
+      "a cut every 2.0 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "dark, restrained picture → theme \"studio-dark\"",
+      "its canvas is #262B37 (78% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.01,
+    0.006,
+    0.005,
+    0.002,
+    0.003,
+    0.001,
+    0.001,
+    0.002,
+    0.002,
+    0.007,
+    0.007,
+    0.008,
+    0.005,
+    0.001,
+    0.001,
+    0,
+    0,
+    0,
+    0.001
+  ]
+}
