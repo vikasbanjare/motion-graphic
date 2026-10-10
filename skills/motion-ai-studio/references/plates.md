@@ -45,6 +45,15 @@ These follow the styles in `docs/research/style-playbook.md`. More are in `docs/
 | 12 Data mascot | cute glossy blue jelly blob mascot, smiling, isolated, soft studio light | small happy bounce, 3 s |
 | Any CTA background | soft holographic gradient fabric folds, lavender peach and sky blue, matte, empty centre | very slow drift, 6 s |
 
+## Lessons from award-winning films (Motion Design Awards study)
+
+57% of the 172 award entries reviewed are 3D product films. These habits separate them from generic AI output:
+- **One material per film.** Name it in every prompt: "walnut wood", "molten gold", "woven thread", "volt-green slime", "white clay". Put the product *in* that material world, not on a gradient.
+- **One hue per idea.** The entire film is graded to one colour family plus black or white, for example "everything in deep green and black, a single volt-green glow".
+- **Transformation shots.** Material becomes product, then product becomes material (seeds → card → seeds; liquid copper → car body). Generate the start and end stills, then animate with image-to-video. Prompt it as: "the [material] swirls and forms into [product]".
+- **Miniatures.** Add "tilt-shift miniature diorama, shallow depth of field" for playful scale, as in movie-tribute or city scenes.
+- **Type in the world.** Leave a clean wall, screen or panel in the plate, then put the copy there in code instead of over the subject. Otherwise keep the copy to tiny tracked caps or a two-line feature caption.
+
 ## Choosing models (Higgsfield)
 
 Always check with `models_explore` because model lists change. Defaults in the tool's own guidance:

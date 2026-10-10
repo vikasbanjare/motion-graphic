@@ -1,6 +1,6 @@
-# Motion style playbook: 13 styles from 251 reference videos
+# Motion style playbook: 13 styles from 424 reference videos
 
-This playbook is built from the reference links in `research/links.txt`. GitHub runners downloaded each video, measured it and made contact sheets (`.github/workflows/research.yml`, with the results on the `research-results` branch). Every unique video was then reviewed frame by frame at 2 frames per second. The per-video notes are in [`reference-notes.md`](reference-notes.md).
+This playbook is built from the reference links in `research/links.txt`. GitHub runners downloaded each video, measured it and made contact sheets (`.github/workflows/research.yml`, with the results on the `research-results` branch). Every unique video was then reviewed frame by frame at 2 frames per second. The per-video notes are in [`reference-notes.md`](reference-notes.md). A second set, 173 entries crawled from motiondesignawards.com, is summarised in §6 and noted in [`award-notes.md`](award-notes.md).
 
 [`production-routes.md`](production-routes.md) shows how to build every style three ways: with Claude Code only, with AI-generated images and video (Higgsfield and similar), or from Claude Design frames. The companion file [`motion-techniques.md`](motion-techniques.md) holds the technique library: signature moves with Remotion code, colour and gradient recipes, type, timing, transitions, a glossary, and how to brief Claude.
 
@@ -546,3 +546,59 @@ Kit fields: `theme`, `motion`, `pace`, `transition`, `look.*` and `brand.*` (all
 | Odometer digit roll (M09b) | 6 films | Low | `stat.roll: true` |
 
 These are proposals, not built. Each needs the usual schema → scene → check → qa → test cycle described in `docs/ADDING-SCENES.md`.
+
+## 6. What award-winning work adds (Motion Design Awards, 173 videos)
+
+The second study crawled motiondesignawards.com and reviewed all 173 entries it could download (`award-notes.md`). This set is not SaaS launches: it is brand, product and art-direction work judged by motion designers. It changes three conclusions.
+
+**The numbers next to the first study**
+
+| | SaaS/launch set (251) | Award set (173) |
+|---|---|---|
+| Median length | 31 s | 43 s |
+| Median shot | 4.8 s | 3.9 s (p25 2.2, p75 6.8) |
+| One continuous shot | 25% | 10% |
+| Dark / light / mixed | 112 / 140 / 95 | 63 / 32 / 78 |
+| Tagged 3D product CGI | 11% | **57%** (98 of 172) |
+| Tagged kinetic type | 18% | 31% |
+| Tagged flat illustration / 2D characters | 5% | 29% |
+
+**1. Award work is mostly material, not UI.** More than half of the award entries are 3D product films. The idea is told through what the product is made of: wood dioramas (N001), gold in five states (N079), sand and stone (N154), thread (N087, N091), soil layers (N172) and slime (N139). Real UI appears in about 7% of entries. → Route 2 (AI plates) is how this kit reaches that level. Pick **one material per film** and write it into every plate prompt.
+
+**2. One colour per idea.** The strongest films assign a single hue to a single meaning:
+- The Emotions trilogy uses blue for sadness, red for rage and green for fear (N103, N125, N173).
+- The Nike Air Max film keeps one volt green on black (N152).
+- Bell & Ross uses lume green throughout (N077).
+- Franck Muller adds a single lime accent (N072).
+
+This is the same rule as the launch films (one accent per film), applied more strictly.
+
+**3. Typography lives inside the world.** Award films rarely lay captions over footage. The type is part of the set instead:
+- carved wood tickers (N001);
+- words printed on panels in a material set (N086);
+- LED screens in the scene (N141);
+- words set along the curves of an illustration (N151, N171);
+- giant echo type behind talent (N166);
+- the brand shape used as the mask for footage (N164).
+
+When the type has to sit on top, it is either tiny tracked caps (N031, N090, N104) or a two-line serif caption, one per feature (N159).
+
+**New techniques this set adds** (not in the first study):
+
+| Technique | Seen in | Route |
+|---|---|---|
+| Material transformation (seeds → card → seeds; liquid → product) | N146, N061, N079, N066 | 2: two plates + a cross-dissolve/morph |
+| Product given a face or speech bubbles (personality) | N118, N119, N051 | 2: plate + code-drawn bubbles |
+| One object follows the whole story (coin, penny, thread) | N023, N087, N041 | 1 or 2 |
+| Movie-tribute vignettes, same product in many worlds | N090, N114, N127 | 2 |
+| Miniature / tilt-shift diorama | N127, N001 | 2 (plate prompt: "tilt-shift miniature") |
+| Grey 3D + hand-drawn colour FX strokes | N144, N143 | 2 + code strokes (M11) |
+| Live action with tracked 2D illustration on top | N096, N030, N164 | needs footage + compositing |
+| Card-in-colour-field framing (small inset on a flat field) | N068, N111, N112, N133 | **1: kit-native** (`image` scene `fit: contain` on a flat `look.bg`) |
+| Spec callouts with leader lines on the product | N139, N073, N155 | 1 (code) over a 2 plate |
+| Split-screen detail diptychs | N136, N169 | 1 (new layout) |
+| Inline icons replacing words in a caption | N168, N026 | 1 (M07) |
+| Ring / circular layout carrying the concept | N169, N157 | 1 (M15) |
+| Emotion-per-hue series | N103, N125, N173 | 2 |
+
+**What this means for briefing Claude.** For a premium product or brand film, choose Route 2, name one material and one hue, and put the copy into the world: tiny caps or two-line feature captions. Don't put a big headline over the plate. For SaaS launches, the first study's rules still lead.

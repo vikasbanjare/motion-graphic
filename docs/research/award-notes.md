@@ -2,7 +2,7 @@
 
 Videos found by crawling motiondesignawards.com (`research/sites.txt`), downloaded and measured on GitHub's runners. Each review image is the first contact sheet (0-16 s at 2 fps) plus one sheet from the middle of the video. Frames stay encrypted on `research-results`; only these notes and the numbers are public.
 
-Review progress: 142 of 173 videos (the rest follow in later commits).
+Review progress: all 173 videos reviewed (N092, N122 and N137 duplicate earlier entries).
 
 ## Index
 
@@ -608,3 +608,93 @@ A clay 3D retro computer on a blue desk; zoom into the CRT; a fake OS "bananOS" 
 
 #### N143 Make Mami Proud showreel 2025 [agency-reel][kinetic-type]
 Hot-pink 3D brush script "MAKE MAMI PROUD" over navy; then live-action clips with hand-drawn 2D FX overlaid (flames, smoke, lightning, cartoon monsters), a fighting-game HUD over a street scene with "K.O.", a jumping typographic set "bystanders", a neon skull drinking a can, "WAKE U" yellow type. 59 shots / 63 s. Live action + 2D FX doodles = signature.
+
+#### N144 Knife intro [3D-character][2D-FX]
+Monochrome B&W 3D (grey clay world with primitives) and a knife; characters fight while hand-drawn neon brush-stroke FX (orange, purple, teal, green) explode around them; end "KNIFE" logo on charcoal. Grey 3D + coloured 2D FX strokes = hybrid style.
+
+#### N145 Samsung screensavers Z Flip/Fold (Clim Studio) [3D-product-CGI][kinetic-type]
+Phones placed in real-feeling still-life sets (desk, plant pot, tiles, towel, sunlight shadows) with huge grey grotesk words cropped at the frame edges ("SCREENSAVERS", "DESIGN & ANIMATION", "AI GALAXY") and small model lists ("Z FLIP6 / Z FOLD6", "S23 / S23+…"); ends "GLOBALLY" huge with a gradient bar → logo. Type frame around product sets.
+
+#### N146 BAC Bio card (Kutuko) [3D-product-CGI]
+A hummingbird in tropical flowers, a seed sack, hands sifting seeds; seeds swirl into a metal Visa card; hands toss the card; the card dissolves back into seeds; the bird flies through the forest; the word "BIO" with jungle inside the letters and the cards in colourways replacing the "I". Material ↔ product transformation.
+
+#### N147 Seed [3D-character][abstract]
+Dark: a diagonal light slit sweeps across a metal surface engraved with circles, a cube rotates, mountains from above; a hunched figure's skin sprouts white spines/seeds in macro. Slow, eerie, art-film CGI.
+
+#### N148 Cariuma Catiba × The Berrics [3D-product-CGI]
+Dark skatepark (stairs, rails) where a single plant grows through concrete; leaves morph into the green chevron logo; the black shoe appears, macro of the embossed emblem and green heel tab; ends "CARIUMA / Worldwide shipping…" on black. Brand mark born from nature.
+
+#### N149 Amazon × Clim Studio (Alexa shopping) [3D-product-CGI][live-action][whitespace-UI]
+Saturated pastel sets (orange table of groceries, blue/teal fields), coupon paper storm "50% OFF", a red wallet, a live-action woman reacting on red, the Alexa app UI on a phone among floating products, product cards orbiting her, a phone scanning a receipt, floating products with a price card counting $49.91 → $52.25, a juicer; end "Find lists & savings in the Alexa app" on a blue pedestal. Live action + floating 3D product clouds + UI.
+
+#### N150 Nordés Gin (Kutuko) [3D-product-CGI]
+Logo drawn in wet sand, a wave washes it, underwater: the white bottle encrusted with rocks, shells, seaweed and bubbles, the blue embroidered pattern on the glass, sea anemones, iridescent shells; "LIMITED EDITION Nº2"; final bottle on a rocky islet half above / half below water (split-level waterline shot).
+
+#### N151 Nature.org motion film [flat-illustration][kinetic-type]
+Lush flat illustration with grainy textures in green / cyan / yellow / magenta: text written along curved paths that follow the landscape ("Where does the path to global change begin?"), jungle flora, a butterfly, a toucan, abstract water shapes, scientists with tablets, the logo text circling a round emblem, wind turbines and solar, words on hills ("future", "people and nature", "thrive", "Together, we find a way"). Text-on-path following the art.
+
+#### N152 Nike Air Max 95000 [3D-product-CGI][neon-glow]
+Black + volt green only: dark fabric waves with green scan lines and HUD crosshairs, lattice structures, robot arms 3D-printing the sole, glowing green liquid injected into air pockets, "AM 95000" on a glowing bubble, final "AIRMAX 95000" chrome type over the shoe. One accent (volt) on black; manufacturing-as-sci-fi.
+
+#### N153 Ray-Ban "You are on" (vertical) [3D-product-CGI][flat-illustration]
+Pinball machine world in magenta/purple: a plunger launches, glasses fly through a psychedelic pinball table, glitch pixel transition into a maximalist flat-illustrated portrait wearing the real 3D glasses (3D product composited over flat illustration); red Ray-Ban logo on black.
+
+#### N154 Chopard L.U.C Grand Strike [3D-product-CGI]
+Moody desaturated: dark rock spires and the logo, gold dust exploding into silver sand, sand dunes forming and blowing, sand pouring over the watch case; the skeleton watch reveals its movement in macro (gears, chime hammers, bridges with Geneva stripes). Natural elements → mechanism.
+
+#### N155 Neo oven [3D-product-CGI][kinetic-type]
+Black studio: liquid metal forms a handle, a robot arm lifts it, robot arms assemble the oven; a camera-viewfinder HUD frame ("REC 00:01:22") recording a robotic test; fire morphs on a dark display; "Digital display 35% larger" small text; clock "19:24" glowing; "New ThermoSeal system" with fire seal. Tiny feature captions next to each macro.
+
+#### N156 ExtraOrdinary (Cgiipeiro) [3D-product-CGI]
+Warm desk setup at sunset; a pencil sketch on paper; a pencil multiplies into a twisting pencil sculpture; a ruler, a chrome ribbon, a Rubik's cube that explodes; a keyboard with magenta-glowing keys that bubble. Everyday design tools as surreal sculpture; magenta as the "magic" accent.
+
+#### N157 Thousand Currents [flat-illustration][brand-system][kinetic-type]
+Lavender/pink/cobalt/green palette with woven-textile patterns (kente-like stripes, diamonds) filling the frame; small vignette islands (people weaving, farming, building) on pink; cobalt full-frame with tiny white text where a striped ribbon underlines words ("has been doing just that", "And this is how we do it"); a circular woven medallion zooms. Pattern language from the cause itself.
+
+#### N158 Hamilton engraving (Kutuko) [3D-product-CGI][kinetic-type]
+Black: a caret types "love you"; the watch case back gets laser-engraved with sparks, crosshair guides, magenta/purple speed blur; the boxed watch; logo. Personalisation shown as the engraving process.
+
+#### N159 New Balance Fresh Foam X [3D-product-CGI][kinetic-type]
+Blue field with an "X" made of white/blue foam spheres around the shoe; the shoe lands on a rooftop and sinks into foam balls; serif white caps captions ("FRESH FOAM X / PREMIUM CUSHIONING", "SUPPORTIVE FIT / ULTRA HEEL", "SOFT & BREATHABLE / HYPOKNIT UPPER", "360 DEGREES OF COMFORT", "ALL THE COMFORT / ALL THE DISTANCE"). Each feature = one macro + one two-line caption.
+
+#### N160 Nike Sportswear Presto [3D-product-CGI]
+Black and red only: a dim shoe in darkness, rim-lit macros, red-tinted spiked crystal texture growing over the sole, outlined pill captions "GET TRACTION" / "STAY DRY" (thin white box frames), a red/black pyramid, water spray in particles. One red, outlined caption pills.
+
+#### N161 Inspired by Xiaomi Mi 10 Pro [3D-product-CGI]
+Ricardo Bofill "La Muralla Roja" pink/red architecture world: clouds through a cut-out wall, stairs, arches, a round window; the phone flies through, macro of the camera bump; the wallpaper texture becomes an orange fluffy landscape; final phone with "Mi 10 Pro / Lights. Camera. Action." small type. Architecture set as palette source.
+
+#### N162 Hologram (IoT connectivity) [kinetic-type][data-viz][brand-system]
+Black with a neon-line perspective tunnel (cyan/magenta/lime strokes), pixel monospace type "IOT CONNECTIVITY LANDSCAPE IS CHANGING" typed in; a black SIM card on a lime→purple gradient with an asterisk sticker; a Swiss-grid collage of coloured tiles with icons (drone, truck, scooter, turnstile); waveform strips; tiles flying in a dark grid space. Gradient + bold tiles + mono pixel type.
+
+#### N163 Baltimore Ravens uniform reveal [3D-product-CGI][live-action]
+Foggy gothic CGI castle (Poe-inspired): ravens fly, a stone raven statue crumbles into purple particles, a feather drifts, purple sparks run through cobblestones; players appear on a throne of feathers, raven-feather shoulder pads, uniform macros (logo patch, gold numbers), players walking through arches. Live-action players composited in a CGI world.
+
+#### N164 Vibram "to repair" [kinetic-type][live-action][flat-illustration]
+Big serif type "to repair" in yellow/cream over live footage; octagon (Vibram logo shape) masks frame the footage; footage of a cobbler, cut-in words split around the subject ("care…ful", "skill…ful", "fervent", "ambition", "next takeoff", "landing ahead", "an act of dedication", "a conscious future"); flat colour shapes, sparkles, and doodled shoe soles overlaid; a rainbow path drawn on a forest trail; final illustrated flower frame. Brand shape as mask + split words around the subject.
+
+#### N165 Alina Zykina showreel 2026 [agency-reel][3D-product-CGI]
+Lavender gradient with a 3D chrome "SHOWREEL" sticker label; tactile CGI (yoga mat, fur, cork), split screens (phone + receipt), car on neon road, chair on grass, Times Square / K11 Shanghai DOOH screens (location labels "NEW YORK", "SHANGHAI"), perfume on stones, end on gradient with handle. Each project framed as a still-life; location pins for OOH work.
+
+#### N166 Sky Sport "Hammer Herbst" trailer [kinetic-type][live-action][brand-system]
+Athletes against coloured diagonal split backgrounds (white/navy/red/yellow) with giant italic outlined + filled words behind them ("HEY WHERE IS THE MUSIC", "READY GO", "HERE COMES THE BOOM", "LIVE", "HAMMER BOCK"), match highlights between; final team composite "DEIN HAMMER HERBST" with repeated outlined word wallpaper. Talent + giant echo type behind.
+
+#### N167 Aixsponza general reel 2024 [agency-reel][3D-product-CGI]
+Saturated macro CGI: magenta/red flower petals, red light lasers through glass, red foam/coral, golden liquid bubbles in a perfume bottle, purple glowing pores on skin, alpine flowers, a sunflower burst around a tube, watch faces multiplied into a mandala, chrome face sculpture, lightning-bolt gold liquid, purple smoke around a Gatorade bottle, iridescent strands, a molten orb, red gummy spheres, ice cracking, Pepsi cans in ice with "RÓB SWOJE" type, neon plasma. 58 shots / 71 s. Every shot = one material at its most tactile.
+
+#### N168 Araldica: sound-based motion toolkit [kinetic-type][brand-system][data-viz]
+Green full-frame with tiny lime text where symbols replace words inline ("while the web drowns in ✨ slop", "heraldic 🛡️ vibes", "sound-♫-based", "motion toolkit"); heraldic shields and pattern tiles (checker, diamonds, stripes) in red/yellow/blue/green; projection mapping on a building; a grid library of generated pattern tiles; a music player UI where the cover art animates to sound; posters. Inline icon substitution in captions + pattern library.
+
+#### N169 Circularity (FLC) [3D-product-CGI][data-viz][kinetic-type]
+A white round tray: "Circularity" in the centre while a miniature world assembles around the ring (forest, river, sawmill, furniture, truck); certificate tag "FLC" on wood; split-screen nature pairs with tiny captions ("Reduction of waste", "Safeguarding of ecosystems"); "Circular bioeconomy" inside a ring of logs; a designer sketching with "67 000+ FLC-certified companies" counter; a wooden chair crumbling to sawdust and reforming; a circular flow of materials around "Circular bio-based material flows". Ring layout = the concept.
+
+#### N170 Samsung Galaxy A14 5G screensaver (Clim Studio) [3D-product-CGI][kinetic-type]
+Warm beige: one small serif word per beat ("The New", "Screensaver", "Playing", "Aaaaall", "Devices", emoji) between macro shots of fuzzy coloured spheres and sprinkle-like particles (the wallpaper's art), the phone rotating, "Globally" big on black, a phone grid in perspective, "5G" in a disc. Single-word serif interstitials + tactile wallpaper art.
+
+#### N171 DoorDash "Design connects" [brand-system][kinetic-type][whitespace-UI]
+Off-white with DoorDash red, plum, pink, yellow, sky blue: the logo dash, "DESIGN CONNECTS" bold condensed with a colour bar wipe; lowercase small words placed along swooping thick ribbon paths ("people", "places", "endless possibilities", "purpose", "always", "come first"), photos sliding into the ribbons; plum frame with "design empowers consumers / merchants" and app icons; "endless possibilities" repeated as a text wall on pink; corner-radius demo ("0 px → 16 px", "12 px") with cursor arrows; notification cards "You earned $500 this week". Brand-system explainer: ribbon as the connective device.
+
+#### N172 Bioo (Kutuko) [3D-product-CGI][kinetic-type]
+Photoreal garden CGI with shallow DOF; soil explodes into a layered cube "Bioo Panel" (exploded soil/glass layers with label); a campus with a digital kiosk; a hand touches succulents and "Bioo Switch" label appears. Product = layered soil cube, labels small white sans centred.
+
+#### N173 Fear: emotions chapter 03 [3D-product-CGI][abstract]
+Black and green: a moonlit sea of glowing green scales, fog rolls in, darkness; green eyes flash; a scaled creature's coil passes; purple lightning; iridescent scales macro. Completes the Emotions series (N103 blue sadness, N125 red rage, N173 green fear): one hue per emotion.
