@@ -38,7 +38,8 @@ const sky = (az: number, el: number, dx = 0, dy = 0) => {
   const c = new THREE.Vector3(Math.cos(e) * Math.sin(a), Math.sin(e), -Math.cos(e) * Math.cos(a)).multiplyScalar(R);
   const right = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
   const up = new THREE.Vector3().crossVectors(c.clone().normalize(), right).negate();
-  return c.addScaledVector(right, dx).addScaledVector(up, dy);
+  // offsets run in the tangent plane, then the point is put back on the sphere (just inside the dome, so it is never hidden)
+  return c.addScaledVector(right, dx).addScaledVector(up, dy).normalize().multiplyScalar(R - 0.5);
 };
 /** Star geometry (small spheres) at the given points. */
 const starsAt = (pts: THREE.Vector3[], r = 0.3) => merge(pts.map((p) => new THREE.SphereGeometry(r, 8, 6).translate(p.x, p.y, p.z)));
@@ -108,17 +109,17 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
     }
     const starGroups = Array.from({ length: 6 }, (_, k) => starsAt(pts.filter((_, i) => i % 6 === k)));
     const goldStars = starsAt(gold, 0.5);
-    const planePts = shape(60, 32, PLANE, 1.5);
-    const hotelPts = shape(105, 24, HOTEL, 1.3);
-    const ringPts = Array.from({ length: RING_N + 1 }, (_, i) => sky(250, 36, 13 * Math.cos((i / RING_N) * Math.PI * 2), 13 * Math.sin((i / RING_N) * Math.PI * 2)));
+    const planePts = shape(60, 32, PLANE, 1.0);
+    const hotelPts = shape(105, 24, HOTEL, 1.0);
+    const ringPts = Array.from({ length: RING_N + 1 }, (_, i) => sky(250, 36, 10.5 * Math.cos((i / RING_N) * Math.PI * 2), 10.5 * Math.sin((i / RING_N) * Math.PI * 2)));
     const plane = { stars: starsAt(planePts, 0.6), lines: linesThrough(planePts) };
     const hotel = { stars: starsAt(hotelPts, 0.6), lines: linesThrough(hotelPts) };
     const ring = { stars: starsAt(ringPts.slice(0, RING_N), 0.6), lines: linesThrough(ringPts) };
     const products = PRODUCTS.map((p) => {
-      const pts = shape(p.az, p.el, p.pts, p.s * 1.7);
+      const pts = shape(p.az, p.el, p.pts, p.s * 1.3);
       return { stars: starsAt(pts, 0.42), lines: linesThrough(pts, 0.14) };
     });
-    const moon = new THREE.SphereGeometry(6.5, 32, 24);
+    const moon = new THREE.SphereGeometry(6.0, 32, 24);
     const moonP = sky(250, 36);
     const craters = merge([[-1.2, 1.0, 0.9], [1.5, -0.4, 0.6], [0.3, -1.8, 0.5], [-1.8, -1.2, 0.4], [1.0, 1.9, 0.45]].map(([x, y, r]) => new THREE.TorusGeometry(r, 0.08, 6, 24).translate(x, y, 4.1)));
     // the telescope tube and the table
