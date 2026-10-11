@@ -89,7 +89,7 @@ const Bag: React.FC<{ t: number; lit: number; tex: THREE.Texture; stand: number 
   }, []);
   const a = (Math.PI / 2) * t;
   const live = { ambient: 0.14, lift: 0.14 + 0.5 * lit, key: [-0.3, -0.5, 0.8] as V3 };
-  const mat = (i: number) => PAPER(10 + i, { map: tex });
+  const mat = (_i: number) => PAPER(1, { map: tex });
   const w = g.w;
   // the whole card stands up on its bottom edge while the panels wrap round
   return (
@@ -125,7 +125,7 @@ const Plane: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
   const wingF = ramp(t, 0.45, 1, inOut);
   const noseF = ramp(t, 0.2, 0.7, inOut);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
-  const mat = (i: number) => PAPER(30 + i, { map: tex });
+  const mat = (_i: number) => PAPER(1, { map: tex });
   return (
     <>
       {[1, -1].map((s, k) => (
@@ -159,7 +159,7 @@ const Hotel: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, li
   const litL = { ...live, lift: 0.2 + 0.6 * lit };
   const rise = ramp(t, 0, 0.7, expoOut);
   const roofF = ramp(t, 0.5, 1, inOut);
-  const mat = (i: number) => PAPER(40 + i, { map: tex });
+  const mat = (_i: number) => PAPER(1, { map: tex });
   return (
     <>
       <EMesh g={g.left} m={mat(0)} double live={live} />
@@ -200,7 +200,7 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
   const fanF = ramp(t, 0.7, 1, expoOut);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const litL = { ...live, lift: 0.2 + 0.55 * lit };
-  const mat = (i: number) => PAPER(50 + i, { map: tex });
+  const mat = (_i: number) => PAPER(1, { map: tex });
   const hinges: { at: V3; axis: V3; sgn: number }[] = [
     { at: [0, s, 0], axis: [1, 0, 0], sgn: -1 },
     { at: [s, 0, 0], axis: [0, 1, 0], sgn: 1 },
@@ -243,7 +243,7 @@ const Tag: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
   }, []);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const upF = ramp(t, 0, 0.35, expoOut) * (1 - ramp(t, 0.6, 1, inOut)); // rises, then flattens to nothing
-  const mat = (i: number) => PAPER(80 + i, { map: tex });
+  const mat = (_i: number) => PAPER(1, { map: tex });
   return (
     <>
       <EMesh g={g.rest} m={mat(0)} double live={live} />
@@ -325,11 +325,11 @@ const Scene: React.FC<{ f: number }> = ({ f }) => {
   const tilt = ramp(f, T.score + 20, T.bag + 20, inOut);
   const orbit = lerp(-Math.PI / 2, -Math.PI / 2 + 1.1, ramp(f, T.bag, T.lift, (x) => x));
   const near = which === "box" ? ramp(f, T.box + 10, T.box + 50, inOut) * (1 - ramp(f, T.tag - 20, T.tag, inOut)) : 0;
-  const r = lerp(0.001, lerp(11.5, 7.5, near), tilt);
-  const hgt = lerp(15.5, lerp(7.0, 4.6, near), tilt);
+  const r = lerp(0.001, lerp(8.0, 5.6, near), tilt);
+  const hgt = lerp(11.5, lerp(4.8, 3.4, near), tilt);
   const cx = which === "bag" ? -3.2 * stand : 0;
   const liftZ = which === "bag" ? 2.0 * stand : which === "plane" ? flyPos[2] : which === "hotel" ? 1.2 * hotelT : which === "box" ? 1.0 * boxT : 0;
-  const endPos = new THREE.Vector3(0, -9.5, 7.5);
+  const endPos = new THREE.Vector3(0, -8.0, 6.3);
   const pos = new THREE.Vector3(cx + r * Math.cos(orbit), r * Math.sin(orbit), hgt).lerp(endPos, lift);
   const target = new THREE.Vector3(cx, 0, liftZ * 0.6).lerp(new THREE.Vector3(0, 0, 1.6), lift);
   return (
