@@ -100,7 +100,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
   return (
     <>
       <Cam pos={[x, y, z]} target={[x * 0.6, dm && camY === undefined ? -2.2 : 0, 0]} fov={fov} roll={rl} />
-      {dm ? <EMesh g={g.ground!} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 33, albedo: 1.25, lift: 0.3, edge: 0, atmos: 0.4 })} live={liveA} pos={[0, G - 0.02, -6]} rot={[-Math.PI / 2, 0, 0]} /> : null}
+      {dm ? <EMesh g={g.ground!} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 33, albedo: 1.5, lift: 0.55, edge: 0, atmos: 0.85, fill: 0.1 })} live={liveA} pos={[0, G - 0.02, -6]} rot={[-Math.PI / 2, 0, 0]} /> : null}
       {/* far: paper planes (atmospheric: low contrast, lifted toward paper) */}
       {(settled || f > 100 ? [0, 1, 2] : []).map((k) => {
         const t = planeT(k);
@@ -150,7 +150,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
         <EMesh g={g.parcelA} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 24, ...MAP(kraft(4)) })} live={liveA} />
       </group>
       {/* hero: posterised parcel tag on a string, swinging (no line screen) */}
-      <group position={[-0.6, 5.6 + (1 - tagIn) * 6, 1.5]} rotation={[0, 0.35 + swing * 0.6, swing]}>
+      <group position={[-0.6, (dm ? 3.4 : 5.6) + (1 - tagIn) * 6, 1.5]} rotation={[0, 0.35 + swing * 0.6, swing]}>
         <EMesh g={g.tag} m={{ palette: inks.hero, poster: true, albedoNoise: 0.2, key: [-0.4, 0.5, 0.8] }} live={{ pal: inks.hero, dim }} double scale={1.05} />
       </group>
     </>
