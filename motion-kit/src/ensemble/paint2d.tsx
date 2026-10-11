@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from "react";
-import { AbsoluteFill, continueRender, delayRender, useVideoConfig } from "remotion";
+import React, { useLayoutEffect, useMemo, useRef } from "react";
+import { AbsoluteFill, Img, continueRender, delayRender, useVideoConfig } from "remotion";
 import * as brush from "p5.brush/standalone";
 import { useLook } from "./look.ts";
 import { noise2 } from "./rng.ts";
@@ -28,9 +28,15 @@ export const Wash: React.FC<{ shapes: WashShape[]; seed?: number; style?: React.
   const look = useLook();
   const { width: W, height: H } = useVideoConfig();
   const ref = useRef<HTMLCanvasElement>(null);
+  const last = useRef("");
   useLayoutEffect(() => {
     const c = ref.current;
     if (!c) return;
+    // the painting is a pure function of (shapes, seed, size): when a frame asks for the same picture as the last
+    // frame this canvas painted (objects at rest, a frozen card), keep it instead of re-running the brush
+    const key = `${W}x${H}:${seed}:${look.ink}:` + shapes.map((s) => `${s.color}|${s.opacity}|${s.bleed}|${s.texture}|${s.pencil?.color}|${s.hatch?.gap}|${s.ring.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ")}`).join(";");
+    if (key === last.current) return;
+    last.current = key;
     const h = delayRender("wash");
     brush.load(c);
     if (!scaled) {
@@ -135,4 +141,60 @@ export const Field: React.FC<FieldProps> = ({ f, pitch, lambda, amp, speed = 3, 
       <canvas ref={ref} width={W} height={H} style={{ position: "absolute", inset: 0, width: W, height: H }} />
     </AbsoluteFill>
   );
+};
+
+// ---- sprites ---------------------------------------------------------------------------------------------------------
+type SpriteImg = { url: string; x: number; y: number; w: number; h: number };
+const sprites = new Map<string, SpriteImg>();
+
+/**
+ * Paints shapes once with p5.brush into a canvas cropped to their bounds (on white, for multiply) and caches the result
+ * by content. A sprite is a pure function of its shapes and seed, so every tab and every chunk paints the same pixels;
+ * an object that moves rigidly (a drop) reuses its sprite and is only translated.
+ */
+export const paintSprite = (shapes: WashShape[], seed: number): SpriteImg | null => {
+  if (!shapes.length) return null;
+  const key = `${seed}:` + shapes.map((s) => `${s.color}|${s.opacity}|${s.bleed}|${s.texture}|${s.ring.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ")}`).join(";");
+  const hit = sprites.get(key);
+  if (hit) return hit;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const s of shapes) for (const [px, py] of s.ring) {
+    x0 = Math.min(x0, px); y0 = Math.min(y0, py); x1 = Math.max(x1, px); y1 = Math.max(y1, py);
+  }
+  const m = 40; // room for bleed
+  x0 = Math.floor(x0 - m); y0 = Math.floor(y0 - m);
+  const w = Math.ceil(x1 + m - x0), h = Math.ceil(y1 + m - y0);
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  brush.load(c);
+  if (!scaled) {
+    brush.scaleBrushes(5);
+    scaled = true;
+  }
+  brush.clear("#ffffff");
+  brush.push();
+  brush.translate(-w / 2 - x0, -h / 2 - y0);
+  shapes.forEach((s, i) => {
+    brush.seed(seed * 1009 + i * 97);
+    brush.noiseSeed(seed * 31 + i * 7);
+    brush.noStroke();
+    brush.noHatch();
+    brush.fill(s.color, s.opacity ?? 140);
+    brush.fillTexture(s.texture ?? 0.55, 0.4);
+    brush.fillBleed(s.bleed ?? 0.06, "out");
+    brush.polygon(s.ring);
+  });
+  brush.pop();
+  brush.render();
+  const out = { url: c.toDataURL("image/png"), x: x0, y: y0, w, h };
+  sprites.set(key, out);
+  return out;
+};
+
+/** A cached watercolour sprite, multiplied onto what is under it, offset by (dx, dy). */
+export const Sprite: React.FC<{ shapes: WashShape[]; seed: number; dx?: number; dy?: number }> = ({ shapes, seed, dx = 0, dy = 0 }) => {
+  const sp = useMemo(() => paintSprite(shapes, seed), [shapes, seed]);
+  if (!sp) return null;
+  return <Img src={sp.url} style={{ position: "absolute", left: sp.x + dx, top: sp.y + dy, width: sp.w, height: sp.h, mixBlendMode: "multiply" }} />;
 };

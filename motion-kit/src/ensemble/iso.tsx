@@ -1,5 +1,5 @@
 import React from "react";
-import { Wash, type WashShape } from "./paint2d.tsx";
+import { Sprite } from "./paint2d.tsx";
 import { useVideoConfig } from "remotion";
 import { PenPaths, SketchPaths, Svg, type SketchShape, type Stroke } from "./layers.tsx";
 import { lighten, mix, useLook } from "./look.ts";
@@ -15,7 +15,16 @@ export type View = { ox: number; oy: number; k: number };
 export const iso = (x: number, y: number, z: number, v: View): Pt => [v.ox + (x - y) * C * v.k, v.oy + (x + y) * S * v.k - z * v.k];
 
 export type Face = { ring: Ring; tone: 0 | 1 | 2 }; // 0 lit top, 1 mid, 2 shade
-export type Solid = { faces: Face[]; edges: Pt[][]; shadow: Ring; hue: string; detail?: Stroke[] };
+export type Solid = {
+  faces: Face[];
+  edges: Pt[][];
+  shadow: Ring;
+  hue: string;
+  detail?: Stroke[];
+  decal?: boolean; // lies on another solid: no paper occluder under it
+  rest?: Solid; // the solid before moveSolid (its sprite is painted once, at rest)
+  dy?: number; // vertical offset from rest
+};
 
 export const box = (x: number, y: number, z: number, w: number, d: number, h: number, v: View, hue: string): Solid => {
   const P = (a: number, b: number, c: number) => iso(a, b, c, v);
@@ -90,11 +99,16 @@ export const sphere = (cx: number, cy: number, z: number, r: number, v: View, hu
 };
 
 /** Lift a solid by dy screen px and scale about its base (for drops and pops). */
-export const moveSolid = (s: Solid, dy: number, scale = 1, about?: Pt): Solid => {
+export const moveSolid = (s: Solid, dyIn: number, scaleIn = 1, about?: Pt): Solid => {
+  // settle the spring tail to exactly zero so a resting object paints the same picture every frame (cache hit)
+  const dy = Math.abs(dyIn) > 0.5 ? dyIn : 0;
+  const scale = Math.abs(scaleIn - 1) > 0.002 ? scaleIn : 1;
   const a = about ?? s.shadow[0] ?? s.faces[0].ring[0];
   const m = (p: Pt): Pt => [a[0] + (p[0] - a[0]) * scale, a[1] + (p[1] - a[1]) * scale + dy];
   return {
     ...s,
+    rest: scale === 1 ? (s.rest ?? s) : undefined,
+    dy: (s.dy ?? 0) + dy,
     faces: s.faces.map((f) => ({ ...f, ring: f.ring.map(m) })),
     edges: s.edges.map((e) => e.map(m)),
     detail: s.detail?.map((d) => ({ ...d, pts: d.pts.map(m) })),
@@ -119,16 +133,26 @@ export const Solids: React.FC<{ solids: Solid[]; f: number; seed?: number; ink?:
   const look = useLook();
   const { width: W, height: H } = useVideoConfig();
   const sil = solids.map(silhouette);
-  const wash: WashShape[] = [];
-  for (const s of solids) if (s.shadow.length > 2) wash.push({ ring: s.shadow, color: shadowInk, opacity: 70, bleed: 0.12, texture: 0.4 });
-  solids.forEach((s, i) => {
-    const t = tones(s.hue);
-    for (const r of sil[i]) wash.push({ ring: r, color: look.paper, opacity: 255, bleed: 0, texture: 0 });
-    for (const fc of s.faces) wash.push({ ring: fc.ring, color: t[fc.tone], opacity: washOpacity, bleed: 0.02, texture: 0.5 });
-  });
+  // each object is a cached watercolour sprite painted once at rest and translated while it falls; an opaque paper
+  // silhouette under it hides whatever is behind (the sprite itself is multiplied, like ink on paper)
   return (
     <>
-      <Wash shapes={wash} seed={seed} />
+      {solids.map((s, i) => (s.shadow.length > 2 ? <Sprite key={`sh${i}`} shapes={[{ ring: (s.rest ?? s).shadow, color: shadowInk, opacity: 70, bleed: 0.12, texture: 0.4 }]} seed={seed + i * 13} /> : null))}
+      {solids.map((s, i) => {
+        const r = s.rest ?? s;
+        const t = tones(s.hue);
+        const dy = s.rest ? (s.dy ?? 0) : 0;
+        return (
+          <React.Fragment key={i}>
+            {s.decal ? null : (
+              <Svg>
+                <path d={mpD(union(...sil[i]))} fill={look.paper} />
+              </Svg>
+            )}
+            <Sprite shapes={r.faces.map((fc) => ({ ring: fc.ring, color: t[fc.tone], opacity: washOpacity, bleed: 0.02, texture: 0.5 }))} seed={seed + i * 7} dy={dy} />
+          </React.Fragment>
+        );
+      })}
       <Svg>
         <defs>
           {solids.map((_, i) => {

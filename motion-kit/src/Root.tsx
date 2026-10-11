@@ -31,6 +31,7 @@ import { I_FRAMES, IStars } from "./custom/cred/ten/IStars.tsx";
 import { H_FRAMES, HBoard } from "./custom/cred/ten/HBoard.tsx";
 import { J_FRAMES, JFee } from "./custom/cred/ten/JFee.tsx";
 import { BRUSH_TEST_FRAMES, BrushTest } from "./custom/lab/BrushTest.tsx";
+import { SpriteTest } from "./custom/lab/SpriteTest.tsx";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -86,6 +87,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="TenI" component={IStars} durationInFrames={I_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="TenH" component={HBoard} durationInFrames={H_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="TenJ" component={JFee} durationInFrames={J_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="LabSprite" component={SpriteTest} durationInFrames={1} fps={24} width={1920} height={1080} />
       <Composition id="LabBrush" component={BrushTest} durationInFrames={BRUSH_TEST_FRAMES} fps={24} width={1920} height={1080} />
     </Folder>
     <Folder name="Examples">

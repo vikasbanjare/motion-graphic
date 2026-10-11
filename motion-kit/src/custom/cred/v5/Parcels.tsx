@@ -22,7 +22,7 @@ const LOGO = staticFile("custom/cred-v2/cred-logo.png");
 
 
 /** A flat strip lying on box faces (tape, ribbon): no volume, no shadow, just painted faces. */
-const decal = (faces: { ring: Pt[]; tone: 0 | 1 | 2 }[], hue: string): Solid => ({ hue, faces, edges: faces.map((f) => [...f.ring, f.ring[0]]), shadow: [] });
+const decal = (faces: { ring: Pt[]; tone: 0 | 1 | 2 }[], hue: string): Solid => ({ hue, faces, edges: faces.map((f) => [...f.ring, f.ring[0]]), shadow: [], decal: true });
 
 const world = (v: View): { s: Solid; at: number }[] => {
   const P = (x: number, y: number, z: number) => iso(x, y, z, v);
