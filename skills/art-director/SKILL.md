@@ -150,3 +150,20 @@ Apply these on top of section 2. The older methods stay as the reference frame; 
     ink visible (C, G). For a plain readable print use `MeshBasicMaterial` with the face texture (F intro).
   - **Audio clicks:** single-sample grains in `paper_flick` tripped `film_qa`'s click detector; grains are now Hann
     windows (`cred_sfx.py`). New recipes: `door_knock`, `door_swing`, `printer_ticks`, `flap_clatter`.
+
+## 6. Brief for set 2 (logged 2026-10-11; append-only)
+
+User's ask, after set 1 (A–J) is delivered: ten more films that follow the CRED Money reference "10 on 10" in colour, design,
+flow and art direction, each with a **completely different storyboard**. Working definition, so "like" and "different"
+do not fight:
+
+- **Copy the grammar, never the shots:** one metaphor-world per film; engraved paper duotones (one ink per world) with
+  the reference's palette family; the loupe/lens as the camera's instrument; one long camera move per beat; cuts only
+  on the 125 BPM grid and few of them; foil rationed to the hero; a world that turns out to be printed on the object;
+  the real card as the payoff. Score every film with `docs/research/cred-money/scorecard/score.py` against
+  `ref_scorecard.json` and treat it as the gate.
+- **Different storyboards:** no subject, transition chain or composition reused from set 1 or from the reference.
+  Run the full section-2 method again (30+ ideas, kill list, 16/21 gate) with set 1's verdicts as new "liked/disliked"
+  entries in the idea log before writing anything.
+- **Sequence:** set 1 delivered → the user names the two or three closest → set 2 is written against those and the
+  scorecard, one film at a time, stills gate before every render.
