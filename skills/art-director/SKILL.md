@@ -219,3 +219,10 @@ do not fight:
   uploaded) and `d8j0ntlcm91z4.cloudfront.net` (results cannot be downloaded into the sandbox); the user must allow
   both hosts in the environment's network settings before plates can be used in a film. Results are visible to the
   user in the Higgsfield gallery widget. Z Image rate-limits parallel requests: submit one at a time.
+- 2026-10-11, the user's 1080p copy of the reference, opening measured frame by frame (24 fps): lines 2-3 px in the
+  field, pen strokes ~8 px in the early stages; field pitch 25.5 px (2.36 % H), lambda ~105 px, amp ~6 px; scale-step
+  cuts at ~f13 (1 stroke, y 0.5 H, drawn from the left edge at ~47 px/frame), ~f24 (a bundle of 3-4 strokes ~30 px
+  apart with one long sweep of ~460 px wavelength, ragged lengths), ~f48 (8-9 strokes, ends creeping ~9 px/frame),
+  ~f75 (the full 43-row field, ragged right edge at ~0.65 W, the sheet trucking left ~6 px/frame), wash ~f96. Our beat
+  table keeps the same shape 20 % faster (22 / 40 / 58 / 72). Lesson: measure strokes as bundles and sweeps, not as
+  evenly spaced rows; the first guess (rows 125 px apart with small ripples) looked nothing like it.
