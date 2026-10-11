@@ -43,6 +43,7 @@ uniform float uWobble, uWobbleScale, uWidthJitter, uDetail, uAA;
 uniform vec3 uStops[4]; uniform vec4 uStopPos; uniform int uStopCount;
 uniform float uGrain, uMottle, uMottleScale, uSeed;
 uniform float uEdge, uSpace, uRefDepth, uPoster, uFoil, uFoilPhase, uAtmos, uDim, uOpacity, uLift;
+uniform float uHatch, uHatchT, uStipple, uFollow; // engraving detail: cross-hatch in the shadows, stipple in the lights, form-following lines
 uniform vec3 uAtmosColor;
 
 float hash(vec2 i, float s){ return fract(sin(i.x*12.9898 + i.y*78.233 + s*37.719) * 43758.5453); }
@@ -98,7 +99,18 @@ void main(){
     if (uDetail > 0.0) t = clamp(t + uDetail * fbm(q / (P * 1.5), 2, uSeed + 18.0), 0.0, 1.0);
     float sc = uWobbleScale * P;
     float wob = uWobble * fbm(q / sc, 2, uSeed);
-    float u = dot(q, vec2(-sin(uAngle), cos(uAngle))) / P + wob;
+    // form-following: the lines turn to run around the form (perpendicular to the screen-space normal), as an
+    // engraver's burin follows a volume; measured from the object's origin so the phase stays coherent per object
+    float ang = uAngle;
+    if (uFollow > 0.0) {
+      vec2 o2 = (vOrigin.xy * 0.5 + 0.5) * uResolution;
+      if (uSpace < 0.5) q = frag - o2;
+      vec2 ld = vec2(-N.y, N.x);
+      float wgt = uFollow * smoothstep(0.08, 0.6, length(ld));
+      vec2 d = normalize(mix(vec2(cos(ang), sin(ang)), normalize(ld + 1e-5) * sign(dot(normalize(ld + 1e-5), vec2(cos(ang), sin(ang))) + 1e-3), wgt));
+      ang = atan(d.y, d.x);
+    }
+    float u = dot(q, vec2(-sin(ang), cos(ang))) / P + wob;
     float fw = fwidth(u);
     float dist = 1.0 - abs(fract(u) - 0.5) * 2.0;
     float w = max(fw * 2.0 * uAA, 1e-4) * 0.5;
@@ -106,6 +118,27 @@ void main(){
     float c = clamp(uDmax * pow(clamp((uTHi - t) / uTHi, 0.0, 1.0), uCovGamma) * (1.0 + jit), 0.0, 1.0);
     float m = 1.0 - smoothstep(c - w, c + w, dist);
     v = (1.0 - uFill * (1.0 - t)) * (1.0 - m);
+    if (uHatch > 0.0) {
+      // second family across the first, only where the tone is dark (cross-hatched shadows)
+      float a2 = ang + 1.2;
+      float u2 = dot(q, vec2(-sin(a2), cos(a2))) / (P * 1.15) + wob * 0.7;
+      float dist2 = 1.0 - abs(fract(u2) - 0.5) * 2.0;
+      float c2 = clamp(uDmax * pow(clamp((uHatchT - t) / uHatchT, 0.0, 1.0), 1.2), 0.0, 1.0);
+      float m2 = 1.0 - smoothstep(c2 - w, c2 + w, dist2);
+      v *= 1.0 - uHatch * m2;
+    }
+    if (uStipple > 0.0) {
+      // stipple in the lights: dots on a jittered grid whose size follows the tone (banknote stipple)
+      float cs = P * 0.85;
+      vec2 cell = floor(q / cs);
+      vec2 jitv = vec2(hash(cell, uSeed + 5.0), hash(cell, uSeed + 6.0)) - 0.5;
+      vec2 cc = (cell + 0.5 + jitv * 0.6) * cs;
+      float dd = length(q - cc) / cs;
+      float lightT = smoothstep(0.42, 0.62, t) * (1.0 - smoothstep(0.9, 0.99, t));
+      float rad = (1.0 - t) * 0.55 * uStipple * lightT;
+      float dot = 1.0 - smoothstep(rad - 0.08, rad + 0.08, dd);
+      v *= 1.0 - 0.85 * dot;
+    }
   }
   v = mix(v, 1.0, uAtmos * 0.55);
   vec3 col = gradientMap(clamp(v, 0.0, 1.0));
@@ -153,6 +186,10 @@ export type EOpts = {
   seed?: number;
   opacity?: number;
   res?: [number, number];
+  hatch?: number; // cross-hatch amount in the shadows (0..1)
+  hatchT?: number; // tone below which the second family appears
+  stipple?: number; // stipple amount in the lights (0..1)
+  follow?: number; // how far the lines turn to follow the form (0..1)
 };
 
 export const hexToVec3 = (hex: string) => {
@@ -218,6 +255,10 @@ export const engrave = (o: EOpts) => {
       uAtmos: { value: o.atmos ?? 0 },
       uAtmosColor: { value: hexToVec3(o.atmosColor ?? o.palette[o.palette.length - 1][0]) },
       uLift: { value: o.lift ?? 0 },
+      uHatch: { value: o.hatch ?? 0 },
+      uHatchT: { value: o.hatchT ?? 0.42 },
+      uStipple: { value: o.stipple ?? 0 },
+      uFollow: { value: o.follow ?? 0 },
       uDim: { value: 0 },
       uOpacity: { value: o.opacity ?? 1 },
       ...stopsU(o.palette),
