@@ -167,3 +167,8 @@ do not fight:
   entries in the idea log before writing anything.
 - **Sequence:** set 1 delivered → the user names the two or three closest → set 2 is written against those and the
   scorecard, one film at a time, stills gate before every render.
+- 2026-10-11, later: **R3F does not re-apply a `quaternion`/`position` prop whose object reference is unchanged.** A
+  memoised `THREE.Quaternion` mutated in place looks right in a still (first mount) and freezes in a chunked render
+  (the hinge keeps its value from the chunk's first frame; C's tag never flattened, E's doors would have stayed shut).
+  Build a fresh object every render, or pass plain arrays. Stills cannot catch this; only a motion render can, so the
+  jerk scan on the finished video is the gate that found it.
