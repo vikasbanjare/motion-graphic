@@ -132,7 +132,8 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       <group position={[0, 4, 0]} scale={2}>
         <group rotation={[0, 0, THREE.MathUtils.degToRad(23.4) * tilt]}>
           <group rotation={[0, -1.6 + spin, 0]}>
-            <EMesh g={g.sphere} m={mk({ map: g.albedo, mapAmt: 0.85, albedoNoise: 0.1, angleDeg: 45, seed: 5, foil: 0.35, spec: 0.25 })} live={{ ...gl, foilPhase: spin * 0.6 + tilt * 0.4 }} />
+            {/* the globe keeps its map readable: the relief map carries the detail, so the detailed cross-hatch stays light */}
+            <EMesh g={g.sphere} m={mk({ map: g.albedo, mapAmt: dm ? 0.7 : 0.85, albedoNoise: 0.1, angleDeg: 45, seed: 5, foil: 0.35, spec: 0.25, ...(dm ? { hatch: 0.25, hatchT: 0.3, stipple: 0.3, follow: 0.35 } : {}) })} live={{ ...gl, foilPhase: spin * 0.6 + tilt * 0.4 }} />
             <EMesh g={g.routes} m={mk({ albedo: 0.35, edge: 0, seed: 6 })} live={gl} />
           </group>
         </group>

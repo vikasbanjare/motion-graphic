@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { Cam, World } from "./three.tsx";
+import { Cam, Detail, World } from "./three.tsx";
 import { cardBody, roundRect } from "./models.ts";
 import { Paper, Sheen } from "./fx.tsx";
 import { C, SERIF, T, easeIn, expoOut, lerp, ramp } from "./look.ts";
@@ -16,7 +16,7 @@ import { C, SERIF, T, easeIn, expoOut, lerp, ramp } from "./look.ts";
 
 const BAND = ["#f1caca", "#fbd8b9", "#fcd8a3", "#fadba3", "#ebdbaf", "#c7e5d2", "#a3c8e4", "#8daad3", "#89a0c8", "#889bbc"];
 
-const faceTexture = (back = false) => {
+const faceTexture = (back = false, detailed = false) => {
   const W = 2048, H = 1292;
   const c = document.createElement("canvas");
   c.width = W;
@@ -28,6 +28,18 @@ const faceTexture = (back = false) => {
   g.addColorStop(1, "#60606a");
   x.fillStyle = g;
   x.fillRect(0, 0, W, H);
+  if (detailed) {
+    // brushed-graphite grain: thousands of faint horizontal hair strokes
+    x.strokeStyle = "rgba(255,255,255,0.045)";
+    x.lineWidth = 1;
+    for (let i = 0; i < 2600; i++) {
+      const y = (i * 7919) % H, x0 = (i * 104729) % W, len = 60 + ((i * 31) % 260);
+      x.beginPath();
+      x.moveTo(x0, y + 0.5);
+      x.lineTo(x0 + len, y + 0.5);
+      x.stroke();
+    }
+  }
   // guilloche rings from the top-right (the film's opening family)
   x.strokeStyle = "rgba(225,225,238,0.34)";
   x.lineWidth = 2;
@@ -41,6 +53,63 @@ const faceTexture = (back = false) => {
       else x.moveTo(px, py);
     }
     x.stroke();
+    if (detailed) {
+      // interleaved hair line (second modulation count), as in the film's opening field
+      x.lineWidth = 0.8;
+      x.strokeStyle = "rgba(225,225,238,0.22)";
+      x.beginPath();
+      for (let k = 0; k <= 300; k++) {
+        const a = Math.PI * 0.45 + (k / 300) * Math.PI * 0.65;
+        const r = 513 + i * 26 + 11 * Math.sin(47 * a + i * 0.3);
+        const px = W * 1.05 + r * Math.cos(a), py = -H * 0.25 + r * Math.sin(a);
+        if (k) x.lineTo(px, py);
+        else x.moveTo(px, py);
+      }
+      x.stroke();
+      x.lineWidth = 2;
+      x.strokeStyle = "rgba(225,225,238,0.34)";
+    }
+  }
+  if (detailed) {
+    // security margin: fine cross-mesh frame, double rule, and a micro-text row along the lower edge
+    const m = 46;
+    x.save();
+    x.beginPath();
+    x.rect(0, 0, W, H);
+    x.roundRect(m, m, W - 2 * m, H - 2 * m, 40);
+    x.clip("evenodd");
+    x.strokeStyle = "rgba(225,225,238,0.3)";
+    x.lineWidth = 1;
+    for (let d = -H; d < W + H; d += 9) {
+      x.beginPath();
+      x.moveTo(d, 0);
+      x.lineTo(d + H, H);
+      x.stroke();
+      x.beginPath();
+      x.moveTo(d + H, 0);
+      x.lineTo(d, H);
+      x.stroke();
+    }
+    x.restore();
+    x.strokeStyle = "rgba(225,225,238,0.55)";
+    x.lineWidth = 2.5;
+    x.beginPath();
+    x.roundRect(m, m, W - 2 * m, H - 2 * m, 40);
+    x.stroke();
+    x.lineWidth = 1;
+    x.beginPath();
+    x.roundRect(m + 10, m + 10, W - 2 * m - 20, H - 2 * m - 20, 34);
+    x.stroke();
+    x.save();
+    x.font = "500 13px Lexend";
+    x.fillStyle = "rgba(225,225,238,0.42)";
+    const micro = "5% REWARDS ON ONLINE SHOPPING  ·  ";
+    let mx = m + 60;
+    while (mx < W - m - 60) {
+      x.fillText(micro, mx, H - m - 22);
+      mx += x.measureText(micro).width;
+    }
+    x.restore();
   }
   if (!back) {
     // rosette
@@ -139,6 +208,7 @@ const Env: React.FC = () => {
 const Card: React.FC<{ f: number }> = ({ f }) => {
   const { fps } = useVideoConfig();
   const lf = f - T.studio;
+  const detailed = useContext(Detail).maps === true;
   const geo = useMemo(() => {
     const body = cardBody();
     const face = new THREE.ShapeGeometry(roundRect(8.56, 5.398, 0.32), 12);
@@ -148,11 +218,11 @@ const Card: React.FC<{ f: number }> = ({ f }) => {
     return { body, face };
   }, []);
   const mats = useMemo(() => {
-    const front = new THREE.MeshPhysicalMaterial({ map: faceTexture(false), roughness: 0.32, metalness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.15 });
-    const back = new THREE.MeshPhysicalMaterial({ map: faceTexture(true), roughness: 0.4, metalness: 0.3, clearcoat: 0.6 });
+    const front = new THREE.MeshPhysicalMaterial({ map: faceTexture(false, detailed), roughness: 0.32, metalness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.15 });
+    const back = new THREE.MeshPhysicalMaterial({ map: faceTexture(true, detailed), roughness: 0.4, metalness: 0.3, clearcoat: 0.6 });
     const body = new THREE.MeshPhysicalMaterial({ color: "#1a1a1e", roughness: 0.3, metalness: 0.6 });
     return { front, back, body };
-  }, []);
+  }, [detailed]);
   // entrance carrying the whip energy (down-left), roll 12 -> 0 on a spring
   const e = interpolate(lf, [0, 31], [0, 1], { ...C, easing: expoOut });
   const sp = spring({ frame: lf, fps, config: { stiffness: 158, damping: 25 } });

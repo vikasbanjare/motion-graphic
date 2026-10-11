@@ -1,6 +1,7 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useContext, useLayoutEffect, useRef } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Paper, Vignette } from "./fx.tsx";
+import { Detail } from "./three.tsx";
 import { C, INK, T, expoOut, lerp, ramp, rnd } from "./look.ts";
 
 /**
@@ -96,6 +97,9 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
   const zoom = 1 - Math.min(local, 120) * 0.0006;
   const ink = inkOverride ?? (wash > 0.5 ? "#6d7f78" : "#646464");
   const pitch = 0.022 * height;
+  // detailed: a second, hair-line family interleaved at half pitch with its own modulation (an engraver's fine work
+  // between the heavy rules), and the heavy rules swell and thin along their length
+  const fine = useContext(Detail).maps === true;
   const ref = useRef<HTMLCanvasElement>(null);
   // drawn into a 2D canvas: ~4x cheaper than 76 long SVG paths per frame in headless Chrome
   useLayoutEffect(() => {
@@ -115,6 +119,35 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
       const r = 820 + i * pitch;
       const a0 = A0 - 0.05 + rnd(i, 2) * 0.08;
       const a1 = A1 + 0.12 - rnd(i, 7) * 0.16 - Math.max(0, i - 50) * 0.004;
+      if (fine) {
+        // heavy rule drawn in 13 segments so its weight can swell (0.75..1.25 of nominal) along the arc
+        for (let s = 0; s < 13; s++) {
+          x.lineWidth = 5.6 * (1 + 0.25 * Math.sin(s * 0.9 + i * 0.5 + ph * 0.3));
+          x.beginPath();
+          for (let k = s * 20; k <= s * 20 + 20; k++) {
+            const a = a0 + ((a1 - a0) * k) / 260;
+            const rr = r + pitch * 0.5 * Math.sin(31 * a + ph + i * 0.08);
+            const px = CX + rr * Math.cos(a), py = CY + rr * Math.sin(a);
+            if (k > s * 20) x.lineTo(px, py);
+            else x.moveTo(px, py);
+          }
+          x.stroke();
+        }
+        // hair line between this rule and the next, a different modulation count so the two families beat
+        x.lineWidth = 1.5;
+        x.globalAlpha = 0.6;
+        x.beginPath();
+        for (let k = 0; k <= 260; k++) {
+          const a = a0 + ((a1 - a0) * k) / 260;
+          const rr = r + pitch * 0.5 + pitch * 0.42 * Math.sin(47 * a - ph * 0.8 + i * 0.3);
+          const px = CX + rr * Math.cos(a), py = CY + rr * Math.sin(a);
+          if (k) x.lineTo(px, py);
+          else x.moveTo(px, py);
+        }
+        x.stroke();
+        x.globalAlpha = 1;
+        continue;
+      }
       x.beginPath();
       for (let k = 0; k <= 260; k++) {
         const a = a0 + ((a1 - a0) * k) / 260;
@@ -126,7 +159,7 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
       x.stroke();
     }
     x.restore();
-  }, [width, height, zoom, drift, ink, ph, pitch]);
+  }, [width, height, zoom, drift, ink, ph, pitch, fine]);
   // curved wash front, top to bottom in 6 frames
   const frontY = lerp(-200, height + 260, wash);
   const washClip = `path('M 0 0 L ${width} 0 L ${width} ${frontY - 120} Q ${width / 2} ${frontY + 140} 0 ${frontY - 120} Z')`;
