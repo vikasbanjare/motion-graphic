@@ -47,7 +47,7 @@ export const StepA: React.FC = () => {
   const p = interpolate(f, [4, 22], [0, 0.62], { ...C, easing: (t) => t * (2 - t) });
   const r = 1750;
   return (
-    <AbsoluteFill style={{ background: INK.paperGrey }}>
+    <AbsoluteFill style={{ background: flat ? "#e3e3e0" : INK.paperGrey }}>
       <svg width={1920} height={1080} style={{ position: "absolute", transform: flat ? undefined : `translateX(${-x * 0.35}px)` }}>
         <filter id="bleedA">
           <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves={2} seed={3} />
@@ -55,7 +55,7 @@ export const StepA: React.FC = () => {
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
         {flat ? (
-          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke={INK.pen} strokeWidth={4.5} strokeLinecap="round" filter="url(#bleedA)" />
+          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke={INK.pen} strokeWidth={8} strokeLinecap="round" filter="url(#bleedA)" />
         ) : (
           <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round" strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
         )}
@@ -71,7 +71,7 @@ export const StepB: React.FC = () => {
   const f = useCurrentFrame(); // local, 0..18
   const flat = useContext(Detail).maps === true;
   return (
-    <AbsoluteFill style={{ background: "#d9d9d6" }}>
+    <AbsoluteFill style={{ background: flat ? "#e3e3e0" : "#d9d9d6" }}>
       <svg width={1920} height={1080} style={{ position: "absolute" }}>
         <filter id="bleedB">
           <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves={2} seed={5} />
@@ -83,7 +83,7 @@ export const StepB: React.FC = () => {
               const centre = Math.min(1100, 780 + f * 18);
               const frac = [0.42, 0.55, 1.0, 0.7][i];
               const end = Math.min(centre * frac, f * [110, 130, 400, 150][i] + 40);
-              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#2b2b2b" strokeWidth={i === 2 ? 4.5 : 3.8} strokeLinecap="round" filter="url(#bleedB)" />;
+              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#2b2b2b" strokeWidth={i === 2 ? 8 : 6.5} strokeLinecap="round" filter="url(#bleedB)" />;
             })
           : Array.from({ length: 5 }, (_, i) => {
               const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
@@ -149,7 +149,7 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
       const grow = ramp(f, T.wash, T.wash + 16, (t) => t);
       const rows = stage3 ? 9 : Math.ceil((height + 900) / pitch);
       for (let i = 0; i < rows; i++) {
-        if (stage3) x.lineWidth = 3.6;
+        if (stage3) x.lineWidth = 6;
         const y0 = stage3 ? 520 + (i - 4) * 32 : -450 + i * pitch;
         // stage 3: a bundle of nine sweeps, lengths ragged between 0.45 and 1.0 of the leading stroke
         const end0 = stage3 ? (1100 + (f - 40) * 9) * [0.55, 0.45, 0.8, 0.62, 1.0, 0.7, 0.9, 0.5, 0.66][i] : 1250;
