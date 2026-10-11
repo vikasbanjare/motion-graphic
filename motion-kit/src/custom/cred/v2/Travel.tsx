@@ -183,7 +183,7 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       })}
       {g.glass ? (
         // v2D: a large airliner crosses the map table under the top-down lens, then flies out as the world tilts up
-        <group position={[lerp(1.0, 22, ramp(f, 286, 346, (t) => t)), 2.3 + 1.5 * tiltH, 2.4]} rotation={[0.06, -0.3, -0.1]} scale={0.36}>
+        <group position={[lerp(-1.5, 22, ramp(f, 286, 346, (t) => t)), 2.3 + 1.5 * tiltH, 2.4]} rotation={[0.06, -0.3, -0.1]} scale={0.36}>
           <EMesh g={g.plane} m={mk({ spec: 0.35, seed: 20, angleDeg: 45, hatch: 0.6 })} live={gl} />
           <EMesh g={g.glass} m={mk({ albedo: 0.3, edge: 0, seed: 21 })} live={gl} />
         </group>
