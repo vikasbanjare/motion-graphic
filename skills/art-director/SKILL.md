@@ -239,3 +239,9 @@ do not fight:
   pre-rolls from above over the lead frames; the ring dissolves; a two-frame wipe lead-in; one pen ink graded into the
   wash. After: max per-frame change 0.13 (was 0.8), no colour jump above 0.2 outside the fade to black. Lesson: the
   reference's hard cuts are not what this user hears as "smooth"; measure acceleration, not only snaps.
+- 2026-10-11, tools added at the user's request: `p5.brush` (standalone WebGL2 build) and `@lucasmarkes/hairline`.
+  p5.brush is the first painted-surface tool in code: watercolour fills with bleed and texture, pencil strokes with
+  pressure, hatching inside shapes; proven deterministic per frame under the headless renderer by re-seeding every
+  frame (`LabBrush` composition, docs in `motion-kit/docs/brush-and-hairline.md`). This is the route to the user's
+  painted reference sheet without AI plates: masks from the 3D world, filled and hatched by p5.brush. hairline is
+  pointer-driven isometric line figures for the studio and web; not frame-deterministic in renders unless driven.
