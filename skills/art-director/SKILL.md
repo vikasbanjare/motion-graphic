@@ -172,3 +172,8 @@ do not fight:
   (the hinge keeps its value from the chunk's first frame; C's tag never flattened, E's doors would have stayed shut).
   Build a fresh object every render, or pass plain arrays. Stills cannot catch this; only a motion render can, so the
   jerk scan on the finished video is the gate that found it.
+- 2026-10-11, set 1 delivered (A–J, ten films, all through the gate: film_qa pass, snap scan clean except designed
+  cuts, frame grid reviewed). Render budget: ~35 min per 30 s film at 1080p in four chunks; most films needed two or
+  three passes, nearly always for continuity (a hard switch at a beat), never for the idea. Next time: write every beat
+  switch as a crossfade or a shared keyframe track from the start, and run the jerk scan on a quarter-resolution test
+  render before the full one.
