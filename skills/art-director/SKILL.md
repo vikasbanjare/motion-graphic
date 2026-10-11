@@ -177,3 +177,10 @@ do not fight:
   three passes, nearly always for continuity (a hard switch at a beat), never for the idea. Next time: write every beat
   switch as a crossfade or a shared keyframe track from the start, and run the jerk scan on a quarter-resolution test
   render before the full one.
+- 2026-10-11, user verdict on set 1 (A–J): **all of them, "keep getting worse and worse."** Second time this verdict
+  lands (night films, then this set). Diagnosis to carry forward: the gates (film_qa, snap scan, scorecard) measure
+  continuity and loudness, not quality; every film since v2 is primitive geometry (boxes, cylinders, torus) in the
+  engraving shader, six beats in 30 s, a headline per beat. The reference is dense illustration with one slow move per
+  world. v2's liked chain (loupe → route map tilting up into the globe) was the one rich asset used in one long move.
+  Rule: **no new film until the hero asset would pass as an illustration in a still, judged against a reference frame
+  side by side.** Quantity of films is never the answer to "worse".
