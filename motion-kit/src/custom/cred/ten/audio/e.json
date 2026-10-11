@@ -1,0 +1,368 @@
+{
+ "seconds": 30.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "N01",
+   "sfx": "air_bed",
+   "params": {
+    "dur": 3.0
+   },
+   "anchor": "air_bed",
+   "anchor_t": 0.0,
+   "align": "start",
+   "over_bed_lu": -14.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N02",
+   "sfx": "card_clink",
+   "params": {
+    "dur": 0.4
+   },
+   "anchor": "card_clink",
+   "anchor_t": 1.6,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N03",
+   "sfx": "door_knock",
+   "params": {},
+   "anchor": "door_knock",
+   "anchor_t": 2.0,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N04",
+   "sfx": "door_swing",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "door_swing",
+   "anchor_t": 2.4,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N05",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 1.4
+   },
+   "anchor": "glass_shimmer",
+   "anchor_t": 4.0,
+   "align": "start",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N06",
+   "sfx": "door_knock",
+   "params": {},
+   "anchor": "door_knock",
+   "anchor_t": 7.6,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N07",
+   "sfx": "door_swing",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "door_swing",
+   "anchor_t": 8.0,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N08",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 2.2
+   },
+   "anchor": "jet_pass",
+   "anchor_t": 9.5,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N09",
+   "sfx": "door_knock",
+   "params": {},
+   "anchor": "door_knock",
+   "anchor_t": 12.0,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N10",
+   "sfx": "door_swing",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "door_swing",
+   "anchor_t": 12.4,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N11",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 13.0,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N12",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 13.5,
+   "align": "peak",
+   "over_bed_lu": -10.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N13",
+   "sfx": "desk_bell",
+   "params": {
+    "root_hz": 1244.5,
+    "dur": 1.2
+   },
+   "anchor": "desk_bell",
+   "anchor_t": 13.9,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N14",
+   "sfx": "door_knock",
+   "params": {},
+   "anchor": "door_knock",
+   "anchor_t": 16.0,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N15",
+   "sfx": "door_swing",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "door_swing",
+   "anchor_t": 16.4,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N16",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 17.3,
+   "align": "peak",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N17",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 17.7,
+   "align": "peak",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N18",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 18.1,
+   "align": "peak",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N19",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 18.5,
+   "align": "peak",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N20",
+   "sfx": "paper_flick",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "paper_flick",
+   "anchor_t": 18.9,
+   "align": "peak",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N21",
+   "sfx": "sparkle",
+   "params": {
+    "bursts": 3
+   },
+   "anchor": "sparkle",
+   "anchor_t": 18.2,
+   "align": "start",
+   "over_bed_lu": -11.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N22",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 1.0
+   },
+   "anchor": "reverse_swell",
+   "anchor_t": 20.9,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N23",
+   "sfx": "chord_bloom",
+   "params": {
+    "root_hz": 165.0,
+    "dur": 1.0
+   },
+   "anchor": "chord_bloom",
+   "anchor_t": 21.7,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N24",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "whip",
+   "anchor_t": 24.0,
+   "align": "peak",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N25",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 1.4
+   },
+   "anchor": "air_riser",
+   "anchor_t": 24.2,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N26",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.6
+   },
+   "anchor": "lens_swell",
+   "anchor_t": 25.8,
+   "align": "start",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N27",
+   "sfx": "card_clink",
+   "params": {
+    "dur": 0.4
+   },
+   "anchor": "card_clink",
+   "anchor_t": 26.4,
+   "align": "peak",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N28",
+   "sfx": "end_bell",
+   "params": {
+    "dur": 1.5
+   },
+   "anchor": "end_bell",
+   "anchor_t": 28.0,
+   "align": "peak",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  }
+ ]
+}

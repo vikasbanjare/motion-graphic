@@ -165,7 +165,7 @@ const Maze: React.FC<{ f: number }> = ({ f }) => {
     <>
       <CamN pos={[pos.x, pos.y, pos.z]} target={[target.x, target.y, target.z]} fov={lerp(30, 46, high) * (1 - 0.25 * home)} near={0.02} />
       {/* the printed card, lying at the origin */}
-      <EMesh g={geo.body} m={m(P.green, 1, { albedoNoise: 0.05 })} pos={[0, 0, -0.04]} live={{ ambient: 0.1, lift: 0.08 }} />
+      <EMesh g={geo.body} m={m(P.green, 1, { albedoNoise: 0.05 })} pos={[0, 0, -0.045]} live={{ ambient: 0.1, lift: 0.08 }} />
       <mesh geometry={geo.faceG} material={faceMat} position={[0, 0, 0.0]} />
       {/* the line */}
       <EMesh g={geo.tube} m={m(P.brass, 2, { foil: 0.35, spec: 0.7, shininess: 60 })} live={lineLive} />
@@ -282,10 +282,10 @@ export const FMaze: React.FC = () => {
         </AbsoluteFill>
       )}
       <Paper opacity={0.6} />
-      <Head f={f} from={10} to={T.arcade - 4} big={["the CRED IndusInd Bank", "RuPay credit card"]} x={110} y={110} ink="#1c3d2a" sheen="#7aa483" size={72} />
-      <Head f={f} from={T.arcade + 12} to={T.sky - 8} big={["5% rewards"]} small="on online shopping" x={110} y={110} ink="#1f5a5e" sheen="#64aaa3" size={112} />
+      <Head f={f} from={34} to={T.arcade - 4} big={["the CRED IndusInd Bank", "RuPay credit card"]} x={110} y={110} ink="#eef3e6" sheen="#ffffff" size={72} />
+      <Head f={f} from={T.arcade + 12} to={T.sky - 8} big={["5% rewards"]} small="on online shopping" x={110} y={110} ink="#e6f4ee" sheen="#ffffff" size={112} />
       <Head f={f} from={T.sky + 14} to={T.corridor - 8} big={["redeem on flights"]} x={110} y={110} ink="#262c66" sheen="#8a93d6" size={96} />
-      <Head f={f} from={T.corridor + 14} to={T.store - 8} big={["and hotels"]} x={110} y={110} ink="#6e2a22" sheen="#e8957a" size={96} />
+      <Head f={f} from={T.corridor + 14} to={T.store - 8} big={["and hotels"]} x={110} y={110} ink="#fbe6da" sheen="#ffffff" size={96} />
       <Head f={f} from={T.store + 14} to={T.gate - 8} big={["and 2,000+ products"]} small="on CRED store" x={110} y={110} ink="#6d2a49" sheen="#b9688a" size={92} />
       <Head f={f} from={T.gate + 12} to={T.home + 30} big={["zero joining fee"]} x={110} y={110} ink="#1c3d2a" sheen="#7aa483" size={104} />
       {f >= T.lock - 6 && <AbsoluteFill style={{ background: "#000", opacity: lightsOut * 0.4 }} />}

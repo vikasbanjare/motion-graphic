@@ -43,7 +43,7 @@ const BANDS = [
   { col: "#ffb257", pal: P.ochre, a: 0.18 },
   { col: "#7fe3a0", pal: P.green, a: 0.55 },
 ];
-const ROAD = 26;
+const ROAD = 24.6; // the road ends at the island's rim
 const dirOf = (a: number) => new THREE.Vector3(Math.sin(a) * 0.9 + 0.25, 0.1, Math.cos(a)).normalize();
 const basisOf = (f: THREE.Vector3) => {
   const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), f).normalize();
@@ -52,7 +52,7 @@ const basisOf = (f: THREE.Vector3) => {
 };
 const ISLAND = BANDS.map((b) => {
   const f = dirOf(b.a);
-  return { f, ...basisOf(f), o: S.clone().addScaledVector(f, ROAD + 2) };
+  return { f, ...basisOf(f), o: S.clone().addScaledVector(f, ROAD + 6.9) };
 });
 
 const CamN: React.FC<{ pos: THREE.Vector3; target: THREE.Vector3; fov?: number; near?: number }> = ({ pos, target, fov = 40, near = 0.05 }) => {
@@ -124,6 +124,7 @@ const Ribbon: React.FC<{ from: THREE.Vector3; to: THREE.Vector3; color: string; 
   return <mesh geometry={geo} material={mat} />;
 };
 const Glow: React.FC<{ at: THREE.Vector3; r: number; color: string; opacity: number }> = ({ at, r, color, opacity }) => {
+  const { camera } = useThree();
   const tex = useMemo(() => {
     const c = document.createElement("canvas");
     c.width = c.height = 128;
@@ -136,10 +137,11 @@ const Glow: React.FC<{ at: THREE.Vector3; r: number; color: string; opacity: num
     x.fillRect(0, 0, 128, 128);
     return new THREE.CanvasTexture(c);
   }, []);
-  const mat = useMemo(() => new THREE.SpriteMaterial({ color, alphaMap: tex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }), []);
+  const geo = useMemo(() => new THREE.PlaneGeometry(1, 1), []);
+  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color, alphaMap: tex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }), []);
   mat.opacity = opacity;
   mat.color.set(color);
-  return <sprite material={mat} position={at.toArray() as V3} scale={[r, r, 1]} />;
+  return <mesh geometry={geo} material={mat} position={at.toArray() as V3} quaternion={camera.quaternion} scale={[r, r, 1]} />;
 };
 
 const m = (palette: typeof P.rose, seed: number, extra: Record<string, unknown> = {}) => ({ palette, seed, space: 0 as const, angleDeg: 45, spec: 0.35, albedoNoise: 0.15, ...extra });
@@ -189,7 +191,7 @@ const Island: React.FC<{ k: number; lit: number; vis: number; f: number }> = ({ 
   const LW = { ...L, lift: 0.1 + 0.5 * lit, ambient: 0.25 };
   const planeT = ramp(f, T.blue + 20, T.amber, inOut);
   return (
-    <group position={I.o.toArray() as V3} quaternion={q}>
+    <group position={I.o.toArray() as V3} quaternion={q} scale={1.3}>
       <EMesh g={geo.disc} m={m(B.pal, 100 + k, { albedoNoise: 0.2, opacity: 0.999 })} live={L} />
       {k === 0 && (
         <>
@@ -264,8 +266,8 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
     const I = ISLAND[k];
     const t = ramp(f, a, b, inOut);
     const startD = k === 0 ? 1.5 : 10;
-    const pos = S.clone().addScaledVector(I.f, lerp(startD, ROAD - 5.5, t)).addScaledVector(I.up, lerp(1.0, 2.6, t));
-    const target = S.clone().addScaledVector(I.f, lerp(startD + 6, ROAD + 2, t)).addScaledVector(I.up, lerp(0.4, 0.9, t));
+    const pos = S.clone().addScaledVector(I.f, lerp(startD, ROAD - 5.1, t)).addScaledVector(I.up, lerp(1.2, 5.2, t));
+    const target = S.clone().addScaledVector(I.f, lerp(startD + 6, ROAD + 6.9, t)).addScaledVector(I.up, lerp(0.4, 0.8, t));
     return { pos, target };
   };
   const beats = [[T.pink, T.blue], [T.blue, T.amber], [T.amber, T.green], [T.green, T.converge]];
@@ -293,13 +295,12 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
     // pull up and turn back: all roads lead to the card
     const t = ramp(f, T.converge, T.converge + 30, inOut);
     const last = rideFor(3, T.green + HOP, T.converge);
-    const high = ISLAND[1].o.clone().add(new THREE.Vector3(0, 9, 0)).addScaledVector(ISLAND[1].f, 4);
-    pos = last.pos.clone().lerp(high, t);
-    target = last.target.clone().lerp(S.clone(), t);
+    pos = last.pos.clone().addScaledVector(ISLAND[3].up, 15 * t).addScaledVector(ISLAND[3].f, 7 * t);
+    target = last.target.clone().lerp(S.clone(), ramp(t, 0.15, 1, inOut));
     fov = lerp(40, 46, t);
   }
   const litOf = (k: number) => ramp(f, beats[k][0] + 30, beats[k][0] + 60, expoOut);
-  const visOf = (k: number) => ramp(f, beats[k][0] - 10, beats[k][0] + 20) * (f < T.converge ? 1 - ramp(f, beats[k][1] + 14, beats[k][1] + 34) : 1 - ramp(f, T.converge, T.converge + 24));
+  const visOf = (k: number) => ramp(f, beats[k][0] - 10, beats[k][0] + 20) * (f < T.converge ? 1 - ramp(f, beats[k][1] + 14, beats[k][1] + 34) : 1);
   return (
     <>
       <CamN pos={pos} target={target} fov={fov} />
@@ -335,7 +336,7 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
 /** The ending: the white light forms a ring the card passes through; the card turns; lockup. */
 const Ending: React.FC<{ f: number }> = ({ f }) => {
   const { geo, mats } = useCardParts();
-  const ringG = useMemo(() => new THREE.TorusGeometry(4.3, 0.09, 12, 128), []);
+  const ringG = useMemo(() => new THREE.TorusGeometry(3.4, 0.08, 12, 128), []);
   const ringMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }), []);
   const grow = ramp(f, T.ring, T.ring + 22, expoOut);
   const pass = ramp(f, T.ring + 16, T.ring + 64, inOut); // the ring travels over the card = the card passes through
@@ -353,12 +354,11 @@ const Ending: React.FC<{ f: number }> = ({ f }) => {
       <ambientLight intensity={0.45} />
       <directionalLight position={[-7 + 10 * ramp(f, T.ring, T.ring + 80), 5, 7]} intensity={2.2} color="#fff6ea" />
       <directionalLight position={[8, 2, -6]} intensity={2.0} color="#874bf9" />
-      <pointLight position={[0, 0, ringZ]} intensity={14 * grow * ringFade} distance={12} color="#ffffff" />
+      <pointLight position={[0, 3.2, ringZ]} intensity={12 * grow * ringFade} distance={12} color="#ffffff" />
       <group position={[0, lerp(0, 2.0, toLock), 0]} rotation={[pitch, yaw, 0]} scale={lerp(0.95, 0.6, toLock) * lerp(0.86, 1, ramp(f, T.ring, T.ring + 40, expoOut))}>
         <CardMesh geo={geo} mats={mats} />
       </group>
       <mesh geometry={ringG} material={ringMat} position={[0, 0, ringZ]} scale={lerp(0.2, 1, grow)} />
-      <Glow at={new THREE.Vector3(0, 0, ringZ)} r={9 * grow} color="#ffffff" opacity={0.18 * grow * ringFade} />
     </>
   );
 };

@@ -381,6 +381,29 @@ def drop_impact(f0=38.9):
     return norm(fade_edges(to_stereo(np.tanh(1.6 * x), 0, 0)))
 
 
+def door_knock(knocks=2, gap=0.22, dur=0.9):
+    """Knuckles on a wooden door (original). Each knock: a 90-180 Hz thump plus a short knuckle click."""
+    n = int(SR * dur)
+    x = np.zeros(n)
+    for k in range(knocks):
+        s = int(SR * (0.02 + k * gap))
+        t = _t(0.25)
+        f = 95.0 + 85.0 * np.exp(-t * 40)
+        thump = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 22)
+        click = bandpass(_noise(len(t)), 900, 4000, 2) * np.exp(-t * 160) * 0.35
+        seg = (thump + click)[: max(0, n - s)]
+        x[s : s + len(seg)] += seg
+    return norm(fade_edges(to_stereo(np.tanh(1.4 * x), 0, 0.1)))
+
+
+def door_swing(dur=0.7):
+    """A door leaf swinging open: a soft low air sweep that rises and settles (original)."""
+    t = _t(dur)
+    x = lowpass(_noise(len(t)), 900, 2) * env_ad(len(t), 0.25, 0.45, 1.4)
+    x += np.sin(2 * np.pi * (60 + 25 * t / dur) * t) * np.exp(-t * 4) * 0.25
+    return norm(fade_edges(to_stereo(x, 0, 0.3)))
+
+
 def card_clink(dur=0.6):
     """Metal card set down (original, for our card film). Inharmonic partials, short ring."""
     t = _t(dur)
