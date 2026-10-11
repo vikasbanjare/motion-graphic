@@ -6,6 +6,7 @@ import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
 import { parcel, pedestal } from "./subjects.ts";
+import { giftBox2, parcel2 } from "./models3.ts";
 import { LinePattern, Paper, Sheen, bandGradient } from "./fx.tsx";
 import { C, P, SANS, SERIF, T, expoOut, lerp, ramp, rnd } from "./look.ts";
 import type { EOpts } from "./engrave.ts";
@@ -38,20 +39,21 @@ const skyline = () => {
 };
 
 export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, front }) => {
+  const dm = useContext(Detail).maps;
   const g = useMemo(
     () => ({
       sky: skyline(),
       ped: pedestal(1.5, 0.9),
       pedTall: pedestal(1.2, 2.2),
-      gift: giftBox(),
+      gift: dm ? giftBox2() : giftBox(),
       balloon: balloon2(),
-      smallGift: giftBox(),
-      parcel: parcel(1.8, 1.0, 1.4),
+      smallGift: dm ? giftBox2() : giftBox(),
+      parcel: dm ? parcel2(1.8, 1.0, 1.4) : parcel(1.8, 1.0, 1.4),
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
   const lf = f - T.matte;
-  const dm = useContext(Detail).maps;
   const MAP = (t: THREE.Texture, amt = 0.75) => (dm ? { map: t, mapAmt: amt } : {});
   // camera: midground drifts right (+8 -> +0.4 % W/s, ease-out quad) == camera trucks left
   const drift = interpolate(lf, [0, 103], [0, 1], { ...C, easing: (t) => 1 - (1 - t) * (1 - t) });

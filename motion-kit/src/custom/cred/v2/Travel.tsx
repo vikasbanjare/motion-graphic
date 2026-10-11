@@ -5,6 +5,7 @@ import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
 import { airplane, globeStand, hotelBell } from "./models.ts";
 import { globeAlbedo, landTexture, roomKey, merge } from "./models2.ts";
 import { cloudStipple, globeRelief } from "./detail.ts";
+import { airliner, cloud2, globeStand2 } from "./models3.ts";
 import { cloudBank, routeDots } from "./subjects.ts";
 import { LensRim, LensVignette, Paper, Sheen } from "./fx.tsx";
 import { C, P, SERIF, T, expoOut, lerp, ramp } from "./look.ts";
@@ -68,16 +69,18 @@ const mapTexture = () => {
 export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
   const dm = useContext(Detail).maps;
   const g = useMemo(() => {
-    const st = globeStand();
+    const st = dm ? globeStand2() : globeStand();
     st.ring.rotateZ(THREE.MathUtils.degToRad(-23.4)); // upright axis: the pole is centred in the top-down view
+    const al = dm ? airliner() : null;
     return {
       sphere: new THREE.SphereGeometry(1, 128, 96),
       ring: st.ring,
       stand: st.stand,
-      plane: airplane(),
+      plane: al ? al.body : airplane(),
+      glass: al ? al.glass : null,
       bell: hotelBell(),
       key: roomKey(),
-      clouds: [cloudBank(9, 1), cloudBank(7, 4), cloudBank(11, 7), cloudBank(10, 9), cloudBank(8, 12)],
+      clouds: dm ? [cloud2(9, 1), cloud2(7, 4), cloud2(11, 7), cloud2(10, 9), cloud2(8, 12)] : [cloudBank(9, 1), cloudBank(7, 4), cloudBank(11, 7), cloudBank(10, 9), cloudBank(8, 12)],
       routes: merge([
         routeDots(1.0, [-74, 40], [2, 49], 34),
         routeDots(1.0, [2, 49], [77, 28], 40),
@@ -125,8 +128,10 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       })}
       {/* far airliners crossing the sky */}
       {[0, 1].map((k) => (
-        <EMesh key={k} g={g.plane} m={mk({ atmos: 0.55, seed: 40 + k, edge: 0.4 })} live={gl}
-          pos={[lerp(-30, 40, ((f - 290) / 140 + k * 0.45) % 1), 10 + k * 2.5, -36 - k * 8]} rot={[0.1, k ? 0.2 : -0.2, 0]} scale={0.6} />
+        <group key={k} position={[lerp(-30, 40, ((f - 290) / 140 + k * 0.45) % 1), 10 + k * 2.5, -36 - k * 8]} rotation={[0.1, k ? 0.2 : -0.2, 0]} scale={0.6}>
+          <EMesh g={g.plane} m={mk({ atmos: 0.55, seed: 40 + k, edge: 0.4 })} live={gl} />
+          {g.glass ? <EMesh g={g.glass} m={mk({ atmos: 0.55, albedo: 0.35, edge: 0, seed: 45 + k })} live={gl} /> : null}
+        </group>
       ))}
       {/* the globe on its stand (scale 2: sphere r 2, stand foot on the ground) */}
       <group position={[0, 4, 0]} scale={2}>
@@ -142,7 +147,10 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
         {/* airliner orbiting the globe */}
         <group rotation={[0.35, 0, -0.2]}>
           <group rotation={[0, orbitA, 0]}>
-            <EMesh g={g.plane} m={mk({ spec: 0.3, seed: 9, angleDeg: 45 })} live={gl} pos={[0, 0, 1.75]} rot={[0, Math.PI, -0.15]} scale={0.085} />
+            <group position={[0, 0, 1.75]} rotation={[0, Math.PI, -0.15]} scale={0.085}>
+              <EMesh g={g.plane} m={mk({ spec: 0.3, seed: 9, angleDeg: 45 })} live={gl} />
+              {g.glass ? <EMesh g={g.glass} m={mk({ albedo: 0.3, edge: 0, seed: 19 })} live={gl} /> : null}
+            </group>
           </group>
         </group>
       </group>

@@ -5,6 +5,7 @@ import { bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { shoppingBag, coinStack } from "./models2.ts";
 import { paperPlane, parcel, tag } from "./subjects.ts";
+import { bag2, giftBox2, parcel2 } from "./models3.ts";
 import { P, T, expoOut, lerp, mixPal, ramp } from "./look.ts";
 import type { EOpts, Pal } from "./engrave.ts";
 
@@ -55,21 +56,23 @@ export type AsmView = {
 const base = (pal: Pal, extra: Partial<EOpts> = {}): EOpts => ({ palette: pal, periodFrac: 0.0068, ...extra });
 
 export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFrac = 0.0068, camZ, camX, camY, fov = 35, roll, settled = false, dim = 0 }) => {
+  const dm = useContext(Detail).maps;
+  // v2D: the designed subjects (models3) stand in for the v2 primitives on the same footprints
   const g = useMemo(
     () => ({
-      gift: giftBox(),
-      bag: shoppingBag(),
-      parcelA: parcel(2.2, 1.1, 1.6),
-      parcelB: parcel(1.6, 0.9, 1.3),
-      parcelC: parcel(1.2, 0.7, 1.0),
+      gift: dm ? giftBox2() : giftBox(),
+      bag: dm ? bag2() : shoppingBag(),
+      parcelA: dm ? parcel2(2.2, 1.1, 1.6) : parcel(2.2, 1.1, 1.6),
+      parcelB: dm ? parcel2(1.6, 0.9, 1.3) : parcel(1.6, 0.9, 1.3),
+      parcelC: dm ? parcel2(1.2, 0.7, 1.0) : parcel(1.2, 0.7, 1.0),
       tag: tag(3.2),
       plane: paperPlane(),
       coins: coinStack(6),
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
   const pf = periodFrac;
-  const dm = useContext(Detail).maps;
   const MAP = (t: THREE.Texture, amt = 0.75) => (dm ? { map: t, mapAmt: amt } : {});
   const liveA: Live = { pal: inks.a, dim };
   const liveB: Live = { pal: inks.b, dim };
