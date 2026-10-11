@@ -138,15 +138,16 @@ const Table: React.FC<{ f: number }> = ({ f }) => {
     : f < T.shop + 60 ? seg(T.slam - 4, T.shop + 60, Y.start, Y.shop + 3)
     : f < T.board ? seg(T.shop + 60, T.board, Y.shop + 3, Y.plane - 1.2)
     : f < T.hotel ? Y.plane - 1.2
-    : f < T.door ? seg(T.hotel - 10, T.door - 6, Y.hotel - 6, Y.hotel - 0.6)
+    : f < T.door ? seg(T.hotel - 10, T.door - 6, Y.plane + 0.7, Y.hotel - 0.6)
     : f < T.store ? Y.hotel - 0.6
-    : f < T.hide ? seg(T.store - 12, T.hide, Y.hotel + 3, Y.store - 0.6)
+    : f < T.hide ? seg(T.store - 12, T.hide, Y.hotel - 0.6, Y.store - 0.6)
     : f < T.back ? Y.store - 0.6
     : seg(T.back, T.back + 40, Y.store + 2, Y.land - 2.5);
   const boarding = ramp(f, T.board, T.lift, inOut); // up the ramp into the plane
   const planeUp = ramp(f, T.lift, T.hotel - 4, inOut);
   const hiding = ramp(f, T.hide - 10, T.hide + 6, inOut) * (1 - ramp(f, T.back - 10, T.back + 8, inOut));
-  const cardZ = 0.02 + 0.8 * boarding + 0.05 * Math.abs(Math.sin(f / 4)) * (f > T.slam && f < T.back + 40 ? (cardY > Y.start + 0.5 && cardY < Y.land - 3 ? 1 : 0) : 0);
+  const drop = f >= T.hotel - 10 && f < T.door ? 2.2 * (1 - ramp(f, T.hotel - 10, T.hotel + 14, inOut)) : 0; // falls from the plane
+  const cardZ = 0.02 + 0.8 * boarding + drop + 0.05 * Math.abs(Math.sin(f / 4)) * (f > T.slam && f < T.back + 40 ? (cardY > Y.start + 0.5 && cardY < Y.land - 3 ? 1 : 0) : 0);
   const cardYaw = 0.25 * Math.sin(f / 9) * (f > T.slam && f < T.back + 40 ? 1 : 0);
   const cardVisible = !(planeUp > 0.05 && f < T.hotel - 8) && !(f >= T.door - 6 && f < T.store - 12) && hiding < 0.95;
   const cardPos: V3 = f >= T.board && f < T.hotel - 8 ? [0, Y.plane - 1.2 + 1.9 * boarding, cardZ + 0.9 * boarding] : [0.2 * Math.sin(f / 13), cardY, cardZ + 1.25 * hiding];
@@ -162,38 +163,42 @@ const Table: React.FC<{ f: number }> = ({ f }) => {
   else if (f < T.shop) {
     const slam = ramp(f, T.slam, T.slam + 6, (x) => x * x);
     const bounce = ramp(f, T.slam + 6, T.shop, expoOut);
-    st = { pos: [0, Y.start, lerp(1.6, 0.0, slam) + 0.5 * Math.sin(Math.PI * bounce)], rot: [0, 0, 0], squash: slam >= 1 ? lerp(0.82, 1, bounce) : 1 };
+    const hz = 1.6 + 0.25 * Math.sin(T.slam / 9), hx = 0.1 * Math.sin(T.slam / 15); // where the hover left it
+    st = { pos: [hx * (1 - slam), Y.start, lerp(hz, 0.0, slam) + 0.5 * Math.sin(Math.PI * bounce)], rot: [0.05 * Math.sin(T.slam / 11) * (1 - slam), 0.06 * Math.cos(T.slam / 13) * (1 - slam), 0], squash: slam >= 1 ? lerp(0.82, 1, bounce) : 1 };
   } else if (f < T.lift - 10) {
-    const h = hop(T.shop, T.lift - 10, 7);
+    const h = hop(T.shop, T.lift - 10, 6.5); // ends mid-air, where the slam begins
     st = { pos: [0, lerp(Y.start, Y.plane - 1.2, h.t), h.z], rot: [0.15 * Math.sin(h.t * 44), 0, 0], squash: h.squash };
   } else if (f < T.hotel - 20) {
     const slam = ramp(f, T.lift - 10, T.lift - 4, (x) => x * x);
     const up = ramp(f, T.lift + 12, T.hotel - 20, inOut);
     st = { pos: [0, Y.plane - 1.2, lerp(1.6, 0, slam) * (1 - up) + 1.2 * up], rot: [0.5 * up, 0, 0], squash: slam >= 1 && up < 0.1 ? 0.82 : 1 };
   } else if (f < T.door) {
-    const h = hop(T.hotel - 20, T.door, 5);
+    const h = hop(T.hotel - 20, T.door, 4.5);
     st = { pos: [0, lerp(Y.plane - 1.2, Y.hotel - 1.6, h.t), h.z], rot: [0, 0, 0], squash: h.squash };
   } else if (f < T.store) {
     const hit = ramp(f, T.door, T.door + 5, (x) => x);
     const rebound = ramp(f, T.door + 5, T.door + 30, expoOut);
-    st = { pos: [0, lerp(Y.hotel - 1.6, Y.hotel - 0.9, hit) - 1.4 * rebound, 0.9 * (1 - rebound) + 0.0], rot: [lerp(-1.2, 0, rebound) + 0.0, 0, 0], squash: 1 };
+    st = { pos: [0, lerp(Y.hotel - 1.6, Y.hotel - 0.9, hit) - 1.4 * rebound, lerp(1.6, 0.9, hit) * (1 - rebound)], rot: [lerp(-1.2, 0, rebound), 0, 0], squash: 1 };
   } else if (f < T.lost) {
-    const h = hop(T.store, T.lost, 4);
+    const h = hop(T.store, T.lost, 3.5);
     st = { pos: [0, lerp(Y.hotel - 2.3, Y.store - 2.6, h.t), h.z], rot: [0, 0, 0], squash: h.squash };
   } else if (f < T.land) {
     const look = ramp(f, T.lost, T.land, (x) => x);
-    st = { pos: [0.4 * Math.sin(look * 9), Y.store - 2.6, 0.6 + 0.3 * Math.sin(look * 6)], rot: [0.2, 0, 0.9 * Math.sin(look * 9)], squash: 1 };
+    const settle = ramp(look, 0, 0.25, inOut);
+    st = { pos: [0.4 * Math.sin(look * 9), Y.store - 2.6, lerp(1.6, 0.6, settle) + 0.3 * Math.sin(look * 6)], rot: [0.2 * settle, 0, 0.9 * Math.sin(look * 9)], squash: 1 };
   } else {
     const go = ramp(f, T.land, T.zero - 8, inOut);
     const slam = ramp(f, T.zero - 8, T.zero - 2, (x) => x * x);
     const lift = ramp(f, T.zero + 14, T.zero + 40, inOut);
-    st = { pos: [0, lerp(Y.store - 2.6, Y.land, go), lerp(1.4, 0, slam) + 2.2 * lift], rot: [0, 0, 0], squash: slam >= 1 && lift < 0.05 ? 0.84 : 1 };
+    const lx = 0.4 * Math.sin(9), lz = 0.6 + 0.3 * Math.sin(6), lr = 0.9 * Math.sin(9); // where the search left it
+    st = { pos: [lx * (1 - go), lerp(Y.store - 2.6, Y.land, go), lerp(lerp(lz, 1.4, go), 0, slam) + 2.2 * lift], rot: [0.2 * (1 - go), 0, lr * (1 - go)], squash: slam >= 1 && lift < 0.05 ? 0.84 : 1 };
   }
   const printed = ramp(f, T.zero - 2, T.zero + 2);
 
   // ---- camera: follows the chase from a three-quarter height; the plane pulls it up briefly ----
-  const lead = Math.max(cardY, st.pos[1]) + 1.0;
-  const camY = f < T.slam ? Y.start - 0.5 : lead;
+  const camKeys: [number, number][] = [[0, Y.start - 0.5], [T.slam, Y.start - 0.5], [T.shop + 60, Y.shop + 4], [T.board, Y.plane], [T.hotel, Y.plane + 3], [T.door, Y.hotel - 0.6], [T.hide, Y.store - 0.6], [T.land, Y.store - 1.5], [T.zero, Y.land + 1]];
+  let camY = camKeys[0][1];
+  for (let i = 1; i < camKeys.length; i++) camY = lerp(camY, camKeys[i][1], ramp(f, camKeys[i - 1][0], camKeys[i][0], inOut));
   const planeLook = planeUp * (1 - ramp(f, T.hotel - 24, T.hotel - 6));
   const back = ramp(f, T.back + 20, T.real, inOut);
   const pos = new THREE.Vector3(5.5 + 0.3 * Math.sin(f / 40), camY - 5.5, 4.2 + 2.0 * planeLook).lerp(new THREE.Vector3(0.4, Y.land - 5.5, 3.2), back);

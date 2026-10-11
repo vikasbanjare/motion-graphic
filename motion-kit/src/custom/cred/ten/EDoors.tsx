@@ -182,7 +182,7 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
     return lerp(DOOR_Y[4] - 1.4, -2.6, ramp(f, T.back, T.out, inOut));
   })();
   const sway = 0.06 * Math.sin(f / 19) + 0.04 * Math.sin(f / 7.3);
-  const closeUp = f < T.open ? 1 - ramp(f, T.open - 16, T.open + 12, inOut) : f >= T.out ? ramp(f, T.out - 10, T.out, inOut) : 0;
+  const closeUp = f < T.open ? 1 - ramp(f, T.open - 16, T.open + 12, inOut) : f >= T.out - 10 ? ramp(f, T.out - 10, T.out, inOut) : 0;
   const look = closeUp > 0 ? [0.1, -0.5 * closeUp, lerp(EYE - 0.05, 1.4, closeUp)] : [0, camY + 6, EYE - 0.05];
   const pos: V3 = [sway + 0.15 * closeUp, camY, EYE + 0.02 * Math.sin(f / 11) + 0.95 * closeUp];
   const fov = f < T.open ? lerp(34, 42, ramp(f, T.open - 20, T.open + 10, inOut)) : f >= T.back ? lerp(42, 50, ramp(f, T.back, T.out)) : 42;
