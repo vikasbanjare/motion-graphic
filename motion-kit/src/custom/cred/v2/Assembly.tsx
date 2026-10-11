@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import * as THREE from "three";
 import { Cam, Detail, EMesh, Gltf, M, type Live } from "./three.tsx";
-import { bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
+import { bagOrnament, bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { shoppingBag, coinStack } from "./models2.ts";
 import { paperPlane, parcel, tag } from "./subjects.ts";
@@ -106,7 +106,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
         );
       })}
       {/* back row */}
-      <EMesh g={g.bag} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 21, atmos: 0.35, ...MAP(bagPaper(1)) })} live={liveB} double
+      <EMesh g={g.bag} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 21, atmos: 0.35, ...MAP(bagOrnament(1), 0.7) })} live={liveB} double
         pos={[3.2 + bagBack.dx, -1.0, -7.5]} rot={[0.05, -0.3, bagBack.rz]} scale={1.9} />
       <group position={[-6.4 + giftL.dx, 1.1, -5.5]} rotation={[0.25, 0.6, 0.1 + giftL.rz]} scale={1.1}>
         <EMesh g={g.gift.box} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 22, atmos: 0.25, ...MAP(giftPaper(1)) })} live={liveA} />
@@ -127,7 +127,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
       </group>
       {/* right side */}
       <group position={[5.6 + bagR.dx, -6.4, 1.6]} rotation={[0.05, -0.6, -0.04 + bagR.rz]} scale={2.4}>
-        <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11, ...MAP(bagPaper(3)) })} live={liveA} double />
+        <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11, ...MAP(bagOrnament(3), 0.8) })} live={liveA} double />
         {g.tissue ? <EMesh g={g.tissue[1]} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 31, albedo: 1.1, edge: 0.4 })} live={liveB} double pos={[-0.1, 2.3, 0]} rot={[0.1, -0.4, 0.12]} scale={0.85} /> : null}
       </group>
       <group position={[1.4 + gift.dx, -4.2, -0.6]} rotation={[0.2, -0.5, gift.rz]} scale={1.45}>

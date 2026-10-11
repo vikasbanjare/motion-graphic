@@ -339,3 +339,50 @@ export const globeRelief = (land: THREE.Texture) =>
     }
     return c;
   });
+
+/** Ornamented bag paper: a lattice of diamonds with a quatrefoil in each cell, a light label panel, stitched rim. */
+export const bagOrnament = (seed = 7) =>
+  memo(`bagOrn${seed}`, () => {
+    const { c, x } = canvas(1024, 1024);
+    fibres(x, 1024, 1024, 1200, "rgba(70,70,70,0.12)", seed, 10);
+    const s = 96;
+    x.strokeStyle = "rgba(45,45,45,0.55)";
+    x.lineWidth = 2.5;
+    for (let j = -1; j < 12; j++)
+      for (let i = -1; i < 12; i++) {
+        const cx = i * s + (j % 2 ? s / 2 : 0), cy = j * s;
+        x.beginPath();
+        x.moveTo(cx, cy - s / 2);
+        x.lineTo(cx + s / 2, cy);
+        x.lineTo(cx, cy + s / 2);
+        x.lineTo(cx - s / 2, cy);
+        x.closePath();
+        x.stroke();
+        // quatrefoil
+        x.lineWidth = 1.6;
+        for (let k = 0; k < 4; k++) {
+          const a = (k / 4) * Math.PI * 2;
+          x.beginPath();
+          x.arc(cx + Math.cos(a) * 11, cy + Math.sin(a) * 11, 10, 0, Math.PI * 2);
+          x.stroke();
+        }
+        x.lineWidth = 2.5;
+      }
+    // label panel with a double rule and a crest ring
+    x.fillStyle = "rgba(228,228,228,0.94)";
+    x.fillRect(312, 380, 400, 280);
+    x.strokeStyle = "rgba(45,45,45,0.85)";
+    x.lineWidth = 4;
+    x.strokeRect(312, 380, 400, 280);
+    x.lineWidth = 1.5;
+    x.strokeRect(326, 394, 372, 252);
+    x.beginPath();
+    x.arc(512, 520, 58, 0, Math.PI * 2);
+    x.stroke();
+    x.beginPath();
+    x.arc(512, 520, 44, 0, Math.PI * 2);
+    x.stroke();
+    x.fillStyle = "rgba(40,40,40,0.7)";
+    for (let i = 0; i < 40; i++) x.fillRect(16 + i * 25, 18, 10, 4);
+    return c;
+  });
