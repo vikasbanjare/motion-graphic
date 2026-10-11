@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AbsoluteFill } from "remotion";
-import { World } from "./three.tsx";
+import { Detail, World } from "./three.tsx";
 import { AssemblyWorld, type AsmView } from "./Assembly.tsx";
 import { Field } from "./Opening.tsx";
 import { bandGradient, BandLines, LinePattern } from "./fx.tsx";
@@ -44,7 +44,31 @@ export const hexPath = (cx: number, cy: number, r: number) => {
 };
 
 /** Hexagonal guilloche cartouche (our seal; no ring text). */
-export const Cartouche: React.FC<{ cx: number; cy: number; r: number; ink: string; fill: string; lines?: number; sw?: number }> = ({ cx, cy, r, ink, fill, lines = 44, sw = 1.1 }) => (
+export const Cartouche: React.FC<{ cx: number; cy: number; r: number; ink: string; fill: string; lines?: number; sw?: number }> = ({ cx, cy, r, ink, fill, lines = 44, sw = 1.1 }) => {
+  const petals = useContext(Detail).maps === true;
+  if (petals) {
+    // v2D: a six-petal rosette inside the hexagon (nested petal outlines, alternate petals hatched), a double rule
+    const petal = (k: number, sc: number) => {
+      const a = (Math.PI / 3) * k - Math.PI / 2;
+      const d = r * 0.42 * sc, rx = r * 0.36 * sc, ry = r * 0.17 * sc;
+      return <ellipse key={`${k}-${sc}`} cx={cx + Math.cos(a) * d} cy={cy + Math.sin(a) * d} rx={rx} ry={ry} transform={`rotate(${(a * 180) / Math.PI} ${cx + Math.cos(a) * d} ${cy + Math.sin(a) * d})`} fill={k % 2 && sc === 1 ? "url(#meshA)" : "none"} fillOpacity={0.45} stroke={ink} strokeWidth={sc === 1 ? sw * 1.6 : sw * 0.8} />;
+    };
+    return (
+      <g>
+        <path d={hexPath(cx, cy, r)} fill={fill} stroke={ink} strokeWidth={sw * 3} />
+        <path d={hexPath(cx, cy, r * 0.94)} fill="none" stroke={ink} strokeWidth={sw * 1.2} />
+        <path d={hexPath(cx, cy, r * 0.86)} fill="none" stroke={ink} strokeWidth={sw * 0.7} />
+        {[0, 1, 2, 3, 4, 5].flatMap((k) => [1, 0.82, 0.64, 0.46, 0.28].map((sc) => petal(k, sc)))}
+        {[0, 1, 2, 3, 4, 5].map((k) => {
+          const a = (Math.PI / 3) * k - Math.PI / 6;
+          return <line key={k} x1={cx} y1={cy} x2={cx + Math.cos(a) * r * 0.78} y2={cy + Math.sin(a) * r * 0.78} stroke={ink} strokeWidth={sw * 0.6} />;
+        })}
+        <circle cx={cx} cy={cy} r={r * 0.1} fill={fill} stroke={ink} strokeWidth={sw * 1.4} />
+        <circle cx={cx} cy={cy} r={r * 0.05} fill={ink} />
+      </g>
+    );
+  }
+  return (
   <g>
     <path d={hexPath(cx, cy, r)} fill={fill} stroke={ink} strokeWidth={sw * 3} />
     <path d={hexPath(cx, cy, r * 0.94)} fill="none" stroke={ink} strokeWidth={sw * 1.2} />
@@ -59,7 +83,8 @@ export const Cartouche: React.FC<{ cx: number; cy: number; r: number; ink: strin
     <path d={hexPath(cx, cy, r * 0.36)} fill={fill} stroke={ink} strokeWidth={sw * 2} />
     <Rosette cx={cx} cy={cy} R={r * 0.3} color={ink} n={10} k={6} sw={sw * 0.8} />
   </g>
-);
+  );
+};
 
 export const Chip: React.FC<{ x: number; y: number; w: number; h: number; ink: string; fill: string }> = ({ x, y, w, h, ink, fill }) => (
   <g>

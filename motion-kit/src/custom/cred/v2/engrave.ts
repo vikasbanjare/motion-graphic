@@ -44,6 +44,7 @@ uniform vec3 uStops[4]; uniform vec4 uStopPos; uniform int uStopCount;
 uniform float uGrain, uMottle, uMottleScale, uSeed;
 uniform float uEdge, uSpace, uRefDepth, uPoster, uFoil, uFoilPhase, uAtmos, uDim, uOpacity, uLift;
 uniform float uHatch, uHatchT, uStipple, uFollow; // engraving detail: cross-hatch in the shadows, stipple in the lights, form-following lines
+uniform float uWash; // tonal watercolour underlay under the line screen (0 = pure line screen)
 uniform vec3 uAtmosColor;
 
 float hash(vec2 i, float s){ return fract(sin(i.x*12.9898 + i.y*78.233 + s*37.719) * 43758.5453); }
@@ -139,6 +140,8 @@ void main(){
       float dot = 1.0 - smoothstep(rad - 0.08, rad + 0.08, dd);
       v *= 1.0 - 0.85 * dot;
     }
+    // watercolour wash: the smooth tone shows through under the lines (the lines become the drawing over a tint)
+    if (uWash > 0.0) v = mix(v, mix(t, 1.0, 0.25), uWash);
   }
   v = mix(v, 1.0, uAtmos * 0.55);
   vec3 col = gradientMap(clamp(v, 0.0, 1.0));
@@ -190,6 +193,7 @@ export type EOpts = {
   hatchT?: number; // tone below which the second family appears
   stipple?: number; // stipple amount in the lights (0..1)
   follow?: number; // how far the lines turn to follow the form (0..1)
+  wash?: number; // tonal underlay amount (0..1)
 };
 
 export const hexToVec3 = (hex: string) => {
@@ -259,6 +263,7 @@ export const engrave = (o: EOpts) => {
       uHatchT: { value: o.hatchT ?? 0.42 },
       uStipple: { value: o.stipple ?? 0 },
       uFollow: { value: o.follow ?? 0 },
+      uWash: { value: o.wash ?? 0 },
       uDim: { value: 0 },
       uOpacity: { value: o.opacity ?? 1 },
       ...stopsU(o.palette),
