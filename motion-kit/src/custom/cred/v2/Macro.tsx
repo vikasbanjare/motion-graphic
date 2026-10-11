@@ -59,9 +59,18 @@ export const MacroTake: React.FC = () => {
   const ox = (pan + travel) * DIR.x, oy = (pan + travel) * DIR.y;
   const glintX = interpolate(f, [T.cutMacro + 14, T.push + 2], [-0.25, 1.15], C);
   const inks = { a: P.cyan, b: P.cyanDeep, hero: [["#14315c", 0], ["#4c8fc0", 0.5], ["#cbe9f4", 1]] as [string, number][] };
+  const tf = `translate(${ox}px, ${oy}px) scale(${s})`;
   const content = (
     <AbsoluteFill style={{ background: "#d6eef4" }}>
-      <AbsoluteFill style={{ transform: `translate(${ox}px, ${oy}px) scale(${s})`, transformOrigin: "64% 46%", filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined }}>
+      {tagIn > 0 ? (
+        // v2D: the luggage tag world sits behind the moving band with its own slow push (not the band's 2.85x)
+        <AbsoluteFill style={{ opacity: tagIn, background: "#d6eef4", transform: `scale(${1 + 0.18 * pu})`, transformOrigin: "50% 55%" }}>
+          <World>
+            <TagWorld f={f} />
+          </World>
+        </AbsoluteFill>
+      ) : null}
+      <AbsoluteFill style={{ transform: tf, transformOrigin: "64% 46%", filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined, opacity: 1 - tagIn }}>
         {/* magnified field + parcels (coarser screen: 2.0 % H, the macro period) */}
         <AbsoluteFill style={{ transform: "scale(2.4) rotate(18deg)", transformOrigin: "40% 30%" }}>
           <Field f={T.reveal} inkOverride="#5d8fb0" />
@@ -72,13 +81,8 @@ export const MacroTake: React.FC = () => {
             <AssemblyWorld f={T.reveal} settled inks={inks} periodFrac={0.02} camZ={6.2} camX={-1.4 + lf * 0.004} camY={-1.6} fov={34} roll={0.3} />
           </RefDepth.Provider>
         </World>
-        {tagIn > 0 ? (
-          <AbsoluteFill style={{ opacity: tagIn, background: "#d6eef4" }}>
-            <World>
-              <TagWorld f={f} />
-            </World>
-          </AbsoluteFill>
-        ) : null}
+      </AbsoluteFill>
+      <AbsoluteFill style={{ transform: tf, transformOrigin: "64% 46%", filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined }}>
         {/* the strip, read along its length */}
         <div style={{ position: "absolute", left: 960 - 1800, top: 560 - BH / 2, width: 3600, height: BH, transform: `rotate(${ANG}deg)`, transformOrigin: "50% 50%" }}>
           <div style={{ position: "absolute", inset: 0, ...bandGradient(5, 0), boxShadow: "0 0 0 2px rgba(255,255,255,0.4), 0 0 26px rgba(40,90,140,0.35)" }} />

@@ -127,7 +127,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
             <EMesh g={g.ped} m={mk({ seed: 87, angleDeg: 52 })} live={gl} />
             <EMesh g={g.dress.watch} m={mk({ seed: 88, spec: 0.6, shininess: 50, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, -0.4 + lf * 0.002, 0]} scale={1.0} />
           </group>
-          <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[9.0, -2.2, 0.4]} rot={[0, -0.55, 0]} scale={1.15} />
+          <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[8.6, -2.2, -1.6]} rot={[0, -0.55, 0]} scale={1.0} />
         </>
       ) : (
         <>
