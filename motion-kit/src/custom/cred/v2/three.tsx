@@ -11,7 +11,8 @@ type V3 = [number, number, number];
 /** Camera distance at which the object-anchored screen has its nominal period (per world). */
 export const RefDepth = createContext(15);
 /** Engraving defaults applied under every EMesh/Gltf in the subtree (the v2 detailing pass sets hatch/stipple/follow here). */
-export const Detail = createContext<Partial<EOpts>>({});
+export type DetailOpts = Partial<EOpts> & { maps?: boolean; gltfFollow?: number };
+export const Detail = createContext<DetailOpts>({});
 
 /** Camera driven by the Remotion frame only (deterministic). roll in radians about the view axis. */
 export const Cam: React.FC<{ pos: V3; target: V3; fov?: number; roll?: number }> = ({ pos, target, fov = 35, roll = 0 }) => {
@@ -85,7 +86,10 @@ export const EMesh: React.FC<{
   const dflt = useContext(Detail);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const mat = useMemo(() => {
-    const x = engrave({ res: [width, height], refDepth: rd, ...dflt, ...m });
+    const d0 = { ...dflt };
+    delete d0.maps;
+    delete d0.gltfFollow;
+    const x = engrave({ res: [width, height], refDepth: rd, ...d0, ...m });
     if (double) x.side = THREE.DoubleSide;
     if (m.opacity !== undefined || live?.opacity !== undefined) x.transparent = true;
     return x;
@@ -128,7 +132,12 @@ export const Gltf: React.FC<{
       const map = src.map ?? null;
       if (map) map.colorSpace = THREE.NoColorSpace;
       const extra = perMaterial ? perMaterial(src.name) : {};
-      const mat = engrave({ res: [width, height], refDepth: rd, albedoNoise: 0.15, noiseScale: 30, mapAmt: 0.8, ...dflt, ...m, ...extra, map });
+      const d0 = { ...dflt };
+      const gltfFollow = d0.gltfFollow;
+      delete d0.maps;
+      delete d0.gltfFollow;
+      // scanned meshes carry bumpy normals: form-following lines would swirl, so they get their own (lower) amount
+      const mat = engrave({ res: [width, height], refDepth: rd, albedoNoise: 0.15, noiseScale: 30, mapAmt: 0.8, ...d0, ...(gltfFollow !== undefined ? { follow: gltfFollow } : {}), ...m, ...extra, map });
       mat.side = THREE.DoubleSide;
       mesh.material = mat;
       mats.push(mat);

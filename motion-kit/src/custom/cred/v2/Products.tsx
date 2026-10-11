@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
-import { Cam, EMesh, Gltf, M, World } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
+import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
 import { parcel, pedestal } from "./subjects.ts";
@@ -50,6 +51,8 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
     [],
   );
   const lf = f - T.matte;
+  const dm = useContext(Detail).maps;
+  const MAP = (t: THREE.Texture, amt = 0.75) => (dm ? { map: t, mapAmt: amt } : {});
   // camera: midground drifts right (+8 -> +0.4 % W/s, ease-out quad) == camera trucks left
   const drift = interpolate(lf, [0, 103], [0, 1], { ...C, easing: (t) => 1 - (1 - t) * (1 - t) });
   const cx = lerp(1.6, -0.6, drift);
@@ -69,8 +72,8 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       <>
         <Cam pos={[cx, 2.4, 15]} target={[cx * 0.8, 1.8, 0]} fov={38} />
         <group position={[-6.8, y, 4]} rotation={[0, lf * 0.01, 0.05 * Math.sin(lf / 13)]} scale={0.62}>
-          <EMesh g={g.balloon} m={mk({ seed: 70, angleDeg: 45, foil: 0.25 })} live={{ ...gl, foilPhase: lf * 0.004 }} />
-          <EMesh g={g.smallGift.box} m={mk({ seed: 71 })} live={gl} pos={[0, -1.1, 0]} scale={0.35} />
+          <EMesh g={g.balloon} m={mk({ seed: 70, angleDeg: 45, foil: 0.25, ...MAP(balloonSeams(1), 0.7) })} live={{ ...gl, foilPhase: lf * 0.004 }} />
+          <EMesh g={g.smallGift.box} m={mk({ seed: 71, ...MAP(giftPaper(3)) })} live={gl} pos={[0, -1.1, 0]} scale={0.35} />
         </group>
       </>
     );
@@ -79,14 +82,14 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
     <>
       <Cam pos={[cx, 2.4, 15]} target={[cx * 0.8, 1.8, 0]} fov={38} roll={THREE.MathUtils.degToRad(-0.6 + lf * 0.004)} />
       {/* far skyline of stacked parcels (moves at 0.7x: further away) */}
-      <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5 })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
+      <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5, ...MAP(kraft(5), 0.5) })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
       {/* rising balloons with parcels (secondary life: vertical rise, sin bob, phase-offset) */}
       {balloons.map((b, i) => {
         const y = -6 + (((lf / 24) * b.sp * 24 + b.ph * 16) % 16);
         return (
           <group key={i} position={[b.x + 0.3 * Math.sin(lf / 26 + i), y, b.z]} scale={b.s} rotation={[0, lf * 0.006 * (i % 2 ? 1 : -1), 0]}>
-            <EMesh g={g.balloon} m={mk({ seed: 61 + i, angleDeg: [38, 45, 52][i % 3], atmos: 0.15 + 0.08 * i })} live={gl} />
-            <EMesh g={g.smallGift.box} m={mk({ seed: 66 + i, atmos: 0.15 + 0.08 * i })} live={gl} pos={[0, -1.0, 0]} scale={0.33} />
+            <EMesh g={g.balloon} m={mk({ seed: 61 + i, angleDeg: [38, 45, 52][i % 3], atmos: 0.15 + 0.08 * i, ...MAP(balloonSeams(2 + i), 0.7) })} live={gl} />
+            <EMesh g={g.smallGift.box} m={mk({ seed: 66 + i, atmos: 0.15 + 0.08 * i, ...MAP(giftPaper(4)) })} live={gl} pos={[0, -1.0, 0]} scale={0.33} />
           </group>
         );
       })}
@@ -112,11 +115,11 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       <group position={[-0.2, -2.2, 5.6]} rotation={[-0.2, 0.4, 0.15]}>
         <Gltf url={M.watch} size={1.3} m={mk({ seed: 86, mapAmt: 0.75, spec: 0.6, shininess: 50 })} live={gl} pick={(_, i) => i !== 0} />
       </group>
-      <EMesh g={g.parcel} m={mk({ seed: 87, angleDeg: 45 })} live={gl} pos={[-11.5, -2.2, -2.0]} rot={[0, 0.5, 0]} scale={1.3} />
+      <EMesh g={g.parcel} m={mk({ seed: 87, angleDeg: 45, ...MAP(kraft(6)) })} live={gl} pos={[-11.5, -2.2, -2.0]} rot={[0, 0.5, 0]} scale={1.3} />
       {/* hero: gift box approaching, pearl foil on the ribbon only */}
       <group position={[2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={1.5 * approach}>
-        <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45 })} live={gl} />
-        <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.6, spec: 0.5, angleDeg: 38 })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
+        <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45, ...MAP(giftPaper(5)) })} live={gl} />
+        <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.6, spec: 0.5, angleDeg: 38, ...MAP(ribbon(3), 0.5) })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
       </group>
     </>
   );

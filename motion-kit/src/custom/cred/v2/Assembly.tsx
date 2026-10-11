@@ -1,6 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import * as THREE from "three";
-import { Cam, EMesh, Gltf, M, type Live } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, type Live } from "./three.tsx";
+import { bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { shoppingBag, coinStack } from "./models2.ts";
 import { paperPlane, parcel, tag } from "./subjects.ts";
@@ -68,6 +69,8 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
     [],
   );
   const pf = periodFrac;
+  const dm = useContext(Detail).maps;
+  const MAP = (t: THREE.Texture, amt = 0.75) => (dm ? { map: t, mapAmt: amt } : {});
   const liveA: Live = { pal: inks.a, dim };
   const liveB: Live = { pal: inks.b, dim };
   // camera: assembly pull-back x0.85 with +1 deg roll (expo-out), then a living drift
@@ -99,29 +102,29 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
         );
       })}
       {/* back row */}
-      <EMesh g={g.bag} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 21, atmos: 0.35 })} live={liveB} double
+      <EMesh g={g.bag} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 21, atmos: 0.35, ...MAP(bagPaper(1)) })} live={liveB} double
         pos={[3.2 + bagBack.dx, -1.0, -7.5]} rot={[0.05, -0.3, bagBack.rz]} scale={1.9} />
       <group position={[-6.4 + giftL.dx, 1.1, -5.5]} rotation={[0.25, 0.6, 0.1 + giftL.rz]} scale={1.1}>
-        <EMesh g={g.gift.box} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 22, atmos: 0.25 })} live={liveA} />
-        <EMesh g={g.gift.ribbon} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 23, atmos: 0.25 })} live={liveB} />
+        <EMesh g={g.gift.box} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 22, atmos: 0.25, ...MAP(giftPaper(1)) })} live={liveA} />
+        <EMesh g={g.gift.ribbon} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 23, atmos: 0.25, ...MAP(ribbon(1), 0.6) })} live={liveB} />
       </group>
       {/* left side */}
       <group position={[-5.9 + bigBox.dx, -5.6, 0.8]} rotation={[0.12, 0.55, bigBox.rz]}>
         <Gltf url={M.box} size={6.2} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 4, mapAmt: 0.75 })} live={liveB} />
       </group>
-      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 6 })} live={liveA} double
+      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 6, ...MAP(bagPaper(2)) })} live={liveA} double
         pos={[-8.6 + bagL.dx, -2.8, -1.4]} rot={[0.05, 0.75, 0.06 + bagL.rz]} scale={1.7} />
       <group position={[-2.0 + parcels.dx, -2.6, -2.6]} rotation={[0.18, -0.4, parcels.rz]} scale={1.25}>
-        <EMesh g={g.parcelA} m={base(inks.b, { periodFrac: pf, angleDeg: 38, seed: 8 })} live={liveB} />
-        <EMesh g={g.parcelB} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 9 })} live={liveA} pos={[0.2, 1.1, 0.1]} rot={[0, 0.5, 0]} />
-        <EMesh g={g.parcelC} m={base(inks.b, { periodFrac: pf, angleDeg: 52, seed: 10 })} live={liveB} pos={[-0.1, 2.0, 0]} rot={[0, -0.3, 0]} />
+        <EMesh g={g.parcelA} m={base(inks.b, { periodFrac: pf, angleDeg: 38, seed: 8, ...MAP(kraft(1)) })} live={liveB} />
+        <EMesh g={g.parcelB} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 9, ...MAP(kraft(2)) })} live={liveA} pos={[0.2, 1.1, 0.1]} rot={[0, 0.5, 0]} />
+        <EMesh g={g.parcelC} m={base(inks.b, { periodFrac: pf, angleDeg: 52, seed: 10, ...MAP(kraft(3)) })} live={liveB} pos={[-0.1, 2.0, 0]} rot={[0, -0.3, 0]} />
       </group>
       {/* right side */}
-      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11 })} live={liveA} double
+      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11, ...MAP(bagPaper(3)) })} live={liveA} double
         pos={[5.6 + bagR.dx, -6.4, 1.6]} rot={[0.05, -0.6, -0.04 + bagR.rz]} scale={2.4} />
       <group position={[1.4 + gift.dx, -4.2, -0.6]} rotation={[0.2, -0.5, gift.rz]} scale={1.45}>
-        <EMesh g={g.gift.box} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 12 })} live={liveB} />
-        <EMesh g={g.gift.ribbon} m={base(inks.a, { periodFrac: pf, angleDeg: 38, seed: 13, albedo: 0.8 })} live={liveA} />
+        <EMesh g={g.gift.box} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 12, ...MAP(giftPaper(2)) })} live={liveB} />
+        <EMesh g={g.gift.ribbon} m={base(inks.a, { periodFrac: pf, angleDeg: 38, seed: 13, albedo: 0.8, ...MAP(ribbon(2), 0.6) })} live={liveA} />
       </group>
       <group position={[7.6 + boxR.dx, 1.4, -3.0]} rotation={[0.35, -0.8, -0.25 + boxR.rz]}>
         <Gltf url={M.box} size={4.2} m={base(inks.b, { periodFrac: pf, angleDeg: 52, seed: 14, mapAmt: 0.75 })} live={liveB} />
@@ -130,7 +133,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
         pos={[4.0 + coins.dx, -1.4, 0.8]} rot={[0.35, 0.3, -0.2 + coins.rz]} scale={0.95} />
       {/* foreground parcel crossing the bottom edge */}
       <group position={[-1.8 + front.dx, -6.6, 4.2]} rotation={[0.3, 0.35, 0.05 + front.rz]} scale={1.6}>
-        <EMesh g={g.parcelA} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 24 })} live={liveA} />
+        <EMesh g={g.parcelA} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 24, ...MAP(kraft(4)) })} live={liveA} />
       </group>
       {/* hero: posterised parcel tag on a string, swinging (no line screen) */}
       <group position={[-0.6, 5.6 + (1 - tagIn) * 6, 1.5]} rotation={[0, 0.35 + swing * 0.6, swing]}>

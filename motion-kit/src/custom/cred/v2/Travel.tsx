@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
-import { Cam, EMesh, Gltf, M, World } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
 import { airplane, globeStand, hotelBell } from "./models.ts";
-import { globeAlbedo, roomKey, merge } from "./models2.ts";
+import { globeAlbedo, landTexture, roomKey, merge } from "./models2.ts";
+import { cloudStipple, globeRelief } from "./detail.ts";
 import { cloudBank, routeDots } from "./subjects.ts";
 import { LensRim, LensVignette, Paper, Sheen } from "./fx.tsx";
 import { C, P, SERIF, T, expoOut, lerp, ramp } from "./look.ts";
@@ -65,6 +66,7 @@ const mapTexture = () => {
 };
 
 export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
+  const dm = useContext(Detail).maps;
   const g = useMemo(() => {
     const st = globeStand();
     st.ring.rotateZ(THREE.MathUtils.degToRad(-23.4)); // upright axis: the pole is centred in the top-down view
@@ -85,8 +87,9 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       ]),
       ground: new THREE.CircleGeometry(40, 96).rotateX(-Math.PI / 2),
       map: mapTexture(),
-      albedo: globeAlbedo(),
+      albedo: dm ? globeRelief(landTexture()) : globeAlbedo(),
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // camera: top-down -> tilt-up (pitch -90 -> ~-6 deg), height on the same curve delayed 3 frames; then dolly finish,
   // living drift, and an accelerating orbit into the matte wipe
@@ -108,7 +111,7 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       <EMesh g={g.ground} m={mk({ map: g.map, mapAmt: 0.9, albedoNoise: 0.12, key: [0.2, 1, 0.3], edge: 0, angleDeg: 45, lift: 0.08 })} live={gl} />
       {/* clouds far behind (atmospheric) */}
       {g.clouds.map((c, i) => (
-        <EMesh key={i} g={c} m={mk({ atmos: 0.45 + i * 0.08, angleDeg: [38, 45, 52, 45, 38][i], seed: 30 + i, albedoNoise: 0.15, wrap: 0.5, edge: 0.5 })} live={gl}
+        <EMesh key={i} g={c} m={mk({ atmos: 0.45 + i * 0.08, angleDeg: [38, 45, 52, 45, 38][i], seed: 30 + i, albedoNoise: 0.15, wrap: 0.5, edge: 0.5, ...(dm ? { map: cloudStipple(i), mapAmt: 0.6 } : {}) })} live={gl}
           pos={[[-10, 12, 34, -34, 2][i] - (f - 290) * 0.01 * (i + 1), [2.6, 4.2, 3.4, 3.0, 6.5][i], [-26, -34, -44, -40, -60][i]]} scale={[2.4, 2.8, 3.4, 3.2, 4.2][i]} />
       ))}
       {/* small airliners flying the dotted routes on the map table */}

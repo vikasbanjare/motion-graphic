@@ -8,7 +8,7 @@ import { CredCardV2, CRED_V2_FRAMES } from "./CredCardV2.tsx";
 import { Detail } from "./v2/three.tsx";
 
 export const CRED_V2D_FRAMES = CRED_V2_FRAMES;
-export const DETAIL = { hatch: 0.75, hatchT: 0.4, stipple: 0.55, follow: 0.55, detail: 0.22 };
+export const DETAIL = { hatch: 0.75, hatchT: 0.4, stipple: 0.55, follow: 0.55, detail: 0.22, maps: true, gltfFollow: 0.15 };
 
 export const CredCardV2D: React.FC = () => (
   <Detail.Provider value={DETAIL}>
