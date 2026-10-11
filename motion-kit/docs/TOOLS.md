@@ -22,7 +22,7 @@ commercial use; the duty is to keep the copyright and license notice with any co
 | roughjs | MIT | sketchy hand-drawn shapes | yes, with a fixed seed |
 | maath | MIT | damping, easing and vector helpers | yes |
 | meyda | MIT | audio analysis (beats, onsets) to sync cuts to the mix | offline, yes |
-| @lucasmarkes/hairline | MIT | isometric line figures for SaaS and dev-tool pieces | no: own clock and pointer; drive it per frame first |
+| @lucasmarkes/hairline | MIT | isometric line figures for SaaS and dev-tool pieces | no: own clock and pointer; not used in films until it can be driven per frame |
 | topojson-client, world-atlas | ISC | land masks for globes and maps | yes |
 
 ## Checked and left out
@@ -36,6 +36,10 @@ commercial use; the duty is to keep the copyright and license notice with any co
 
 Remotion itself is not MIT: it is free for individuals and companies of up to three people; larger companies need a
 company license (see remotion.dev/license).
+
+## How the tools work together
+
+See `docs/ENSEMBLE.md`: every tool is a layer of `src/ensemble/`, on one shared look, paper and score.
 
 ## Reference corpus
 

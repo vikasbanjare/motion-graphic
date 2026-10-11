@@ -10,6 +10,7 @@ import { CRED_TEST_FRAMES, CredCardTest } from "./custom/cred/CredCardTest.tsx";
 import { CRED_V2_FRAMES, CredCardV2 } from "./custom/cred/CredCardV2.tsx";
 import { CRED_V2D_FRAMES, CredCardV2D } from "./custom/cred/CredCardV2D.tsx";
 import { CRED_V3P_FRAMES, CredCardV3P } from "./custom/cred/CredCardV3P.tsx";
+import { CRED_V5_FRAMES, CredCardV5 } from "./custom/cred/CredCardV5.tsx";
 import { CRED_V3_FRAMES, CredCardV3 } from "./custom/cred/CredCardV3.tsx";
 import { CRED_V4_FRAMES, CredCardV4 } from "./custom/cred/CredCardV4.tsx";
 import { F01_FRAMES, F01Press } from "./custom/cred/night/F01Press.tsx";
@@ -65,6 +66,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="CredCardV2" component={CredCardV2} durationInFrames={CRED_V2_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV2D" component={CredCardV2D} durationInFrames={CRED_V2D_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV3P" component={CredCardV3P} durationInFrames={CRED_V3P_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="CredCardV5" component={CredCardV5} durationInFrames={CRED_V5_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV3" component={CredCardV3} durationInFrames={CRED_V3_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV4" component={CredCardV4} durationInFrames={CRED_V4_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="Night01Press" component={F01Press} durationInFrames={F01_FRAMES} fps={24} width={1920} height={1080} />
