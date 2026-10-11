@@ -136,7 +136,7 @@ const Plane: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
           </Hinge>
           {/* nose corners fold under along their diagonals */}
           <Hinge at={[W / 2, 0, 0]} axis={[-2.6, s * H / 2, 0]} angle={-Math.PI * noseF}>
-            <EMesh g={rel(g.nose[k], [W / 2, 0, 0])} m={mat(4 + k)} double live={live} />
+            <EMesh g={rel(g.nose[k], [W / 2, 0, 0.003])} m={mat(4 + k)} double live={live} />
           </Hinge>
         </Hinge>
       ))}
@@ -148,7 +148,7 @@ const Hotel: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, li
   const g = useMemo(() => {
     const front = piece(-1.7, -1.0, 1.7, 2.0); // rises from the crease at y = -1
     const roof = piece(-1.7, 2.0, 1.7, 2.7); // folds over the top
-    const back = piece(-1.7, -2.3, 1.7, -1.0); // the page in front of the crease (stays)
+    const back = piece(-1.7, -H / 2, 1.7, -1.0); // the page in front of the crease (stays)
     const left = piece(-W / 2, -H / 2, -1.7, H / 2);
     const right = piece(1.7, -H / 2, W / 2, H / 2);
     const windows = merge(Array.from({ length: 12 }, (_, i) => new THREE.BoxGeometry(0.5, 0.42, 0.03).translate(-1.05 + (i % 4) * 0.7, 0.25 + Math.floor(i / 4) * 0.72, 0.02)));
@@ -181,18 +181,23 @@ const Hotel: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, li
 
 const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit, tex }) => {
   const g = useMemo(() => {
-    const s = 1.3; // half side of the base
+    const s = 0.9; // half side of the base; the sides reach the card's long edges exactly (3s = H/2)
     const base = piece(-s, -s, s, s);
-    const side = (k: number) => [
-      piece(-s, s, s, s + 2 * s), // top (+y)
-      piece(s, -s, s + 2 * s, s), // right (+x)
-      piece(-s, -s - 2 * s, s, -s), // bottom (-y)
-      piece(-s - 2 * s, -s, -s, s), // left (-x)
-    ][k];
-    const lid = piece(-s, 3 * s, s, 5 * s);
-    const rest = [piece(-W / 2, -H / 2, -3 * s, H / 2), piece(3 * s, -H / 2, W / 2, H / 2)];
-    const fan = new THREE.PlaneGeometry(2.2, 2.0).translate(0, 1.0, 0);
-    return { s, base, sides: [0, 1, 2, 3].map(side), lid, rest, fan };
+    const sides = [
+      piece(-s, s, s, 3 * s), // top (+y)
+      piece(s, -s, 3 * s, s), // right (+x)
+      piece(-s, -3 * s, s, -s), // bottom (-y)
+      piece(-3 * s, -s, -s, s), // left (-x)
+    ];
+    const lid = piece(3 * s, -s, W / 2, s); // hinged on the right side's far edge
+    const rest = [
+      piece(-W / 2, -H / 2, -3 * s, H / 2), // far left strip
+      piece(-3 * s, s, -s, H / 2), piece(s, s, 3 * s, H / 2), // top corners
+      piece(-3 * s, -H / 2, -s, -s), piece(s, -H / 2, 3 * s, -s), // bottom corners
+      piece(3 * s, s, W / 2, H / 2), piece(3 * s, -H / 2, W / 2, -s), // right strip above and below the lid
+    ];
+    const fan = new THREE.PlaneGeometry(1.6, 1.5).translate(0, 0.75, 0);
+    return { s, base, sides, lid, rest, fan };
   }, []);
   const s = g.s;
   const up = ramp(t, 0, 0.45, inOut);
@@ -200,7 +205,7 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
   const fanF = ramp(t, 0.7, 1, expoOut);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const litL = { ...live, lift: 0.2 + 0.55 * lit };
-  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex });
   const hinges: { at: V3; axis: V3; sgn: number }[] = [
     { at: [0, s, 0], axis: [1, 0, 0], sgn: -1 },
     { at: [s, 0, 0], axis: [0, 1, 0], sgn: 1 },
@@ -215,9 +220,9 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
       {g.sides.map((sd, k) => (
         <Hinge key={k} at={hinges[k].at} axis={hinges[k].axis} angle={hinges[k].sgn * (Math.PI / 2) * up}>
           <EMesh g={rel(sd, hinges[k].at)} m={mat(1 + k)} double live={live} />
-          {k === 0 && (
-            <Hinge at={[0, 2 * s, 0]} axis={[1, 0, 0]} angle={-lidF}>
-              <EMesh g={rel(g.lid, [0, 3 * s, 0])} m={mat(5)} double live={live} />
+          {k === 1 && (
+            <Hinge at={[2 * s, 0, 0]} axis={[0, 1, 0]} angle={lidF}>
+              <EMesh g={rel(g.lid, [3 * s, 0, 0])} m={mat(5)} double live={live} />
             </Hinge>
           )}
         </Hinge>
@@ -226,7 +231,7 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
       {fanF > 0 && [0, 1, 2, 3].map((i) => (
         <Hinge key={i} at={[0, s - 0.1, 0.02]} axis={[1, 0, 0]} angle={(Math.PI / 2 - 0.1 - i * 0.26) * fanF}>
           <EMesh g={g.fan} m={PAPER(60 + i)} double live={litL} />
-          <Gltf url={products[i]} size={0.9} m={PAPER(70 + i, { mapAmt: 0.8 })} pos={[-0.6 + i * 0.4, 0.95, 0.03]} rot={[Math.PI / 2, 0, 0.3 * i]} live={litL} />
+          <Gltf url={products[i]} size={0.7} m={PAPER(70 + i, { mapAmt: 0.8 })} pos={[-0.45 + i * 0.3, 0.72, 0.03]} rot={[Math.PI / 2, 0, 0.3 * i]} live={litL} />
         </Hinge>
       ))}
     </>
