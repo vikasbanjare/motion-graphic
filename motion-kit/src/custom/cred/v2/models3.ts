@@ -311,14 +311,18 @@ export const cloud2 = (n = 9, seed = 1) => {
     g.computeVertexNormals();
     return g;
   };
+  // a long low bank: wide puffs with a lot of overlap (so the engraving reads one mass, not a row of balls), a few
+  // taller heads, small caps only on the heads
   for (let i = 0; i < n; i++) {
-    const r = 0.95 + 0.7 * Math.abs(Math.sin(i * 2.7 + seed));
+    const head = i % 3 === 1;
+    const r = (head ? 1.35 : 1.0) + 0.35 * Math.abs(Math.sin(i * 2.7 + seed));
     const x = i * 1.35 - (n * 1.35) / 2;
-    parts.push(puff(r, x, r * 0.55, Math.sin(i * 3.1 + seed) * 0.35));
-    // upper tier between the big puffs
-    const r2 = 0.5 + 0.45 * Math.abs(Math.cos(i * 1.9 + seed * 1.3));
-    parts.push(puff(r2, x + 0.68, r * 0.95 + r2 * 0.45, Math.cos(i * 2.3 + seed) * 0.3, 1.05, 0.9));
-    if (i % 3 === 1) parts.push(puff(r2 * 0.7, x - 0.2, r * 1.25 + r2 * 0.5, 0.1, 1, 0.95));
+    parts.push(puff(r, x, r * 0.42, Math.sin(i * 3.1 + seed) * 0.3, 1.45, head ? 0.8 : 0.62));
+    if (head) {
+      const r2 = 0.42 + 0.25 * Math.abs(Math.cos(i * 1.9 + seed * 1.3));
+      parts.push(puff(r2, x + 0.55, r * 0.78 + r2 * 0.4, 0.15, 1.1, 0.85));
+      parts.push(puff(r2 * 0.8, x - 0.5, r * 0.74 + r2 * 0.35, -0.1, 1.1, 0.85));
+    }
   }
   return merge(parts);
 };
