@@ -362,7 +362,7 @@ export const ProductsTake: React.FC = () => {
     <AbsoluteFill>
       <AbsoluteFill style={{ clipPath: clip }}>
         <AbsoluteFill style={{ background: "linear-gradient(180deg, #f1d3c2 0%, #e9c4b1 55%, #dcae99 72%, #e6bfab 100%)" }} />
-        {paint ? <BrushLayer bus={bus} f={f} /> : null}
+        {paint ? <BrushLayer bus={bus} f={f} washOpacity={105} /> : null}
         <World style={paint ? { mixBlendMode: "multiply" } : undefined}>
           {paint ? <MaskProbe bus={bus} f={f} /> : null}
           <ProductsWorld f={f} />
