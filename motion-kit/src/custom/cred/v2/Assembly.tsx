@@ -100,7 +100,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
   return (
     <>
       <Cam pos={[x, y, z]} target={[x * 0.6, dm && camY === undefined ? -2.2 : 0, 0]} fov={fov} roll={rl} />
-      {dm ? <EMesh g={g.ground!} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 33, albedo: 1.5, lift: 0.55, edge: 0, atmos: 0.85, fill: 0.1 })} live={liveA} pos={[0, G - 0.02, -6]} rot={[-Math.PI / 2, 0, 0]} /> : null}
+      {dm ? <EMesh g={g.ground!} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 33, albedo: 1.5, lift: 0.6, edge: 0, atmos: 0.95, fill: 0.1, opacity: 0.999 })} live={{ ...liveA, opacity: S ? 0.6 : 0.6 * ramp(f, 88, 104) }} pos={[0, G - 0.02, -6]} rot={[-Math.PI / 2, 0, 0]} /> : null}
       {/* far: paper planes (atmospheric: low contrast, lifted toward paper) */}
       {(settled || f > 100 ? [0, 1, 2] : []).map((k) => {
         const t = planeT(k);
