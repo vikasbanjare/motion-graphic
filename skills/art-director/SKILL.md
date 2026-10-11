@@ -184,3 +184,14 @@ do not fight:
   world. v2's liked chain (loupe → route map tilting up into the globe) was the one rich asset used in one long move.
   Rule: **no new film until the hero asset would pass as an illustration in a still, judged against a reference frame
   side by side.** Quantity of films is never the answer to "worse".
+- 2026-10-11, v2 detailing pass (user: v2 is "closest to what I want but still needs the overall detailing"). Levers
+  that moved a still from "primitives under a line screen" to "engraving", in order of effect: (1) shader richness:
+  cross-hatch second family in dark tones, stipple in light tones, lines that follow the form (`hatch/stipple/follow`
+  in `v2/engrave.ts`, supplied scene-wide through the `Detail` context); (2) drawn greyscale albedo maps per material
+  (cardboard creases, bag paper + label, gift paper, ribbon weave, balloon gores, cloud stipple, globe relief in
+  `v2/detail.ts`); (3) a hair-line family interleaved with the heavy rules in the guilloche field; (4) security-print
+  detail on the product card (mesh margin, double rule, micro-text). Two traps: form-following lines swirl on scanned
+  glTF meshes (bumpy normals) — keep `follow` at 0 for scans; a dense map plus full cross-hatch turns a hero (the globe)
+  into a dark ball — lower hatch where the map carries the detail. Gate used: v2 vs v2D stills side by side, six
+  frames, before any motion render. Also: a native UI "glass card" in an engraved world reads as a mistake; the docket
+  that replaced it is drawn paper (margin mesh, rosette, foil underline) and belongs to the world.
