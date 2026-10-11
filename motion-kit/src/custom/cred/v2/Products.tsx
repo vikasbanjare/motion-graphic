@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
 import { Cam, Detail, EMesh, Gltf, M, Shadow, World } from "./three.tsx";
+import { BrushLayer, MaskProbe, Paint, makeBus } from "./paint.tsx";
 import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
@@ -92,8 +93,12 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       {g.dress ? (
         <>
           <EMesh g={g.dress.arcade} m={mk({ atmos: 0.55, seed: 60, angleDeg: 45, albedoNoise: 0.2, edge: 0.4, hatch: 0.4 })} live={gl} pos={[-cx * 0.3 - 1, -2.2, -17]} scale={1.25} />
+          <Paint id={7} wash={ter[2][0]} ink={ter[0][0]}>
           <EMesh g={g.dress.plant} m={mk({ atmos: 0.3, seed: 61, angleDeg: 52, edge: 0.5 })} live={gl} pos={[8.6, -2.2, -8]} rot={[0, 0.4, 0]} scale={1.6} />
+          </Paint>
+          <Paint id={8} wash={ter[2][0]} ink={ter[0][0]}>
           <EMesh g={g.dress.plant} m={mk({ atmos: 0.42, seed: 62, angleDeg: 38, edge: 0.5 })} live={gl} pos={[-9.2, -2.2, -9]} rot={[0, -0.6, 0]} scale={1.4} />
+          </Paint>
         </>
       ) : (
         <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5, ...MAP(kraft(5), 0.5) })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
@@ -121,14 +126,19 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       {g.dress ? (
         <>
           {/* v2D still life on low pedestals: headphones, perfume bottle, open box with tissue, wristwatch; a duffel on the floor */}
+          <Paint id={1} wash={ter[2][0]} ink={ter[0][0]}>
           <group position={[-6.2, -2.2, -2.0]} scale={1.25}>
             <EMesh g={g.ped} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
             <EMesh g={g.dress.headphones} m={mk({ seed: 81, spec: 0.35, shininess: 30, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, 0.5 + lf * 0.002, 0]} scale={1.05} />
           </group>
+          </Paint>
+          <Paint id={2} wash={ter[2][0]} ink={ter[0][0]}>
           <group position={[-2.8, -2.2, -4.2]} scale={1.2}>
             <EMesh g={g.pedTall} m={mk({ seed: 82, angleDeg: 52 })} live={gl} />
             <EMesh g={g.dress.bottle} m={mk({ seed: 83, spec: 0.55, shininess: 60, foil: 0.2 })} live={{ ...gl, foilPhase: lf * 0.003 }} pos={[0, 2.2, 0]} rot={[0, 0.3 + lf * 0.003, 0]} scale={1.1} />
           </group>
+          </Paint>
+          <Paint id={3} wash={ter[2][0]} ink={ter[0][0]}>
           <group position={[1.5, -2.2, -3.4]} scale={1.35}>
             <EMesh g={g.ped} m={mk({ seed: 84, angleDeg: 45 })} live={gl} />
             <group position={[0, 0.9, 0]} rotation={[0, -0.35, 0]} scale={1.25}>
@@ -136,11 +146,16 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
               <EMesh g={g.dress.open.tissue} m={mk({ seed: 86, albedo: 1.2, edge: 0.4, lift: 0.1 })} live={gl} double />
             </group>
           </group>
+          </Paint>
+          <Paint id={4} wash={ter[2][0]} ink={ter[0][0]}>
           <group position={[5.2, -2.2, -1.4]} scale={1.25}>
             <EMesh g={g.ped} m={mk({ seed: 87, angleDeg: 52 })} live={gl} />
             <EMesh g={g.dress.watch} m={mk({ seed: 88, spec: 0.6, shininess: 50, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, -0.4 + lf * 0.002, 0]} scale={1.0} />
           </group>
+          </Paint>
+          <Paint id={5} wash={ter[2][0]} ink={ter[0][0]}>
           <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[8.4, -2.2, -0.2]} rot={[0, -0.55, 0]} scale={1.2} />
+          </Paint>
         </>
       ) : (
         <>
@@ -185,10 +200,12 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
         </>
       ) : null}
       {/* hero: gift box approaching, pearl foil on the ribbon only */}
+      <Paint id={6} wash={ter[2][0]} ink={ter[0][0]}>
       <group position={dm ? [-1.9 + lf * 0.004, -2.2, 1.6] : [2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={(dm ? 1.0 : 1.5) * approach}>
         <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45, ...MAP(giftPaper(5)) })} live={gl} />
         <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.6, spec: 0.5, angleDeg: 38, ...MAP(ribbon(3), 0.5) })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
       </group>
+      </Paint>
     </>
   );
 };
@@ -333,6 +350,8 @@ const Slab: React.FC<{ edge: number }> = ({ edge }) => {
 export const ProductsTake: React.FC = () => {
   const lf = useCurrentFrame();
   const f = lf + T.matte;
+  const paint = useContext(Detail).paint === true;
+  const bus = useMemo(() => makeBus(), []);
   const detailed = useContext(Detail).maps;
   // the slab slides in from the right for 2 frames, then its trailing edge is the matte (11 measured steps)
   const wiping = detailed ? lf < 15 : lf < 13;
@@ -343,7 +362,9 @@ export const ProductsTake: React.FC = () => {
     <AbsoluteFill>
       <AbsoluteFill style={{ clipPath: clip }}>
         <AbsoluteFill style={{ background: "linear-gradient(180deg, #f1d3c2 0%, #e9c4b1 55%, #dcae99 72%, #e6bfab 100%)" }} />
-        <World>
+        {paint ? <BrushLayer bus={bus} f={f} /> : null}
+        <World style={paint ? { mixBlendMode: "multiply" } : undefined}>
+          {paint ? <MaskProbe bus={bus} f={f} /> : null}
           <ProductsWorld f={f} />
         </World>
         <Paper id="prod" mottle={0.035} grain={0.1} />

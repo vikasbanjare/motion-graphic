@@ -2,6 +2,7 @@ import React, { useContext, useLayoutEffect, useRef } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Paper, Vignette } from "./fx.tsx";
 import { Detail } from "./three.tsx";
+import { getStroke } from "perfect-freehand";
 import { C, INK, T, expoOut, lerp, ramp, rnd } from "./look.ts";
 
 /**
@@ -37,10 +38,25 @@ const wavePath = (x0: number, x1: number, y: number, amp: number, k: number, pha
   return d;
 };
 
+/** A pen stroke as a filled outline (perfect-freehand): the wave sampled as pen points with pressure that swells and
+ * tapers, so the line has the weight change of a real nib. */
+const penPath = (x0: number, x1: number, y: number, amp: number, k: number, phase: number, size: number) => {
+  const n = Math.max(2, Math.round((x1 - x0) / 6));
+  const pts: [number, number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n, x = x0 + (x1 - x0) * t;
+    pts.push([x, y + amp * Math.sin((k * Math.PI * 2 * (x - x0)) / Math.max(1, x1 - x0) + phase), 0.35 + 0.65 * Math.sin(Math.PI * Math.min(1, t * 1.15))]);
+  }
+  const o = getStroke(pts, { size, thinning: 0.55, smoothing: 0.6, streamline: 0.3, simulatePressure: false, start: { taper: 0 }, end: { taper: size * 4 } });
+  if (o.length < 3) return "";
+  return o.map(([px, py], i) => `${i ? "L" : "M"}${px.toFixed(1)} ${py.toFixed(1)}`).join(" ") + " Z";
+};
+
 /** Step A: a single heavy stroke drawn by a pen while the paper trucks left (easeInQuad on velocity). */
 export const StepA: React.FC = () => {
   const f = useCurrentFrame();
   const flat = useContext(Detail).maps === true;
+  const pen = useContext(Detail).paint === true;
   // truck: velocity 0 -> 0.5 W/s from f6, integrate per frame
   let x = 0;
   for (let i = 7; i <= f; i++) x += 1920 * 0.55 * Math.min(1, ((i - 7) / 15) ** 2) / 24;
@@ -55,7 +71,11 @@ export const StepA: React.FC = () => {
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
         {flat ? (
-          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke="#3a3a3e" strokeWidth={8} strokeLinecap="round" filter="url(#bleedA)" />
+          pen ? (
+            <path d={penPath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6, 10)} fill="#3a3a3e" filter="url(#bleedA)" />
+          ) : (
+            <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke="#3a3a3e" strokeWidth={8} strokeLinecap="round" filter="url(#bleedA)" />
+          )
         ) : (
           <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round" strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
         )}
@@ -70,6 +90,7 @@ export const StepA: React.FC = () => {
 export const StepB: React.FC = () => {
   const f = useCurrentFrame(); // local, 0..18
   const flat = useContext(Detail).maps === true;
+  const pen = useContext(Detail).paint === true;
   return (
     <AbsoluteFill style={{ background: flat ? "#e3e3e0" : "#d9d9d6" }}>
       <svg width={1920} height={1080} style={{ position: "absolute" }}>
@@ -83,7 +104,12 @@ export const StepB: React.FC = () => {
               const centre = Math.min(1100, 780 + f * 18);
               const frac = [0.42, 0.55, 1.0, 0.7][i];
               const end = Math.min(centre * frac, f * [110, 130, 400, 150][i] + 40);
-              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#3a3a3e" strokeWidth={i === 2 ? 8 : 6.5} strokeLinecap="round" filter="url(#bleedB)" />;
+              const yy = 540 + [-62, -40, 0, 26][i], am = [12, 14, 18, 15][i], ph0 = 0.6 + i * 0.35;
+              return pen ? (
+                <path key={i} d={penPath(0, end, yy, am, end / 460, ph0, i === 2 ? 10 : 8)} fill="#3a3a3e" filter="url(#bleedB)" />
+              ) : (
+                <path key={i} d={wavePath(0, end, yy, am, end / 460, ph0)} fill="none" stroke="#3a3a3e" strokeWidth={i === 2 ? 8 : 6.5} strokeLinecap="round" filter="url(#bleedB)" />
+              );
             })
           : Array.from({ length: 5 }, (_, i) => {
               const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);

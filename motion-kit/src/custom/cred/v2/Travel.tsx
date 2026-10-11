@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
 import { Cam, Detail, EMesh, Gltf, M, Shadow, World } from "./three.tsx";
+import { BrushLayer, MaskProbe, Paint, makeBus } from "./paint.tsx";
 import { airplane, globeStand, hotelBell } from "./models.ts";
 import { globeAlbedo, landTexture, roomKey, merge } from "./models2.ts";
 import { cloudStipple, globeRelief } from "./detail.ts";
@@ -183,10 +184,12 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       })}
       {g.glass ? (
         // v2D: a large airliner crosses the map table under the top-down lens, then flies out as the world tilts up
+        <Paint id={6} wash={ind[2][0]} ink={ind[0][0]}>
         <group position={[lerp(-1.5, 22, ramp(f, 286, 346, (t) => t)), 2.3 + 1.5 * tiltH, 2.4]} rotation={[0.06, -0.3, -0.1]} scale={0.36}>
           <EMesh g={g.plane} m={mk({ spec: 0.35, seed: 20, angleDeg: 45, hatch: 0.6 })} live={gl} />
           <EMesh g={g.glass} m={mk({ albedo: 0.3, edge: 0, seed: 21 })} live={gl} />
         </group>
+        </Paint>
       ) : null}
       {/* far airliners crossing the sky */}
       {[0, 1].map((k) => (
@@ -196,6 +199,7 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
         </group>
       ))}
       {/* the globe on its stand (scale 2: sphere r 2, stand foot on the ground) */}
+      <Paint id={1} wash={ind[2][0]} ink={ind[0][0]}>
       <group position={[0, 4, 0]} scale={2}>
         <group rotation={[0, 0, THREE.MathUtils.degToRad(23.4) * tilt]}>
           <group rotation={[0, -1.6 + spin, 0]}>
@@ -216,16 +220,21 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
           </group>
         </group>
       </group>
+      </Paint>
       {g.dress ? (
         <>
           {/* far ridge behind the cloud banks, a folded map and passports on the table, a tag on the suitcase handle */}
           <EMesh g={g.dress.ridge} m={mk({ atmos: 0.78, seed: 70, angleDeg: 38, edge: 0.3 })} live={gl} pos={[-6, 0, -78]} />
           <EMesh g={g.dress.ridge2} m={mk({ atmos: 0.7, seed: 71, angleDeg: 52, edge: 0.3 })} live={gl} pos={[22, 0, -66]} />
           <EMesh g={g.dress.map} m={mk({ map: g.map, mapAmt: 0.8, seed: 72, angleDeg: 45, edge: 0.2, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} pos={[-3.2, 0, 6.8]} rot={[0, 0.5, 0]} scale={1.2} double />
+          <Paint id={4} wash={ind[2][0]} ink={ind[0][0]}>
           <EMesh g={g.dress.passports} m={mk({ seed: 73, angleDeg: 52, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} pos={[6.0, 0, 6.4]} rot={[0, -0.4, 0]} scale={0.9} />
+          </Paint>
+          <Paint id={5} wash={ind[2][0]} ink={ind[0][0]}>
           <group position={[7.0, 4.05, 4.9]} rotation={[0, -0.55, 0.18 + 0.06 * Math.sin(f / 9)]}>
             <EMesh g={g.dress.tag} m={mk({ seed: 74, angleDeg: 45, albedo: 1.1, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} scale={0.7} double />
           </group>
+          </Paint>
         </>
       ) : null}
       {dm && tiltH > 0.02 ? (
@@ -237,11 +246,15 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
         </group>
       ) : null}
       {/* hotels: suitcase and desk bell, room key */}
+      <Paint id={2} wash={ind[2][0]} ink={ind[0][0]}>
       <group position={[8.2, 0, 3.4]} rotation={[0, -0.55, 0]}>
         <Gltf url={M.suitcase} size={4.2} m={mk({ angleDeg: 52, seed: 11, mapAmt: 0.85, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pick={(_, i) => i < 4} />
       </group>
+      </Paint>
       {/* v2D: the table props appear with the tilt-up; the top-down map shot shows only the map and the airliner */}
+      <Paint id={3} wash={ind[2][0]} ink={ind[0][0]}>
       <EMesh g={g.bell} m={mk({ spec: 0.7, shininess: 50, seed: 12, angleDeg: 38, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pos={[3.6, 0, 4.2]} scale={1.0} />
+      </Paint>
       <EMesh g={g.key} m={mk({ spec: 0.45, seed: 13, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pos={[5.2, 0.12, 5.6]} rot={[-Math.PI / 2, 0, 0.6]} scale={0.55} />
     </>
   );
@@ -251,6 +264,8 @@ export const TravelTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
   const lf = useCurrentFrame() - lead;
   const dm = useContext(Detail).maps === true;
   const f = lf + T.swap;
+  const paint = useContext(Detail).paint === true;
+  const bus = useMemo(() => makeBus(), []);
   // incoming lens: circle(47.5vw) dropping on the measured keyframes
   // v2D: the drop keeps the measured path but eases into it (no one-frame jump), and the ring dissolves out instead of
   // switching off
@@ -277,7 +292,9 @@ export const TravelTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
     <AbsoluteFill style={{ clipPath: clip }}>
       <AbsoluteFill style={{ background: "#e9e1cf" }} />
       <AbsoluteFill style={{ opacity: skyT, background: "linear-gradient(180deg, #c9c6de 0%, #e2dccd 52%, #efe8d8 70%)" }} />
-      <World>
+      {paint ? <BrushLayer bus={bus} f={f} /> : null}
+      <World style={paint ? { mixBlendMode: "multiply" } : undefined}>
+        {paint ? <MaskProbe bus={bus} f={f} /> : null}
         <TravelWorld f={f} />
       </World>
       <Paper id="travel" mottle={0.035} grain={0.1} />

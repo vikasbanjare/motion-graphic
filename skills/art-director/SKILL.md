@@ -245,3 +245,12 @@ do not fight:
   frame (`LabBrush` composition, docs in `motion-kit/docs/brush-and-hairline.md`). This is the route to the user's
   painted reference sheet without AI plates: masks from the 3D world, filled and hatched by p5.brush. hairline is
   pointer-driven isometric line figures for the studio and web; not frame-deterministic in renders unless driven.
+- 2026-10-11, toolset and corpus (user asked to "find all the good MIT repos, install them, learn from 400-500
+  videos and rebuild the CRED film choosing a tool per shot"). Installed as packages, license-checked, registry and
+  per-shot map in `motion-kit/docs/TOOLS.md`; left out gsap (own license), lygia (non-commercial), theatre studio
+  (AGPL). The 513-prompt corpus `research/opus55-prompts/` (MIT, credited) is the "learn from videos" part: its digest
+  gives eight rules every brief now gets checked against, the first being "every scene is made out of the previous one;
+  no crossfades". v3 (`CredCardV3P`) adds the painted pass: an id-mask render of each 3D world, traced by d3-contour,
+  painted by p5.brush as a watercolour wash plus pencil silhouette, multiplied under the engraved render; the opening
+  pen strokes come from perfect-freehand. Two traps: the brush canvas clears to opaque white (composite it with
+  multiply), and thin parts (a string) must get pencil only, no wash, or the bleed fogs the frame.
