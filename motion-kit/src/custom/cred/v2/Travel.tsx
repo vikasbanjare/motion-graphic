@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
-import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, Shadow, World } from "./three.tsx";
 import { airplane, globeStand, hotelBell } from "./models.ts";
 import { globeAlbedo, landTexture, roomKey, merge } from "./models2.ts";
 import { cloudStipple, globeRelief } from "./detail.ts";
@@ -227,6 +227,14 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
             <EMesh g={g.dress.tag} m={mk({ seed: 74, angleDeg: 45, albedo: 1.1, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} scale={0.7} double />
           </group>
         </>
+      ) : null}
+      {dm && tiltH > 0.02 ? (
+        <group>
+          <Shadow pos={[0, 0.012, 0]} w={4.4} d={3.6} ink={ind[0][0]} opacity={0.22 * tiltH} />
+          <Shadow pos={[8.2, 0.012, 3.4]} w={5.2} d={3.0} ink={ind[0][0]} opacity={0.2 * tiltH} />
+          <Shadow pos={[3.6, 0.012, 4.2]} w={2.8} d={2.2} ink={ind[0][0]} opacity={0.2 * tiltH} />
+          <Shadow pos={[6.0, 0.012, 6.4]} w={2.2} d={2.4} ink={ind[0][0]} opacity={0.18 * tiltH} />
+        </group>
       ) : null}
       {/* hotels: suitcase and desk bell, room key */}
       <group position={[8.2, 0, 3.4]} rotation={[0, -0.55, 0]}>

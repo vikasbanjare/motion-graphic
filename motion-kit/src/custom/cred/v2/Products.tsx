@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import * as THREE from "three";
-import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, Shadow, World } from "./three.tsx";
 import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
@@ -106,6 +106,16 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
           </group>
         );
       })}
+      {g.dress ? (
+        <group>
+          {([
+            [-6.2, -2.0, 4.6, 3.4], [-2.8, -4.2, 3.8, 3.0], [1.5, -3.4, 4.8, 3.6], [5.2, -1.4, 4.4, 3.2], [8.4, -0.2, 4.8, 3.0],
+            [-1.9 + lf * 0.004, 1.6, 3.4, 3.0], [-3.4, 2.6, 1.8, 1.6], [7.2, 3.4, 1.6, 1.4], [8.6, -8, 3.2, 2.6], [-9.2, -9, 3.0, 2.4],
+          ] as [number, number, number, number][]).map(([sx, sz, w, d], i) => (
+            <Shadow key={i} pos={[sx, -2.19, sz]} w={w} d={d} ink={ter[0][0]} opacity={0.2} />
+          ))}
+        </group>
+      ) : null}
       {g.dress ? (
         <>
           {/* v2D still life on low pedestals: headphones, perfume bottle, open box with tissue, wristwatch; a duffel on the floor */}

@@ -171,6 +171,31 @@ export const Gltf: React.FC<{
   );
 };
 
+/** Soft contact shadow: a flat radial-alpha disc in the ink colour under an object (the sheet's grounded objects). */
+const shadowCache = new Map<string, THREE.CanvasTexture>();
+const shadowTex = (ink: string) => {
+  let t = shadowCache.get(ink);
+  if (t) return t;
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const x = c.getContext("2d")!;
+  const g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, ink + "ff");
+  g.addColorStop(0.45, ink + "a0");
+  g.addColorStop(1, ink + "00");
+  x.fillStyle = g;
+  x.fillRect(0, 0, 256, 256);
+  t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  shadowCache.set(ink, t);
+  return t;
+};
+export const Shadow: React.FC<{ pos: V3; w: number; d: number; ink?: string; opacity?: number; rot?: number }> = ({ pos, w, d, ink = "#223344", opacity = 0.28, rot = 0 }) => {
+  const mat = useMemo(() => new THREE.MeshBasicMaterial({ map: shadowTex(ink), transparent: true, depthWrite: false, opacity }), [ink, opacity]);
+  const geo = useMemo(() => new THREE.PlaneGeometry(1, 1), []);
+  return <mesh geometry={geo} material={mat} position={pos} rotation={[-Math.PI / 2, 0, rot]} scale={[w, d, 1]} />;
+};
+
 export const M = {
   suitcase: "custom/cred-v2/models/vintage_suitcase/vintage_suitcase_1k.gltf",
   box: "custom/cred-v2/models/cardboard_box_01/cardboard_box_01_1k.gltf",

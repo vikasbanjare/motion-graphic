@@ -10,7 +10,7 @@ import { Detail } from "./v2/three.tsx";
 export const CRED_V2D_FRAMES = CRED_V2_FRAMES;
 // the look of the user's target sheet: a finer screen (period x0.72), cross-hatched shadows, stipple in the lights, and a
 // watercolour tone wash under the lines so forms read as shaded illustration rather than a line screen
-export const DETAIL = { hatch: 0.7, hatchT: 0.42, stipple: 0.5, follow: 0.5, detail: 0.2, wash: 0.42, periodScale: 0.72, maps: true, gltfFollow: 0 };
+export const DETAIL = { hatch: 0.55, hatchT: 0.4, stipple: 0.7, follow: 0.5, detail: 0.1, wash: 0.6, periodScale: 0.45, edge: 1.0, maps: true, gltfFollow: 0 };
 
 export const CredCardV2D: React.FC = () => (
   <Detail.Provider value={DETAIL}>

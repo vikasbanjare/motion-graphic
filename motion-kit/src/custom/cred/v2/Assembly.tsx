@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import * as THREE from "three";
-import { Cam, Detail, EMesh, Gltf, M, type Live } from "./three.tsx";
+import { Cam, Detail, EMesh, Gltf, M, Shadow, type Live } from "./three.tsx";
 import { bagOrnament, bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { shoppingBag, coinStack } from "./models2.ts";
@@ -100,6 +100,17 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
   return (
     <>
       <Cam pos={[x, y, z]} target={[x * 0.6, dm && camY === undefined ? -2.2 : 0, 0]} fov={fov} roll={rl} />
+      {dm ? (
+        <group>
+          {([
+            [4.6 + bagBack.dx, -7.5, 4.6, 3.0], [-7.4 + giftL.dx, -5.2, 3.2, 3.0], [-6.4 + bigBox.dx, -0.6, 6.6, 5.6], [-10.8 + bagL.dx, -3.4, 4.2, 2.8],
+            [-1.6 + parcels.dx, -3.4, 3.6, 2.8], [6.6 + bagR.dx, 0.4, 6.0, 3.6], [1.8 + gift.dx, -0.4, 3.6, 3.4], [10.2 + boxR.dx, -3.8, 4.6, 4.2],
+            [3.4 + coins.dx, 2.4, 1.8, 1.8], [-2.8 + front.dx, 3.4, 4.0, 3.0],
+          ] as [number, number, number, number][]).map(([sx, sz, w, d], i) => (
+            <Shadow key={i} pos={[sx, G + 0.01, sz]} w={w} d={d} ink={inks.a[0][0]} opacity={0.22} />
+          ))}
+        </group>
+      ) : null}
       {dm ? <EMesh g={g.ground!} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 33, albedo: 1.5, lift: 0.6, edge: 0, atmos: 0.95, fill: 0.1, opacity: 0.999 })} live={{ ...liveA, opacity: S ? 0.6 : 0.6 * ramp(f, 88, 104) }} pos={[0, G - 0.02, -6]} rot={[-Math.PI / 2, 0, 0]} /> : null}
       {/* far: paper planes (atmospheric: low contrast, lifted toward paper) */}
       {(settled || f > 100 ? [0, 1, 2] : []).map((k) => {
