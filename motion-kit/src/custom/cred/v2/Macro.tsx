@@ -43,8 +43,8 @@ const TagWorld: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-export const MacroTake: React.FC = () => {
-  const lf = useCurrentFrame();
+export const MacroTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
+  const lf = useCurrentFrame() - lead;
   const f = lf + T.cutMacro;
   const dm = useContext(Detail).maps === true;
   const tagIn = dm ? ramp(f, T.push + 2, T.push + 16) : 0;

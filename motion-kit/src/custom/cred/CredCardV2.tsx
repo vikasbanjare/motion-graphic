@@ -24,8 +24,9 @@
  * Render: npx remotion render src/index.ts CredCardV2 out/cred-card-v2.mp4 --gl=swangle
  */
 import { loadFont } from "@remotion/fonts";
-import React, { useEffect, useState } from "react";
-import { AbsoluteFill, Audio, Sequence, continueRender, delayRender, staticFile } from "remotion";
+import React, { useContext, useEffect, useState } from "react";
+import { AbsoluteFill, Audio, Sequence, continueRender, delayRender, staticFile, useCurrentFrame } from "remotion";
+import { Detail } from "./v2/three.tsx";
 import { FRAMES, T } from "./v2/look.ts";
 import { StepA, StepB } from "./v2/Opening.tsx";
 import { RevealTake } from "./v2/Reveal.tsx";
@@ -54,8 +55,21 @@ const useFonts = () => {
   }, [h]);
 };
 
+/** v2D: a take fades in over its first n frames (an 8-frame dissolve over the hard cuts). */
+const FadeIn: React.FC<{ n: number; children: React.ReactNode }> = ({ n, children }) => {
+  const f = useCurrentFrame();
+  return <AbsoluteFill style={{ opacity: Math.min(1, f / n) }}>{children}</AbsoluteFill>;
+};
+const FadeBlack: React.FC<{ n: number }> = ({ n }) => {
+  const f = useCurrentFrame();
+  return <AbsoluteFill style={{ background: "#000", opacity: Math.min(1, f / n) }} />;
+};
+
 export const CredCardV2: React.FC = () => {
   useFonts();
+  // v2D: the hard cuts become 8-frame dissolves (the incoming take starts early with a lead so its clock is unchanged)
+  const smooth = useContext(Detail).maps === true;
+  const L = smooth ? 8 : 0;
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       <Sequence from={T.stepA} durationInFrames={T.stepB - T.stepA} name="1 line">
@@ -67,8 +81,10 @@ export const CredCardV2: React.FC = () => {
       <Sequence from={T.stepC} durationInFrames={T.cutMacro - T.stepC} name="3-5 field, parcel world, card reveal">
         <RevealTake />
       </Sequence>
-      <Sequence from={T.cutMacro} durationInFrames={T.swap + 16 - T.cutMacro} name="6 loupe macro, push-through, lens swap">
-        <MacroTake />
+      <Sequence from={T.cutMacro - L} durationInFrames={T.swap + 16 - T.cutMacro + L} name="6 loupe macro, push-through, lens swap">
+        <FadeIn n={L}>
+          <MacroTake lead={L} />
+        </FadeIn>
       </Sequence>
       <Sequence from={T.swap} durationInFrames={T.products - T.swap} name="7 route map, tilt-up, travel world">
         <TravelTake />
@@ -76,12 +92,21 @@ export const CredCardV2: React.FC = () => {
       <Sequence from={T.matte} durationInFrames={T.cutCard - T.matte} name="8 products world">
         <ProductsTake />
       </Sequence>
-      <Sequence from={T.cutCard} durationInFrames={T.studio - T.cutCard} name="9 seal, pull-back, whip">
-        <CardTake />
+      <Sequence from={T.cutCard - L} durationInFrames={T.studio - T.cutCard + L} name="9 seal, pull-back, whip">
+        <FadeIn n={L}>
+          <CardTake lead={L} />
+        </FadeIn>
       </Sequence>
-      <Sequence from={T.studio} durationInFrames={T.lockup - T.studio} name="10 studio">
-        <StudioTake />
+      <Sequence from={T.studio - L} durationInFrames={T.lockup - T.studio + L} name="10 studio">
+        <FadeIn n={L}>
+          <StudioTake lead={L} />
+        </FadeIn>
       </Sequence>
+      {smooth ? (
+        <Sequence from={T.lockup - 11} durationInFrames={11} name="fade to black">
+          <FadeBlack n={10} />
+        </Sequence>
+      ) : null}
       <Sequence from={T.lockup} durationInFrames={FRAMES - T.lockup} name="11 lockup">
         <Lockup />
       </Sequence>

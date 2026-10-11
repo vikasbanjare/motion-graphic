@@ -23,6 +23,8 @@ const mk = (extra: Partial<EOpts> = {}): EOpts => ({ palette: ter, periodFrac: 0
 
 // matte edge (% W) per frame, measured object-matte profile, mirrored to run right -> left
 const EDGE = [0, 7.2, 16.2, 28.4, 42.2, 55.6, 67.2, 76.9, 84.7, 90.9, 95.6, 100].map((e) => 100 - e);
+// v2D: the same profile with a two-frame lead-in (1.5 %, 3.8 %) so the wipe accelerates instead of starting at speed
+const EDGE_S = [0, 1.5, 3.8, 7.2, 16.2, 28.4, 42.2, 55.6, 67.2, 76.9, 84.7, 90.9, 95.6, 100].map((e) => 100 - e);
 
 const skyline = () => {
   const parts: THREE.BufferGeometry[] = [];
@@ -333,8 +335,8 @@ export const ProductsTake: React.FC = () => {
   const f = lf + T.matte;
   const detailed = useContext(Detail).maps;
   // the slab slides in from the right for 2 frames, then its trailing edge is the matte (11 measured steps)
-  const wiping = lf < 13;
-  const edge = lf < 2 ? 100 : wiping ? EDGE[Math.min(11, lf - 2)] : 0;
+  const wiping = detailed ? lf < 15 : lf < 13;
+  const edge = lf < 2 ? 100 : wiping ? (detailed ? EDGE_S[Math.min(13, lf - 2)] : EDGE[Math.min(11, lf - 2)]) : 0;
   const slabEdge = lf < 2 ? [126, 112][lf] : edge;
   const clip = wiping ? `inset(0 0 0 ${edge}%)` : undefined;
   return (

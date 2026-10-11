@@ -249,12 +249,19 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
 
 export const TravelTake: React.FC = () => {
   const lf = useCurrentFrame();
+  const dm = useContext(Detail).maps === true;
   const f = lf + T.swap;
   // incoming lens: circle(47.5vw) dropping on the measured keyframes
-  const k = Math.min(15, Math.max(0, lf));
+  // v2D: the drop keeps the measured path but eases into it (no one-frame jump), and the ring dissolves out instead of
+  // switching off
+  const kRaw = Math.min(15, Math.max(0, lf));
+  const kt = kRaw / 15;
+  const k = dm ? 15 * kt * kt * (3 - 2 * kt) : kRaw;
   const swX = SWX[Math.floor(k)] + (SWX[Math.min(15, Math.floor(k) + 1)] - SWX[Math.floor(k)]) * (k % 1);
   const swY = SWY[Math.floor(k)] + (SWY[Math.min(15, Math.floor(k) + 1)] - SWY[Math.floor(k)]) * (k % 1);
-  const swapping = lf < 16;
+  const swapping = dm ? lf < 24 : lf < 16;
+  const ringOut = dm ? ramp(lf, 15, 23, (t) => t) : 0;
+  const swR = 0.475 * 1920 * (1 + 0.6 * ringOut);
   const cx = swapping ? swX / 100 : 0.506;
   const cy = swapping ? swY / 100 : 0.525;
   // iris-out (ease-in, 7 frames) then the lens is gone
@@ -263,7 +270,7 @@ export const TravelTake: React.FC = () => {
   const skyT = ramp(f, TILT0 + 12, TILT0 + 26);
   const hl = ramp(f, 340, 345, (t) => t);
   const rise = interpolate(f, [340, 364], [0.025 * 1080, 0], { ...C, easing: expoOut });
-  const clip = swapping ? `circle(${0.475 * 1920}px at ${cx * 100}% ${cy * 100}%)` : undefined;
+  const clip = swapping ? `circle(${swR}px at ${cx * 100}% ${cy * 100}%)` : undefined;
   return (
     <AbsoluteFill style={{ clipPath: clip }}>
       <AbsoluteFill style={{ background: "#e9e1cf" }} />
@@ -286,7 +293,7 @@ export const TravelTake: React.FC = () => {
           <LensVignette cx={cx} cy={cy} radiusScale={iris} />
         </>
       ) : null}
-      {swapping ? <AbsoluteFill style={{ background: `radial-gradient(circle at ${cx * 100}% ${cy * 100}%, rgba(0,0,0,0) ${0.475 * 1920 - 26}px, rgba(0,0,0,0.85) ${0.475 * 1920 - 2}px)` }} /> : null}
+      {swapping ? <AbsoluteFill style={{ opacity: 1 - ringOut, background: `radial-gradient(circle at ${cx * 100}% ${cy * 100}%, rgba(0,0,0,0) ${swR - 26}px, rgba(0,0,0,0.85) ${swR - 2}px)` }} /> : null}
     </AbsoluteFill>
   );
 };

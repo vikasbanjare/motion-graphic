@@ -13,8 +13,8 @@ import { C, P, T, lerp, ramp } from "./look.ts";
 const pb = Easing.bezier(0.75, 0, 0.3, 1);
 const CART = { x: 430, y: 790 }; // cartouche centre in face coords
 
-export const CardTake: React.FC = () => {
-  const lf = useCurrentFrame();
+export const CardTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
+  const lf = useCurrentFrame() - lead;
   const f = lf + T.cutCard;
   // settle-back under the loupe, then the pull-back
   const settle = 1 + 0.07 * Math.exp(-lf / 12);

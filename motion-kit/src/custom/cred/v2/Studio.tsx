@@ -225,7 +225,7 @@ const Card: React.FC<{ f: number }> = ({ f }) => {
   }, [detailed]);
   // entrance carrying the whip energy (down-left), roll 12 -> 0 on a spring
   const e = interpolate(lf, [0, 31], [0, 1], { ...C, easing: expoOut });
-  const sp = spring({ frame: lf, fps, config: { stiffness: 158, damping: 25 } });
+  const sp = spring({ frame: Math.max(0, lf), fps, config: { stiffness: 158, damping: 25 } });
   const roll = THREE.MathUtils.degToRad(12 * (1 - sp));
   const x = lerp(9.5, -4.0, e) - Math.max(0, lf - 31) * 0.004;
   const y = lerp(6.5, 0.3, e);
@@ -244,8 +244,8 @@ const Card: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-export const StudioTake: React.FC = () => {
-  const lf = useCurrentFrame();
+export const StudioTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
+  const lf = useCurrentFrame() - lead;
   const f = lf + T.studio;
   const glow = ramp(f, 572, 620);
   const copyIn = ramp(f, 572, 588, expoOut);

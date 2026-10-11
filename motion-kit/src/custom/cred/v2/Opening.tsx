@@ -55,7 +55,7 @@ export const StepA: React.FC = () => {
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
         {flat ? (
-          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke={INK.pen} strokeWidth={8} strokeLinecap="round" filter="url(#bleedA)" />
+          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke="#3a3a3e" strokeWidth={8} strokeLinecap="round" filter="url(#bleedA)" />
         ) : (
           <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round" strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
         )}
@@ -83,7 +83,7 @@ export const StepB: React.FC = () => {
               const centre = Math.min(1100, 780 + f * 18);
               const frac = [0.42, 0.55, 1.0, 0.7][i];
               const end = Math.min(centre * frac, f * [110, 130, 400, 150][i] + 40);
-              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#2b2b2b" strokeWidth={i === 2 ? 8 : 6.5} strokeLinecap="round" filter="url(#bleedB)" />;
+              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#3a3a3e" strokeWidth={i === 2 ? 8 : 6.5} strokeLinecap="round" filter="url(#bleedB)" />;
             })
           : Array.from({ length: 5 }, (_, i) => {
               const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
@@ -108,13 +108,13 @@ export const StepB: React.FC = () => {
 export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOverride }) => {
   const { width, height } = useVideoConfig();
   const local = f - T.stepC;
+  const fine = useContext(Detail).maps === true;
   // flow: 26 -> 6 px/frame expo-out over 23 frames, then a slow residual drift
   const flow = (fr: number) => {
     let s = 0;
     for (let i = 0; i < Math.max(0, fr); i++) s += 6 + 20 * Math.exp(-i / 7);
     return s;
   };
-  const fine = useContext(Detail).maps === true;
   // measured intro: the lines are static while the sheet trucks; the flow only starts under the wash
   const ph = fine ? Math.max(0, f - T.wash) * 0.012 : flow(Math.min(local, 60)) / 220 + Math.max(0, local - 60) * 0.012;
   const wash = ramp(f, T.wash, T.wash + 6, (t) => t);
@@ -123,7 +123,13 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
     ? -Math.max(0, Math.min(f, T.wash) - 58) * 5.8 - Math.max(0, f - T.wash) * 0.9
     : -Math.min(local, 200) * 0.9 - Math.max(0, local - 200) * 0.2;
   const zoom = 1 - Math.min(local, 120) * 0.0006;
-  const ink = inkOverride ?? (wash > 0.5 ? "#6d7f78" : "#646464");
+  const mixHex = (a: string, b: string, t: number) => {
+    const A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16);
+    const ch = (sh: number) => Math.round(((A >> sh) & 255) * (1 - t) + ((B >> sh) & 255) * t);
+    return `#${((ch(16) << 16) | (ch(8) << 8) | ch(0)).toString(16).padStart(6, "0")}`;
+  };
+  // v2D: the field keeps the pen's ink and grades into the wash tint over the wipe (no colour switch)
+  const ink = inkOverride ?? (fine ? mixHex("#3a3a3e", "#6d7f78", ramp(f, T.wash, T.wash + 14)) : wash > 0.5 ? "#6d7f78" : "#646464");
   const pitch = fine ? 0.0236 * height : 0.022 * height;
   const ref = useRef<HTMLCanvasElement>(null);
   // drawn into a 2D canvas: ~4x cheaper than 76 long SVG paths per frame in headless Chrome
