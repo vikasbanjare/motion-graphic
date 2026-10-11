@@ -221,19 +221,20 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
           {/* far ridge behind the cloud banks, a folded map and passports on the table, a tag on the suitcase handle */}
           <EMesh g={g.dress.ridge} m={mk({ atmos: 0.78, seed: 70, angleDeg: 38, edge: 0.3 })} live={gl} pos={[-6, 0, -78]} />
           <EMesh g={g.dress.ridge2} m={mk({ atmos: 0.7, seed: 71, angleDeg: 52, edge: 0.3 })} live={gl} pos={[22, 0, -66]} />
-          <EMesh g={g.dress.map} m={mk({ map: g.map, mapAmt: 0.8, seed: 72, angleDeg: 45, edge: 0.2 })} live={gl} pos={[-3.2, 0, 6.8]} rot={[0, 0.5, 0]} scale={1.2} double />
-          <EMesh g={g.dress.passports} m={mk({ seed: 73, angleDeg: 52 })} live={gl} pos={[6.0, 0, 6.4]} rot={[0, -0.4, 0]} scale={0.9} />
+          <EMesh g={g.dress.map} m={mk({ map: g.map, mapAmt: 0.8, seed: 72, angleDeg: 45, edge: 0.2, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} pos={[-3.2, 0, 6.8]} rot={[0, 0.5, 0]} scale={1.2} double />
+          <EMesh g={g.dress.passports} m={mk({ seed: 73, angleDeg: 52, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} pos={[6.0, 0, 6.4]} rot={[0, -0.4, 0]} scale={0.9} />
           <group position={[7.0, 4.05, 4.9]} rotation={[0, -0.55, 0.18 + 0.06 * Math.sin(f / 9)]}>
-            <EMesh g={g.dress.tag} m={mk({ seed: 74, angleDeg: 45, albedo: 1.1 })} live={gl} scale={0.7} double />
+            <EMesh g={g.dress.tag} m={mk({ seed: 74, angleDeg: 45, albedo: 1.1, opacity: 0.999 })} live={{ ...gl, opacity: tiltH }} scale={0.7} double />
           </group>
         </>
       ) : null}
       {/* hotels: suitcase and desk bell, room key */}
       <group position={[8.2, 0, 3.4]} rotation={[0, -0.55, 0]}>
-        <Gltf url={M.suitcase} size={4.2} m={mk({ angleDeg: 52, seed: 11, mapAmt: 0.85 })} live={gl} pick={(_, i) => i < 4} />
+        <Gltf url={M.suitcase} size={4.2} m={mk({ angleDeg: 52, seed: 11, mapAmt: 0.85, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pick={(_, i) => i < 4} />
       </group>
-      <EMesh g={g.bell} m={mk({ spec: 0.7, shininess: 50, seed: 12, angleDeg: 38 })} live={gl} pos={[3.6, 0, 4.2]} scale={1.0} />
-      <EMesh g={g.key} m={mk({ spec: 0.45, seed: 13 })} live={gl} pos={[5.2, 0.12, 5.6]} rot={[-Math.PI / 2, 0, 0.6]} scale={0.55} />
+      {/* v2D: the table props appear with the tilt-up; the top-down map shot shows only the map and the airliner */}
+      <EMesh g={g.bell} m={mk({ spec: 0.7, shininess: 50, seed: 12, angleDeg: 38, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pos={[3.6, 0, 4.2]} scale={1.0} />
+      <EMesh g={g.key} m={mk({ spec: 0.45, seed: 13, opacity: dm ? 0.999 : 1 })} live={{ ...gl, opacity: dm ? tiltH : 1 }} pos={[5.2, 0.12, 5.6]} rot={[-Math.PI / 2, 0, 0.6]} scale={0.55} />
     </>
   );
 };
