@@ -6,7 +6,8 @@ import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
 import { parcel, pedestal } from "./subjects.ts";
-import { giftBox2, parcel2 } from "./models3.ts";
+import { giftBox2, parcel2, spool } from "./models3.ts";
+import { tag } from "./subjects.ts";
 import { LinePattern, Paper, Sheen, bandGradient } from "./fx.tsx";
 import { C, P, SANS, SERIF, T, expoOut, lerp, ramp, rnd } from "./look.ts";
 import type { EOpts } from "./engrave.ts";
@@ -49,6 +50,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       balloon: balloon2(),
       smallGift: dm ? giftBox2() : giftBox(),
       parcel: dm ? parcel2(1.8, 1.0, 1.4) : parcel(1.8, 1.0, 1.4),
+      dress: dm ? { tag: tag(1.0), small: parcel2(1.1, 0.7, 0.9), spool: spool() } : null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -118,6 +120,21 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
         <Gltf url={M.watch} size={1.3} m={mk({ seed: 86, mapAmt: 0.75, spec: 0.6, shininess: 50 })} live={gl} pick={(_, i) => i !== 0} />
       </group>
       <EMesh g={g.parcel} m={mk({ seed: 87, angleDeg: 45, ...MAP(kraft(6)) })} live={gl} pos={[-11.5, -2.2, -2.0]} rot={[0, 0.5, 0]} scale={1.3} />
+      {g.dress ? (
+        <>
+          {/* price tags swinging on the camera and the vase, small parcels and a ribbon spool on the floor */}
+          <group position={[-5.0, 1.9, -1.4]} rotation={[0, 0.3, 0.12 * Math.sin(lf / 11)]}>
+            <EMesh g={g.dress.tag} m={mk({ seed: 90, albedo: 1.12, angleDeg: 45 })} live={gl} scale={0.55} double />
+          </group>
+          <group position={[5.5, 1.3, -2.5]} rotation={[0, -0.4, -0.1 * Math.sin(lf / 13 + 1)]}>
+            <EMesh g={g.dress.tag} m={mk({ seed: 91, albedo: 1.12, angleDeg: 52 })} live={gl} scale={0.5} double />
+          </group>
+          <EMesh g={g.dress.small} m={mk({ seed: 92, angleDeg: 38, ...MAP(kraft(7)) })} live={gl} pos={[-3.4, -2.2, 2.6]} rot={[0, 0.9, 0]} scale={0.9} />
+          <EMesh g={g.dress.small} m={mk({ seed: 93, angleDeg: 52, ...MAP(kraft(8)) })} live={gl} pos={[7.2, -2.2, 3.4]} rot={[0, -0.6, 0]} scale={0.75} />
+          <EMesh g={g.dress.small} m={mk({ seed: 94, angleDeg: 45, ...MAP(kraft(9)) })} live={gl} pos={[-8.6, -2.2, 1.2]} rot={[0, 0.2, 0]} scale={0.7} />
+          <EMesh g={g.dress.spool} m={mk({ seed: 95, angleDeg: 45, albedo: 1.08, foil: 0.3 })} live={{ ...gl, foilPhase: lf * 0.004 }} pos={[0.6, -2.2, 4.6]} rot={[0, 0.8, 0]} scale={0.55} />
+        </>
+      ) : null}
       {/* hero: gift box approaching, pearl foil on the ribbon only */}
       <group position={[2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={1.5 * approach}>
         <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45, ...MAP(giftPaper(5)) })} live={gl} />

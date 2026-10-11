@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
-import { Face } from "./CardFace.tsx";
+import { Face, Rosette } from "./CardFace.tsx";
+import { Detail } from "./three.tsx";
 import { asmPalAt } from "./Assembly.tsx";
 import { LensVignette, Paper } from "./fx.tsx";
 import { C, INK, T, lerp, ramp } from "./look.ts";
@@ -27,9 +28,18 @@ export const RevealTake: React.FC = () => {
   const dark = ramp(f, T.reveal + 20, T.reveal + 52);
   const inks = asmPalAt(f);
   const glow = ramp(f, T.reveal + 22, T.reveal + 50);
+  const dm = useContext(Detail).maps;
   return (
     <AbsoluteFill style={{ background: INK.slate }}>
       <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 58% 60%, #1b2b47 0%, #0d1526 60%, #070b14 100%)" }} />
+      {dm ? (
+        // the slate is itself a printed sheet: a large faint rosette and a double rule frame come up with the darkness
+        <AbsoluteFill style={{ opacity: 0.14 * dark, transform: `rotate(${(f - T.reveal) * 0.05}deg)`, transformOrigin: "58% 60%" }}>
+          <svg width={1920} height={1080}>
+            <Rosette cx={1113} cy={648} R={700} color="#9fb4d6" n={30} k={16} sw={1.6} />
+          </svg>
+        </AbsoluteFill>
+      ) : null}
       <Paper heavy />
       <AbsoluteFill style={{ perspective: 1700, perspectiveOrigin: "58% 50%" }}>
         <AbsoluteFill

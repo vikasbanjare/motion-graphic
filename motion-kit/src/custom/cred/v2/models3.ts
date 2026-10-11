@@ -350,3 +350,63 @@ export const globeStand2 = () => {
   const collar = new THREE.TorusGeometry(0.19, 0.03, 8, 40).rotateX(Math.PI / 2).translate(0, -1.6, 0);
   return { ring: merge([ring, axis, ...ticks, ...caps]), stand: merge([stand, collar]) };
 };
+
+// ---- set dressing (the per-shot detail pass) ------------------------------------------------------------------------
+
+/** Folded map sheet lying on a table (XZ), folds rising in y; UVs run across the sheet for a map texture. */
+export const foldedMap = (w = 3.2, h = 2.2, folds = 5) =>
+  grid(folds * 6, 8, (u, v) => {
+    const t = u * folds;
+    const tri = Math.abs(((t % 1) + 1) % 1 - 0.5) * 2; // 0 at the crease, 1 mid-panel
+    const lift = 0.16 * (1 - tri) * (0.6 + 0.4 * Math.sin(Math.PI * v));
+    return V(u * w - w / 2, 0.02 + lift, v * h - h / 2);
+  });
+
+/** Three passport-sized booklets stacked with a slight fan, an embossed oval on the top one. */
+export const passportStack = () => {
+  const parts: THREE.BufferGeometry[] = [];
+  for (let i = 0; i < 3; i++) {
+    const b = new THREE.ExtrudeGeometry(roundRect(1.25, 1.75, 0.08), { depth: 0.1, bevelEnabled: true, bevelSize: 0.015, bevelThickness: 0.015, bevelSegments: 1, curveSegments: 6 });
+    b.rotateX(-Math.PI / 2).translate(0, i * 0.125 + 0.015, 0).rotateY((i - 1) * 0.18);
+    parts.push(b);
+    // page edges: a thin lighter slab between covers
+    const pages = new THREE.BoxGeometry(1.15, 0.05, 1.65).translate(0.03, i * 0.125 + 0.065, 0).rotateY((i - 1) * 0.18);
+    parts.push(pages);
+  }
+  parts.push(new THREE.TorusGeometry(0.22, 0.02, 6, 40).rotateX(Math.PI / 2).scale(1, 1, 1.3).translate(0, 3 * 0.125 + 0.02, -0.15).rotateY(0.18));
+  return merge(parts);
+};
+
+/** Crumpled tissue sheet (for a bag mouth): a plane displaced by layered waves. */
+export const tissue = (seed = 1, w = 1.7, h = 1.3) =>
+  grid(26, 20, (u, v) => {
+    const a = seed * 1.7;
+    const d = 0.1 * Math.sin(u * 9 + a) * Math.cos(v * 7 - a) + 0.07 * Math.sin(u * 17 + v * 11 + a) + 0.05 * Math.cos(u * 29 - v * 23);
+    return V((u - 0.5) * w * (0.85 + 0.3 * v), v * h, d * (0.3 + v));
+  });
+
+/** Far mountain ridge: a jagged extruded silhouette (len wide, peaks to ~hgt), base at y=0. */
+export const ridge = (len = 80, hgt = 8, seed = 1) => {
+  const s = new THREE.Shape();
+  s.moveTo(-len / 2, 0);
+  const n = 34;
+  for (let i = 0; i <= n; i++) {
+    const x = -len / 2 + (i / n) * len;
+    const y = hgt * (0.25 + 0.75 * Math.abs(Math.sin(i * 1.9 + seed) * Math.cos(i * 0.7 + seed * 2))) * (i === 0 || i === n ? 0.3 : 1);
+    s.lineTo(x, y);
+  }
+  s.lineTo(len / 2, 0);
+  s.closePath();
+  const g = new THREE.ExtrudeGeometry(s, { depth: 1.5, bevelEnabled: false });
+  g.computeVertexNormals();
+  return g;
+};
+
+/** Ribbon spool: two flanges on a core, a wound ribbon mass, a loose end. */
+export const spool = () => {
+  const flange = (y: number) => lathe([[0, 0], [0.9, 0], [0.92, 0.04], [0.9, 0.08], [0, 0.08]], 48).translate(0, y, 0);
+  const core = new THREE.CylinderGeometry(0.32, 0.32, 1.0, 32).translate(0, 0.5, 0);
+  const wound = lathe([[0.32, 0.1], [0.78, 0.1], [0.8, 0.5], [0.78, 0.9], [0.32, 0.9]], 64);
+  const end = ribbonStrip(new THREE.CatmullRomCurve3([V(0.8, 0.5, 0), V(1.3, 0.42, 0.3), V(1.9, 0.2, 0.35), V(2.5, 0.03, 0.2)]), 0.3, 32, V(0, 1, 0), 0.06);
+  return merge([flange(0), flange(0.92), core, wound, end]);
+};

@@ -5,7 +5,7 @@ import { bagPaper, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { shoppingBag, coinStack } from "./models2.ts";
 import { paperPlane, parcel, tag } from "./subjects.ts";
-import { bag2, giftBox2, parcel2 } from "./models3.ts";
+import { bag2, giftBox2, parcel2, tissue } from "./models3.ts";
 import { P, T, expoOut, lerp, mixPal, ramp } from "./look.ts";
 import type { EOpts, Pal } from "./engrave.ts";
 
@@ -68,6 +68,7 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
       tag: tag(3.2),
       plane: paperPlane(),
       coins: coinStack(6),
+      tissue: dm ? [tissue(1), tissue(2)] : null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -115,16 +116,20 @@ export const AssemblyWorld: React.FC<AsmView> = ({ f, inks = INKS_ASM, periodFra
       <group position={[-5.9 + bigBox.dx, -5.6, 0.8]} rotation={[0.12, 0.55, bigBox.rz]}>
         <Gltf url={M.box} size={6.2} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 4, mapAmt: 0.75 })} live={liveB} />
       </group>
-      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 6, ...MAP(bagPaper(2)) })} live={liveA} double
-        pos={[-8.6 + bagL.dx, -2.8, -1.4]} rot={[0.05, 0.75, 0.06 + bagL.rz]} scale={1.7} />
+      <group position={[-8.6 + bagL.dx, -2.8, -1.4]} rotation={[0.05, 0.75, 0.06 + bagL.rz]} scale={1.7}>
+        <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 52, seed: 6, ...MAP(bagPaper(2)) })} live={liveA} double />
+        {g.tissue ? <EMesh g={g.tissue[0]} m={base(inks.hero, { periodFrac: pf, angleDeg: 38, seed: 30, albedo: 1.15, edge: 0.4 })} live={{ pal: inks.hero, dim }} double pos={[0.1, 2.25, 0]} rot={[0.15, 0.3, -0.1]} scale={0.8} /> : null}
+      </group>
       <group position={[-2.0 + parcels.dx, -2.6, -2.6]} rotation={[0.18, -0.4, parcels.rz]} scale={1.25}>
         <EMesh g={g.parcelA} m={base(inks.b, { periodFrac: pf, angleDeg: 38, seed: 8, ...MAP(kraft(1)) })} live={liveB} />
         <EMesh g={g.parcelB} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 9, ...MAP(kraft(2)) })} live={liveA} pos={[0.2, 1.1, 0.1]} rot={[0, 0.5, 0]} />
         <EMesh g={g.parcelC} m={base(inks.b, { periodFrac: pf, angleDeg: 52, seed: 10, ...MAP(kraft(3)) })} live={liveB} pos={[-0.1, 2.0, 0]} rot={[0, -0.3, 0]} />
       </group>
       {/* right side */}
-      <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11, ...MAP(bagPaper(3)) })} live={liveA} double
-        pos={[5.6 + bagR.dx, -6.4, 1.6]} rot={[0.05, -0.6, -0.04 + bagR.rz]} scale={2.4} />
+      <group position={[5.6 + bagR.dx, -6.4, 1.6]} rotation={[0.05, -0.6, -0.04 + bagR.rz]} scale={2.4}>
+        <EMesh g={g.bag} m={base(inks.a, { periodFrac: pf, angleDeg: 45, seed: 11, ...MAP(bagPaper(3)) })} live={liveA} double />
+        {g.tissue ? <EMesh g={g.tissue[1]} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 31, albedo: 1.1, edge: 0.4 })} live={liveB} double pos={[-0.1, 2.3, 0]} rot={[0.1, -0.4, 0.12]} scale={0.85} /> : null}
+      </group>
       <group position={[1.4 + gift.dx, -4.2, -0.6]} rotation={[0.2, -0.5, gift.rz]} scale={1.45}>
         <EMesh g={g.gift.box} m={base(inks.b, { periodFrac: pf, angleDeg: 45, seed: 12, ...MAP(giftPaper(2)) })} live={liveB} />
         <EMesh g={g.gift.ribbon} m={base(inks.a, { periodFrac: pf, angleDeg: 38, seed: 13, albedo: 0.8, ...MAP(ribbon(2), 0.6) })} live={liveA} />

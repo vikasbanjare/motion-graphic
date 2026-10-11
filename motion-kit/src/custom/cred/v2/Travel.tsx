@@ -5,7 +5,8 @@ import { Cam, Detail, EMesh, Gltf, M, World } from "./three.tsx";
 import { airplane, globeStand, hotelBell } from "./models.ts";
 import { globeAlbedo, landTexture, roomKey, merge } from "./models2.ts";
 import { cloudStipple, globeRelief } from "./detail.ts";
-import { airliner, cloud2, globeStand2 } from "./models3.ts";
+import { airliner, cloud2, foldedMap, globeStand2, passportStack, ridge } from "./models3.ts";
+import { tag } from "./subjects.ts";
 import { cloudBank, routeDots } from "./subjects.ts";
 import { LensRim, LensVignette, Paper, Sheen } from "./fx.tsx";
 import { C, P, SERIF, T, expoOut, lerp, ramp } from "./look.ts";
@@ -27,7 +28,7 @@ const TILT0 = T.tilt;
 const ind = P.indigo;
 const mk = (extra: Partial<EOpts> = {}): EOpts => ({ palette: ind, periodFrac: 0.0066, ...extra });
 
-const mapTexture = () => {
+const mapTexture = (detailed = false) => {
   const c = document.createElement("canvas");
   c.width = c.height = 2048;
   const x = c.getContext("2d")!;
@@ -61,6 +62,52 @@ const mapTexture = () => {
       x.fill();
     }
   }
+  if (detailed) {
+    // compass rose: eight points, alternate halves hatched; ports at the route ends; a fine secondary graticule
+    x.save();
+    x.translate(-520, 430);
+    for (let k = 0; k < 8; k++) {
+      const a = (k / 8) * Math.PI * 2, L = k % 2 ? 90 : 150;
+      for (const side of [-1, 1]) {
+        x.beginPath();
+        x.moveTo(0, 0);
+        x.lineTo(Math.cos(a) * L, Math.sin(a) * L);
+        x.lineTo(Math.cos(a + side * 0.35) * L * 0.28, Math.sin(a + side * 0.35) * L * 0.28);
+        x.closePath();
+        x.fillStyle = side > 0 ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.12)";
+        x.fill();
+        x.strokeStyle = "rgba(0,0,0,0.8)";
+        x.lineWidth = 2;
+        x.stroke();
+      }
+    }
+    x.lineWidth = 3;
+    x.beginPath();
+    x.arc(0, 0, 165, 0, Math.PI * 2);
+    x.stroke();
+    x.lineWidth = 1.5;
+    x.beginPath();
+    x.arc(0, 0, 178, 0, Math.PI * 2);
+    x.stroke();
+    x.restore();
+    x.strokeStyle = "rgba(0,0,0,0.25)";
+    x.lineWidth = 1.2;
+    for (let i = -1024; i <= 1024; i += 64) {
+      x.beginPath(); x.moveTo(i, -1024); x.lineTo(i, 1024); x.stroke();
+      x.beginPath(); x.moveTo(-1024, i); x.lineTo(1024, i); x.stroke();
+    }
+    x.strokeStyle = "rgba(0,0,0,0.8)";
+    x.lineWidth = 3;
+    for (let r = 0; r < 7; r++) {
+      const a0 = r * 0.9 + 0.3, rr = 300;
+      x.beginPath();
+      x.arc(Math.cos(a0) * rr, Math.sin(a0) * rr, 14, 0, Math.PI * 2);
+      x.stroke();
+      x.beginPath();
+      x.arc(Math.cos(a0) * rr, Math.sin(a0) * rr, 5, 0, Math.PI * 2);
+      x.fill();
+    }
+  }
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.NoColorSpace;
   return t;
@@ -89,7 +136,8 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
         routeDots(1.0, [-0.1, 51.5], [-74, 40.7], 36),
       ]),
       ground: new THREE.CircleGeometry(40, 96).rotateX(-Math.PI / 2),
-      map: mapTexture(),
+      map: mapTexture(dm),
+      dress: dm ? { map: foldedMap(), passports: passportStack(), ridge: ridge(90, 9, 2), ridge2: ridge(70, 6, 5), tag: tag(1.1) } : null,
       albedo: dm ? globeRelief(landTexture()) : globeAlbedo(),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,13 +195,25 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
         {/* airliner orbiting the globe */}
         <group rotation={[0.35, 0, -0.2]}>
           <group rotation={[0, orbitA, 0]}>
-            <group position={[0, 0, 1.75]} rotation={[0, Math.PI, -0.15]} scale={0.085}>
+            <group position={[0, 0, 1.75]} rotation={[0, Math.PI, -0.15]} scale={g.glass ? 0.11 : 0.085}>
               <EMesh g={g.plane} m={mk({ spec: 0.3, seed: 9, angleDeg: 45 })} live={gl} />
               {g.glass ? <EMesh g={g.glass} m={mk({ albedo: 0.3, edge: 0, seed: 19 })} live={gl} /> : null}
             </group>
           </group>
         </group>
       </group>
+      {g.dress ? (
+        <>
+          {/* far ridge behind the cloud banks, a folded map and passports on the table, a tag on the suitcase handle */}
+          <EMesh g={g.dress.ridge} m={mk({ atmos: 0.78, seed: 70, angleDeg: 38, edge: 0.3 })} live={gl} pos={[-6, 0, -78]} />
+          <EMesh g={g.dress.ridge2} m={mk({ atmos: 0.7, seed: 71, angleDeg: 52, edge: 0.3 })} live={gl} pos={[22, 0, -66]} />
+          <EMesh g={g.dress.map} m={mk({ map: g.map, mapAmt: 0.8, seed: 72, angleDeg: 45, edge: 0.2 })} live={gl} pos={[-3.2, 0, 6.8]} rot={[0, 0.5, 0]} scale={1.2} double />
+          <EMesh g={g.dress.passports} m={mk({ seed: 73, angleDeg: 52 })} live={gl} pos={[6.0, 0, 6.4]} rot={[0, -0.4, 0]} scale={0.9} />
+          <group position={[7.0, 4.05, 4.9]} rotation={[0, -0.55, 0.18 + 0.06 * Math.sin(f / 9)]}>
+            <EMesh g={g.dress.tag} m={mk({ seed: 74, angleDeg: 45, albedo: 1.1 })} live={gl} scale={0.7} double />
+          </group>
+        </>
+      ) : null}
       {/* hotels: suitcase and desk bell, room key */}
       <group position={[8.2, 0, 3.4]} rotation={[0, -0.55, 0]}>
         <Gltf url={M.suitcase} size={4.2} m={mk({ angleDeg: 52, seed: 11, mapAmt: 0.85 })} live={gl} pick={(_, i) => i < 4} />
