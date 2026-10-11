@@ -313,7 +313,13 @@ export const EDoors: React.FC = () => {
   const realIn = ramp(f, T.real, T.real + 10);
   const lightsOut = ramp(f, T.lock - 6, T.lock + 12);
   const endFade = ramp(f, 704, 719, (t) => t);
-  const bg = f < T.gate ? "#d9ece2" : f < T.hatch ? "#dfe0f2" : f < T.locker ? "#f3d9cc" : f < T.last ? "#f7e3ea" : "#e3ecd9";
+  const stops: [number, string][] = [[0, "#d9ece2"], [T.gate, "#dfe0f2"], [T.hatch, "#f3d9cc"], [T.locker, "#f7e3ea"], [T.last, "#e3ecd9"]];
+  const mixHex = (a: string, b: string, t: number) => {
+    const ca = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), cb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+    return `rgb(${ca.map((v, i) => Math.round(lerp(v, cb[i], t))).join(",")})`;
+  };
+  let bg = stops[0][1];
+  for (let i = 1; i < stops.length; i++) bg = mixHex(bg, stops[i][1], ramp(f, stops[i][0] - 12, stops[i][0] + 12, inOut)); // crossfade: a hard switch is a snap frame
   return (
     <AbsoluteFill style={{ background: f >= T.real ? "#0c0c10" : bg }}>
       {f < T.real + 10 && (
