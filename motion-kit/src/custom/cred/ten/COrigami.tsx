@@ -88,7 +88,7 @@ const Bag: React.FC<{ t: number; lit: number; tex: THREE.Texture; stand: number 
     return { p, w, handle };
   }, []);
   const a = (Math.PI / 2) * t;
-  const live = { ambient: 0.22, lift: 0.3 + 0.5 * lit, key: [-0.3, -0.5, 0.8] as V3 };
+  const live = { ambient: 0.14, lift: 0.14 + 0.5 * lit, key: [-0.3, -0.5, 0.8] as V3 };
   const mat = (i: number) => PAPER(10 + i, { map: tex });
   const w = g.w;
   // the whole card stands up on its bottom edge while the panels wrap round
@@ -107,7 +107,7 @@ const Bag: React.FC<{ t: number; lit: number; tex: THREE.Texture; stand: number 
         </Hinge>
         {/* handles rise from the top edge once the bag is closed */}
         {t > 0.9 && [0, 1].map((i) => (
-          <EMesh key={i} g={g.handle} m={PAPER(20 + i, { spec: 0.5 })} pos={[-W / 2 + w / 2 + (i ? -w * 0.0 : 0) - (i ? w : 0) * 0 + (i ? -0.0 : 0), H / 2, -w / 2 + (i ? -w : 0)]} rot={[Math.PI / 2, 0, 0]} scale={lerp(0.001, 1, ramp(t, 0.9, 1, expoOut))} live={live} />
+          <EMesh key={i} g={g.handle} m={PAPER(20 + i, { spec: 0.5 })} pos={[-W / 2 + w / 2, H / 2, i ? -w + 0.05 : -0.05]} scale={lerp(0.001, 1, ramp(t, 0.9, 1, expoOut))} live={live} />
         ))}
       </group>
     </Hinge>
@@ -124,7 +124,7 @@ const Plane: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
   const fold = ramp(t, 0, 0.55, inOut);
   const wingF = ramp(t, 0.45, 1, inOut);
   const noseF = ramp(t, 0.2, 0.7, inOut);
-  const live = { ambient: 0.22, lift: 0.3, key: [-0.3, -0.5, 0.8] as V3 };
+  const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const mat = (i: number) => PAPER(30 + i, { map: tex });
   return (
     <>
@@ -155,8 +155,8 @@ const Hotel: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, li
     const canopy = new THREE.BoxGeometry(1.4, 0.05, 0.6).translate(0, 0.0, 0.3);
     return { front, roof, back, left, right, windows, canopy };
   }, []);
-  const live = { ambient: 0.22, lift: 0.3, key: [-0.3, -0.5, 0.8] as V3 };
-  const litL = { ...live, lift: 0.25 + 0.6 * lit };
+  const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
+  const litL = { ...live, lift: 0.2 + 0.6 * lit };
   const rise = ramp(t, 0, 0.7, expoOut);
   const roofF = ramp(t, 0.5, 1, inOut);
   const mat = (i: number) => PAPER(40 + i, { map: tex });
@@ -198,8 +198,8 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
   const up = ramp(t, 0, 0.45, inOut);
   const lidF = ramp(t, 0.35, 0.6, inOut) * (Math.PI / 2) - ramp(t, 0.6, 0.85, inOut) * (Math.PI * 0.95);
   const fanF = ramp(t, 0.7, 1, expoOut);
-  const live = { ambient: 0.22, lift: 0.3, key: [-0.3, -0.5, 0.8] as V3 };
-  const litL = { ...live, lift: 0.25 + 0.55 * lit };
+  const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
+  const litL = { ...live, lift: 0.2 + 0.55 * lit };
   const mat = (i: number) => PAPER(50 + i, { map: tex });
   const hinges: { at: V3; axis: V3; sgn: number }[] = [
     { at: [0, s, 0], axis: [1, 0, 0], sgn: -1 },
@@ -241,7 +241,7 @@ const Tag: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
     const string = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(1.75, 1.55, 0.02), new THREE.Vector3(0.9, 1.9, 0.3), new THREE.Vector3(-0.3, 1.7, 0.1)]), 24, 0.025, 6, false);
     return { tag, rest, hole, string };
   }, []);
-  const live = { ambient: 0.22, lift: 0.3, key: [-0.3, -0.5, 0.8] as V3 };
+  const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const upF = ramp(t, 0, 0.35, expoOut) * (1 - ramp(t, 0.6, 1, inOut)); // rises, then flattens to nothing
   const mat = (i: number) => PAPER(80 + i, { map: tex });
   return (
@@ -269,7 +269,7 @@ const Flat: React.FC<{ tex: THREE.Texture; creases: number }> = ({ tex, creases 
     ]);
     return { card, lines };
   }, []);
-  const live = { ambient: 0.22, lift: 0.3, key: [-0.3, -0.5, 0.8] as V3 };
+  const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   return (
     <>
       <EMesh g={g.card} m={PAPER(1, { map: tex })} double live={live} />
@@ -324,12 +324,14 @@ const Scene: React.FC<{ f: number }> = ({ f }) => {
   // camera: top-down, tilts to three-quarter as the first fold starts, then orbits slowly; the target follows the object
   const tilt = ramp(f, T.score + 20, T.bag + 20, inOut);
   const orbit = lerp(-Math.PI / 2, -Math.PI / 2 + 1.1, ramp(f, T.bag, T.lift, (x) => x));
-  const r = lerp(0.001, 11.5, tilt);
-  const hgt = lerp(15.5, 7.0, tilt);
+  const near = which === "box" ? ramp(f, T.box + 10, T.box + 50, inOut) * (1 - ramp(f, T.tag - 20, T.tag, inOut)) : 0;
+  const r = lerp(0.001, lerp(11.5, 7.5, near), tilt);
+  const hgt = lerp(15.5, lerp(7.0, 4.6, near), tilt);
+  const cx = which === "bag" ? -3.2 * stand : 0;
   const liftZ = which === "bag" ? 2.0 * stand : which === "plane" ? flyPos[2] : which === "hotel" ? 1.2 * hotelT : which === "box" ? 1.0 * boxT : 0;
   const endPos = new THREE.Vector3(0, -9.5, 7.5);
-  const pos = new THREE.Vector3(r * Math.cos(orbit), r * Math.sin(orbit), hgt).lerp(endPos, lift);
-  const target = new THREE.Vector3(0, 0, liftZ * 0.6).lerp(new THREE.Vector3(0, 0, 1.6), lift);
+  const pos = new THREE.Vector3(cx + r * Math.cos(orbit), r * Math.sin(orbit), hgt).lerp(endPos, lift);
+  const target = new THREE.Vector3(cx, 0, liftZ * 0.6).lerp(new THREE.Vector3(0, 0, 1.6), lift);
   return (
     <>
       <CamN pos={pos.toArray() as V3} target={target.toArray() as V3} fov={lerp(30, 36, tilt) * (1 - 0.1 * toLock)} />
@@ -338,7 +340,7 @@ const Scene: React.FC<{ f: number }> = ({ f }) => {
       <directionalLight position={[-6, -8, 9]} intensity={2.2} color="#fff6ea" />
       <directionalLight position={[8, 4, 6]} intensity={1.4} color="#cfd4ff" />
       {/* the cutting mat */}
-      <EMesh g={matG.mat} m={{ palette: P.teal, seed: 3, space: 0, angleDeg: 45, albedoNoise: 0.12 }} pos={[0, 0, -0.02]} live={{ ambient: 0.14, lift: 0.08, key: [-0.3, -0.5, 0.8] }} />
+      <EMesh g={matG.mat} m={{ palette: P.teal, seed: 3, space: 0, angleDeg: 45, albedoNoise: 0.12 }} pos={[0, 0, -0.02]} live={{ ambient: 0.12, lift: 0.0, dim: 0.22, key: [-0.3, -0.5, 0.8] }} />
       <EMesh g={matG.grid} m={{ palette: P.teal, seed: 4, space: 0, angleDeg: 45 }} pos={[0, 0, -0.015]} live={{ ambient: 0.1, lift: 0.0, dim: 0.25 }} />
       <group position={[0, 0, lerp(0.0, 2.2, lift) + lerp(0, 1.2, toLock)]} rotation={[lerp(0, Math.PI, flip) + lerp(0, 0.55, lift) * (1 - flip) + 0.1 * toLock, 0, 0.12 * Math.sin(f / 40) * lift]} scale={lerp(1, 0.78, toLock)}>
         {which === "flat" && <Flat tex={tex} creases={f < T.bag ? ramp(f, T.score, T.score + 30, expoOut) * (1 - ramp(f, T.bag - 10, T.bag)) : 0} />}

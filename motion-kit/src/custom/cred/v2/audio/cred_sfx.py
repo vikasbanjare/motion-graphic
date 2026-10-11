@@ -404,6 +404,41 @@ def door_swing(dur=0.7):
     return norm(fade_edges(to_stereo(x, 0, 0.3)))
 
 
+def printer_ticks(dur=2.0, rate=6.0, seed=3):
+    """Thermal receipt printer feeding paper: a train of tiny stepper ticks (original). rate = ticks per second."""
+    n = int(SR * dur)
+    x = np.zeros(n)
+    g = np.random.default_rng(seed)
+    tick = bandpass(_noise(int(SR * 0.012)), 2500, 9000, 2) * env_ad(int(SR * 0.012), 0.001, 0.009, 1.0)
+    k = 0
+    while True:
+        s = int(SR * (k / rate + 0.0015 * g.standard_normal()))
+        if s + len(tick) >= n:
+            break
+        x[s : s + len(tick)] += tick * (0.7 + 0.3 * g.random())
+        k += 1
+    x += lowpass(_noise(n), 300, 2) * 0.08 * env_ad(n, 0.05, 0.1, 1.0)  # motor hum
+    return norm(fade_edges(to_stereo(x, 0, 0.15)))
+
+
+def flap_clatter(dur=1.6, rate=22.0, seed=5):
+    """Split-flap departure board: a run of small plastic flaps falling (original). rate = flaps per second."""
+    n = int(SR * dur)
+    x = np.zeros(n)
+    g = np.random.default_rng(seed)
+    k = 0
+    while True:
+        s = max(0, int(SR * (k / rate + 0.004 * g.standard_normal())))
+        L = int(SR * 0.03)
+        if s + L >= n:
+            break
+        t = _t(0.03)
+        flap = bandpass(_noise(L), 500, 3200, 2) * np.exp(-t * 180) + np.sin(2 * np.pi * (420 + 160 * g.random()) * t) * np.exp(-t * 140) * 0.5
+        x[s : s + L] += flap * (0.6 + 0.4 * g.random())
+        k += 1
+    return norm(fade_edges(to_stereo(x, 0, 0.35)))
+
+
 def card_clink(dur=0.6):
     """Metal card set down (original, for our card film). Inharmonic partials, short ring."""
     t = _t(dur)

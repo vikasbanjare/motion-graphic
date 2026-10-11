@@ -174,7 +174,7 @@ const Maze: React.FC<{ f: number }> = ({ f }) => {
       {/* arcade: shop fronts either side of the line */}
       {V.arcade > 0 && geo.shops.map((g, i) => {
         const lit = ramp(f, T.arcade + 8 + i * 8, T.arcade + 20 + i * 8, expoOut);
-        const pos: V3 = [i % 2 ? 4.6 : 1.3, 3.8 + Math.floor(i / 2) * 1.75, 0];
+        const pos: V3 = [i % 2 ? 5.6 : 0.4, 3.8 + Math.floor(i / 2) * 1.75, 0];
         return (
           <group key={i} position={pos} rotation={[0, 0, i % 2 ? Math.PI : 0]}>
             <EMesh g={g} m={m(P.teal, 10 + i)} live={{ ambient: 0.12, lift: 0.05 + 0.12 * lit, opacity: V.arcade }} />
@@ -197,14 +197,14 @@ const Maze: React.FC<{ f: number }> = ({ f }) => {
       ))}
       {/* store: shelves with scanned products, lighting as the line passes */}
       {V.store > 0 && [0, 1, 2].map((i) => (
-        <EMesh key={i} g={geo.shelf} m={m(P.rose, 40 + i)} pos={[-0.6 + i * 1.7, 31.5 + i * 3.4, 0]} live={{ ambient: 0.12, lift: 0.05 + 0.2 * shelfOn(i), opacity: V.store }} />
+        <EMesh key={i} g={geo.shelf} m={m(P.rose, 40 + i)} pos={[-2.8 + i * 1.7, 31.5 + i * 3.4, 0]} live={{ ambient: 0.12, lift: 0.05 + 0.2 * shelfOn(i), opacity: V.store }} />
       ))}
       {V.store > 0 && (
         <>
-          <Gltf url={M.camera} size={0.8} m={m(P.rose, 43, { mapAmt: 0.8, opacity: 0.999 })} pos={[-0.9, 31.5, 1.18]} rot={[Math.PI / 2, 0, 0.3]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(0), opacity: V.store }} />
-          <Gltf url={M.watch} size={0.7} m={m(P.rose, 44, { mapAmt: 0.8, opacity: 0.999 })} pos={[1.0, 34.9, 1.18]} rot={[Math.PI / 2, 0, -0.2]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(1), opacity: V.store }} />
-          <Gltf url={M.vase} size={0.9} m={m(P.rose, 45, { mapAmt: 0.8, opacity: 0.999 })} pos={[2.5, 38.3, 1.18]} rot={[Math.PI / 2, 0, 0.2]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(2), opacity: V.store }} />
-          <Gltf url={M.box} size={0.7} m={m(P.rose, 46, { mapAmt: 0.8, opacity: 0.999 })} pos={[0.2, 31.5, 0.08]} rot={[Math.PI / 2, 0, 0.6]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(0), opacity: V.store }} />
+          <Gltf url={M.camera} size={0.8} m={m(P.rose, 43, { mapAmt: 0.8, opacity: 0.999 })} pos={[-3.1, 31.5, 1.18]} rot={[Math.PI / 2, 0, 0.3]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(0), opacity: V.store }} />
+          <Gltf url={M.watch} size={0.7} m={m(P.rose, 44, { mapAmt: 0.8, opacity: 0.999 })} pos={[-1.2, 34.9, 1.18]} rot={[Math.PI / 2, 0, -0.2]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(1), opacity: V.store }} />
+          <Gltf url={M.vase} size={0.9} m={m(P.rose, 45, { mapAmt: 0.8, opacity: 0.999 })} pos={[0.3, 38.3, 1.18]} rot={[Math.PI / 2, 0, 0.2]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(2), opacity: V.store }} />
+          <Gltf url={M.box} size={0.7} m={m(P.rose, 46, { mapAmt: 0.8, opacity: 0.999 })} pos={[-2.0, 31.5, 0.08]} rot={[Math.PI / 2, 0, 0.6]} live={{ ambient: 0.12, lift: 0.1 + 0.3 * shelfOn(0), opacity: V.store }} />
         </>
       )}
       {/* the gate: a guilloche ring standing across the line, open */}
@@ -267,7 +267,13 @@ export const FMaze: React.FC = () => {
   const realIn = ramp(f, T.real, T.real + 16);
   const lightsOut = ramp(f, T.lock - 6, T.lock + 12);
   const endFade = ramp(f, 704, 719, (t) => t);
-  const bg = f < T.sky ? "#d9ece2" : f < T.corridor ? "#dfe0f2" : f < T.store ? "#f3d9cc" : f < T.gate ? "#f7e3ea" : "#e3ecd9";
+  const stops: [number, string][] = [[0, "#d9ece2"], [T.sky, "#dfe0f2"], [T.corridor, "#f3d9cc"], [T.store, "#f7e3ea"], [T.gate, "#e3ecd9"]];
+  const mixHex = (a: string, b: string, t: number) => {
+    const ca = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), cb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+    return `rgb(${ca.map((v, i) => Math.round(lerp(v, cb[i], t))).join(",")})`;
+  };
+  let bg = stops[0][1];
+  for (let i = 1; i < stops.length; i++) bg = mixHex(bg, stops[i][1], ramp(f, stops[i][0] - 14, stops[i][0] + 14, inOut));
   return (
     <AbsoluteFill style={{ background: f >= T.real ? "#0c0c10" : bg }}>
       {f < T.real + 16 && (

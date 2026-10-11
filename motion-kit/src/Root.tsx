@@ -23,6 +23,9 @@ import { F_FRAMES, FMaze } from "./custom/cred/ten/FMaze.tsx";
 import { D_FRAMES, DPrism } from "./custom/cred/ten/DPrism.tsx";
 import { C_FRAMES, COrigami } from "./custom/cred/ten/COrigami.tsx";
 import { E_FRAMES, EDoors } from "./custom/cred/ten/EDoors.tsx";
+import { G_FRAMES, GReceipt } from "./custom/cred/ten/GReceipt.tsx";
+import { I_FRAMES, IStars } from "./custom/cred/ten/IStars.tsx";
+import { H_FRAMES, HBoard } from "./custom/cred/ten/HBoard.tsx";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -71,6 +74,9 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="TenD" component={DPrism} durationInFrames={D_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="TenC" component={COrigami} durationInFrames={C_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="TenE" component={EDoors} durationInFrames={E_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="TenG" component={GReceipt} durationInFrames={G_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="TenI" component={IStars} durationInFrames={I_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition id="TenH" component={HBoard} durationInFrames={H_FRAMES} fps={24} width={1920} height={1080} />
     </Folder>
     <Folder name="Examples">
       {EXAMPLES.map((e) => (

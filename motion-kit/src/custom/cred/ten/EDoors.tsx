@@ -131,8 +131,8 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
     // boutique: walls and display cases
     const wall = (x: number, y0: number, len: number) => new THREE.BoxGeometry(0.2, len, 4.2).translate(x, y0 + len / 2, 2.1);
     const bWalls = merge([wall(-3.0, 0, 12), wall(3.0, 0, 12), new THREE.BoxGeometry(6.2, 12, 0.2).translate(0, 6, 4.3)]);
-    const caseG = merge([new THREE.BoxGeometry(1.0, 1.4, 0.9).translate(0, 0, 0.45), new THREE.BoxGeometry(1.1, 1.5, 0.06).translate(0, 0, 0.93)]);
-    const caseTop = new THREE.BoxGeometry(0.9, 1.3, 0.04).translate(0, 0, 0.98);
+    const caseG = merge([new THREE.BoxGeometry(1.0, 1.4, 1.15).translate(0, 0, 0.575), new THREE.BoxGeometry(1.1, 1.5, 0.06).translate(0, 0, 1.18)]);
+    const caseTop = new THREE.BoxGeometry(0.9, 1.3, 0.04).translate(0, 0, 1.23);
     // the runway
     const runway = new THREE.BoxGeometry(5, 12, 0.04).translate(0, 18, 0.02);
     const bulbs = merge(Array.from({ length: 16 }, (_, i) => new THREE.SphereGeometry(0.07, 8, 6).translate(i % 2 ? 2.4 : -2.4, 12.6 + Math.floor(i / 2) * 1.5, 0.1)));
@@ -167,25 +167,25 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
 
   // ---- the dolly: one forward move through five doors, then the whip back ----
   const camY = (() => {
-    if (f < T.open) return -1.1;
+    if (f < T.open) return -2.6;
     if (f < T.back) {
       // piecewise: door k at DOOR_Y[k]; arrive 1.1 before each door, pass after it opens
       const legs: [number, number, number, number][] = [
-        [T.open, T.gate, -1.1, DOOR_Y[1] - 1.3],
+        [T.open, T.gate, -2.6, DOOR_Y[1] - 1.3],
         [T.gate, T.hatch, DOOR_Y[1] - 1.3, DOOR_Y[2] - 1.3],
         [T.hatch, T.locker, DOOR_Y[2] - 1.3, DOOR_Y[3] - 1.3],
-        [T.locker, T.last, DOOR_Y[3] - 1.3, DOOR_Y[4] - 1.6],
-        [T.last, T.back, DOOR_Y[4] - 1.6, DOOR_Y[4] + 1.2],
+        [T.locker, T.last, DOOR_Y[3] - 1.3, DOOR_Y[4] - 2.2],
+        [T.last, T.back, DOOR_Y[4] - 2.2, DOOR_Y[4] - 1.4],
       ];
       for (const [a, b, ya, yb] of legs) if (f < b) return lerp(ya, yb, ramp(f, a + 12, b, inOut));
-      return DOOR_Y[4] + 1.2;
+      return DOOR_Y[4] - 1.4;
     }
-    return lerp(DOOR_Y[4] + 1.2, -1.4, ramp(f, T.back, T.out, inOut));
+    return lerp(DOOR_Y[4] - 1.4, -2.6, ramp(f, T.back, T.out, inOut));
   })();
   const sway = 0.06 * Math.sin(f / 19) + 0.04 * Math.sin(f / 7.3);
-  const look = f < T.open ? [0.55, 0, 1.55] : [0, camY + 6, EYE - 0.05];
-  const pos: V3 = [sway, camY, EYE + 0.02 * Math.sin(f / 11)];
-  const fov = f < T.open ? lerp(30, 42, ramp(f, T.open - 20, T.open + 10, inOut)) : f >= T.back ? lerp(42, 50, ramp(f, T.back, T.out)) : 42;
+  const look = f < T.open ? [0.4, 0, 1.5] : [0, camY + 6, EYE - 0.05];
+  const pos: V3 = [sway + (f < T.open ? 0.15 : 0), camY, EYE + 0.02 * Math.sin(f / 11) + (f < T.open ? 0.1 : 0)];
+  const fov = f < T.open ? lerp(34, 42, ramp(f, T.open - 20, T.open + 10, inOut)) : f >= T.back ? lerp(42, 50, ramp(f, T.back, T.out)) : 42;
 
   // ---- doors ----
   const openAt = (a: number, b: number) => ramp(f, a, b, expoOut);
@@ -197,8 +197,8 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
   // the key card slides into the first slot, and out again at the end
   const slideIn = ramp(f, T.slot, T.slot + 30, inOut);
   const slideOut = ramp(f, T.out, T.real + 8, inOut);
-  const keyPos: V3 = [0.55 + 0.0, lerp(-0.95, -0.14, slideIn) - 0.9 * slideOut, lerp(1.0, 1.55, slideIn) - 0.25 * slideOut];
-  const keyRot: V3 = [lerp(-0.35, 0, slideIn) + 0.3 * slideOut, 0, 0];
+  const keyPos: V3 = [lerp(0.2, 0.55, slideIn), lerp(-1.6, -0.14, slideIn) - 1.3 * slideOut, lerp(1.1, 1.55, slideIn) - 0.3 * slideOut];
+  const keyRot: V3 = [lerp(-0.5, 0, slideIn) + 0.35 * slideOut, 0, lerp(0.2, 0, slideIn)];
   const near = (y: number, w = 2.5) => Math.max(0, 1 - Math.abs(camY - y) / w);
   const base: Live = { ambient: 0.14, lift: 0.05, key: [-0.4, -0.5, 0.75] };
   const hotelUp = ramp(f, T.hotel - 4, T.hotel + 40, expoOut);
@@ -218,7 +218,7 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
       {/* boutique: walls, cases that light as the camera passes */}
       <EMesh g={geo.bWalls} m={m(P.teal, 20)} live={{ ...base, lift: 0.04 }} />
       {Array.from({ length: 8 }, (_, i) => {
-        const y = 1.6 + Math.floor(i / 2) * 2.6, x = i % 2 ? 2.1 : -2.1;
+        const y = 1.8 + Math.floor(i / 2) * 2.6, x = i % 2 ? 1.75 : -1.75;
         const lit = ramp(near(y - 1.5, 3.5), 0, 1, expoOut);
         return (
           <group key={i} position={[x, y, 0]}>
@@ -333,8 +333,8 @@ export const EDoors: React.FC = () => {
       <Head f={f} from={T.boutique + 24} to={T.gate - 4} big={["5% rewards"]} small="on online shopping" x={110} y={110} ink="#e6f4ee" sheen="#ffffff" size={112} />
       <Head f={f} from={T.runway + 20} to={T.hatch - 4} big={["redeem on flights"]} x={110} y={110} ink="#262c66" sheen="#8a93d6" size={96} />
       <Head f={f} from={T.hotel + 24} to={T.locker - 4} big={["and hotels"]} x={110} y={110} ink="#fbe6da" sheen="#ffffff" size={96} />
-      <Head f={f} from={T.lockers + 24} to={T.last - 4} big={["and 2,000+ products"]} small="on CRED store" x={110} y={110} ink="#fbe9ee" sheen="#ffffff" size={92} />
-      <Head f={f} from={T.lastOpen + 10} to={T.turn + 30} big={["zero joining fee"]} x={110} y={110} ink="#eef3e6" sheen="#ffffff" size={104} />
+      <Head f={f} from={T.lockers + 24} to={T.last - 4} big={["and 2,000+ products"]} small="on CRED store" x={110} y={110} ink="#6d2a49" sheen="#b9688a" size={92} />
+      <Head f={f} from={T.lastOpen + 10} to={T.turn + 30} big={["zero joining fee"]} x={110} y={110} ink={f >= T.real ? "#f1efe6" : "#1c3d2a"} sheen={f >= T.real ? "#ffffff" : "#7aa483"} size={104} />
       {f >= T.lock - 6 && <AbsoluteFill style={{ background: "#000", opacity: lightsOut * 0.4 }} />}
       {f >= T.lock + 14 && <Logo f={f} at={T.lock + 14} y={700} h={96} />}
       <AbsoluteFill style={{ background: "#000", opacity: endFade }} />
