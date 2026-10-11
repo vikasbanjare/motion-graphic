@@ -30,7 +30,7 @@ const TagWorld: React.FC<{ f: number }> = ({ f }) => {
   const sway = 0.03 * Math.sin((f - T.push) / 9);
   return (
     <>
-      <Cam pos={[0.4, 0.9, 4.6]} target={[0.1, 0.05, 0]} fov={34} roll={-0.08} />
+      <Cam pos={[0.1, 0.8, 3.7]} target={[-0.5, 0.0, 0]} fov={34} roll={-0.08} />
       <EMesh g={g.cloth} m={{ palette: pal, periodFrac: 0.009, map: ribbon(9), mapAmt: 0.8, angleDeg: 38, seed: 40, albedo: 0.72, edge: 0, hatch: 0.8 }} live={{ pal }} pos={[0, -0.3, -0.6]} rot={[-0.35, 0, 0]} />
       <group rotation={[-0.32, 0.12, -0.14 + sway]} position={[0, 0, 0]}>
         <EMesh g={g.tag} m={{ palette: P.cyan, periodFrac: 0.0068, angleDeg: 45, seed: 41, albedo: 1.25, lift: 0.18, edge: 0.6, stipple: 0.5 }} live={{ pal: P.cyan }} double />
@@ -82,8 +82,8 @@ export const MacroTake: React.FC = () => {
           </RefDepth.Provider>
         </World>
       </AbsoluteFill>
-      <AbsoluteFill style={{ transform: tf, transformOrigin: "64% 46%", filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined }}>
-        {/* the strip, read along its length */}
+      <AbsoluteFill style={{ transform: `translate(${-330 * tagIn}px, ${440 * tagIn}px) ${tf}`, transformOrigin: "64% 46%", filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined }}>
+        {/* the strip, read along its length (v2D: it settles into the lower-left corner over the tag) */}
         <div style={{ position: "absolute", left: 960 - 1800, top: 560 - BH / 2, width: 3600, height: BH, transform: `rotate(${ANG}deg)`, transformOrigin: "50% 50%" }}>
           <div style={{ position: "absolute", inset: 0, ...bandGradient(5, 0), boxShadow: "0 0 0 2px rgba(255,255,255,0.4), 0 0 26px rgba(40,90,140,0.35)" }} />
           <BandLines width={3600} height={BH} opacity={0.4} />

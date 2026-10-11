@@ -65,7 +65,7 @@ const mapTexture = (detailed = false) => {
   if (detailed) {
     // compass rose: eight points, alternate halves hatched; ports at the route ends; a fine secondary graticule
     x.save();
-    x.translate(-520, 430);
+    x.translate(333, 102);
     for (let k = 0; k < 8; k++) {
       const a = (k / 8) * Math.PI * 2, L = k % 2 ? 90 : 150;
       for (const side of [-1, 1]) {
@@ -151,6 +151,13 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
   const orbit = THREE.MathUtils.degToRad(14 * Math.pow(ramp(f, 362, 392, (t) => t), 2));
   const az = THREE.MathUtils.degToRad(-8) + orbit + (f - 290) * 0.0006;
   const tgt = new THREE.Vector3(lerp(0, 4.6, tiltH), lerp(4, 4.4, tiltH), lerp(0, 0.8, tiltH));
+  // v2D: under the top-down lens the camera reads the map table beside the globe (the sheet's airliner-over-map shot);
+  // the tilt-up brings the globe back into the centre
+  if (dm) {
+    tgt.x += 6.5 * (1 - tiltH);
+    tgt.z += 2.0 * (1 - tiltH);
+    tgt.y -= 3.2 * (1 - tiltH);
+  }
   const pos: [number, number, number] = [tgt.x + D * Math.cos(el) * Math.sin(az), tgt.y + D * Math.sin(el), tgt.z + D * Math.cos(el) * Math.cos(az)];
   const roll = lerp(0.35 + (f - 290) * 0.002, 0, tilt);
   const spin = f * 0.004;
@@ -176,7 +183,7 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
       })}
       {g.glass ? (
         // v2D: a large airliner crosses the map table under the top-down lens, then flies out as the world tilts up
-        <group position={[lerp(-7.5, 7.5, ramp(f, 286, 336, (t) => t)), 4.6, 3.3]} rotation={[0.06, -0.22, -0.12]} scale={0.32}>
+        <group position={[lerp(1.5, 12.5, ramp(f, 286, 338, (t) => t)), 3.2, 2.4]} rotation={[0.06, -0.3, -0.1]} scale={0.42}>
           <EMesh g={g.plane} m={mk({ spec: 0.35, seed: 20, angleDeg: 45, hatch: 0.6 })} live={gl} />
           <EMesh g={g.glass} m={mk({ albedo: 0.3, edge: 0, seed: 21 })} live={gl} />
         </group>

@@ -26,9 +26,21 @@ const ringPath = (r: number, amp: number, k: number, phase: number, a0: number, 
 // visible angular range for the family (left/bottom side of the circle, facing the frame)
 const A0 = Math.PI * 0.52, A1 = Math.PI * 1.02;
 
+/** Horizontal wavy line (the sheet's opening grammar): from x0 to x1 at height y, amplitude amp, k waves. */
+const wavePath = (x0: number, x1: number, y: number, amp: number, k: number, phase: number, steps = 160) => {
+  let d = "";
+  for (let i = 0; i <= steps; i++) {
+    const x = x0 + ((x1 - x0) * i) / steps;
+    const yy = y + amp * Math.sin((k * Math.PI * 2 * (x - x0)) / (x1 - x0) + phase);
+    d += `${i ? "L" : "M"}${x.toFixed(1)} ${yy.toFixed(1)} `;
+  }
+  return d;
+};
+
 /** Step A: a single heavy stroke drawn by a pen while the paper trucks left (easeInQuad on velocity). */
 export const StepA: React.FC = () => {
   const f = useCurrentFrame();
+  const flat = useContext(Detail).maps === true;
   // truck: velocity 0 -> 0.5 W/s from f6, integrate per frame
   let x = 0;
   for (let i = 7; i <= f; i++) x += 1920 * 0.55 * Math.min(1, ((i - 7) / 15) ** 2) / 24;
@@ -42,7 +54,7 @@ export const StepA: React.FC = () => {
           <feDisplacementMap in="SourceGraphic" scale="3" />
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
-        <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round"
+        <path d={flat ? wavePath(40, 1250, 500, 16, 2.6, 0.3) : ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={flat ? 9 : 12.5} strokeLinecap="round"
           strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
       </svg>
       <Paper id="pA" />
@@ -54,6 +66,7 @@ export const StepA: React.FC = () => {
 /** Step B: five lines draw on with staggered, ragged starts; camera locked. */
 export const StepB: React.FC = () => {
   const f = useCurrentFrame(); // local, 0..18
+  const flat = useContext(Detail).maps === true;
   return (
     <AbsoluteFill style={{ background: "#d9d9d6" }}>
       <svg width={1920} height={1080} style={{ position: "absolute" }}>
@@ -64,7 +77,7 @@ export const StepB: React.FC = () => {
         {Array.from({ length: 5 }, (_, i) => {
           const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
           return (
-            <path key={i} d={ringPath(1180 + i * 64, 26, 11, 0.6 + i * 0.5, A1, A0)} pathLength={1} fill="none" stroke="#2b2b2b" strokeWidth={6}
+            <path key={i} d={flat ? wavePath(620, 1900, 400 + i * 54, 13, 3.2, 0.5 + i * 0.6) : ringPath(1180 + i * 64, 26, 11, 0.6 + i * 0.5, A1, A0)} pathLength={1} fill="none" stroke="#2b2b2b" strokeWidth={flat ? 5 : 6}
               strokeLinecap="round" strokeDasharray={`${p} 1`} strokeDashoffset={-0.04 * rnd(i, 9)} filter="url(#bleedB)" />
           );
         })}
@@ -115,39 +128,51 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
     x.lineWidth = 5.6;
     x.lineCap = "round";
     x.lineJoin = "round";
-    for (let i = 0; i < 76; i++) {
-      const r = 820 + i * pitch;
-      const a0 = A0 - 0.05 + rnd(i, 2) * 0.08;
-      const a1 = A1 + 0.12 - rnd(i, 7) * 0.16 - Math.max(0, i - 50) * 0.004;
-      if (fine) {
-        // heavy rule drawn in 13 segments so its weight can swell (0.75..1.25 of nominal) along the arc
-        for (let s = 0; s < 13; s++) {
-          x.lineWidth = 5.6 * (1 + 0.25 * Math.sin(s * 0.9 + i * 0.5 + ph * 0.3));
+    if (fine) {
+      // the sheet's field: horizontal sinusoid rows across the whole sheet, heavy rules with swelling weight and a
+      // hair-line family between them; the wave phase flows along x
+      const rows = Math.ceil((height + 900) / pitch);
+      for (let i = 0; i < rows; i++) {
+        const y0 = -450 + i * pitch;
+        const x0 = -400 + rnd(i, 2) * 120, x1 = width + 700 - rnd(i, 7) * 160;
+        for (let sgm = 0; sgm < 12; sgm++) {
+          x.lineWidth = 5.2 * (1 + 0.25 * Math.sin(sgm * 0.9 + i * 0.5 + ph * 0.3));
           x.beginPath();
-          for (let k = s * 20; k <= s * 20 + 20; k++) {
-            const a = a0 + ((a1 - a0) * k) / 260;
-            const rr = r + pitch * 0.5 * Math.sin(31 * a + ph + i * 0.08);
-            const px = CX + rr * Math.cos(a), py = CY + rr * Math.sin(a);
-            if (k > s * 20) x.lineTo(px, py);
+          for (let k = sgm * 20; k <= sgm * 20 + 20; k++) {
+            const px = x0 + ((x1 - x0) * k) / 240;
+            const py = y0 + pitch * 0.5 * Math.sin(px * 0.0105 + ph + i * 0.09);
+            if (k > sgm * 20) x.lineTo(px, py);
             else x.moveTo(px, py);
           }
           x.stroke();
         }
-        // hair line between this rule and the next, a different modulation count so the two families beat
-        x.lineWidth = 1.5;
+        x.lineWidth = 1.4;
         x.globalAlpha = 0.6;
         x.beginPath();
-        for (let k = 0; k <= 260; k++) {
-          const a = a0 + ((a1 - a0) * k) / 260;
-          const rr = r + pitch * 0.5 + pitch * 0.42 * Math.sin(47 * a - ph * 0.8 + i * 0.3);
-          const px = CX + rr * Math.cos(a), py = CY + rr * Math.sin(a);
+        for (let k = 0; k <= 240; k++) {
+          const px = x0 + ((x1 - x0) * k) / 240;
+          const py = y0 + pitch * 0.5 + pitch * 0.42 * Math.sin(px * 0.0162 - ph * 0.8 + i * 0.3);
           if (k) x.lineTo(px, py);
           else x.moveTo(px, py);
         }
         x.stroke();
         x.globalAlpha = 1;
-        continue;
       }
+      x.restore();
+      if (wash === 0) {
+        // the sheet's field fades toward the right edge before the wash
+        const gr = x.createLinearGradient(width * 0.62, 0, width, 0);
+        gr.addColorStop(0, "rgba(231,231,228,0)");
+        gr.addColorStop(1, "rgba(231,231,228,0.92)");
+        x.fillStyle = gr;
+        x.fillRect(width * 0.62, 0, width * 0.38, height);
+      }
+      return;
+    }
+    for (let i = 0; i < 76; i++) {
+      const r = 820 + i * pitch;
+      const a0 = A0 - 0.05 + rnd(i, 2) * 0.08;
+      const a1 = A1 + 0.12 - rnd(i, 7) * 0.16 - Math.max(0, i - 50) * 0.004;
       x.beginPath();
       for (let k = 0; k <= 260; k++) {
         const a = a0 + ((a1 - a0) * k) / 260;
@@ -159,24 +184,25 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
       x.stroke();
     }
     x.restore();
-  }, [width, height, zoom, drift, ink, ph, pitch, fine]);
+  }, [width, height, zoom, drift, ink, ph, pitch, fine, wash]);
   // curved wash front, top to bottom in 6 frames
   const frontY = lerp(-200, height + 260, wash);
   const washClip = `path('M 0 0 L ${width} 0 L ${width} ${frontY - 120} Q ${width / 2} ${frontY + 140} 0 ${frontY - 120} Z')`;
-  const discR = lerp(2600, 1520, disc);
+  const discR = lerp(2600, fine ? 0.56 * height : 1520, disc);
+  const dcx = fine ? 0.29 * width : CX - 380, dcy = fine ? 0.5 * height : CY + 120;
   return (
     <AbsoluteFill>
       <AbsoluteFill style={{ background: "#e7e7e4" }} />
       <AbsoluteFill style={{ clipPath: washClip, background: `linear-gradient(160deg, ${INK.washA} 0%, #dfe2c6 55%, ${INK.washB} 100%)`, filter: `saturate(${lerp(0.5, 1, ramp(f, T.wash, T.wash + 14))})` }} />
       {/* the disc: pale paper carrying the field */}
-      <AbsoluteFill style={{ clipPath: wash > 0 ? `circle(${discR}px at ${CX - 380}px ${CY + 120}px)` : undefined }}>
+      <AbsoluteFill style={{ clipPath: wash > 0 ? `circle(${discR}px at ${dcx}px ${dcy}px)` : undefined }}>
         <AbsoluteFill style={{ background: "#efeee8", opacity: disc }} />
         <canvas ref={ref} width={width} height={height} style={{ position: "absolute", inset: 0 }} />
       </AbsoluteFill>
       {wash > 0 ? (
         <svg width={width} height={height} style={{ position: "absolute", inset: 0, opacity: disc }}>
-          <circle cx={CX - 380} cy={CY + 120} r={discR} fill="none" stroke="#7f938a" strokeWidth={3} />
-          <circle cx={CX - 380} cy={CY + 120} r={discR - 14} fill="none" stroke="#9aaba2" strokeWidth={1.5} />
+          <circle cx={dcx} cy={dcy} r={discR} fill="none" stroke="#7f938a" strokeWidth={3} />
+          <circle cx={dcx} cy={dcy} r={discR - 14} fill="none" stroke="#9aaba2" strokeWidth={1.5} />
         </svg>
       ) : null}
       <Paper id="pC" mottle={0.03} />

@@ -69,6 +69,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
     { x: -3.0, z: -18, s: 0.7, ph: 0.8, sp: 0.04 },
     { x: 11, z: -16, s: 0.7, ph: 0.15, sp: 0.05 },
   ];
+  if (front && dm) return null; // the sheet's still life has no balloons
   if (front) {
     // a near balloon rising across the headline (depth-layered type)
     const y = lerp(-8, 9.5, (lf - 6) / 104);
@@ -84,19 +85,19 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
   }
   return (
     <>
-      <Cam pos={[cx, 2.4, 15]} target={[cx * 0.8, 1.8, 0]} fov={38} roll={THREE.MathUtils.degToRad(-0.6 + lf * 0.004)} />
+      <Cam pos={dm ? [cx * 0.6, 1.5, 11.6] : [cx, 2.4, 15]} target={dm ? [cx * 0.5, 0.5, 0] : [cx * 0.8, 1.8, 0]} fov={38} roll={THREE.MathUtils.degToRad(-0.6 + lf * 0.004)} />
       {/* far: v2 skyline of stacked parcels, or (v2D) an arcaded wall with plants, as in the target sheet */}
       {g.dress ? (
         <>
-          <EMesh g={g.dress.arcade} m={mk({ atmos: 0.55, seed: 60, angleDeg: 45, albedoNoise: 0.2, edge: 0.4, hatch: 0.4 })} live={gl} pos={[-cx * 0.3 - 1, -2.2, -24]} scale={1.45} />
-          <EMesh g={g.dress.plant} m={mk({ atmos: 0.3, seed: 61, angleDeg: 52, edge: 0.5 })} live={gl} pos={[10.5, -2.2, -10]} rot={[0, 0.4, 0]} scale={1.7} />
-          <EMesh g={g.dress.plant} m={mk({ atmos: 0.42, seed: 62, angleDeg: 38, edge: 0.5 })} live={gl} pos={[-11.5, -2.2, -13]} rot={[0, -0.6, 0]} scale={1.5} />
+          <EMesh g={g.dress.arcade} m={mk({ atmos: 0.55, seed: 60, angleDeg: 45, albedoNoise: 0.2, edge: 0.4, hatch: 0.4 })} live={gl} pos={[-cx * 0.3 - 1, -2.2, -17]} scale={1.25} />
+          <EMesh g={g.dress.plant} m={mk({ atmos: 0.3, seed: 61, angleDeg: 52, edge: 0.5 })} live={gl} pos={[8.6, -2.2, -8]} rot={[0, 0.4, 0]} scale={1.6} />
+          <EMesh g={g.dress.plant} m={mk({ atmos: 0.42, seed: 62, angleDeg: 38, edge: 0.5 })} live={gl} pos={[-9.2, -2.2, -9]} rot={[0, -0.6, 0]} scale={1.4} />
         </>
       ) : (
         <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5, ...MAP(kraft(5), 0.5) })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
       )}
       {/* rising balloons with parcels (secondary life: vertical rise, sin bob, phase-offset) */}
-      {balloons.map((b, i) => {
+      {(dm ? [] : balloons).map((b, i) => {
         const y = -6 + (((lf / 24) * b.sp * 24 + b.ph * 16) % 16);
         return (
           <group key={i} position={[b.x + 0.3 * Math.sin(lf / 26 + i), y, b.z]} scale={b.s} rotation={[0, lf * 0.006 * (i % 2 ? 1 : -1), 0]}>
@@ -108,26 +109,26 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       {g.dress ? (
         <>
           {/* v2D still life on low pedestals: headphones, perfume bottle, open box with tissue, wristwatch; a duffel on the floor */}
-          <group position={[-6.6, -2.2, -2.4]}>
+          <group position={[-6.2, -2.2, -2.0]} scale={1.25}>
             <EMesh g={g.ped} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
             <EMesh g={g.dress.headphones} m={mk({ seed: 81, spec: 0.35, shininess: 30, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, 0.5 + lf * 0.002, 0]} scale={1.05} />
           </group>
-          <group position={[-3.1, -2.2, -4.8]}>
+          <group position={[-2.8, -2.2, -4.2]} scale={1.2}>
             <EMesh g={g.pedTall} m={mk({ seed: 82, angleDeg: 52 })} live={gl} />
             <EMesh g={g.dress.bottle} m={mk({ seed: 83, spec: 0.55, shininess: 60, foil: 0.2 })} live={{ ...gl, foilPhase: lf * 0.003 }} pos={[0, 2.2, 0]} rot={[0, 0.3 + lf * 0.003, 0]} scale={1.1} />
           </group>
-          <group position={[1.6, -2.2, -5.6]}>
+          <group position={[1.5, -2.2, -3.4]} scale={1.35}>
             <EMesh g={g.ped} m={mk({ seed: 84, angleDeg: 45 })} live={gl} />
             <group position={[0, 0.9, 0]} rotation={[0, -0.35, 0]} scale={1.25}>
               <EMesh g={g.dress.open.box} m={mk({ seed: 85, angleDeg: 45, ...MAP(giftPaper(6)) })} live={gl} />
               <EMesh g={g.dress.open.tissue} m={mk({ seed: 86, albedo: 1.2, edge: 0.4, lift: 0.1 })} live={gl} double />
             </group>
           </group>
-          <group position={[5.6, -2.2, -3.2]}>
+          <group position={[5.2, -2.2, -1.4]} scale={1.25}>
             <EMesh g={g.ped} m={mk({ seed: 87, angleDeg: 52 })} live={gl} />
             <EMesh g={g.dress.watch} m={mk({ seed: 88, spec: 0.6, shininess: 50, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, -0.4 + lf * 0.002, 0]} scale={1.0} />
           </group>
-          <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[8.6, -2.2, -1.6]} rot={[0, -0.55, 0]} scale={1.0} />
+          <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[8.4, -2.2, -0.2]} rot={[0, -0.55, 0]} scale={1.2} />
         </>
       ) : (
         <>
@@ -172,7 +173,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
         </>
       ) : null}
       {/* hero: gift box approaching, pearl foil on the ribbon only */}
-      <group position={[2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={1.5 * approach}>
+      <group position={dm ? [-1.9 + lf * 0.004, -2.2, 1.6] : [2.4 + lf * 0.004, -2.2, 0.6]} rotation={[0.08, -0.55 + lf * 0.0018, 0]} scale={(dm ? 1.0 : 1.5) * approach}>
         <EMesh g={g.gift.box} m={mk({ seed: 88, angleDeg: 45, ...MAP(giftPaper(5)) })} live={gl} />
         <EMesh g={g.gift.ribbon} m={mk({ seed: 89, albedo: 1.15, foil: 0.6, spec: 0.5, angleDeg: 38, ...MAP(ribbon(3), 0.5) })} live={{ ...gl, foilPhase: lf * 0.006 + drift * 0.3 }} />
       </group>

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import { Face, Rosette } from "./CardFace.tsx";
 import { LensRim, LensVignette, Paper } from "./fx.tsx";
+import { Detail } from "./three.tsx";
 import { C, P, T, lerp, ramp } from "./look.ts";
 
 /**
@@ -32,6 +33,7 @@ export const CardTake: React.FC = () => {
   const lensO = 1 - ramp(f, 522, 542);
   const blur = Math.min(16, 40 * (w - Math.pow(Math.max(0, (f - 1 - T.whip) / (T.studio - T.whip)), 2.5)) * 4);
   const shadow = ramp(f, 524, 548);
+  const dm = useContext(Detail).maps === true;
   return (
     <AbsoluteFill style={{ background: "#123826" }}>
       <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, #1d4a33 0%, #123826 55%, #0a2318 100%)" }} />
@@ -52,6 +54,13 @@ export const CardTake: React.FC = () => {
           <Face f={T.reveal} clip security={1} ink="#1c3d2a" fill="#e6e8cf" view={{ settled: true, inks: { a: P.green, b: [["#2a4a22", 0], ["#6d8f5a", 0.45], ["#d3dfb8", 0.83], ["#f3efdc", 1]], hero: [["#1e532e", 0], ["#7b9d76", 0.5], ["#f7f3db", 1]] } }} fieldInk="#4f6f58" stripPhase={0.2} />
         </AbsoluteFill>
       </AbsoluteFill>
+      {dm && lensO > 0 ? (
+        // the sheet's cartouche shot sits inside a banknote double-rule frame
+        <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, opacity: 0.85 * lensO }}>
+          <rect x={64} y={64} width={1920 - 128} height={1080 - 128} rx={6} fill="none" stroke="#1c3d2a" strokeWidth={4} />
+          <rect x={82} y={82} width={1920 - 164} height={1080 - 164} rx={4} fill="none" stroke="#1c3d2a" strokeWidth={1.5} />
+        </svg>
+      ) : null}
       {lensO > 0 ? (
         <>
           <LensRim radiusScale={lensK} />
