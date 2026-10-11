@@ -11,7 +11,7 @@ type V3 = [number, number, number];
 /** Camera distance at which the object-anchored screen has its nominal period (per world). */
 export const RefDepth = createContext(15);
 /** Engraving defaults applied under every EMesh/Gltf in the subtree (the v2 detailing pass sets hatch/stipple/follow here). */
-export type DetailOpts = Partial<EOpts> & { maps?: boolean; gltfFollow?: number; periodScale?: number };
+export type DetailOpts = Partial<EOpts> & { maps?: boolean; gltfFollow?: number; periodScale?: number; paint?: boolean };
 export const Detail = createContext<DetailOpts>({});
 
 /** Camera driven by the Remotion frame only (deterministic). roll in radians about the view axis. */
@@ -91,6 +91,7 @@ export const EMesh: React.FC<{
     delete d0.maps;
     delete d0.gltfFollow;
     delete d0.periodScale;
+    delete d0.paint;
     const x = engrave({ res: [width, height], refDepth: rd, ...d0, ...m, periodFrac: (m.periodFrac ?? d0.periodFrac ?? 0.0068) * ps });
     if (double) x.side = THREE.DoubleSide;
     if (m.opacity !== undefined || live?.opacity !== undefined) x.transparent = true;
@@ -140,6 +141,7 @@ export const Gltf: React.FC<{
       delete d0.maps;
       delete d0.gltfFollow;
       delete d0.periodScale;
+      delete d0.paint;
       // scanned meshes carry bumpy normals: form-following lines would swirl, so they get their own (lower) amount
       const mat = engrave({ res: [width, height], refDepth: rd, albedoNoise: 0.15, noiseScale: 30, mapAmt: 0.8, ...d0, ...(gltfFollow !== undefined ? { follow: gltfFollow } : {}), ...m, ...extra, map, periodFrac: (m.periodFrac ?? extra.periodFrac ?? d0.periodFrac ?? 0.0068) * ps });
       mat.side = THREE.DoubleSide;

@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { AbsoluteFill } from "remotion";
 import { Detail, World } from "./three.tsx";
+import { BrushLayer, MaskProbe, makeBus } from "./paint.tsx";
 import { AssemblyWorld, type AsmView } from "./Assembly.tsx";
 import { Field } from "./Opening.tsx";
 import { bandGradient, BandLines, LinePattern } from "./fx.tsx";
@@ -168,14 +169,20 @@ export const Face: React.FC<{
   stripPhase?: number;
   hideStrip?: boolean;
   worldFilter?: string;
-}> = ({ f, view, clip, security = 0, ink = "#16365f", fill = "#d6eef4", fieldInk, stripPhase, hideStrip, worldFilter }) => (
-  <AbsoluteFill style={{ clipPath: clip ? cardClip : undefined, overflow: "hidden" }}>
-    <AbsoluteFill style={{ filter: worldFilter }}>
-      <Field f={f} inkOverride={fieldInk} />
-      <World>
-        <AssemblyWorld f={f} {...view} />
-      </World>
+}> = ({ f, view, clip, security = 0, ink = "#16365f", fill = "#d6eef4", fieldInk, stripPhase, hideStrip, worldFilter }) => {
+  const paint = useContext(Detail).paint === true;
+  const bus = useMemo(() => makeBus(), []);
+  return (
+    <AbsoluteFill style={{ clipPath: clip ? cardClip : undefined, overflow: "hidden" }}>
+      <AbsoluteFill style={{ filter: worldFilter }}>
+        <Field f={f} inkOverride={fieldInk} />
+        {paint ? <BrushLayer bus={bus} f={f} /> : null}
+        <World style={paint ? { mixBlendMode: "multiply" } : undefined}>
+          {paint ? <MaskProbe bus={bus} f={f} /> : null}
+          <AssemblyWorld f={f} {...view} />
+        </World>
+      </AbsoluteFill>
+      {security > 0 ? <Security ink={ink} fill={fill} opacity={security} phase={stripPhase} hideStrip={hideStrip} /> : null}
     </AbsoluteFill>
-    {security > 0 ? <Security ink={ink} fill={fill} opacity={security} phase={stripPhase} hideStrip={hideStrip} /> : null}
-  </AbsoluteFill>
-);
+  );
+};
