@@ -89,7 +89,7 @@ const Bag: React.FC<{ t: number; lit: number; tex: THREE.Texture; stand: number 
   }, []);
   const a = (Math.PI / 2) * t;
   const live = { ambient: 0.14, lift: 0.14 + 0.5 * lit, key: [-0.3, -0.5, 0.8] as V3 };
-  const mat = (_i: number) => PAPER(1, { map: tex });
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
   const w = g.w;
   // the whole card stands up on its bottom edge while the panels wrap round
   return (
@@ -125,7 +125,7 @@ const Plane: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
   const wingF = ramp(t, 0.45, 1, inOut);
   const noseF = ramp(t, 0.2, 0.7, inOut);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
-  const mat = (_i: number) => PAPER(1, { map: tex });
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
   return (
     <>
       {[1, -1].map((s, k) => (
@@ -159,7 +159,7 @@ const Hotel: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, li
   const litL = { ...live, lift: 0.2 + 0.6 * lit };
   const rise = ramp(t, 0, 0.7, expoOut);
   const roofF = ramp(t, 0.5, 1, inOut);
-  const mat = (_i: number) => PAPER(1, { map: tex });
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
   return (
     <>
       <EMesh g={g.left} m={mat(0)} double live={live} />
@@ -200,7 +200,7 @@ const Box: React.FC<{ t: number; lit: number; tex: THREE.Texture }> = ({ t, lit,
   const fanF = ramp(t, 0.7, 1, expoOut);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const litL = { ...live, lift: 0.2 + 0.55 * lit };
-  const mat = (_i: number) => PAPER(1, { map: tex });
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
   const hinges: { at: V3; axis: V3; sgn: number }[] = [
     { at: [0, s, 0], axis: [1, 0, 0], sgn: -1 },
     { at: [s, 0, 0], axis: [0, 1, 0], sgn: 1 },
@@ -243,7 +243,7 @@ const Tag: React.FC<{ t: number; tex: THREE.Texture }> = ({ t, tex }) => {
   }, []);
   const live = { ambient: 0.14, lift: 0.14, key: [-0.3, -0.5, 0.8] as V3 };
   const upF = ramp(t, 0, 0.35, expoOut) * (1 - ramp(t, 0.6, 1, inOut)); // rises, then flattens to nothing
-  const mat = (_i: number) => PAPER(1, { map: tex });
+  const mat = (i: number) => PAPER(1 + 0 * i, { map: tex }); // one seed for every piece: no texture pop when shapes swap
   return (
     <>
       <EMesh g={g.rest} m={mat(0)} double live={live} />
