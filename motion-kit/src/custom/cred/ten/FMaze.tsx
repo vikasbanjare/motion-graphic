@@ -143,7 +143,8 @@ const Maze: React.FC<{ f: number }> = ({ f }) => {
   const high = ramp(f, T.leave, T.arcade + 6, inOut);
   const push = ramp(f, 6, T.leave, inOut);
   const introPos = new THREE.Vector3(0, -3.2, 9.0).lerp(new THREE.Vector3(ROS[0] - 1.1, ROS[1] - 1.9, 2.6), push);
-  const camP = new THREE.Vector3().copy(P0).addScaledVector(side, 0.9).add(new THREE.Vector3(0, 0, 0.85 + (u > U.arcadeEnd && u < U.skyEnd ? 0.6 : 0)));
+  const skyLift = ramp(f, T.sky - 14, T.sky + 14, inOut) * (1 - ramp(f, T.corridor - 14, T.corridor + 14, inOut)); // higher above the contrail, eased
+  const camP = new THREE.Vector3().copy(P0).addScaledVector(side, 0.9).add(new THREE.Vector3(0, 0, 0.85 + 0.6 * skyLift));
   const home = ramp(f, T.home + 30, T.real + 12, inOut);
   const finalPos = new THREE.Vector3(0, -1.4, 10.5);
   const pos = introPos.clone().lerp(camP, high).lerp(finalPos, home);

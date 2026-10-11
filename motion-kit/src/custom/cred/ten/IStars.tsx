@@ -108,17 +108,17 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
     }
     const starGroups = Array.from({ length: 6 }, (_, k) => starsAt(pts.filter((_, i) => i % 6 === k)));
     const goldStars = starsAt(gold, 0.5);
-    const planePts = shape(60, 32, PLANE, 0.9);
-    const hotelPts = shape(105, 24, HOTEL, 0.8);
-    const ringPts = Array.from({ length: RING_N + 1 }, (_, i) => sky(250, 36, 9 * Math.cos((i / RING_N) * Math.PI * 2), 9 * Math.sin((i / RING_N) * Math.PI * 2)));
+    const planePts = shape(60, 32, PLANE, 1.5);
+    const hotelPts = shape(105, 24, HOTEL, 1.3);
+    const ringPts = Array.from({ length: RING_N + 1 }, (_, i) => sky(250, 36, 13 * Math.cos((i / RING_N) * Math.PI * 2), 13 * Math.sin((i / RING_N) * Math.PI * 2)));
     const plane = { stars: starsAt(planePts, 0.6), lines: linesThrough(planePts) };
     const hotel = { stars: starsAt(hotelPts, 0.6), lines: linesThrough(hotelPts) };
     const ring = { stars: starsAt(ringPts.slice(0, RING_N), 0.6), lines: linesThrough(ringPts) };
     const products = PRODUCTS.map((p) => {
-      const pts = shape(p.az, p.el, p.pts, p.s);
+      const pts = shape(p.az, p.el, p.pts, p.s * 1.7);
       return { stars: starsAt(pts, 0.42), lines: linesThrough(pts, 0.14) };
     });
-    const moon = new THREE.SphereGeometry(5.2, 32, 24);
+    const moon = new THREE.SphereGeometry(6.5, 32, 24);
     const moonP = sky(250, 36);
     const craters = merge([[-1.2, 1.0, 0.9], [1.5, -0.4, 0.6], [0.3, -1.8, 0.5], [-1.8, -1.2, 0.4], [1.0, 1.9, 0.45]].map(([x, y, r]) => new THREE.TorusGeometry(r, 0.08, 6, 24).translate(x, y, 4.1)));
     // the telescope tube and the table
@@ -160,7 +160,7 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
   const skyTarget = look.clone().multiplyScalar(R * 0.9);
   const pos = tablePos.clone().lerp(eyePos, into).lerp(tablePos, back);
   const target = tableTarget.clone().lerp(skyTarget, into).lerp(tableTarget, back);
-  const fov = lerp(36, 46, into) * (1 - 0.25 * back);
+  const fov = lerp(36, 40, into) * (1 - 0.25 * back);
   const skyOn = f >= T.eye && f < T.real; // the dome exists only through the eyepiece
   const tubeOn = (ramp(f, T.eye + 10, T.sky - 8, inOut) * (1 - ramp(f, T.sky - 8, T.sky + 4, inOut))) + ramp(f, T.back + 6, T.back + 18, inOut) * (1 - ramp(f, T.real - 16, T.real - 4, inOut));
 
