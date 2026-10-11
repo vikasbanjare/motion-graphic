@@ -202,3 +202,13 @@ do not fight:
   themselves, not the shading) was the weak point — primitives read as primitives under any shader. Designed subjects
   now live in `v2/models3.ts` (bag with cuff/eyelets/rope, lipped gift lid with a looped bow, parcel with seams, tape
   and twine, airliner with windows and winglets, flat-based cumulus, globe stand with ticks).
+- 2026-10-11, the user's target sheet: an AI-raster contact sheet of the same 15 shots (engraved watercolour, soft
+  tint, painterly products: headphones, perfume, watch, duffel, open box with tissue; a luggage-tag macro; a big
+  airliner over the map). AI plates were blocked (Higgsfield 1.02 credits on a free plan, Magnific sign-in expired)
+  and the user chose "create that here using code". What moved the code route toward the sheet, in order: (1) a tonal
+  watercolour wash under the line screen (`wash` in `engrave.ts`: the smooth tone shows through, lines become the
+  drawing over a tint) with a finer screen (`periodScale` 0.72 in the Detail context); (2) re-staging the shots whose
+  content the sheet changed, not only re-shading them (tag macro under the push-through, airliner over the map, the
+  products world as a still life with an arcade and plants); (3) designed models for every product. Keep: the opening
+  rings (ours), the beat table, the mix. Rule stands: stills sheet to the user after every pass, no motion until the
+  sheet is right.
