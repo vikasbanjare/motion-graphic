@@ -175,6 +175,66 @@ const GlassCard: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
+/** v2D: the list as an engraved paper docket (the reference's small legends), not a glass UI card. */
+const Legend: React.FC<{ f: number }> = ({ f }) => {
+  const step = ramp(f, 461, 467, expoOut);
+  const rows = ["flights", "hotels", "2,000+ products"];
+  const W = 0.33 * 1920, H = 0.4 * 1080, L = 0.6 * 1920, Tp = 0.18 * 1080;
+  const pitch = 96, top0 = 150;
+  const ink = "#5a1f19", ink2 = "rgba(90,31,25,0.55)";
+  const barY = lerp(top0 + pitch, top0 + pitch * 2, step);
+  return (
+    <div style={{ position: "absolute", left: L, top: Tp, width: W, height: H }}>
+      <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
+        <defs>
+          <LinePattern id="legMesh" pitch={6} width={1.1} color={ink} angle={45} />
+          <linearGradient id="legFoil" x1="0" x2="1">
+            <stop offset="0" stopColor="#f1caca" />
+            <stop offset="0.35" stopColor="#fcd8a3" />
+            <stop offset="0.7" stopColor="#c7e5d2" />
+            <stop offset="1" stopColor="#8daad3" />
+          </linearGradient>
+        </defs>
+        {/* paper panel with a fine-mesh margin and double rule, like a banknote cartouche */}
+        <rect x={0} y={0} width={W} height={H} rx={10} fill="#f6e4d8" opacity={0.92} />
+        <rect x={0} y={0} width={W} height={H} rx={10} fill="url(#legMesh)" opacity={0.35} />
+        <rect x={16} y={16} width={W - 32} height={H - 32} rx={6} fill="#f8ebe2" />
+        <rect x={16} y={16} width={W - 32} height={H - 32} rx={6} fill="none" stroke={ink} strokeWidth={2.2} />
+        <rect x={24} y={24} width={W - 48} height={H - 48} rx={4} fill="none" stroke={ink} strokeWidth={0.8} />
+        {/* small rosette ornament top-right */}
+        <g opacity={0.8}>
+          {Array.from({ length: 9 }, (_, i) => {
+            const R = 22 * (0.5 + 0.5 * (i / 9));
+            let d = "";
+            for (let k = 0; k <= 180; k++) {
+              const t = (k / 180) * Math.PI * 2, r = R + 22 * 0.1 * Math.sin(8 * t + i * 0.4);
+              d += `${k ? "L" : "M"}${(W - 62 + r * Math.cos(t)).toFixed(1)} ${(62 + r * Math.sin(t)).toFixed(1)} `;
+            }
+            return <path key={i} d={d + "Z"} fill="none" stroke={ink} strokeWidth={0.9} />;
+          })}
+        </g>
+        {/* the active row: a thin foil rule under the words, not a pill */}
+        <rect x={52} y={barY + 22} width={W - 104} height={5} fill="url(#legFoil)" opacity={0.95} />
+        <rect x={52} y={barY + 22} width={W - 104} height={5} fill="url(#legMesh)" opacity={0.35} />
+        {/* hairline rules between rows */}
+        {rows.map((_, i) => (
+          <line key={i} x1={52} x2={W - 52} y1={top0 + pitch * i + 46} y2={top0 + pitch * i + 46} stroke={ink2} strokeWidth={1} />
+        ))}
+      </svg>
+      <div style={{ position: "absolute", left: 52, top: 50, fontFamily: SANS, fontWeight: 500, fontSize: 19, letterSpacing: "0.34em", color: ink }}>REDEEM ON</div>
+      {rows.map((r, i) => {
+        const active = i === 1 ? 1 - step : i === 2 ? step : 0;
+        return (
+          <div key={r} style={{ position: "absolute", left: 52, right: 52, top: top0 + pitch * i - 24, height: 48, display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: SERIF, fontWeight: 600, fontSize: 42, color: ink, letterSpacing: "-0.02em", opacity: 0.62 + 0.38 * active, fontVariationSettings: "'opsz' 72" }}>
+            <span>{r}</span>
+            <span style={{ fontFamily: SANS, fontWeight: 500, fontSize: 16, letterSpacing: "0.3em", opacity: 0.7 }}>{["0" + (i + 1), "02", "03"][i].slice(-2)}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 /** The sliding card slab used as the wipe matte (engraved crimson face + foil edge). */
 const Slab: React.FC<{ edge: number }> = ({ edge }) => {
   const w = 0.22 * 1920;
@@ -205,6 +265,7 @@ const Slab: React.FC<{ edge: number }> = ({ edge }) => {
 export const ProductsTake: React.FC = () => {
   const lf = useCurrentFrame();
   const f = lf + T.matte;
+  const detailed = useContext(Detail).maps;
   // the slab slides in from the right for 2 frames, then its trailing edge is the matte (11 measured steps)
   const wiping = lf < 13;
   const edge = lf < 2 ? 100 : wiping ? EDGE[Math.min(11, lf - 2)] : 0;
@@ -218,7 +279,7 @@ export const ProductsTake: React.FC = () => {
           <ProductsWorld f={f} />
         </World>
         <Paper id="prod" mottle={0.035} grain={0.1} />
-        <GlassCard f={f} />
+        {detailed ? <Legend f={f} /> : <GlassCard f={f} />}
         {/* headline top-left; locked, revealed by the wipe (no entrance); a near balloon later rises in front of it */}
         <div style={{ position: "absolute", left: 0.05 * 1920, top: 0.07 * 1080 }}>
           <Sheen t={lf / 24} ink="#6e2a22" sheen="#e8957a" boxW={900} fontSize={116} fontFamily={SERIF} letterSpacing="-0.03em" opsz>
