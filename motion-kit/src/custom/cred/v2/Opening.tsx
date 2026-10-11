@@ -48,14 +48,17 @@ export const StepA: React.FC = () => {
   const r = 1750;
   return (
     <AbsoluteFill style={{ background: INK.paperGrey }}>
-      <svg width={1920} height={1080} style={{ position: "absolute", transform: `translateX(${-x * 0.35}px)` }}>
+      <svg width={1920} height={1080} style={{ position: "absolute", transform: flat ? undefined : `translateX(${-x * 0.35}px)` }}>
         <filter id="bleedA">
           <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves={2} seed={3} />
           <feDisplacementMap in="SourceGraphic" scale="3" />
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
-        <path d={flat ? wavePath(40, 1250, 500, 16, 2.6, 0.3) : ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={flat ? 9 : 12.5} strokeLinecap="round"
-          strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
+        {flat ? (
+          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 7, Math.max(2, Math.min(780, (f - 7) * 47)) / 230, 0.3)} fill="none" stroke={INK.pen} strokeWidth={3} strokeLinecap="round" filter="url(#bleedA)" />
+        ) : (
+          <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round" strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
+        )}
       </svg>
       <Paper id="pA" />
       <Vignette strength={0.2} />
@@ -74,13 +77,19 @@ export const StepB: React.FC = () => {
           <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves={2} seed={5} />
           <feDisplacementMap in="SourceGraphic" scale="2" />
         </filter>
-        {Array.from({ length: 5 }, (_, i) => {
-          const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
-          return (
-            <path key={i} d={flat ? wavePath(620, 1900, 400 + i * 54, 13, 3.2, 0.5 + i * 0.6) : ringPath(1180 + i * 64, 26, 11, 0.6 + i * 0.5, A1, A0)} pathLength={1} fill="none" stroke="#2b2b2b" strokeWidth={flat ? 5 : 6}
-              strokeLinecap="round" strokeDasharray={`${p} 1`} strokeDashoffset={-0.04 * rnd(i, 9)} filter="url(#bleedB)" />
-          );
-        })}
+        {flat
+          ? [0, 1, 2].map((i) => {
+              const centre = Math.min(1100, 780 + f * 18);
+              const end = i === 1 ? centre : Math.min(centre * (i === 0 ? 0.62 : 0.85), f * (i === 0 ? 105 : 120) + 40);
+              return <path key={i} d={wavePath(0, end, 540 + (i - 1) * 125, 7, end / 230, 0.3 + i * 0.9)} fill="none" stroke="#2b2b2b" strokeWidth={3} strokeLinecap="round" filter="url(#bleedB)" />;
+            })
+          : Array.from({ length: 5 }, (_, i) => {
+              const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
+              return (
+                <path key={i} d={ringPath(1180 + i * 64, 26, 11, 0.6 + i * 0.5, A1, A0)} pathLength={1} fill="none" stroke="#2b2b2b" strokeWidth={6}
+                  strokeLinecap="round" strokeDasharray={`${p} 1`} strokeDashoffset={-0.04 * rnd(i, 9)} filter="url(#bleedB)" />
+              );
+            })}
       </svg>
       <Paper id="pB" mottle={0.025} />
       <Vignette strength={0.12} />
@@ -103,16 +112,17 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
     for (let i = 0; i < Math.max(0, fr); i++) s += 6 + 20 * Math.exp(-i / 7);
     return s;
   };
-  const ph = flow(Math.min(local, 60)) / 220 + Math.max(0, local - 60) * 0.012;
+  const fine = useContext(Detail).maps === true;
+  // measured intro: the lines are static while the sheet trucks; the flow only starts under the wash
+  const ph = fine ? Math.max(0, f - T.wash) * 0.012 : flow(Math.min(local, 60)) / 220 + Math.max(0, local - 60) * 0.012;
   const wash = ramp(f, T.wash, T.wash + 6, (t) => t);
   const disc = ramp(f, T.wash + 4, T.wash + 14, expoOut);
-  const drift = -Math.min(local, 200) * 0.9 - Math.max(0, local - 200) * 0.2;
+  const drift = fine
+    ? -Math.max(0, Math.min(f, T.wash) - 58) * 5.8 - Math.max(0, f - T.wash) * 0.9
+    : -Math.min(local, 200) * 0.9 - Math.max(0, local - 200) * 0.2;
   const zoom = 1 - Math.min(local, 120) * 0.0006;
   const ink = inkOverride ?? (wash > 0.5 ? "#6d7f78" : "#646464");
-  const pitch = 0.022 * height;
-  // detailed: a second, hair-line family interleaved at half pitch with its own modulation (an engraver's fine work
-  // between the heavy rules), and the heavy rules swell and thin along their length
-  const fine = useContext(Detail).maps === true;
+  const pitch = fine ? 0.0236 * height : 0.022 * height;
   const ref = useRef<HTMLCanvasElement>(null);
   // drawn into a 2D canvas: ~4x cheaper than 76 long SVG paths per frame in headless Chrome
   useLayoutEffect(() => {
@@ -129,44 +139,29 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
     x.lineCap = "round";
     x.lineJoin = "round";
     if (fine) {
-      // the sheet's field: horizontal sinusoid rows across the whole sheet, heavy rules with swelling weight and a
-      // hair-line family between them; the wave phase flows along x
-      const rows = Math.ceil((height + 900) / pitch);
+      // the reference intro, measured at 1080p: a scale-step cut from 8 lines (pitch 80 px, ends 1100 -> 1260 px) to
+      // the full field (43 rows, pitch 25.5 px, 2.5 px lines, lambda ~105 px, amp ~6 px) with a ragged right edge;
+      // under the wash the field grows to fill the disc
+      x.lineWidth = 2.6;
+      const stage3 = f < 58;
+      const grow = ramp(f, T.wash, T.wash + 16, (t) => t);
+      const rows = stage3 ? 8 : Math.ceil((height + 900) / pitch);
       for (let i = 0; i < rows; i++) {
-        const y0 = -450 + i * pitch;
-        const x0 = -400 + rnd(i, 2) * 120, x1 = width + 700 - rnd(i, 7) * 160;
-        for (let sgm = 0; sgm < 12; sgm++) {
-          x.lineWidth = 5.2 * (1 + 0.25 * Math.sin(sgm * 0.9 + i * 0.5 + ph * 0.3));
-          x.beginPath();
-          for (let k = sgm * 20; k <= sgm * 20 + 20; k++) {
-            const px = x0 + ((x1 - x0) * k) / 240;
-            const py = y0 + pitch * 0.5 * Math.sin(px * 0.0105 + ph + i * 0.09);
-            if (k > sgm * 20) x.lineTo(px, py);
-            else x.moveTo(px, py);
-          }
-          x.stroke();
-        }
-        x.lineWidth = 1.4;
-        x.globalAlpha = 0.6;
+        const y0 = stage3 ? 540 + (i - 3.5) * 80 : -450 + i * pitch;
+        const end0 = stage3 ? 1100 + (f - 40) * 9 : 1250;
+        const ragged = (rnd(i, 2) - 0.5) * (stage3 ? 220 : 180);
+        const x1 = lerp(end0 + ragged, width + 900, grow);
+        const lam = stage3 ? 230 : 105, amp = stage3 ? 7 : 6;
         x.beginPath();
-        for (let k = 0; k <= 240; k++) {
-          const px = x0 + ((x1 - x0) * k) / 240;
-          const py = y0 + pitch * 0.5 + pitch * 0.42 * Math.sin(px * 0.0162 - ph * 0.8 + i * 0.3);
+        for (let k = 0; k <= 300; k++) {
+          const px = -80 + ((x1 + 80) * k) / 300;
+          const py = y0 + amp * Math.sin((px * Math.PI * 2) / lam + ph + i * 0.7);
           if (k) x.lineTo(px, py);
           else x.moveTo(px, py);
         }
         x.stroke();
-        x.globalAlpha = 1;
       }
       x.restore();
-      if (wash === 0) {
-        // the sheet's field fades toward the right edge before the wash
-        const gr = x.createLinearGradient(width * 0.62, 0, width, 0);
-        gr.addColorStop(0, "rgba(231,231,228,0)");
-        gr.addColorStop(1, "rgba(231,231,228,0.92)");
-        x.fillStyle = gr;
-        x.fillRect(width * 0.62, 0, width * 0.38, height);
-      }
       return;
     }
     for (let i = 0; i < 76; i++) {
