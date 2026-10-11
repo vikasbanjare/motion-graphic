@@ -43,7 +43,7 @@ const BANDS = [
   { col: "#ffb257", pal: P.ochre, a: 0.18 },
   { col: "#7fe3a0", pal: P.green, a: 0.55 },
 ];
-const ROAD = 24.6; // the road ends at the island's rim
+const ROAD = 27.4; // the road runs onto the island's top
 const dirOf = (a: number) => new THREE.Vector3(Math.sin(a) * 0.9 + 0.25, 0.1, Math.cos(a)).normalize();
 const basisOf = (f: THREE.Vector3) => {
   const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), f).normalize();
@@ -52,7 +52,7 @@ const basisOf = (f: THREE.Vector3) => {
 };
 const ISLAND = BANDS.map((b) => {
   const f = dirOf(b.a);
-  return { f, ...basisOf(f), o: S.clone().addScaledVector(f, ROAD + 6.9) };
+  return { f, ...basisOf(f), o: S.clone().addScaledVector(f, ROAD + 4.1) };
 });
 
 const CamN: React.FC<{ pos: THREE.Vector3; target: THREE.Vector3; fov?: number; near?: number }> = ({ pos, target, fov = 40, near = 0.05 }) => {
@@ -151,7 +151,7 @@ const Island: React.FC<{ k: number; lit: number; vis: number; f: number }> = ({ 
   const I = ISLAND[k];
   const B = BANDS[k];
   const geo = useMemo(() => {
-    const disc = new THREE.CylinderGeometry(5.2, 5.6, 0.5, 64).translate(0, -0.25, 0);
+    const disc = new THREE.CylinderGeometry(5.2, 5.5, 0.28, 64).translate(0, -0.14, 0);
     const street = merge([
       ...Array.from({ length: 6 }, (_, i) => new THREE.BoxGeometry(1.2, 0.9 + 0.3 * (i % 3), 1.0).translate(-2.8 + i * 1.12, 0.45 + 0.15 * (i % 3), -1.6)),
       ...Array.from({ length: 6 }, (_, i) => new THREE.BoxGeometry(1.3, 0.3, 0.05).translate(-2.8 + i * 1.12, 0.62, -1.08)), // awnings
@@ -266,14 +266,14 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
     const I = ISLAND[k];
     const t = ramp(f, a, b, inOut);
     const startD = k === 0 ? 1.5 : 10;
-    const pos = S.clone().addScaledVector(I.f, lerp(startD, ROAD - 5.1, t)).addScaledVector(I.up, lerp(1.2, 5.2, t));
-    const target = S.clone().addScaledVector(I.f, lerp(startD + 6, ROAD + 6.9, t)).addScaledVector(I.up, lerp(0.4, 0.8, t));
+    const pos = S.clone().addScaledVector(I.f, lerp(startD, ROAD - 7.9, t)).addScaledVector(I.up, lerp(1.2, 5.2, t));
+    const target = S.clone().addScaledVector(I.f, lerp(startD + 6, ROAD + 4.1, t)).addScaledVector(I.up, lerp(0.4, 0.8, t));
     return { pos, target };
   };
   const beats = [[T.pink, T.blue], [T.blue, T.amber], [T.amber, T.green], [T.green, T.converge]];
   const HOP = 20;
   let pos = introPos, target = introTarget, fov = 38;
-  if (f >= T.pink) {
+  if (f >= T.pink - 16) {
     let k = beats.findIndex(([a, b]) => f >= a && f < b);
     if (k < 0) k = 3;
     const [a, b] = beats[k];
@@ -289,7 +289,12 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
       pos = ride.pos;
       target = ride.target;
     }
-    fov = 40;
+    if (k === 0) {
+      const t = ramp(f, T.pink - 16, T.pink + 14, inOut);
+      pos = introPos.clone().lerp(pos, t);
+      target = introTarget.clone().lerp(target, t);
+    }
+    fov = lerp(38, 40, ramp(f, T.pink - 16, T.pink + 14, inOut));
   }
   if (f >= T.converge) {
     // pull up and turn back: all roads lead to the card
@@ -300,7 +305,7 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
     fov = lerp(40, 46, t);
   }
   const litOf = (k: number) => ramp(f, beats[k][0] + 30, beats[k][0] + 60, expoOut);
-  const visOf = (k: number) => ramp(f, beats[k][0] - 10, beats[k][0] + 20) * (f < T.converge ? 1 - ramp(f, beats[k][1] + 14, beats[k][1] + 34) : 1);
+  const visOf = (k: number) => ramp(f, beats[k][0] - 10, beats[k][0] + 20) * Math.max(1 - ramp(f, beats[k][1] + 14, beats[k][1] + 34), ramp(f, T.converge, T.converge + 24));
   return (
     <>
       <CamN pos={pos} target={target} fov={fov} />
@@ -320,7 +325,7 @@ const Room: React.FC<{ f: number }> = ({ f }) => {
         const I = ISLAND[k];
         const grow = ramp(f, T.split + k * 3, T.split + 26 + k * 3, expoOut);
         if (grow <= 0) return null;
-        const end = S.clone().addScaledVector(I.f, ROAD * grow);
+        const end = S.clone().addScaledVector(I.f, ROAD * grow).addScaledVector(I.up, 0.05);
         return (
           <group key={k}>
             <Ribbon from={S} to={end} color={b.col} width={1.7} opacity={0.5} tint={white} />
