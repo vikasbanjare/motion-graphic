@@ -86,8 +86,8 @@ export const CredCardV2: React.FC = () => {
           <MacroTake lead={L} />
         </FadeIn>
       </Sequence>
-      <Sequence from={T.swap} durationInFrames={T.products - T.swap} name="7 route map, tilt-up, travel world">
-        <TravelTake />
+      <Sequence from={T.swap - L} durationInFrames={T.products - T.swap + L} name="7 route map, tilt-up, travel world">
+        <TravelTake lead={L} />
       </Sequence>
       <Sequence from={T.matte} durationInFrames={T.cutCard - T.matte} name="8 products world">
         <ProductsTake />

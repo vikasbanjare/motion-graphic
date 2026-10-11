@@ -247,8 +247,8 @@ export const TravelWorld: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-export const TravelTake: React.FC = () => {
-  const lf = useCurrentFrame();
+export const TravelTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
+  const lf = useCurrentFrame() - lead;
   const dm = useContext(Detail).maps === true;
   const f = lf + T.swap;
   // incoming lens: circle(47.5vw) dropping on the measured keyframes
@@ -262,8 +262,10 @@ export const TravelTake: React.FC = () => {
   const swapping = dm ? lf < 24 : lf < 16;
   const ringOut = dm ? ramp(lf, 15, 23, (t) => t) : 0;
   const swR = 0.475 * 1920 * (1 + 0.6 * ringOut);
+  // v2D pre-roll (the lead frames): the lens enters from above the frame before the measured drop begins
+  const pre = lf < 0 ? Math.max(0, (lf + lead) / Math.max(1, lead)) : 1;
   const cx = swapping ? swX / 100 : 0.506;
-  const cy = swapping ? swY / 100 : 0.525;
+  const cy = swapping ? (lf < 0 ? lerp(-0.62, SWY[0] / 100, pre * pre) : swY / 100) : 0.525;
   // iris-out (ease-in, 7 frames) then the lens is gone
   const iris = 1 + 0.24 * Math.pow(ramp(f, TILT0, TILT0 + 8, (t) => t), 2.6) + 0.5 * ramp(f, TILT0 + 7, TILT0 + 10, (t) => t);
   const lensOn = f < TILT0 + 10;
