@@ -226,3 +226,7 @@ do not fight:
   ~f75 (the full 43-row field, ragged right edge at ~0.65 W, the sheet trucking left ~6 px/frame), wash ~f96. Our beat
   table keeps the same shape 20 % faster (22 / 40 / 58 / 72). Lesson: measure strokes as bundles and sweeps, not as
   evenly spaced rows; the first guess (rows 125 px apart with small ripples) looked nothing like it.
+- 2026-10-11, v2D delivered (`motion-kit/out/cred-card-v2d.mp4`, share copy crf 23): four 180-frame chunks at ~7-13
+  min each, concat, the v2 mix, two-pass master; film_qa all green (-14.0 LUFS, -1.3 dBTP, still 14.7 %, no clicks);
+  jerk scan flags only the designed cuts (22, 40, 58, 207, 484, 561, 645). The gate that mattered for the user was the
+  stills sheet after every pass, not any numeric check.
