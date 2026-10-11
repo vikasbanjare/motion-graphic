@@ -1,0 +1,48 @@
+{
+  "_about": "Plate spec for the CRED IndusInd Bank RuPay card film, AI-plate route. One consistent style across every plate; no text, no logos, no card numbers in any plate (type, foil band, card, docket and lockup are rendered in code). UNOFFICIAL SPEC WORK.",
+  "style": "fine banknote engraving illustration on soft cream paper, dense cross-hatching and stipple, a single watercolour tint wash, large paper negative space, no text, no letters, no logos, no watermark, soft vignette, 16:9",
+  "inks": {
+    "shopping": "teal and ochre on cream",
+    "cardReveal": "cobalt blue and cream on ink-blue slate",
+    "macro": "cobalt blue on pale cyan",
+    "travel": "indigo blue on pale cream",
+    "products": "terracotta on warm peach",
+    "cartouche": "deep green on pale green"
+  },
+  "size": { "w": 2048, "h": 1152, "ratio": "16:9" },
+  "shots": [
+    { "id": "05-parcel-world", "frames": [86, 207], "ink": "shopping", "layers": [
+      { "name": "bg", "prompt": "engraved paper background with a huge concentric wavy guilloche disc at the upper right, pale cream and teal wash, empty foreground" },
+      { "name": "mid", "prompt": "cluster of engraved paper shopping bags, gift boxes with ribbon bows, kraft parcels tied with twine, stacked loosely, teal and ochre inks, isolated on plain cream paper, no text" },
+      { "name": "hero", "prompt": "one large engraved gift box with a satin ribbon bow and a hanging coral parcel tag on a string, three-quarter view, isolated on plain cream paper, no text" }
+    ]},
+    { "id": "06-card-reveal", "frames": [150, 207], "ink": "cardReveal", "layers": [
+      { "name": "bg", "prompt": "dark ink-blue slate surface with a faint engraved rosette watermark, deep vignette, nothing else" }
+    ]},
+    { "id": "07-loupe-macro", "frames": [207, 262], "ink": "macro", "layers": [
+      { "name": "bg", "prompt": "extreme close-up of an engraved banknote print of stacked parcels and bags, dense blue cross-hatching, wavy guilloche field behind, no text" }
+    ]},
+    { "id": "08-luggage-tag", "frames": [262, 290], "ink": "macro", "layers": [
+      { "name": "bg", "prompt": "close-up of a paper luggage tag with an eyelet and cord resting on engraved blue fabric, stitched edge, a small engraved airplane roundel stamp, no letters" }
+    ]},
+    { "id": "09-route-map", "frames": [290, 325], "ink": "travel", "layers": [
+      { "name": "bg", "prompt": "top-down engraved map table with concentric compass rings, a compass rose and dotted flight routes, indigo on cream, no text" },
+      { "name": "hero", "prompt": "engraved airliner in three-quarter view from above, window rows and twin engines, isolated on plain cream paper, no text" }
+    ]},
+    { "id": "10-travel-world", "frames": [325, 381], "ink": "travel", "layers": [
+      { "name": "bg", "prompt": "low horizon of engraved cumulus clouds over a compass-ruled map table, pale indigo sky, empty foreground" },
+      { "name": "mid", "prompt": "engraved desk globe on a turned stand, three-quarter view, isolated on plain cream paper, no text" },
+      { "name": "hero", "prompt": "engraved vintage suitcase with a luggage tag, a hotel desk bell beside it, isolated on plain cream paper, no text" }
+    ]},
+    { "id": "11-products", "frames": [392, 484], "ink": "products", "layers": [
+      { "name": "bg", "prompt": "engraved still-life backdrop with soft arches and a potted plant, terracotta wash on peach paper, empty table in front" },
+      { "name": "mid", "prompt": "engraved still life on low pedestals: an open gift box with tissue paper, a perfume bottle, a wristwatch, a leather duffel bag, over-ear headphones, isolated on plain peach paper, no text" }
+    ]},
+    { "id": "13-cartouche", "frames": [484, 550], "ink": "cartouche", "layers": [
+      { "name": "bg", "prompt": "extreme close-up of an engraved hexagonal guilloche cartouche with a six-petal rosette, deep green ink on pale green paper, a double rule frame, no text" }
+    ]}
+  ],
+  "code_rendered": ["opening line steps (shots 1-3)", "wash and disc (shot 4)", "foil band and 5% headline", "card face security print", "docket", "studio card", "lockup"],
+  "layering": "cut hero and mid plates from their plain paper with a luminance key plus manual matte; park each layer at its own depth for parallax; plates move only by camera, never by deforming the drawing",
+  "gate": "every plate is sent to the user as a still before any motion render"
+}
