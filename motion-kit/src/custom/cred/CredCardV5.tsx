@@ -53,7 +53,7 @@ export const CredCardV5: React.FC = () => {
       <Sequence from={T.wash} durationInFrames={T.macro - T.wash} name="parcel world + card: disc matte, contours, brush/rough/pen solids, flubber card, bezier bands, opentype copy">
         <ParcelTake from={T.wash} />
       </Sequence>
-      <Sequence from={T.macro} durationInFrames={T.swap + 2 - T.macro} name="macro: dive into the band, field hand-off, pen lens">
+      <Sequence from={T.macro} durationInFrames={T.swap + 20 - T.macro} name="macro: dive into the band, field hand-off, pen lens">
         <MacroTake from={T.macro} />
       </Sequence>
       <Sequence from={T.swap - 8} durationInFrames={T.products - T.swap + 8} name="travel: lens match-cut, globe (topojson), routes on onsets (meyda)">
@@ -62,7 +62,7 @@ export const CredCardV5: React.FC = () => {
       <Sequence from={T.matte} durationInFrames={T.card + 16 - T.matte} name="products: slab matte (polygon-clipping), still life">
         <ProductsTake from={T.matte} />
       </Sequence>
-      <Sequence from={T.card} durationInFrames={T.studio + 2 - T.card} name="fee: plinth -> card morph (flubber), whip">
+      <Sequence from={T.card} durationInFrames={T.studio + 16 - T.card} name="fee: plinth -> card morph (flubber), whip">
         <FeeTake from={T.card} />
       </Sequence>
       <Sequence from={T.studio} durationInFrames={T.lockup - T.studio} name="studio: iris out of the speed lines (three)">
