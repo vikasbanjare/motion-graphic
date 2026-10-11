@@ -128,3 +128,25 @@ Apply these on top of section 2. The older methods stay as the reference frame; 
     - v2's opening (random parcels);
     - v3's literal icons and slow pace;
     - the night films (flat clip art, no 3D, no world).
+
+## 5. Build notes from the ten-film set (append; never delete)
+
+- 2026-10-11, films A–J (`motion-kit/src/custom/cred/ten/`):
+  - **Measure, never guess, path parameters.** F's beats landed in the wrong worlds because the curve's `u` per beat was
+    guessed; compute it from `CatmullRomCurve3.getLengths()` (see `FMaze.tsx` `uOfIndex`).
+  - **The stills gate finds most faults before a 35-minute render:** the camera inside a shop wall (F), the islands seen
+    edge-on as saucers (D), a hidden card face under its body (F), a washed-out print (C, G), text too faint on a texture
+    (G). Render 12–16 stills at the beats, tile them, look, fix, repeat; only then render.
+  - **Snap frames come from hard switches.** Background colour per world, `visible` toggles, a camera that jumps from one
+    rig to the next, islands that reappear at a beat: the single-frame jerk scan (`scratch jerk.py`, frame index = i,
+    not i/30) finds them. Crossfade every switch over 20–30 frames and blend camera rigs with a ramp.
+  - **Reveal direction is the index order.** `PlaneGeometry` lists rows from the far end; reverse the triangle order
+    before using `setDrawRange` to grow a receipt from the printer (G).
+  - **Opacity gating needs a transparent material.** The engraving material is opaque unless `opacity < 1` at creation;
+    pass `opacity: 0.999` in `m` (glTF products too) and drive `live.opacity`.
+  - **Never let the camera pass through set geometry.** Offsets of 0.9 beside a line are not enough when shops are 1.5
+    wide; place sets 2+ units off the camera path (F arcade and store).
+  - **Texture on the engraving material:** `mapAmt: 1` plus `lift` above ~0.25 washes a print out; lift 0.1–0.15 keeps
+    ink visible (C, G). For a plain readable print use `MeshBasicMaterial` with the face texture (F intro).
+  - **Audio clicks:** single-sample grains in `paper_flick` tripped `film_qa`'s click detector; grains are now Hann
+    windows (`cred_sfx.py`). New recipes: `door_knock`, `door_swing`, `printer_ticks`, `flap_clatter`.
