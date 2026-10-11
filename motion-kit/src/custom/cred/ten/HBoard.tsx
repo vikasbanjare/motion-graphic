@@ -215,7 +215,8 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
     [T.cascade - 10, [0, 5.0, 19], [0, 5.0, 0], 38],
     [T.push, [0, 5.0, 11.5], [0, 5.0, 0], 30],
   ];
-  let pos = new THREE.Vector3(...legs[0][1]), target = new THREE.Vector3(...legs[0][2]), fov = legs[0][3];
+  let pos = new THREE.Vector3(...legs[0][1]), fov = legs[0][3];
+  const target = new THREE.Vector3(...legs[0][2]);
   for (let i = 1; i < legs.length; i++) {
     const t = ramp(f, legs[i][0], legs[i][0] + 48, inOut);
     pos.lerp(new THREE.Vector3(...legs[i][1]), t);
