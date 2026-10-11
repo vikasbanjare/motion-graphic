@@ -55,7 +55,7 @@ export const StepA: React.FC = () => {
           <feGaussianBlur stdDeviation="0.6" />
         </filter>
         {flat ? (
-          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 7, Math.max(2, Math.min(780, (f - 7) * 47)) / 230, 0.3)} fill="none" stroke={INK.pen} strokeWidth={3} strokeLinecap="round" filter="url(#bleedA)" />
+          <path d={wavePath(0, Math.max(2, Math.min(780, (f - 7) * 47)), 540, 16, Math.max(2, Math.min(780, (f - 7) * 47)) / 460, 0.6)} fill="none" stroke={INK.pen} strokeWidth={4.5} strokeLinecap="round" filter="url(#bleedA)" />
         ) : (
           <path d={ringPath(r, 34, 9, 0.4, A1, A0)} pathLength={1} fill="none" stroke={INK.pen} strokeWidth={12.5} strokeLinecap="round" strokeDasharray={`${p} 1`} filter="url(#bleedA)" />
         )}
@@ -78,10 +78,12 @@ export const StepB: React.FC = () => {
           <feDisplacementMap in="SourceGraphic" scale="2" />
         </filter>
         {flat
-          ? [0, 1, 2].map((i) => {
+          ? [0, 1, 2, 3].map((i) => {
+              // a tight bundle of pen strokes (measured: ~30 px apart, one long sweep of ~460 px wavelength), ragged
               const centre = Math.min(1100, 780 + f * 18);
-              const end = i === 1 ? centre : Math.min(centre * (i === 0 ? 0.62 : 0.85), f * (i === 0 ? 105 : 120) + 40);
-              return <path key={i} d={wavePath(0, end, 540 + (i - 1) * 125, 7, end / 230, 0.3 + i * 0.9)} fill="none" stroke="#2b2b2b" strokeWidth={3} strokeLinecap="round" filter="url(#bleedB)" />;
+              const frac = [0.42, 0.55, 1.0, 0.7][i];
+              const end = Math.min(centre * frac, f * [110, 130, 400, 150][i] + 40);
+              return <path key={i} d={wavePath(0, end, 540 + [-62, -40, 0, 26][i], [12, 14, 18, 15][i], end / 460, 0.6 + i * 0.35)} fill="none" stroke="#2b2b2b" strokeWidth={i === 2 ? 4.5 : 3.8} strokeLinecap="round" filter="url(#bleedB)" />;
             })
           : Array.from({ length: 5 }, (_, i) => {
               const p = Math.min(1, 0.22 + rnd(i, 4) * 0.2 + f * 0.035);
@@ -145,13 +147,15 @@ export const Field: React.FC<{ f: number; inkOverride?: string }> = ({ f, inkOve
       x.lineWidth = 2.6;
       const stage3 = f < 58;
       const grow = ramp(f, T.wash, T.wash + 16, (t) => t);
-      const rows = stage3 ? 8 : Math.ceil((height + 900) / pitch);
+      const rows = stage3 ? 9 : Math.ceil((height + 900) / pitch);
       for (let i = 0; i < rows; i++) {
-        const y0 = stage3 ? 540 + (i - 3.5) * 80 : -450 + i * pitch;
-        const end0 = stage3 ? 1100 + (f - 40) * 9 : 1250;
-        const ragged = (rnd(i, 2) - 0.5) * (stage3 ? 220 : 180);
+        if (stage3) x.lineWidth = 3.6;
+        const y0 = stage3 ? 520 + (i - 4) * 32 : -450 + i * pitch;
+        // stage 3: a bundle of nine sweeps, lengths ragged between 0.45 and 1.0 of the leading stroke
+        const end0 = stage3 ? (1100 + (f - 40) * 9) * [0.55, 0.45, 0.8, 0.62, 1.0, 0.7, 0.9, 0.5, 0.66][i] : 1250;
+        const ragged = stage3 ? 0 : (rnd(i, 2) - 0.5) * 180;
         const x1 = lerp(end0 + ragged, width + 900, grow);
-        const lam = stage3 ? 230 : 105, amp = stage3 ? 7 : 6;
+        const lam = stage3 ? 460 : 105, amp = stage3 ? 16 : 6;
         x.beginPath();
         for (let k = 0; k <= 300; k++) {
           const px = -80 + ((x1 + 80) * k) / 300;
