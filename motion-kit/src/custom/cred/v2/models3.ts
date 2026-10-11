@@ -410,3 +410,18 @@ export const spool = () => {
   const end = ribbonStrip(new THREE.CatmullRomCurve3([V(0.8, 0.5, 0), V(1.3, 0.42, 0.3), V(1.9, 0.2, 0.35), V(2.5, 0.03, 0.2)]), 0.3, 32, V(0, 1, 0), 0.06);
   return merge([flange(0), flange(0.92), core, wound, end]);
 };
+
+/** Perfume bottle: a faceted lathe body (12 flats), shoulder, neck collar, a domed cap; height ~2.4, base at y=0. */
+export const bottle = () => {
+  const body = lathe([[0, 0], [0.62, 0], [0.7, 0.08], [0.72, 0.5], [0.7, 1.25], [0.6, 1.5], [0.34, 1.62], [0.3, 1.66], [0, 1.66]], 12);
+  // facets: the 12-segment lathe is already flat-shaded per segment once normals are computed per face
+  const fb = body.toNonIndexed();
+  fb.computeVertexNormals();
+  const collar = new THREE.CylinderGeometry(0.3, 0.3, 0.12, 24).translate(0, 1.72, 0);
+  const neck = new THREE.CylinderGeometry(0.22, 0.24, 0.16, 24).translate(0, 1.86, 0);
+  const cap = lathe([[0, 1.94], [0.34, 1.94], [0.36, 2.02], [0.34, 2.3], ...arc(0, 2.3, 0.34, 0, 90, 8)], 48);
+  const band = new THREE.TorusGeometry(0.35, 0.02, 6, 40).rotateX(Math.PI / 2).translate(0, 2.0, 0);
+  // label plate on the front
+  const plate = new THREE.BoxGeometry(0.7, 0.5, 0.03).translate(0, 0.78, 0.72);
+  return merge([fb, collar, neck, cap, band, plate]);
+};

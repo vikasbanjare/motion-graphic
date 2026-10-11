@@ -6,7 +6,7 @@ import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
 import { parcel, pedestal } from "./subjects.ts";
-import { giftBox2, parcel2, spool } from "./models3.ts";
+import { bottle, giftBox2, parcel2, spool } from "./models3.ts";
 import { tag } from "./subjects.ts";
 import { LinePattern, Paper, Sheen, bandGradient } from "./fx.tsx";
 import { C, P, SANS, SERIF, T, expoOut, lerp, ramp, rnd } from "./look.ts";
@@ -50,7 +50,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       balloon: balloon2(),
       smallGift: dm ? giftBox2() : giftBox(),
       parcel: dm ? parcel2(1.8, 1.0, 1.4) : parcel(1.8, 1.0, 1.4),
-      dress: dm ? { tag: tag(1.0), small: parcel2(1.1, 0.7, 0.9), spool: spool() } : null,
+      dress: dm ? { tag: tag(1.0), small: parcel2(1.1, 0.7, 0.9), spool: spool(), bottle: bottle() } : null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -101,7 +101,12 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       <group position={[-6.0, -2.2, -2.5]}>
         <EMesh g={g.pedTall} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
         <group position={[0, 2.2, 0]} rotation={[0, 0.7 + lf * 0.004, 0]}>
-          <Gltf url={M.camera} size={2.4} m={mk({ seed: 81, mapAmt: 0.8, spec: 0.3 })} live={gl} />
+          {g.dress ? (
+            // v2D: a faceted perfume bottle (the scanned camera engraves as a lump at this distance)
+            <EMesh g={g.dress.bottle} m={mk({ seed: 81, spec: 0.55, shininess: 60, foil: 0.2 })} live={{ ...gl, foilPhase: lf * 0.003 }} scale={1.15} />
+          ) : (
+            <Gltf url={M.camera} size={2.4} m={mk({ seed: 81, mapAmt: 0.8, spec: 0.3 })} live={gl} />
+          )}
         </group>
       </group>
       <group position={[4.6, -2.2, -3.5]}>
