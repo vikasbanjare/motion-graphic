@@ -107,7 +107,8 @@ const cellState = (r: number, col: number, f: number) => {
   const start = ROW_AT[r];
   const target = ROW_TEXT[r][col];
   const blank = " ";
-  if (start < 0 || f < start + col * 1.2) return { a: blank, b: blank, t: 0 };
+  const stagger = r === 6 ? 0.4 : 1.2; // the fee row runs quicker so its last cell (the 0) lands before the cascade
+  if (start < 0 || f < start + col * stagger) return { a: blank, b: blank, t: 0 };
   // flip through a run of characters to the target; the fee cell counts down 9..0
   const isFee = r === 6 && col === COLS - 1;
   const run = isFee ? "9876543210" : (() => {
@@ -117,7 +118,7 @@ const cellState = (r: number, col: number, f: number) => {
     return s + target;
   })();
   const per = isFee ? 5 : 3.2; // frames per flip
-  const p = (f - (start + col * 1.2)) / per;
+  const p = (f - (start + col * stagger)) / per;
   const k = Math.floor(p);
   if (k >= run.length - 1) return { a: target, b: target, t: 0 };
   return { a: run[k], b: run[k + 1], t: p - k };
