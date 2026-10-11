@@ -425,3 +425,147 @@ export const bottle = () => {
   const plate = new THREE.BoxGeometry(0.7, 0.5, 0.03).translate(0, 0.78, 0.72);
   return merge([fb, collar, neck, cap, band, plate]);
 };
+
+// ---- still-life products and set pieces (the target sheet's product shots) ------------------------------------------
+
+/** Over-ear headphones resting on their cups: arched band, sliders, yokes, cups with cushions. Width ~2.8, base y=0. */
+export const headphones = () => {
+  const band = new THREE.TorusGeometry(1.25, 0.11, 12, 64, Math.PI).translate(0, 1.2, 0);
+  const pad = new THREE.TorusGeometry(1.25, 0.06, 8, 48, Math.PI * 0.5).rotateZ(Math.PI / 4).translate(0, 1.2, 0).scale(1, 1, 1.9);
+  const slider = (s: number) => new THREE.BoxGeometry(0.12, 0.6, 0.2).translate(s * 1.25, 0.95, 0);
+  const yoke = (s: number) => new THREE.TorusGeometry(0.5, 0.05, 8, 32, Math.PI).rotateZ(Math.PI / 2).rotateY(Math.PI / 2).translate(s * 1.25, 0.6, 0);
+  const cup = (s: number) => {
+    const shell = lathe([[0, 0], [0.5, 0], [0.56, 0.06], [0.58, 0.3], [0.52, 0.38], [0, 0.38]], 48);
+    const cushion = new THREE.TorusGeometry(0.42, 0.13, 12, 48).rotateX(Math.PI / 2).translate(0, 0.42, 0);
+    const g = merge([shell, cushion]);
+    g.rotateZ(s > 0 ? -Math.PI / 2 : Math.PI / 2);
+    return g.translate(s * (1.25 + 0.2), 0.6, 0);
+  };
+  const g = merge([band, pad, slider(1), slider(-1), yoke(1), yoke(-1), cup(1), cup(-1)]);
+  // lie it on its side so the cups rest on the ground: tilt back 18 deg, drop to y=0
+  g.rotateX(THREE.MathUtils.degToRad(-18));
+  g.computeBoundingBox();
+  g.translate(0, -g.boundingBox!.min.y, 0);
+  return g;
+};
+
+/** Wristwatch standing on a looped strap, dial facing +z. Height ~2.7, base y=0. */
+export const wristwatch = () => {
+  const caseG = lathe([[0, 0], [0.62, 0], [0.7, 0.08], [0.72, 0.22], [0.66, 0.3], [0.56, 0.32], [0, 0.32]], 64).rotateX(Math.PI / 2);
+  const bezel = new THREE.TorusGeometry(0.6, 0.05, 8, 64);
+  const dial = new THREE.CircleGeometry(0.54, 48).translate(0, 0, 0.1);
+  const markers: THREE.BufferGeometry[] = [];
+  for (let k = 0; k < 12; k++) {
+    const a = (k / 12) * Math.PI * 2;
+    markers.push(new THREE.BoxGeometry(k % 3 ? 0.03 : 0.06, 0.1, 0.02).rotateZ(-a).translate(Math.sin(a) * 0.45, Math.cos(a) * 0.45, 0.12));
+  }
+  const hands = [new THREE.BoxGeometry(0.035, 0.36, 0.015).translate(0, 0.17, 0.13).rotateZ(-0.6), new THREE.BoxGeometry(0.03, 0.46, 0.015).translate(0, 0.22, 0.14).rotateZ(2.2)];
+  const crown = new THREE.CylinderGeometry(0.07, 0.07, 0.1, 12).rotateZ(Math.PI / 2).translate(0.76, 0, 0);
+  const lugs = [1, -1].flatMap((sy) => [1, -1].map((sx) => new THREE.BoxGeometry(0.1, 0.22, 0.2).translate(sx * 0.3, sy * 0.74, 0)));
+  const head = merge([caseG, bezel, dial, ...markers, ...hands, crown, ...lugs]).translate(0, 2.0, 0);
+  // strap: a closed oval loop under the head, slightly twisted
+  const loop = new THREE.CatmullRomCurve3([V(0, 2.82, 0), V(0.75, 2.2, 0.12), V(0.95, 1.2, 0.2), V(0.4, 0.2, 0.3), V(-0.4, 0.2, 0.3), V(-0.95, 1.2, 0.2), V(-0.75, 2.2, 0.12)], true, "centripetal", 0.5);
+  const strap = ribbonStrip(loop, 0.5, 96, V(0, 0, 1), 0.0);
+  const buckle = new THREE.TorusGeometry(0.22, 0.03, 6, 24).scale(1, 1.3, 1).translate(0, 0.42, 0.42);
+  const g = merge([head, strap, buckle]);
+  g.computeBoundingBox();
+  g.translate(0, -g.boundingBox!.min.y, 0);
+  return g;
+};
+
+/** Leather duffel: capsule body along x, end discs, zipper strip, two handles, a shoulder strap. Length ~3.6, base y=0. */
+export const duffel = () => {
+  const r = 0.95;
+  const body = new THREE.CapsuleGeometry(r, 2.2, 8, 32).rotateZ(Math.PI / 2);
+  const ends = [1, -1].map((s) => new THREE.CylinderGeometry(r * 0.92, r * 0.92, 0.08, 40).rotateZ(Math.PI / 2).translate(s * 1.45, 0, 0));
+  const zip = new THREE.BoxGeometry(2.3, 0.06, 0.16).translate(0, r - 0.02, 0);
+  const zipPull = new THREE.BoxGeometry(0.12, 0.05, 0.3).translate(0.9, r + 0.02, 0.1);
+  const handle = (z: number) => new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(-0.7, r - 0.1, z), V(-0.6, r + 0.5, z), V(0, r + 0.75, z), V(0.6, r + 0.5, z), V(0.7, r - 0.1, z)]), 40, 0.05, 8, false);
+  const bands = [-0.7, 0.7].map((x) => new THREE.TorusGeometry(r + 0.02, 0.03, 6, 48).rotateY(Math.PI / 2).translate(x, 0, 0));
+  const strap = ribbonStrip(new THREE.CatmullRomCurve3([V(-1.5, 0.6, 0.6), V(-1.9, 0.1, 1.1), V(-1.2, 0.03, 1.7), V(0.2, 0.02, 1.9), V(1.4, 0.05, 1.5), V(1.6, 0.4, 0.9)]), 0.22, 48, V(0, 1, 0), 0.08);
+  const g = merge([body, ...ends, zip, zipPull, handle(0.35), handle(-0.35), ...bands, strap]);
+  g.computeBoundingBox();
+  g.translate(0, -g.boundingBox!.min.y, 0);
+  return g;
+};
+
+/** Open gift box: body with four lid flaps folded outward and tissue rising from inside. Returns box and tissue. */
+export const openBox = (w = 2, h = 1.2, d = 1.6) => {
+  const body = roundedBox(w, h, d, 0.05);
+  const flap = (side: "x" | "z", s: number) => {
+    const len = side === "x" ? d * 0.5 : w * 0.5;
+    const g = side === "x" ? new THREE.BoxGeometry(w, 0.03, len) : new THREE.BoxGeometry(len, 0.03, d);
+    // hinge on the top edge, folded outward and down by ~110 deg
+    if (side === "x") g.translate(0, 0, (s * len) / 2).rotateX(s * THREE.MathUtils.degToRad(-110)).translate(0, h, s * d * 0.5);
+    else g.translate((s * len) / 2, 0, 0).rotateZ(s * THREE.MathUtils.degToRad(110)).translate(s * w * 0.5, h, 0);
+    return g;
+  };
+  const sheets = [tissue(3, 1.5, 1.3).rotateY(0.3).translate(0.1, h - 0.3, 0), tissue(4, 1.4, 1.1).rotateY(-0.5).translate(-0.2, h - 0.25, 0.1), tissue(5, 1.3, 1.0).rotateY(1.2).translate(0.2, h - 0.2, -0.1)];
+  return { box: merge([body, flap("x", 1), flap("x", -1), flap("z", 1), flap("z", -1)]), tissue: merge(sheets) };
+};
+
+/** Potted plant: turned pot, bent stems, pointed leaves. Height ~3.4, base y=0. */
+export const plant = () => {
+  const pot = lathe([[0, 0], [0.55, 0], [0.62, 0.1], [0.7, 0.9], [0.78, 0.95], [0.78, 1.08], [0.72, 1.08], [0.66, 1.0], [0, 1.0]], 40);
+  const parts: THREE.BufferGeometry[] = [pot];
+  for (let i = 0; i < 9; i++) {
+    const a = (i / 9) * Math.PI * 2 + 0.3, lean = 0.5 + 0.35 * Math.sin(i * 2.1), hgt = 1.4 + 0.8 * Math.abs(Math.cos(i * 1.7));
+    const top = V(Math.cos(a) * lean, 1.0 + hgt, Math.sin(a) * lean);
+    const stem = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(0, 0.9, 0), V(Math.cos(a) * lean * 0.4, 1.0 + hgt * 0.55, Math.sin(a) * lean * 0.4), top]), 16, 0.025, 6, false);
+    parts.push(stem);
+    // leaf: a pointed ellipsoid along the stem's end direction, slightly cupped
+    const leaf = new THREE.SphereGeometry(0.5, 16, 10).scale(0.42, 1, 0.1);
+    const dir = top.clone().sub(V(Math.cos(a) * lean * 0.4, 1.0 + hgt * 0.55, Math.sin(a) * lean * 0.4)).normalize();
+    leaf.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), dir));
+    leaf.translate(top.x + dir.x * 0.4, top.y + dir.y * 0.4, top.z + dir.z * 0.4);
+    parts.push(leaf);
+    if (i % 2 === 0) {
+      const l2 = new THREE.SphereGeometry(0.38, 14, 8).scale(0.4, 1, 0.1);
+      const d2 = V(dir.x + 0.5, dir.y * 0.4, dir.z - 0.3).normalize();
+      l2.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), d2));
+      const m = V(Math.cos(a) * lean * 0.4, 1.0 + hgt * 0.55, Math.sin(a) * lean * 0.4);
+      l2.translate(m.x + d2.x * 0.35, m.y + d2.y * 0.35, m.z + d2.z * 0.35);
+      parts.push(l2);
+    }
+  }
+  return merge(parts);
+};
+
+/** Arcaded backdrop: a thin wall pierced by three round arches, with a plinth course. Width ~18, base y=0. */
+export const arcade = () => {
+  const s = new THREE.Shape();
+  s.moveTo(-9, 0); s.lineTo(9, 0); s.lineTo(9, 7); s.lineTo(-9, 7); s.closePath();
+  for (const cx of [-5.6, 0, 5.6]) {
+    const h = new THREE.Path();
+    h.moveTo(cx - 1.9, 0); h.lineTo(cx - 1.9, 3.6); h.absarc(cx, 3.6, 1.9, Math.PI, 0, true); h.lineTo(cx + 1.9, 0); h.closePath();
+    s.holes.push(h);
+  }
+  const wall = new THREE.ExtrudeGeometry(s, { depth: 0.6, bevelEnabled: false });
+  const course = new THREE.BoxGeometry(18.4, 0.25, 0.9).translate(0, 7.1, 0.3);
+  const keystones = [-5.6, 0, 5.6].map((cx) => new THREE.BoxGeometry(0.5, 0.6, 0.15).translate(cx, 5.65, 0.62));
+  const imposts = [-5.6, 0, 5.6].flatMap((cx) => [cx - 1.9, cx + 1.9].map((x) => new THREE.BoxGeometry(0.5, 0.14, 0.75).translate(x, 3.55, 0.3)));
+  return merge([wall, course, ...keystones, ...imposts]);
+};
+
+/** Luggage tag for the macro: a big flat tag with a clipped corner, an eyelet, a cord loop, and a round stamp ring. Face +z. */
+export const luggageTag = () => {
+  const sh = new THREE.Shape();
+  sh.moveTo(-1.6, -0.8); sh.lineTo(1.3, -0.8); sh.lineTo(1.6, -0.5); sh.lineTo(1.6, 0.8); sh.lineTo(-1.6, 0.8); sh.closePath();
+  const hole = new THREE.Path();
+  hole.absarc(1.3, 0, 0.12, 0, Math.PI * 2, true);
+  sh.holes.push(hole);
+  const body = new THREE.ExtrudeGeometry(sh, { depth: 0.05, bevelEnabled: true, bevelSize: 0.012, bevelThickness: 0.012, bevelSegments: 2, curveSegments: 12 });
+  // planar uvs for the face map
+  const pos = body.getAttribute("position");
+  const uv = new Float32Array(pos.count * 2);
+  for (let i = 0; i < pos.count; i++) {
+    uv[i * 2] = (pos.getX(i) + 1.6) / 3.2;
+    uv[i * 2 + 1] = (pos.getY(i) + 0.8) / 1.6;
+  }
+  body.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  const eyelet = new THREE.TorusGeometry(0.15, 0.035, 8, 32).translate(1.3, 0, 0.05);
+  const cord = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(1.3, 0.1, 0.1), V(1.7, 0.5, 0.14), V(2.3, 0.6, 0.1), V(2.6, 0.2, 0.0), V(2.2, -0.3, 0.05), V(1.5, -0.2, 0.1), V(1.3, -0.1, 0.1)]), 64, 0.03, 6, false);
+  const stampRing = new THREE.TorusGeometry(0.42, 0.018, 6, 48).translate(-0.6, 0.05, 0.07);
+  const stampRing2 = new THREE.TorusGeometry(0.36, 0.01, 6, 48).translate(-0.6, 0.05, 0.07);
+  return { body: merge([body, eyelet, cord]), stamp: merge([stampRing, stampRing2]) };
+};

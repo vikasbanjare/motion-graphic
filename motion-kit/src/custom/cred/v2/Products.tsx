@@ -6,7 +6,7 @@ import { balloonSeams, giftPaper, kraft, ribbon } from "./detail.ts";
 import { giftBox } from "./models.ts";
 import { balloon2, merge } from "./models2.ts";
 import { parcel, pedestal } from "./subjects.ts";
-import { bottle, giftBox2, parcel2, spool } from "./models3.ts";
+import { arcade, bottle, duffel, giftBox2, headphones, openBox, parcel2, plant, spool, wristwatch } from "./models3.ts";
 import { tag } from "./subjects.ts";
 import { LinePattern, Paper, Sheen, bandGradient } from "./fx.tsx";
 import { C, P, SANS, SERIF, T, expoOut, lerp, ramp, rnd } from "./look.ts";
@@ -50,7 +50,7 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
       balloon: balloon2(),
       smallGift: dm ? giftBox2() : giftBox(),
       parcel: dm ? parcel2(1.8, 1.0, 1.4) : parcel(1.8, 1.0, 1.4),
-      dress: dm ? { tag: tag(1.0), small: parcel2(1.1, 0.7, 0.9), spool: spool(), bottle: bottle() } : null,
+      dress: dm ? { tag: tag(1.0), small: parcel2(1.1, 0.7, 0.9), spool: spool(), bottle: bottle(), arcade: arcade(), plant: plant(), headphones: headphones(), open: openBox(), watch: wristwatch(), duffel: duffel() } : null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -85,8 +85,16 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
   return (
     <>
       <Cam pos={[cx, 2.4, 15]} target={[cx * 0.8, 1.8, 0]} fov={38} roll={THREE.MathUtils.degToRad(-0.6 + lf * 0.004)} />
-      {/* far skyline of stacked parcels (moves at 0.7x: further away) */}
-      <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5, ...MAP(kraft(5), 0.5) })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
+      {/* far: v2 skyline of stacked parcels, or (v2D) an arcaded wall with plants, as in the target sheet */}
+      {g.dress ? (
+        <>
+          <EMesh g={g.dress.arcade} m={mk({ atmos: 0.55, seed: 60, angleDeg: 45, albedoNoise: 0.2, edge: 0.4, hatch: 0.4 })} live={gl} pos={[-cx * 0.3 - 1, -2.2, -24]} scale={1.45} />
+          <EMesh g={g.dress.plant} m={mk({ atmos: 0.3, seed: 61, angleDeg: 52, edge: 0.5 })} live={gl} pos={[10.5, -2.2, -10]} rot={[0, 0.4, 0]} scale={1.7} />
+          <EMesh g={g.dress.plant} m={mk({ atmos: 0.42, seed: 62, angleDeg: 38, edge: 0.5 })} live={gl} pos={[-11.5, -2.2, -13]} rot={[0, -0.6, 0]} scale={1.5} />
+        </>
+      ) : (
+        <EMesh g={g.sky} m={mk({ atmos: 0.62, seed: 60, angleDeg: 45, albedoNoise: 0.3, edge: 0.5, ...MAP(kraft(5), 0.5) })} live={gl} pos={[-cx * 0.3, -1.2, -34]} />
+      )}
       {/* rising balloons with parcels (secondary life: vertical rise, sin bob, phase-offset) */}
       {balloons.map((b, i) => {
         const y = -6 + (((lf / 24) * b.sp * 24 + b.ph * 16) % 16);
@@ -97,41 +105,64 @@ export const ProductsWorld: React.FC<{ f: number; front?: boolean }> = ({ f, fro
           </group>
         );
       })}
-      {/* pedestals with products */}
-      <group position={[-6.0, -2.2, -2.5]}>
-        <EMesh g={g.pedTall} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
-        <group position={[0, 2.2, 0]} rotation={[0, 0.7 + lf * 0.004, 0]}>
-          {g.dress ? (
-            // v2D: a faceted perfume bottle (the scanned camera engraves as a lump at this distance)
-            <EMesh g={g.dress.bottle} m={mk({ seed: 81, spec: 0.55, shininess: 60, foil: 0.2 })} live={{ ...gl, foilPhase: lf * 0.003 }} scale={1.15} />
-          ) : (
-            <Gltf url={M.camera} size={2.4} m={mk({ seed: 81, mapAmt: 0.8, spec: 0.3 })} live={gl} />
-          )}
-        </group>
-      </group>
-      <group position={[4.6, -2.2, -3.5]}>
-        <EMesh g={g.ped} m={mk({ seed: 82, angleDeg: 52 })} live={gl} />
-        <group position={[0, 0.9, 0]} rotation={[0, -0.3 + lf * 0.003, 0]}>
-          <Gltf url={M.vase} size={3.6} m={mk({ seed: 83, mapAmt: 0.7, spec: 0.5, shininess: 40 })} live={gl} />
-        </group>
-      </group>
-      <group position={[8.6, -2.2, 0.5]} rotation={[0, -0.5, 0]}>
-        <Gltf url={M.box} size={3.4} m={mk({ seed: 84, mapAmt: 0.75, angleDeg: 38 })} live={gl} />
-        <group position={[0.2, 2.65, 0.1]} rotation={[0, 0.6, 0]}>
-          <Gltf url={M.box} size={2.2} m={mk({ seed: 85, mapAmt: 0.75, angleDeg: 52 })} live={gl} />
-        </group>
-      </group>
-      <group position={[-0.2, -2.2, 5.6]} rotation={[-0.2, 0.4, 0.15]}>
-        <Gltf url={M.watch} size={1.3} m={mk({ seed: 86, mapAmt: 0.75, spec: 0.6, shininess: 50 })} live={gl} pick={(_, i) => i !== 0} />
-      </group>
+      {g.dress ? (
+        <>
+          {/* v2D still life on low pedestals: headphones, perfume bottle, open box with tissue, wristwatch; a duffel on the floor */}
+          <group position={[-6.6, -2.2, -2.4]}>
+            <EMesh g={g.ped} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
+            <EMesh g={g.dress.headphones} m={mk({ seed: 81, spec: 0.35, shininess: 30, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, 0.5 + lf * 0.002, 0]} scale={1.05} />
+          </group>
+          <group position={[-3.1, -2.2, -4.8]}>
+            <EMesh g={g.pedTall} m={mk({ seed: 82, angleDeg: 52 })} live={gl} />
+            <EMesh g={g.dress.bottle} m={mk({ seed: 83, spec: 0.55, shininess: 60, foil: 0.2 })} live={{ ...gl, foilPhase: lf * 0.003 }} pos={[0, 2.2, 0]} rot={[0, 0.3 + lf * 0.003, 0]} scale={1.1} />
+          </group>
+          <group position={[1.6, -2.2, -5.6]}>
+            <EMesh g={g.ped} m={mk({ seed: 84, angleDeg: 45 })} live={gl} />
+            <group position={[0, 0.9, 0]} rotation={[0, -0.35, 0]} scale={1.25}>
+              <EMesh g={g.dress.open.box} m={mk({ seed: 85, angleDeg: 45, ...MAP(giftPaper(6)) })} live={gl} />
+              <EMesh g={g.dress.open.tissue} m={mk({ seed: 86, albedo: 1.2, edge: 0.4, lift: 0.1 })} live={gl} double />
+            </group>
+          </group>
+          <group position={[5.6, -2.2, -3.2]}>
+            <EMesh g={g.ped} m={mk({ seed: 87, angleDeg: 52 })} live={gl} />
+            <EMesh g={g.dress.watch} m={mk({ seed: 88, spec: 0.6, shininess: 50, hatch: 0.6 })} live={gl} pos={[0, 0.9, 0]} rot={[0, -0.4 + lf * 0.002, 0]} scale={1.0} />
+          </group>
+          <EMesh g={g.dress.duffel} m={mk({ seed: 89, angleDeg: 38, hatch: 0.7, ...MAP(kraft(10), 0.35) })} live={gl} pos={[9.0, -2.2, 0.4]} rot={[0, -0.55, 0]} scale={1.15} />
+        </>
+      ) : (
+        <>
+          {/* pedestals with products */}
+          <group position={[-6.0, -2.2, -2.5]}>
+            <EMesh g={g.pedTall} m={mk({ seed: 80, angleDeg: 38 })} live={gl} />
+            <group position={[0, 2.2, 0]} rotation={[0, 0.7 + lf * 0.004, 0]}>
+              <Gltf url={M.camera} size={2.4} m={mk({ seed: 81, mapAmt: 0.8, spec: 0.3 })} live={gl} />
+            </group>
+          </group>
+          <group position={[4.6, -2.2, -3.5]}>
+            <EMesh g={g.ped} m={mk({ seed: 82, angleDeg: 52 })} live={gl} />
+            <group position={[0, 0.9, 0]} rotation={[0, -0.3 + lf * 0.003, 0]}>
+              <Gltf url={M.vase} size={3.6} m={mk({ seed: 83, mapAmt: 0.7, spec: 0.5, shininess: 40 })} live={gl} />
+            </group>
+          </group>
+          <group position={[8.6, -2.2, 0.5]} rotation={[0, -0.5, 0]}>
+            <Gltf url={M.box} size={3.4} m={mk({ seed: 84, mapAmt: 0.75, angleDeg: 38 })} live={gl} />
+            <group position={[0.2, 2.65, 0.1]} rotation={[0, 0.6, 0]}>
+              <Gltf url={M.box} size={2.2} m={mk({ seed: 85, mapAmt: 0.75, angleDeg: 52 })} live={gl} />
+            </group>
+          </group>
+          <group position={[-0.2, -2.2, 5.6]} rotation={[-0.2, 0.4, 0.15]}>
+            <Gltf url={M.watch} size={1.3} m={mk({ seed: 86, mapAmt: 0.75, spec: 0.6, shininess: 50 })} live={gl} pick={(_, i) => i !== 0} />
+          </group>
+        </>
+      )}
       <EMesh g={g.parcel} m={mk({ seed: 87, angleDeg: 45, ...MAP(kraft(6)) })} live={gl} pos={[-11.5, -2.2, -2.0]} rot={[0, 0.5, 0]} scale={1.3} />
       {g.dress ? (
         <>
           {/* price tags swinging on the camera and the vase, small parcels and a ribbon spool on the floor */}
-          <group position={[-5.0, 1.9, -1.4]} rotation={[0, 0.3, 0.12 * Math.sin(lf / 11)]}>
+          <group position={[-5.3, 0.6, -1.3]} rotation={[0, 0.3, 0.12 * Math.sin(lf / 11)]}>
             <EMesh g={g.dress.tag} m={mk({ seed: 90, albedo: 1.12, angleDeg: 45 })} live={gl} scale={0.55} double />
           </group>
-          <group position={[5.5, 1.3, -2.5]} rotation={[0, -0.4, -0.1 * Math.sin(lf / 13 + 1)]}>
+          <group position={[6.7, 0.9, -2.3]} rotation={[0, -0.4, -0.1 * Math.sin(lf / 13 + 1)]}>
             <EMesh g={g.dress.tag} m={mk({ seed: 91, albedo: 1.12, angleDeg: 52 })} live={gl} scale={0.5} double />
           </group>
           <EMesh g={g.dress.small} m={mk({ seed: 92, angleDeg: 38, ...MAP(kraft(7)) })} live={gl} pos={[-3.4, -2.2, 2.6]} rot={[0, 0.9, 0]} scale={0.9} />

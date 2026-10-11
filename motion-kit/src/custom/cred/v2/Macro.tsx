@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
-import { RefDepth, World } from "./three.tsx";
+import * as THREE from "three";
+import { Cam, Detail, EMesh, RefDepth, World } from "./three.tsx";
+import { airliner, luggageTag } from "./models3.ts";
+import { ribbon } from "./detail.ts";
 import { AssemblyWorld } from "./Assembly.tsx";
 import { Field } from "./Opening.tsx";
 import { BandLines, LensRim, LensVignette, LinePattern, Paper, bandGradient } from "./fx.tsx";
-import { C, P, SANS, SERIF, T, lerp } from "./look.ts";
+import { C, P, SANS, SERIF, T, lerp, ramp } from "./look.ts";
 
 /**
  * Loupe macro on the card's holographic strip (hard cut in, text already present). The strip runs diagonally and the
@@ -16,9 +19,35 @@ const BH = 124; // band height px (8.9-11 % H)
 const rad = (ANG * Math.PI) / 180;
 const DIR = { x: Math.cos(rad), y: Math.sin(rad) };
 
+/** v2D: a paper luggage tag with a cord and a stamped airliner roundel on engraved fabric, the push-through's destination. */
+const TagWorld: React.FC<{ f: number }> = ({ f }) => {
+  const g = useMemo(() => {
+    const t = luggageTag();
+    const a = airliner();
+    return { tag: t.body, stamp: t.stamp, plane: a.body, glass: a.glass, cloth: new THREE.PlaneGeometry(14, 9, 1, 1) };
+  }, []);
+  const pal = P.cyanDeep;
+  const sway = 0.03 * Math.sin((f - T.push) / 9);
+  return (
+    <>
+      <Cam pos={[0.4, 0.9, 4.6]} target={[0.1, 0.05, 0]} fov={34} roll={-0.08} />
+      <EMesh g={g.cloth} m={{ palette: pal, periodFrac: 0.009, map: ribbon(9), mapAmt: 0.8, angleDeg: 38, seed: 40, albedo: 0.72, edge: 0, hatch: 0.8 }} live={{ pal }} pos={[0, -0.3, -0.6]} rot={[-0.35, 0, 0]} />
+      <group rotation={[-0.32, 0.12, -0.14 + sway]} position={[0, 0, 0]}>
+        <EMesh g={g.tag} m={{ palette: P.cyan, periodFrac: 0.0068, angleDeg: 45, seed: 41, albedo: 1.25, lift: 0.18, edge: 0.6, stipple: 0.5 }} live={{ pal: P.cyan }} double />
+        <EMesh g={g.stamp} m={{ palette: pal, periodFrac: 0.0068, seed: 42, albedo: 0.5, edge: 0 }} live={{ pal }} />
+        <group position={[-0.6, 0.05, 0.09]} rotation={[Math.PI / 2, 0, -0.5]} scale={0.055}>
+          <EMesh g={g.plane} m={{ palette: pal, periodFrac: 0.0068, seed: 43, albedo: 0.55, edge: 0.3 }} live={{ pal }} />
+        </group>
+      </group>
+    </>
+  );
+};
+
 export const MacroTake: React.FC = () => {
   const lf = useCurrentFrame();
   const f = lf + T.cutMacro;
+  const dm = useContext(Detail).maps === true;
+  const tagIn = dm ? ramp(f, T.push + 2, T.push + 16) : 0;
   // read: slow pan along the band (content travels toward lower-left)
   const pan = lerp(140, -60, interpolate(f, [T.cutMacro, T.push + 4], [0, 1], C));
   // push-through: ease-in cubic to a peak ~ f283, then expo-out (still decelerating under the swap)
@@ -43,6 +72,13 @@ export const MacroTake: React.FC = () => {
             <AssemblyWorld f={T.reveal} settled inks={inks} periodFrac={0.02} camZ={6.2} camX={-1.4 + lf * 0.004} camY={-1.6} fov={34} roll={0.3} />
           </RefDepth.Provider>
         </World>
+        {tagIn > 0 ? (
+          <AbsoluteFill style={{ opacity: tagIn, background: "#d6eef4" }}>
+            <World>
+              <TagWorld f={f} />
+            </World>
+          </AbsoluteFill>
+        ) : null}
         {/* the strip, read along its length */}
         <div style={{ position: "absolute", left: 960 - 1800, top: 560 - BH / 2, width: 3600, height: BH, transform: `rotate(${ANG}deg)`, transformOrigin: "50% 50%" }}>
           <div style={{ position: "absolute", inset: 0, ...bandGradient(5, 0), boxShadow: "0 0 0 2px rgba(255,255,255,0.4), 0 0 26px rgba(40,90,140,0.35)" }} />
