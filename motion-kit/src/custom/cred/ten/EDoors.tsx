@@ -78,7 +78,7 @@ const Door: React.FC<{ y: number; open: number; pal: typeof P.teal; seed: number
       new THREE.BoxGeometry(DOOR_W - 0.6, 0.02, 1.1).translate(0, -0.05, 2.3),
       new THREE.BoxGeometry(DOOR_W - 0.6, 0.02, 0.9).translate(0, -0.05, 0.7),
     ]);
-    const slotG = new THREE.BoxGeometry(2.3, 0.12, 0.1).translate(0, -0.06, 1.55);
+    const slotG = new THREE.BoxGeometry(2.3, 0.03, 0.1).translate(0, -0.05, 1.56);
     const handle = new THREE.CylinderGeometry(0.04, 0.04, 0.3, 10).rotateZ(Math.PI / 2).translate(0.75, -0.12, 1.4);
     return { frame, leaf, panels, slotG, handle };
   }, [arched]);
@@ -183,8 +183,9 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
     return lerp(DOOR_Y[4] - 1.4, -2.6, ramp(f, T.back, T.out, inOut));
   })();
   const sway = 0.06 * Math.sin(f / 19) + 0.04 * Math.sin(f / 7.3);
-  const look = f < T.open ? [0.1, 0, 1.45] : f >= T.out ? [0.1, 0, 1.45] : [0, camY + 6, EYE - 0.05];
-  const pos: V3 = [sway + (f < T.open ? 0.15 : 0), camY, EYE + 0.02 * Math.sin(f / 11) + (f < T.open ? 0.1 : 0)];
+  const closeUp = f < T.open ? 1 - ramp(f, T.open - 16, T.open + 12, inOut) : f >= T.out ? ramp(f, T.out - 10, T.out, inOut) : 0;
+  const look = closeUp > 0 ? [0.1, -0.5 * closeUp, lerp(EYE - 0.05, 1.4, closeUp)] : [0, camY + 6, EYE - 0.05];
+  const pos: V3 = [sway + 0.15 * closeUp, camY, EYE + 0.02 * Math.sin(f / 11) + 0.95 * closeUp];
   const fov = f < T.open ? lerp(34, 42, ramp(f, T.open - 20, T.open + 10, inOut)) : f >= T.back ? lerp(42, 50, ramp(f, T.back, T.out)) : 42;
 
   // ---- doors ----
@@ -198,8 +199,8 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
   const slideIn = ramp(f, T.slot, T.slot + 30, inOut);
   const slideOut = ramp(f, T.out + 6, T.real + 10, inOut);
   const inside = f >= T.open && f < T.out + 6; // swallowed by the slot while the doors are open
-  const keyPos: V3 = [lerp(-0.3, 0, slideIn), lerp(-1.7, 0.02, slideIn) - 1.4 * slideOut, lerp(1.2, 1.55, slideIn) - 0.35 * slideOut];
-  const keyRot: V3 = [Math.PI / 2 + lerp(-0.3, 0, slideIn) - 0.4 * slideOut, lerp(0.25, 0, slideIn), 0];
+  const keyPos: V3 = [lerp(-0.3, 0, slideIn), lerp(-1.3, 0.42, slideIn) - 1.5 * slideOut, lerp(1.3, 1.56, slideIn) - 0.25 * slideOut];
+  const keyRot: V3 = [lerp(-0.4, 0, slideIn) - 0.35 * slideOut, 0, lerp(0.18, 0, slideIn)];
   const near = (y: number, w = 2.5) => Math.max(0, 1 - Math.abs(camY - y) / w);
   const base: Live = { ambient: 0.14, lift: 0.05, key: [-0.4, -0.5, 0.75] };
   const hotelUp = ramp(f, T.hotel - 4, T.hotel + 40, expoOut);

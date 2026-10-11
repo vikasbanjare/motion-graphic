@@ -94,7 +94,8 @@ const useFlapGeos = () => useMemo(() => {
     for (let col = 0; col < COLS; col++) {
       const g = new THREE.PlaneGeometry(CW - GAP, CH - GAP);
       const uv = g.getAttribute("uv") as THREE.BufferAttribute;
-      for (let k = 0; k < uv.count; k++) uv.setXY(k, (col + uv.getX(k)) / COLS, 1 - (r + 1 - uv.getY(k)) / ROWS);
+      // the board's aspect is a band through the card's middle (chip and rosette), so the card is not stretched
+      for (let k = 0; k < uv.count; k++) uv.setXY(k, (col + uv.getX(k)) / COLS, 0.31 + 0.38 * (1 - (r + 1 - uv.getY(k)) / ROWS));
       tiles[r].push(g);
     }
   }
@@ -115,7 +116,7 @@ const cellState = (r: number, col: number, f: number) => {
     for (let i = 0; i < n; i++) s += CHARS[Math.floor(rnd(r * 1000 + col * 10 + i, 2) * CHARS.length)];
     return s + target;
   })();
-  const per = isFee ? 9 : 3.2; // frames per flip
+  const per = isFee ? 5 : 3.2; // frames per flip
   const p = (f - (start + col * 1.2)) / per;
   const k = Math.floor(p);
   if (k >= run.length - 1) return { a: target, b: target, t: 0 };
@@ -182,7 +183,7 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
       new THREE.BoxGeometry(0.3, ROWS * CH + 0.9, 0.5).translate((COLS * CW) / 2 + 0.25, 5.0, -0.1),
       new THREE.BoxGeometry(COLS * CW + 0.8, ROWS * CH + 0.9, 0.2).translate(0, 5.0, -0.2), // backing plate
     ]);
-    const pillars = merge(Array.from({ length: 6 }, (_, i) => new THREE.CylinderGeometry(0.5, 0.55, 14, 24).translate(-15 + (i % 3) * 15, 7, i < 3 ? 6 : 14)));
+    const pillars = merge(Array.from({ length: 4 }, (_, i) => new THREE.CylinderGeometry(0.5, 0.55, 14, 24).translate(i % 2 ? 15 : -15, 7, i < 2 ? 6 : 14)));
     const windows = merge(Array.from({ length: 5 }, (_, i) => new THREE.BoxGeometry(2.6, 5.5, 0.6).translate(-12 + i * 6, 12.8, -1.2)));
     const mullions = merge(Array.from({ length: 5 }, (_, i) => merge([
       new THREE.BoxGeometry(0.08, 5.5, 0.7).translate(-12 + i * 6, 12.8, -1.2),

@@ -28,6 +28,7 @@ export const I_FRAMES = 720;
 type V3 = [number, number, number];
 const T = { eye: 30, sky: 84, stars: 96, plane: 192, fly: 250, hotel: 300, store: 384, ring: 468, back: 552, real: 600, turn: 612, lock: 672 };
 const NAVY: typeof P.indigo = [["#070b18", 0], ["#1a2140", 0.45], ["#5861a0", 0.83], ["#dfe3f5", 1]];
+const NIGHT: typeof P.indigo = [["#05080f", 0], ["#0c1226", 0.45], ["#1a2446", 0.83], ["#2b3a6a", 1]]; // the dome: never brighter than deep navy
 const GOLD: typeof P.indigo = [["#4b3a1d", 0], ["#a9863a", 0.45], ["#f0d68a", 0.83], ["#fff6d8", 1]];
 const R = 58; // the sky dome
 
@@ -161,7 +162,7 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
   const target = tableTarget.clone().lerp(skyTarget, into).lerp(tableTarget, back);
   const fov = lerp(36, 46, into) * (1 - 0.25 * back);
   const skyOn = f >= T.eye && f < T.real; // the dome exists only through the eyepiece
-  const tubeOn = ramp(f, T.eye + 10, T.sky - 4, inOut) * (1 - ramp(f, T.back + 10, T.real - 6, inOut));
+  const tubeOn = (ramp(f, T.eye + 10, T.sky - 8, inOut) * (1 - ramp(f, T.sky - 8, T.sky + 4, inOut))) + ramp(f, T.back + 6, T.back + 18, inOut) * (1 - ramp(f, T.real - 16, T.real - 4, inOut));
 
   // ---- the beats ----
   const litGroup = (k: number) => ramp(f, T.stars + k * 10, T.stars + 26 + k * 10, expoOut);
@@ -202,7 +203,7 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
       {/* the sky */}
       {skyOn && (
         <>
-          <EMesh g={geo.dome} m={m(NAVY, 5, { albedoNoise: 0.3, noiseScale: 14 })} double live={{ ambient: 0.1, lift: 0.0 }} />
+          <EMesh g={geo.dome} m={m(NIGHT, 5, { albedoNoise: 0.3, noiseScale: 14, spec: 0 })} double live={{ ambient: 0.08, lift: 0.0, keyAmt: 0.2 }} />
           {geo.starGroups.map((g, k) => <EMesh key={k} g={g} m={m(P.grey, 10 + k)} live={{ ...S, opacity: 0.999 * litGroup(k) }} />)}
           <EMesh g={geo.goldStars} m={m(GOLD, 20, { foil: 0.5, spec: 0.8 })} live={{ ...G, opacity: 0.999 * goldOn }} />
           {/* the plane constellation draws, then flies */}
