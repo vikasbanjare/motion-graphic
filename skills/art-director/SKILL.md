@@ -195,3 +195,10 @@ do not fight:
   into a dark ball — lower hatch where the map carries the detail. Gate used: v2 vs v2D stills side by side, six
   frames, before any motion render. Also: a native UI "glass card" in an engraved world reads as a mistake; the docket
   that replaced it is drawn paper (margin mesh, rosette, foil underline) and belongs to the world.
+- 2026-10-11, user rule (verbatim intent): **"details of all the shots are missing — improve that before building the
+  animation; always send me screenshots of the frames."** Process from here: every shot in the film gets a detailing
+  pass (not only the heroes), one still per shot goes to the user as a sheet, and no motion render starts until they
+  have seen the stills. Their second note the same hour: the shopping and travel worlds' **3D design** (the models
+  themselves, not the shading) was the weak point — primitives read as primitives under any shader. Designed subjects
+  now live in `v2/models3.ts` (bag with cuff/eyelets/rope, lipped gift lid with a looped bow, parcel with seams, tape
+  and twine, airliner with windows and winglets, flat-based cumulus, globe stand with ticks).
