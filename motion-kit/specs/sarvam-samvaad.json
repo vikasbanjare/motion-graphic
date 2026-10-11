@@ -1,0 +1,80 @@
+{
+  "_note": "Spec ad (unofficial) for Sarvam AI's Samvaad voice agents. Route 1: code only, offline Kokoro voices, synthesized phone SFX (production in specs/productions/sarvam-samvaad.json). Product line quoted from sarvam.ai: 'Voice agents that sound human in every Indian language. Handle collections, customer support, sales, lead generation, KYC verification, and onboarding at scale.' Characters are fictional.",
+  "format": "reel",
+  "theme": "studio-dark",
+  "motion": "smooth",
+  "pace": "normal",
+  "transition": "fade",
+  "brand": {
+    "name": "Sarvam AI",
+    "accent": "#FF7A3D",
+    "handle": "sarvam.ai"
+  },
+  "audio": {
+    "sfx": true,
+    "voiceover": "voice/sarvam-samvaad.mp3",
+    "timing": "voice/sarvam-samvaad.timing.json",
+    "music": "music/sarvam-samvaad-bed.mp3",
+    "musicStart": 0.433,
+    "musicVolume": 0.12,
+    "beats": "music/sarvam-samvaad-bed.beats.json"
+  },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "say": "Press one for English. Press nine to repeat.",
+      "lines": [
+        "Press 1 for English.",
+        "Press 9 to *repeat*."
+      ]
+    },
+    {
+      "type": "title",
+      "say": "Lucknow, raat gyaarah baje. Bas apna KYC update karna tha.",
+      "kicker": "Lucknow · 11 PM",
+      "headline": "Bas apna *KYC* update karna tha."
+    },
+    {
+      "type": "wave",
+      "say": "Namaste Dadi ji! Main aapke bank se hoon. Kaise madad karoon?",
+      "label": "Voice agent · Hindi",
+      "tags": [
+        "Hindi",
+        "Samvaad"
+      ],
+      "text": "Namaste Dadi ji! Kaise madad karoon?"
+    },
+    {
+      "type": "list",
+      "say": "Pehchaan ho gayi. Pata sahi hai. Aapka KYC update ho gaya.",
+      "title": "KYC verification",
+      "items": [
+        "Pehchaan",
+        "Pata sahi",
+        "*KYC update ho gaya*"
+      ],
+      "style": "checks"
+    },
+    {
+      "type": "kinetic",
+      "say": "Bas beta. Shukriya!",
+      "lines": [
+        "Bas beta.",
+        "*Shukriya!*"
+      ]
+    },
+    {
+      "type": "cta",
+      "say": "Voice agents that sound human, in every Indian language. Sarvam AI.",
+      "kicker": "Voice agents that sound *human*",
+      "action": "sarvam.ai",
+      "sub": "in every Indian language.",
+      "style": "link"
+    },
+    {
+      "type": "logo",
+      "name": "Sarvam AI",
+      "tagline": "Samvaad · spec ad, not affiliated"
+    }
+  ]
+}

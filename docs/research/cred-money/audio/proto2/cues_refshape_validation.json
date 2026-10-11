@@ -1,0 +1,358 @@
+{
+ "seconds": 69.06,
+ "lufs": -16.9,
+ "music": {
+  "file": "score_refshape.wav",
+  "gain_db": 0
+ },
+ "cues": [
+  {
+   "id": "C01",
+   "sfx": "pen_scribble",
+   "params": {
+    "dur": 3.43
+   },
+   "anchor": "first line draws (0.375) +0.25 s",
+   "anchor_t": 0.62,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -29,
+   "pan": 0
+  },
+  {
+   "id": "C02",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "after 0.25 s silence; blooms into music entry",
+   "anchor_t": 4.3,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -27,
+   "pan": 0
+  },
+  {
+   "id": "C03",
+   "sfx": "wing_flutter",
+   "params": {},
+   "anchor": "small creature enters",
+   "anchor_t": 7.24,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -2,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C04",
+   "sfx": "bird_chirps",
+   "params": {},
+   "anchor": "creature settles (perched)",
+   "anchor_t": 8.24,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 1,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C05",
+   "sfx": "lens_swell",
+   "params": {},
+   "anchor": "lens arrives 9.79",
+   "anchor_t": 10.12,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C06",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 1.63
+   },
+   "anchor": "holographic band in close-up",
+   "anchor_t": 14.32,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C07",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.233
+   },
+   "anchor": "whip 1 first frame 18.75",
+   "anchor_t": 18.712,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -9,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C08",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25
+   },
+   "anchor": "whip 1 answer",
+   "anchor_t": 19.096,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -9,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C09",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.35
+   },
+   "anchor": "whip 2 first frame 20.375",
+   "anchor_t": 20.4,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -10,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C10",
+   "sfx": "air_riser",
+   "params": {},
+   "anchor": "reveal 21.88",
+   "anchor_t": 21.97,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": -5,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C11",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.03
+   },
+   "anchor": "foreground wipe 27.21",
+   "anchor_t": 27.06,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C12",
+   "sfx": "foghorn",
+   "params": {
+    "dur": 2.96
+   },
+   "anchor": "coast scene",
+   "anchor_t": 33.34,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 2,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C13",
+   "sfx": "gull_cries",
+   "params": {},
+   "anchor": "coast scene",
+   "anchor_t": 34.0,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -1,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C14",
+   "sfx": "rising_tone",
+   "params": {},
+   "anchor": "cut 35.75",
+   "anchor_t": 35.72,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": 1,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C15",
+   "sfx": "splash",
+   "params": {},
+   "anchor": "cut to underwater 39.08",
+   "anchor_t": 39.0,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -1,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C16",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 0.7,
+    "notes_hz": [
+     2374,
+     3177,
+     3587,
+     4336
+    ]
+   },
+   "anchor": "shell closes + text 42.83",
+   "anchor_t": 42.51,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -2,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C17",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.267
+   },
+   "anchor": "whip 3 (46.92-47.00)",
+   "anchor_t": 46.637,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -12,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C18",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.261
+   },
+   "anchor": "whip 3 answer",
+   "anchor_t": 47.047,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -13,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C19",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.221
+   },
+   "anchor": "whip 4 (48.25)",
+   "anchor_t": 48.039,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -13,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C20",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.252
+   },
+   "anchor": "whip 5 (49.58)",
+   "anchor_t": 49.296,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -12,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C21",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "glint on held hero",
+   "anchor_t": 50.3,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 1,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C22",
+   "sfx": "drop_impact",
+   "params": {},
+   "anchor": "music drop 2 (on the score grid)",
+   "anchor_t": 52.088,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 5,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C23",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.583
+   },
+   "anchor": "object slides into phone",
+   "anchor_t": 56.152,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -9,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C24",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 0.76
+   },
+   "anchor": "ornament draws round logo",
+   "anchor_t": 62.37,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": 0,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C25",
+   "sfx": "end_riser",
+   "params": {},
+   "anchor": "after logo fade (66.75)",
+   "anchor_t": 67.16,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": 2,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C26",
+   "sfx": "end_bell",
+   "params": {},
+   "anchor": "button",
+   "anchor_t": 67.12,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 1,
+   "floor_lufs": -40,
+   "pan": 0
+  }
+ ]
+}

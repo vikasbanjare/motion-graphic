@@ -1,0 +1,153 @@
+{
+ "shell": {
+  "foil_pixel_share": 0.296,
+  "bins": [
+   {
+    "hue_bin": "0-30",
+    "share": 0.066,
+    "median": "#7b614e",
+    "peak": "#7c5d45",
+    "sat_med": 0.36,
+    "val_med": 0.48
+   },
+   {
+    "hue_bin": "30-60",
+    "share": 0.096,
+    "median": "#8b7758",
+    "peak": "#826b4a",
+    "sat_med": 0.35,
+    "val_med": 0.55
+   },
+   {
+    "hue_bin": "150-180",
+    "share": 0.056,
+    "median": "#4c7b76",
+    "peak": "#2e5855",
+    "sat_med": 0.36,
+    "val_med": 0.48
+   },
+   {
+    "hue_bin": "180-210",
+    "share": 0.281,
+    "median": "#41697c",
+    "peak": "#295164",
+    "sat_med": 0.43,
+    "val_med": 0.49
+   },
+   {
+    "hue_bin": "210-240",
+    "share": 0.4,
+    "median": "#3f4d77",
+    "peak": "#2e416f",
+    "sat_med": 0.44,
+    "val_med": 0.47
+   },
+   {
+    "hue_bin": "240-270",
+    "share": 0.085,
+    "median": "#47436d",
+    "peak": "#39366a",
+    "sat_med": 0.38,
+    "val_med": 0.43
+   }
+  ]
+ },
+ "turtle": {
+  "foil_pixel_share": 0.65,
+  "bins": [
+   {
+    "hue_bin": "180-210",
+    "share": 0.117,
+    "median": "#6dacd3",
+    "peak": "#4e92be",
+    "sat_med": 0.48,
+    "val_med": 0.83
+   },
+   {
+    "hue_bin": "210-240",
+    "share": 0.64,
+    "median": "#5865a6",
+    "peak": "#4c63c1",
+    "sat_med": 0.48,
+    "val_med": 0.65
+   },
+   {
+    "hue_bin": "240-270",
+    "share": 0.238,
+    "median": "#595187",
+    "peak": "#403877",
+    "sat_med": 0.43,
+    "val_med": 0.53
+   }
+  ]
+ },
+ "cards": {
+  "foil_pixel_share": 0.852,
+  "bins": [
+   {
+    "hue_bin": "0-30",
+    "share": 0.475,
+    "median": "#d47350",
+    "peak": "#dc6f3e",
+    "sat_med": 0.62,
+    "val_med": 0.83
+   },
+   {
+    "hue_bin": "30-60",
+    "share": 0.114,
+    "median": "#c89d40",
+    "peak": "#cf9436",
+    "sat_med": 0.68,
+    "val_med": 0.78
+   },
+   {
+    "hue_bin": "150-180",
+    "share": 0.028,
+    "median": "#34ae97",
+    "peak": "#2bb288",
+    "sat_med": 0.7,
+    "val_med": 0.68
+   },
+   {
+    "hue_bin": "180-210",
+    "share": 0.108,
+    "median": "#4594bb",
+    "peak": "#428dc8",
+    "sat_med": 0.63,
+    "val_med": 0.73
+   },
+   {
+    "hue_bin": "210-240",
+    "share": 0.105,
+    "median": "#5786c9",
+    "peak": "#4883c9",
+    "sat_med": 0.57,
+    "val_med": 0.79
+   },
+   {
+    "hue_bin": "270-300",
+    "share": 0.045,
+    "median": "#9242a1",
+    "peak": "#8c3ba5",
+    "sat_med": 0.58,
+    "val_med": 0.63
+   },
+   {
+    "hue_bin": "300-330",
+    "share": 0.047,
+    "median": "#a24e90",
+    "peak": "#a2438d",
+    "sat_med": 0.51,
+    "val_med": 0.64
+   },
+   {
+    "hue_bin": "330-360",
+    "share": 0.079,
+    "median": "#bb6c7f",
+    "peak": "#b96175",
+    "sat_med": 0.44,
+    "val_med": 0.73
+   }
+  ]
+ }
+}

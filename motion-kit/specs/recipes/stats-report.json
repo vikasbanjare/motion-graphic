@@ -1,0 +1,97 @@
+{
+  "_recipe": {
+    "title": "Stats report",
+    "when": "A year or quarter in numbers: impact report, investor / all-hands update, campaign results.",
+    "beats": [
+      "Hook: the single biggest number, counting up, with the period as the kicker.",
+      "Trend: growth over time as bars, the latest period highlighted.",
+      "Highlights: four headline metrics as tiles (label = number + noun, sub = context).",
+      "Then vs now: last period vs this period, two rows each.",
+      "Second hero number: the metric people will quote.",
+      "Voice: a short quote from a customer, partner or the founder.",
+      "What's next: three plans as big dimming lines.",
+      "CTA: read the full report / get in touch.",
+      "Logo: silent sign-off."
+    ],
+    "copyTips": [
+      "Every number is the user's. The bar values (0.8 / 1.2 / 1.7 / 2.4) are samples with no [brackets], because a chart value must be a number: npm run new lists them under Fill in. Replace all four (or cut the beat) and keep one unit per chart; the periods can be years or months too.",
+      "Round for the screen (\"2.4M\", \"98%\") and in say (\"two point four million\"); exact figures belong in the report. Keep each say ≤ ~13 words (years and big numbers take long to say): longer beats run past 7s and check warns.",
+      "The bars highlight defaults to the largest value; set \"highlight\" to the latest period if growth is not monotonic.",
+      "Corporate + smooth + relaxed lets numbers land. Dark keynote look: --theme studio-dark. Bold internal update: --theme mono.",
+      "For LinkedIn feed use --format portrait (keeps under 60s); for a reel cut, drop beats 4 and 6 first."
+    ]
+  },
+  "format": "landscape",
+  "theme": "corporate",
+  "motion": "smooth",
+  "pace": "relaxed",
+  "brand": { "name": "[COMPANY]", "handle": "[WEBSITE]" },
+  "scenes": [
+    {
+      "type": "stat",
+      "say": "[YEAR]: [TWO POINT FOUR] million [PEOPLE] served.",
+      "kicker": "[YEAR] in numbers",
+      "value": "[2.4]M",
+      "label": "[PEOPLE] *served*"
+    },
+    {
+      "type": "bars",
+      "say": "Growth by quarter: from [POINT EIGHT] million to [TWO POINT FOUR] million.",
+      "title": "Growth by quarter",
+      "unit": "M",
+      "bars": [
+        { "label": "[Q1]", "value": 0.8 },
+        { "label": "[Q2]", "value": 1.2 },
+        { "label": "[Q3]", "value": 1.7 },
+        { "label": "[Q4]", "value": 2.4 }
+      ]
+    },
+    {
+      "type": "grid",
+      "say": "The highlights: [METRIC ONE], [METRIC TWO], [METRIC THREE] and [METRIC FOUR].",
+      "title": "Highlights",
+      "items": [
+        { "icon": "🌍", "label": "[METRIC ONE]", "sub": "[CONTEXT]" },
+        { "icon": "🤝", "label": "[METRIC TWO]", "sub": "[CONTEXT]" },
+        { "icon": "🚀", "label": "[METRIC THREE]", "sub": "[CONTEXT]" },
+        { "icon": "🏆", "label": "[METRIC FOUR]", "sub": "[CONTEXT]" }
+      ]
+    },
+    {
+      "type": "compare",
+      "say": "Then vs now. [LAST YEAR]: [THEN ONE], [THEN TWO]. [THIS YEAR]: [NOW ONE], [NOW TWO].",
+      "title": "Then vs now",
+      "left": { "label": "[LAST YEAR]", "items": ["[THEN ONE]", "[THEN TWO]"] },
+      "right": { "label": "[THIS YEAR]", "items": ["[NOW ONE]", "[NOW TWO]"] }
+    },
+    {
+      "type": "stat",
+      "say": "And the number we're proudest of: [NINETY-EIGHT] percent of customers stayed with us.",
+      "kicker": "Proudest number",
+      "value": "[98]%",
+      "label": "of customers *stayed*"
+    },
+    {
+      "type": "quote",
+      "say": "[A SHORT, REAL QUOTE ABOUT THE YEAR.] [NAME], [ROLE].",
+      "quote": "[A SHORT, REAL QUOTE ABOUT *THE YEAR*.]",
+      "author": "[NAME]",
+      "role": "[ROLE], [ORGANISATION]"
+    },
+    {
+      "type": "list",
+      "say": "What's next: [PLAN ONE]. [PLAN TWO]. [PLAN THREE].",
+      "title": "What's next",
+      "style": "lines",
+      "items": ["[PLAN ONE]", "[PLAN TWO]", "[PLAN THREE]"]
+    },
+    {
+      "type": "cta",
+      "say": "Read the full report at [WEBSITE].",
+      "kicker": "The full story",
+      "action": "Read the report",
+      "handle": "[WEBSITE]"
+    },
+    { "type": "logo", "name": "[COMPANY]", "tagline": "[TAGLINE]" }
+  ]
+}

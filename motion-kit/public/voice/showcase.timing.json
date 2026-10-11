@@ -1,0 +1,365 @@
+{
+ "source": "cast",
+ "words": [
+  {
+   "text": "A",
+   "startMs": 800.0,
+   "endMs": 898.4
+  },
+  {
+   "text": "thirty",
+   "startMs": 898.4,
+   "endMs": 1242.8
+  },
+  {
+   "text": "second",
+   "startMs": 1242.8,
+   "endMs": 1587.2
+  },
+  {
+   "text": "film?",
+   "startMs": 1587.2,
+   "endMs": 1882.4
+  },
+  {
+   "text": "Two",
+   "startMs": 1882.4,
+   "endMs": 2079.2
+  },
+  {
+   "text": "weeks.",
+   "startMs": 2079.2,
+   "endMs": 2423.7
+  },
+  {
+   "text": "Now?",
+   "startMs": 2423.7,
+   "endMs": 2669.7
+  },
+  {
+   "text": "One",
+   "startMs": 2669.7,
+   "endMs": 2866.5
+  },
+  {
+   "text": "prompt.",
+   "startMs": 2866.5,
+   "endMs": 3260.1
+  },
+  {
+   "text": "Script.",
+   "startMs": 3460.1,
+   "endMs": 3957.2
+  },
+  {
+   "text": "Voice.",
+   "startMs": 3957.2,
+   "endMs": 4392.1
+  },
+  {
+   "text": "Music.",
+   "startMs": 4392.1,
+   "endMs": 4827.1
+  },
+  {
+   "text": "Cut.",
+   "startMs": 4827.1,
+   "endMs": 5137.8
+  },
+  {
+   "text": "Describe",
+   "startMs": 6137.8,
+   "endMs": 6631.7
+  },
+  {
+   "text": "it",
+   "startMs": 6631.7,
+   "endMs": 6796.3
+  },
+  {
+   "text": "once,",
+   "startMs": 6796.3,
+   "endMs": 7125.6
+  },
+  {
+   "text": "and",
+   "startMs": 7125.6,
+   "endMs": 7345.1
+  },
+  {
+   "text": "the",
+   "startMs": 7345.1,
+   "endMs": 7564.6
+  },
+  {
+   "text": "kit",
+   "startMs": 7564.6,
+   "endMs": 7784.1
+  },
+  {
+   "text": "makes",
+   "startMs": 7784.1,
+   "endMs": 8113.4
+  },
+  {
+   "text": "the",
+   "startMs": 8113.4,
+   "endMs": 8332.9
+  },
+  {
+   "text": "rest.",
+   "startMs": 8332.9,
+   "endMs": 8662.2
+  },
+  {
+   "text": "Every",
+   "startMs": 8862.2,
+   "endMs": 9169.3
+  },
+  {
+   "text": "cut",
+   "startMs": 9169.3,
+   "endMs": 9374.0
+  },
+  {
+   "text": "is",
+   "startMs": 9374.0,
+   "endMs": 9527.5
+  },
+  {
+   "text": "timed",
+   "startMs": 9527.5,
+   "endMs": 9834.6
+  },
+  {
+   "text": "from",
+   "startMs": 9834.6,
+   "endMs": 10090.5
+  },
+  {
+   "text": "five",
+   "startMs": 10090.5,
+   "endMs": 10346.4
+  },
+  {
+   "text": "hundred",
+   "startMs": 10346.4,
+   "endMs": 10755.8
+  },
+  {
+   "text": "sixty",
+   "startMs": 10755.8,
+   "endMs": 11062.9
+  },
+  {
+   "text": "two",
+   "startMs": 11062.9,
+   "endMs": 11267.6
+  },
+  {
+   "text": "films,",
+   "startMs": 11267.6,
+   "endMs": 11625.8
+  },
+  {
+   "text": "studied",
+   "startMs": 11625.8,
+   "endMs": 12035.2
+  },
+  {
+   "text": "frame",
+   "startMs": 12035.2,
+   "endMs": 12342.3
+  },
+  {
+   "text": "by",
+   "startMs": 12342.3,
+   "endMs": 12495.8
+  },
+  {
+   "text": "frame.",
+   "startMs": 12495.8,
+   "endMs": 12854.1
+  },
+  {
+   "text": "Cutting",
+   "startMs": 13054.1,
+   "endMs": 13425.5
+  },
+  {
+   "text": "peaks",
+   "startMs": 13425.5,
+   "endMs": 13704.0
+  },
+  {
+   "text": "a",
+   "startMs": 13704.0,
+   "endMs": 13796.8
+  },
+  {
+   "text": "third",
+   "startMs": 13796.8,
+   "endMs": 14075.4
+  },
+  {
+   "text": "of",
+   "startMs": 14075.4,
+   "endMs": 14214.7
+  },
+  {
+   "text": "the",
+   "startMs": 14214.7,
+   "endMs": 14400.3
+  },
+  {
+   "text": "way",
+   "startMs": 14400.3,
+   "endMs": 14586.0
+  },
+  {
+   "text": "in,",
+   "startMs": 14586.0,
+   "endMs": 14771.7
+  },
+  {
+   "text": "then",
+   "startMs": 14771.7,
+   "endMs": 15003.8
+  },
+  {
+   "text": "slows",
+   "startMs": 15003.8,
+   "endMs": 15282.4
+  },
+  {
+   "text": "to",
+   "startMs": 15282.4,
+   "endMs": 15421.6
+  },
+  {
+   "text": "land",
+   "startMs": 15421.6,
+   "endMs": 15653.8
+  },
+  {
+   "text": "the",
+   "startMs": 15653.8,
+   "endMs": 15839.5
+  },
+  {
+   "text": "ending.",
+   "startMs": 15839.5,
+   "endMs": 16210.8
+  },
+  {
+   "text": "Hindi",
+   "startMs": 16920.8,
+   "endMs": 17324.7
+  },
+  {
+   "text": "mein",
+   "startMs": 17324.7,
+   "endMs": 17661.3
+  },
+  {
+   "text": "bhi.",
+   "startMs": 17661.3,
+   "endMs": 17997.9
+  },
+  {
+   "text": "Bilkul",
+   "startMs": 17997.9,
+   "endMs": 18469.2
+  },
+  {
+   "text": "offline.",
+   "startMs": 18469.2,
+   "endMs": 19075.0
+  },
+  {
+   "text": "Scenes,",
+   "startMs": 19275.0,
+   "endMs": 19672.7
+  },
+  {
+   "text": "voices,",
+   "startMs": 19672.7,
+   "endMs": 20070.4
+  },
+  {
+   "text": "music",
+   "startMs": 20070.4,
+   "endMs": 20368.6
+  },
+  {
+   "text": "and",
+   "startMs": 20368.6,
+   "endMs": 20567.4
+  },
+  {
+   "text": "sound",
+   "startMs": 20567.4,
+   "endMs": 20865.7
+  },
+  {
+   "text": "effects,",
+   "startMs": 20865.7,
+   "endMs": 21313.1
+  },
+  {
+   "text": "all",
+   "startMs": 21313.1,
+   "endMs": 21511.9
+  },
+  {
+   "text": "in",
+   "startMs": 21511.9,
+   "endMs": 21661.0
+  },
+  {
+   "text": "one",
+   "startMs": 21661.0,
+   "endMs": 21859.8
+  },
+  {
+   "text": "command.",
+   "startMs": 21859.8,
+   "endMs": 22307.2
+  },
+  {
+   "text": "Free",
+   "startMs": 22507.2,
+   "endMs": 22752.5
+  },
+  {
+   "text": "with",
+   "startMs": 22752.5,
+   "endMs": 22997.8
+  },
+  {
+   "text": "Claude",
+   "startMs": 22997.8,
+   "endMs": 23341.2
+  },
+  {
+   "text": "Code.",
+   "startMs": 23341.2,
+   "endMs": 23635.5
+  },
+  {
+   "text": "Run",
+   "startMs": 23635.5,
+   "endMs": 23831.7
+  },
+  {
+   "text": "it",
+   "startMs": 23831.7,
+   "endMs": 23978.9
+  },
+  {
+   "text": "yourself.",
+   "startMs": 23978.9,
+   "endMs": 24469.5
+  }
+ ]
+}

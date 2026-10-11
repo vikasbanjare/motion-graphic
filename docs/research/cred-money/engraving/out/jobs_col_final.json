@@ -1,0 +1,1 @@
+[{"name": "final_column_crimson4", "subject": "column", "palette": "crimson4", "params": {"wobble": 0.7, "detail": 0.25, "segLen": 4.0, "segJitter": 0.35, "segWidth": 0.3, "segGap": 0.2, "black": 0.298, "white": 0.913, "toneGamma": 0.85, "periodFrac": 0.0069}, "query": {"bs": "2", "an": "0.35"}}]

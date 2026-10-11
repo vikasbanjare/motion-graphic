@@ -1,0 +1,65 @@
+{
+ "default": {
+  "periodFrac": 0.0065,
+  "angleDeg": 45,
+  "black": 0,
+  "white": 1,
+  "toneGamma": 1.2,
+  "dmax": 0.8,
+  "tHi": 0.75,
+  "covGamma": 1.6,
+  "fill": 0.4,
+  "wobble": 0.7,
+  "wobbleScale": 2.77,
+  "widthJitter": 0.1,
+  "segLen": 4.0,
+  "segJitter": 0.35,
+  "segWidth": 0.3,
+  "segGap": 0.2,
+  "skew": 0,
+  "detail": 0.25,
+  "cross": 0,
+  "crossAngleDeg": -90,
+  "tCross": 0.2,
+  "outline": 0,
+  "outlineLo": 0.08,
+  "outlineHi": 0.25,
+  "aa": 1,
+  "grain": 0.015,
+  "mottle": 0.04,
+  "mottleScale": 0.012,
+  "vignette": 0.13,
+  "seed": 3,
+  "bgTone": 1,
+  "mode": 0,
+  "bend": 0,
+  "inputLinear": 1
+ },
+ "lens_preset": {
+  "periodFrac": 0.0105,
+  "fill": 0.65,
+  "aa": 2.0,
+  "covGamma": 1.0
+ },
+ "smooth_input_preset": {
+  "wobble": 0.9,
+  "detail": 0.4,
+  "segLen": 0.0,
+  "toneGamma": 1.15
+ },
+ "cg_material_texture": {
+  "albedoNoise": 0.35,
+  "bumpScaleMultiplier": 2
+ },
+ "levels": "black/white/gamma from src/cg_levels.py (render 5/50/95th pct -> reference tone quantiles), then toneGamma 1.2 multiplies the solved gamma",
+ "per_scene_period_frac": {
+  "lighthouse": 0.0056,
+  "columns": 0.0069,
+  "flowers": 0.0077,
+  "lens_green_rock": 0.0105
+ },
+ "notes": {
+  "toneGamma": "1.2 with 2-stop palettes; ~1.05 with the measured 4-stop palettes (column calibration)",
+  "fill": "0.4 CG calibration; 0.55 when engraving smooth/photo tone (re-synthesis)"
+ }
+}

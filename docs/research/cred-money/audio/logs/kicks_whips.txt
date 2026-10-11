@@ -1,0 +1,30 @@
+strong sub onsets (t, rise dB):
+13.253(48) 13.613(54) 15.293(44) 16.013(49) 17.453(58) 19.133(47) 19.853(57) 21.293(47) 22.976(30) 23.693(40) 25.133(49) 25.377(23) 26.813(51) 28.253(46) 28.973(47) 51.455(52) 51.815(65) 63.579(21) 65.001(65) 66.441(70) 66.813(58)
+
+phase of sub onsets relative to 125 BPM grid anchored 14.461 (in beats, mod 4):
+  intro    n= 1  positions(beats)= 1.48
+  grooveA  n=14  positions(beats)= 2.23 1.73 3.23 2.23 1.73 3.23 2.23 1.74 3.23 2.23 2.74 1.73 0.73 2.23
+  dropB    n= 0  positions(beats)= 
+  break    n= 0  positions(beats)= 
+  drop2    n= 2  positions(beats)= 1.07 1.82
+  outro    n= 4  positions(beats)= 2.33 1.29 0.29 1.07
+
+best grid phase per section (s, mod 0.48) vs anchor phase 0.061
+  intro    phase 0.072s  (strength 0.90; mean env 0.31)
+  grooveA  phase 0.192s  (strength 1.12; mean env 0.30)
+  dropB    phase 0.428s  (strength 1.59; mean env 0.35)
+  drop2    phase 0.472s  (strength 1.45; mean env 0.32)
+  outro    phase 0.348s  (strength 1.57; mean env 0.30)
+
+sustained 4-15k runs in SFX layer (>19.8 dB = 97th pct, len>=60ms):
+   1.164- 1.338 (0.17s) peak 25.1
+   1.477- 1.547 (0.07s) peak 21.4
+  18.736-18.828 (0.09s) peak 22.8
+  46.666-46.904 (0.24s) peak 28.3
+  47.052-47.305 (0.25s) peak 26.8
+  48.051-48.213 (0.16s) peak 23.1
+  50.306-50.425 (0.12s) peak 29.2
+  50.556-50.689 (0.13s) peak 27.6
+  50.817-50.910 (0.09s) peak 26.5
+  56.366-56.596 (0.23s) peak 24.3
+  56.642-56.718 (0.08s) peak 22.3

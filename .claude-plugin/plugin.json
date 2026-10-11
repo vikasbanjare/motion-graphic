@@ -1,0 +1,13 @@
+{
+  "name": "motion-kit",
+  "displayName": "Motion Kit",
+  "version": "1.0.0",
+  "description": "Describe a video in plain English, Hindi or Hinglish and get a finished motion graphic (MP4 + cover image): storyboard, matching colours, voice-synced timing and sound, rendered from tested scene templates. Bundles the motion-kit engine, the motion-director skill (text to rendered video) the motion-creative-director skill (concepts, storyboards and per-shot prompts for AI video tools), and the motion-ai-studio skill (each video made with Claude Code only, or with AI-generated plates from Higgsfield, Seedance, Kling and others over MCP).",
+  "author": {
+    "name": "vikasbanjare",
+    "url": "https://github.com/vikasbanjare"
+  },
+  "homepage": "https://github.com/vikasbanjare/motion-graphic",
+  "repository": "https://github.com/vikasbanjare/motion-graphic",
+  "keywords": ["motion-graphics", "video", "reels", "shorts", "remotion", "kinetic-typography", "hinglish"]
+}

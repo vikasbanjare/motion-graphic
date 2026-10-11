@@ -1,0 +1,2 @@
+/tmp/claude-0/-home-user-motion-graphic/1f24b667-a667-5b98-80e3-897ca246eb7a/scratchpad/research-cred/scorecard/score.py:196: RuntimeWarning: All-NaN slice encountered
+  med = np.nanmedian(H, 0)

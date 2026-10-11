@@ -1,0 +1,80 @@
+{
+  "_recipe": {
+    "title": "Hiring post",
+    "when": "A \"We're hiring\" post for LinkedIn / Instagram feed: any role, any team.",
+    "beats": [
+      "Hook: \"We're hiring\" + the role, then company · city · work mode, readable at a glance.",
+      "Mission: what the team builds and for whom, three short kinetic lines.",
+      "The job: three things this person will do, as numbered lines.",
+      "Perks: four tiles with the real benefits (pay band first if you can share it).",
+      "Team proof: team size or a number candidates care about.",
+      "Voice of the team: a real quote from someone on the team.",
+      "CTA: apply + where + \"tag someone\"."
+    ],
+    "copyTips": [
+      "Role, location, work mode, salary band, perks and team size come from the hiring manager. Leave a perk out rather than guess.",
+      "Use plain job language (\"Build our Android app\"), not buzzwords (\"rockstar ninja\"); inclusive wording widens the pool.",
+      "Sharing the pay range in the perks beat gets noticeably more qualified applicants; suggest it.",
+      "The team quote must be real, approved by the person quoted and ≤ 12 words. Keep every say ≤ ~15 words: past that a beat holds over 7s and check warns.",
+      "Corporate + smooth reads trustworthy on LinkedIn. Creative studios: --theme editorial. Restaurants / retail: --theme pop."
+    ]
+  },
+  "format": "portrait",
+  "theme": "corporate",
+  "motion": "smooth",
+  "pace": "normal",
+  "brand": { "name": "[COMPANY]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "title",
+      "say": "We're hiring: [ROLE]. [COMPANY], [CITY], [WORK MODE].",
+      "kicker": "We're hiring",
+      "headline": "*[ROLE]*",
+      "sub": "[COMPANY] · [CITY] · [WORK MODE]"
+    },
+    {
+      "type": "kinetic",
+      "say": "We build [WHAT]. For [WHO]. And we need you.",
+      "lines": ["We build [WHAT].", "For [WHO].", "And we need *you*."]
+    },
+    {
+      "type": "list",
+      "say": "You will [TASK ONE], [TASK TWO] and [TASK THREE].",
+      "title": "You will",
+      "items": ["[TASK ONE]", "[TASK TWO]", "[TASK THREE]"],
+      "style": "numbers"
+    },
+    {
+      "type": "grid",
+      "say": "What you get: [PAY BAND], [PERK ONE], [PERK TWO] and [PERK THREE].",
+      "title": "What you get",
+      "items": [
+        { "icon": "💰", "label": "[PAY BAND]" },
+        { "icon": "🏥", "label": "[PERK ONE]" },
+        { "icon": "🏠", "label": "[PERK TWO]" },
+        { "icon": "📚", "label": "[PERK THREE]" }
+      ]
+    },
+    {
+      "type": "stat",
+      "say": "Join a team of [FORTY] people building [PRODUCT].",
+      "kicker": "The team",
+      "value": "[40]",
+      "label": "people building *[PRODUCT]*"
+    },
+    {
+      "type": "quote",
+      "say": "[A REAL LINE FROM A TEAMMATE ABOUT WORKING HERE.] [NAME], [THEIR ROLE].",
+      "quote": "[A REAL LINE FROM A TEAMMATE ABOUT *WORKING HERE*.]",
+      "author": "[NAME]",
+      "role": "[THEIR ROLE], [COMPANY]"
+    },
+    {
+      "type": "cta",
+      "say": "Know someone? Tag them. Or apply now on [CAREERS PAGE].",
+      "kicker": "Know someone? Tag them",
+      "action": "Apply now",
+      "sub": "[CAREERS PAGE]"
+    }
+  ]
+}

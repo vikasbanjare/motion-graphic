@@ -1,0 +1,478 @@
+[
+ {
+  "name": "pen scribble foley",
+  "kind": "foley",
+  "start": 0.697,
+  "peak": 1.254,
+  "end": 4.049,
+  "dur": 3.352,
+  "attack": 0.557,
+  "release": 2.795,
+  "rise_db": 70.8,
+  "pan_LR_db": 0.0,
+  "side_minus_mid_db": -169.9,
+  "band": [
+   1000,
+   15000
+  ]
+ },
+ {
+  "name": "low swell into music",
+  "kind": "swell",
+  "start": 5.181,
+  "peak": 5.329,
+  "end": 5.608,
+  "dur": 0.427,
+  "attack": 0.148,
+  "release": 0.279,
+  "rise_db": 60.0,
+  "pan_LR_db": -0.5,
+  "side_minus_mid_db": 1.3,
+  "band": [
+   40,
+   2000
+  ]
+ },
+ {
+  "name": "hi air band (scene bed)",
+  "kind": "bed",
+  "start": 5.561,
+  "peak": 7.343,
+  "end": 10.304,
+  "dur": 4.743,
+  "attack": 1.782,
+  "release": 2.961,
+  "rise_db": 26.4,
+  "pan_LR_db": -1.9,
+  "side_minus_mid_db": 4.6,
+  "band": [
+   4300,
+   6300
+  ]
+ },
+ {
+  "name": "wing flutter ticks",
+  "kind": "foley",
+  "start": 7.239,
+  "peak": 7.427,
+  "end": 7.645,
+  "dur": 0.406,
+  "attack": 0.189,
+  "release": 0.218,
+  "rise_db": 11.8,
+  "pan_LR_db": -0.6,
+  "side_minus_mid_db": -1.4,
+  "band": [
+   7000,
+   15000
+  ]
+ },
+ {
+  "name": "bird chirps",
+  "kind": "nature",
+  "start": 8.229,
+  "peak": 8.96,
+  "end": 9.509,
+  "dur": 1.28,
+  "attack": 0.731,
+  "release": 0.549,
+  "rise_db": 32.8,
+  "pan_LR_db": -1.1,
+  "side_minus_mid_db": -11.7,
+  "band": [
+   3000,
+   4600
+  ]
+ },
+ {
+  "name": "lens swell",
+  "kind": "swell",
+  "start": 9.868,
+  "peak": 10.118,
+  "end": 10.199,
+  "dur": 0.331,
+  "attack": 0.25,
+  "release": 0.081,
+  "rise_db": 30.3,
+  "pan_LR_db": -1.7,
+  "side_minus_mid_db": -0.4,
+  "band": [
+   40,
+   1200
+  ]
+ },
+ {
+  "name": "glass shimmer partials",
+  "kind": "shimmer",
+  "start": 14.324,
+  "peak": 15.163,
+  "end": 15.952,
+  "dur": 1.628,
+  "attack": 0.839,
+  "release": 0.789,
+  "rise_db": 19.0,
+  "pan_LR_db": 1.4,
+  "side_minus_mid_db": -3.4,
+  "band": [
+   2900,
+   3300
+  ]
+ },
+ {
+  "name": "whip A1",
+  "kind": "whoosh",
+  "start": 18.643,
+  "peak": 18.756,
+  "end": 18.858,
+  "dur": 0.215,
+  "attack": 0.113,
+  "release": 0.102,
+  "rise_db": 16.8,
+  "pan_LR_db": -0.1,
+  "side_minus_mid_db": -17.5,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "whip A2",
+  "kind": "whoosh",
+  "start": 19.075,
+  "peak": 19.325,
+  "end": 19.365,
+  "dur": 0.29,
+  "attack": 0.25,
+  "release": 0.041,
+  "rise_db": 20.7,
+  "pan_LR_db": -0.2,
+  "side_minus_mid_db": -18.2,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "whip B",
+  "kind": "whoosh",
+  "start": 20.294,
+  "peak": 20.332,
+  "end": 20.756,
+  "dur": 0.461,
+  "attack": 0.038,
+  "release": 0.424,
+  "rise_db": 23.4,
+  "pan_LR_db": -0.5,
+  "side_minus_mid_db": -8.3,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "air riser",
+  "kind": "riser",
+  "start": 21.667,
+  "peak": 21.969,
+  "end": 22.457,
+  "dur": 0.789,
+  "attack": 0.302,
+  "release": 0.488,
+  "rise_db": 39.1,
+  "pan_LR_db": -0.0,
+  "side_minus_mid_db": 0.6,
+  "band": [
+   5000,
+   15000
+  ]
+ },
+ {
+  "name": "column wipe texture",
+  "kind": "texture",
+  "start": 27.063,
+  "peak": 27.896,
+  "end": 28.087,
+  "dur": 1.025,
+  "attack": 0.833,
+  "release": 0.192,
+  "rise_db": 16.3,
+  "pan_LR_db": -0.4,
+  "side_minus_mid_db": -1.2,
+  "band": [
+   300,
+   3000
+  ]
+ },
+ {
+  "name": "lighthouse low hum",
+  "kind": "drone",
+  "start": 33.344,
+  "peak": 34.511,
+  "end": 36.299,
+  "dur": 2.955,
+  "attack": 1.167,
+  "release": 1.788,
+  "rise_db": 33.2,
+  "pan_LR_db": -0.2,
+  "side_minus_mid_db": -14.7,
+  "band": [
+   60,
+   300
+  ]
+ },
+ {
+  "name": "gull chirps",
+  "kind": "nature",
+  "start": 35.556,
+  "peak": 35.689,
+  "end": 35.834,
+  "dur": 0.279,
+  "attack": 0.134,
+  "release": 0.145,
+  "rise_db": 24.0,
+  "pan_LR_db": -0.4,
+  "side_minus_mid_db": -8.6,
+  "band": [
+   1800,
+   6500
+  ]
+ },
+ {
+  "name": "rising tone",
+  "kind": "riser",
+  "start": 35.152,
+  "peak": 35.724,
+  "end": 36.397,
+  "dur": 1.245,
+  "attack": 0.572,
+  "release": 0.673,
+  "rise_db": 28.4,
+  "pan_LR_db": 0.7,
+  "side_minus_mid_db": -6.6,
+  "band": [
+   250,
+   600
+  ]
+ },
+ {
+  "name": "underwater swell",
+  "kind": "swell",
+  "start": 39.497,
+  "peak": 39.535,
+  "end": 39.581,
+  "dur": 0.084,
+  "attack": 0.038,
+  "release": 0.046,
+  "rise_db": 15.7,
+  "pan_LR_db": -0.4,
+  "side_minus_mid_db": -5.8,
+  "band": [
+   150,
+   2500
+  ]
+ },
+ {
+  "name": "pearl shimmer",
+  "kind": "shimmer",
+  "start": 42.635,
+  "peak": 42.971,
+  "end": 43.5,
+  "dur": 0.865,
+  "attack": 0.337,
+  "release": 0.528,
+  "rise_db": 30.2,
+  "pan_LR_db": 0.3,
+  "side_minus_mid_db": -7.9,
+  "band": [
+   5000,
+   9500
+  ]
+ },
+ {
+  "name": "pre-breakdown swell",
+  "kind": "swell",
+  "start": 43.819,
+  "peak": 43.857,
+  "end": 43.903,
+  "dur": 0.084,
+  "attack": 0.038,
+  "release": 0.046,
+  "rise_db": 16.1,
+  "pan_LR_db": -1.4,
+  "side_minus_mid_db": -9.8,
+  "band": [
+   150,
+   2500
+  ]
+ },
+ {
+  "name": "whip C1",
+  "kind": "whoosh",
+  "start": 46.579,
+  "peak": 46.713,
+  "end": 46.98,
+  "dur": 0.401,
+  "attack": 0.134,
+  "release": 0.267,
+  "rise_db": 47.9,
+  "pan_LR_db": 0.0,
+  "side_minus_mid_db": -26.9,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "whip C2",
+  "kind": "whoosh",
+  "start": 47.038,
+  "peak": 47.285,
+  "end": 47.322,
+  "dur": 0.284,
+  "attack": 0.247,
+  "release": 0.038,
+  "rise_db": 16.5,
+  "pan_LR_db": -0.0,
+  "side_minus_mid_db": -33.8,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "whip D",
+  "kind": "whoosh",
+  "start": 47.929,
+  "peak": 48.074,
+  "end": 48.599,
+  "dur": 0.67,
+  "attack": 0.145,
+  "release": 0.525,
+  "rise_db": 57.4,
+  "pan_LR_db": 0.0,
+  "side_minus_mid_db": -19.2,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "whip E",
+  "kind": "whoosh",
+  "start": 49.25,
+  "peak": 49.496,
+  "end": 49.647,
+  "dur": 0.398,
+  "attack": 0.247,
+  "release": 0.151,
+  "rise_db": 41.5,
+  "pan_LR_db": -0.1,
+  "side_minus_mid_db": 0.3,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "seal sparkle",
+  "kind": "shimmer",
+  "start": 50.248,
+  "peak": 50.355,
+  "end": 50.971,
+  "dur": 0.723,
+  "attack": 0.107,
+  "release": 0.615,
+  "rise_db": 28.7,
+  "pan_LR_db": 0.3,
+  "side_minus_mid_db": -10.0,
+  "band": [
+   4000,
+   15000
+  ]
+ },
+ {
+  "name": "drop-2 impact",
+  "kind": "impact",
+  "start": 51.418,
+  "peak": 51.476,
+  "end": 51.746,
+  "dur": 0.328,
+  "attack": 0.058,
+  "release": 0.27,
+  "rise_db": 61.6,
+  "pan_LR_db": -0.1,
+  "side_minus_mid_db": -28.1,
+  "band": [
+   30,
+   150
+  ]
+ },
+ {
+  "name": "whip F (bill to phone)",
+  "kind": "whoosh",
+  "start": 56.12,
+  "peak": 56.424,
+  "end": 57.022,
+  "dur": 0.903,
+  "attack": 0.305,
+  "release": 0.598,
+  "rise_db": 23.5,
+  "pan_LR_db": -0.1,
+  "side_minus_mid_db": -7.5,
+  "band": [
+   3000,
+   15000
+  ]
+ },
+ {
+  "name": "logo shimmer swell",
+  "kind": "shimmer",
+  "start": 61.774,
+  "peak": 62.372,
+  "end": 62.778,
+  "dur": 1.004,
+  "attack": 0.598,
+  "release": 0.406,
+  "rise_db": 16.5,
+  "pan_LR_db": -0.9,
+  "side_minus_mid_db": -5.9,
+  "band": [
+   2000,
+   15000
+  ]
+ },
+ {
+  "name": "end riser",
+  "kind": "riser",
+  "start": 66.215,
+  "peak": 67.155,
+  "end": 67.399,
+  "dur": 1.184,
+  "attack": 0.94,
+  "release": 0.244,
+  "rise_db": 45.1,
+  "pan_LR_db": 0.6,
+  "side_minus_mid_db": 3.0,
+  "band": [
+   4000,
+   11000
+  ]
+ },
+ {
+  "name": "end bell ring",
+  "kind": "bell",
+  "start": 66.923,
+  "peak": 67.123,
+  "end": 67.175,
+  "dur": 0.253,
+  "attack": 0.2,
+  "release": 0.052,
+  "rise_db": 10.6,
+  "pan_LR_db": -1.7,
+  "side_minus_mid_db": 3.9,
+  "band": [
+   3500,
+   4200
+  ]
+ }
+]

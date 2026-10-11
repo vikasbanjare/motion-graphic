@@ -1,0 +1,202 @@
+{
+ "thin_band_t15_stops": [
+  {
+   "pos": 0.0,
+   "hex": "#adbca9",
+   "hue": 106,
+   "sat": 0.1,
+   "val": 0.74
+  },
+  {
+   "pos": 0.1,
+   "hex": "#5eccab",
+   "hue": 161,
+   "sat": 0.54,
+   "val": 0.8
+  },
+  {
+   "pos": 0.2,
+   "hex": "#61e2b6",
+   "hue": 158,
+   "sat": 0.57,
+   "val": 0.89
+  },
+  {
+   "pos": 0.3,
+   "hex": "#85bba1",
+   "hue": 150,
+   "sat": 0.29,
+   "val": 0.73
+  },
+  {
+   "pos": 0.4,
+   "hex": "#ccbec4",
+   "hue": 334,
+   "sat": 0.07,
+   "val": 0.8
+  },
+  {
+   "pos": 0.5,
+   "hex": "#afbda7",
+   "hue": 98,
+   "sat": 0.12,
+   "val": 0.74
+  },
+  {
+   "pos": 0.6,
+   "hex": "#62cfb3",
+   "hue": 164,
+   "sat": 0.53,
+   "val": 0.81
+  },
+  {
+   "pos": 0.7,
+   "hex": "#6edec4",
+   "hue": 165,
+   "sat": 0.51,
+   "val": 0.87
+  },
+  {
+   "pos": 0.8,
+   "hex": "#96b3a4",
+   "hue": 149,
+   "sat": 0.16,
+   "val": 0.7
+  },
+  {
+   "pos": 0.9,
+   "hex": "#ebbcbd",
+   "hue": 358,
+   "sat": 0.2,
+   "val": 0.92
+  },
+  {
+   "pos": 1.0,
+   "hex": "#b5b09a",
+   "hue": 49,
+   "sat": 0.15,
+   "val": 0.71
+  }
+ ],
+ "wide_band_t18_stops": [
+  {
+   "pos": 0.0,
+   "hex": "#878b91",
+   "hue": 216,
+   "sat": 0.07,
+   "val": 0.57
+  },
+  {
+   "pos": 0.07,
+   "hex": "#c1bfc0",
+   "hue": 330,
+   "sat": 0.01,
+   "val": 0.76
+  },
+  {
+   "pos": 0.14,
+   "hex": "#c9c4c2",
+   "hue": 16,
+   "sat": 0.04,
+   "val": 0.79
+  },
+  {
+   "pos": 0.21,
+   "hex": "#d4c8c6",
+   "hue": 8,
+   "sat": 0.07,
+   "val": 0.83
+  },
+  {
+   "pos": 0.29,
+   "hex": "#f1caca",
+   "hue": 0,
+   "sat": 0.16,
+   "val": 0.95
+  },
+  {
+   "pos": 0.36,
+   "hex": "#fbd8b9",
+   "hue": 28,
+   "sat": 0.26,
+   "val": 0.98
+  },
+  {
+   "pos": 0.43,
+   "hex": "#fcd8a3",
+   "hue": 35,
+   "sat": 0.35,
+   "val": 0.99
+  },
+  {
+   "pos": 0.5,
+   "hex": "#fadba3",
+   "hue": 37,
+   "sat": 0.35,
+   "val": 0.98
+  },
+  {
+   "pos": 0.57,
+   "hex": "#ebdbaf",
+   "hue": 43,
+   "sat": 0.25,
+   "val": 0.92
+  },
+  {
+   "pos": 0.64,
+   "hex": "#c7e5d2",
+   "hue": 142,
+   "sat": 0.13,
+   "val": 0.9
+  },
+  {
+   "pos": 0.71,
+   "hex": "#a3c8e4",
+   "hue": 205,
+   "sat": 0.29,
+   "val": 0.89
+  },
+  {
+   "pos": 0.79,
+   "hex": "#8daad3",
+   "hue": 215,
+   "sat": 0.33,
+   "val": 0.83
+  },
+  {
+   "pos": 0.86,
+   "hex": "#89a0c8",
+   "hue": 217,
+   "sat": 0.31,
+   "val": 0.78
+  },
+  {
+   "pos": 0.93,
+   "hex": "#889bbc",
+   "hue": 217,
+   "sat": 0.28,
+   "val": 0.74
+  },
+  {
+   "pos": 1.0,
+   "hex": "#6f7a8f",
+   "hue": 219,
+   "sat": 0.22,
+   "val": 0.56
+  }
+ ],
+ "wavy_line_vertical_pitch_px_t18": {
+  "median": 12.0,
+  "p25": 9.0,
+  "p75": 13.0
+ },
+ "wavy_line_wave_t18": {
+  "amplitude_px": 16.5,
+  "period_px": 200.0
+ },
+ "band_height_px": {
+  "t15": "~20 (rows 171-190 of 360) = 0.055 H",
+  "t18": "97 (rows 130-227) = 0.27 H"
+ },
+ "text_contrast": "white caps, sat<0.16, val>0.82 on pastel band (val 0.8-1.0, sat 0.2-0.4)"
+}

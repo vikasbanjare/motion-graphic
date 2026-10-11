@@ -1,0 +1,7 @@
+{
+  "polyhaven_models": ["suitcase", "globe", "bell", "box", "camera", "watch", "headphones", "vase", "book", "lantern", "clock", "chair", "plant", "shoe", "bag"],
+  "polyhaven_hdris": ["studio"],
+  "met_images": ["terrestrial globe", "hot air balloon", "steamship engraving", "airship", "hotel facade engraving", "pocket watch", "travel trunk"],
+  "max_per_term": 2,
+  "res": "1k"
+}

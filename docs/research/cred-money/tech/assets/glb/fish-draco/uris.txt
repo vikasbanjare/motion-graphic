@@ -1,0 +1,1 @@
+['BarramundiFish.bin'] ['BarramundiFish_baseColor.png', 'BarramundiFish_occlusionRoughnessMetallic.png', 'BarramundiFish_normal.png'] ['KHR_draco_mesh_compression']

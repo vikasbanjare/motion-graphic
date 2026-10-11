@@ -1,0 +1,860 @@
+{
+ "video": "../../ref1/in/ref.mp4",
+ "fps": 24.0,
+ "duration": 69.06,
+ "flow_sound_film_qa": {
+  "still_pct": 17.8,
+  "longest_still_s": 5.4,
+  "motion_median": 0.0182,
+  "onsets_per_s": 2.68,
+  "hit_prominence_db": 3.3,
+  "longest_silence_ms": 710
+ },
+ "loudness": {
+  "lufs_i": -16.9,
+  "lra_lu": 11.9,
+  "true_peak_dbtp": -0.5
+ },
+ "cuts": {
+  "times_s": [
+   3.0,
+   13.458,
+   18.792,
+   19.25,
+   20.417,
+   25.458,
+   27.125,
+   32.542,
+   33.292,
+   35.75,
+   40.583,
+   46.542,
+   47.0,
+   47.875,
+   48.333,
+   49.208,
+   49.667,
+   54.542,
+   60.042
+  ],
+  "count": 19,
+  "asl_s": 3.45,
+  "median_shot_s": 2.73,
+  "longest_shot_s": 10.46,
+  "cuts_per_10s": 2.75
+ },
+ "shots": [
+  {
+   "name": "R01 birth-of-line (grey)",
+   "start": 0.0,
+   "end": 1.75,
+   "axis1_share": 0.996,
+   "ink": "#a5a5a6",
+   "paper": "#dcdcdc",
+   "sat_share": 0.0,
+   "screen": {
+    "tiles": 65,
+    "mode_share": 0.54,
+    "period_px640": 6.37,
+    "period_pctH": 1.769,
+    "angle_deg": 178.4,
+    "all_tiles_median_period": 6.28
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 1.0,
+    "zoom_median_abs_pct_s": 0.46,
+    "zoom_net_pct": -0.2,
+    "pan_p90_pctW_s": 0.9,
+    "pan_median_pctW_s": 0.33,
+    "roll_p90_abs_deg_s": 0.14,
+    "camera_moving_share": 0.5,
+    "inlier_median": 0.76
+   }
+  },
+  {
+   "name": "R02 locked lines (grey)",
+   "start": 1.75,
+   "end": 3.0,
+   "axis1_share": 1.0,
+   "ink": "#969696",
+   "paper": "#dcdcdc",
+   "sat_share": 0.0,
+   "screen": {
+    "tiles": 121,
+    "mode_share": 0.39,
+    "period_px640": 5.26,
+    "period_pctH": 1.461,
+    "angle_deg": 0.8,
+    "all_tiles_median_period": 5.06
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.1,
+    "zoom_median_abs_pct_s": 0.09,
+    "zoom_net_pct": 0.1,
+    "pan_p90_pctW_s": 0.1,
+    "pan_median_pctW_s": 0.06,
+    "roll_p90_abs_deg_s": 0.02,
+    "camera_moving_share": 0.0,
+    "inlier_median": 0.72
+   }
+  },
+  {
+   "name": "R03 guilloche field",
+   "start": 3.0,
+   "end": 4.0,
+   "axis1_share": 1.0,
+   "ink": "#919191",
+   "paper": "#eeeeee",
+   "sat_share": 0.0,
+   "screen": {
+    "tiles": 110,
+    "mode_share": 0.76,
+    "period_px640": 4.12,
+    "period_pctH": 1.145,
+    "angle_deg": 174.1,
+    "all_tiles_median_period": 4.12
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 1.0,
+    "zoom_median_abs_pct_s": 0.33,
+    "zoom_net_pct": -0.2,
+    "pan_p90_pctW_s": 31.8,
+    "pan_median_pctW_s": 29.23,
+    "roll_p90_abs_deg_s": 0.27,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.5
+   }
+  },
+  {
+   "name": "R04 flora+bird (violet/olive)",
+   "start": 4.75,
+   "end": 9.5,
+   "axis1_share": 0.8,
+   "ink": "#625975",
+   "paper": "#eae9e9",
+   "sat_share": 0.218,
+   "screen": {
+    "tiles": 1314,
+    "mode_share": 0.51,
+    "period_px640": 2.58,
+    "period_pctH": 0.718,
+    "angle_deg": 44.5,
+    "all_tiles_median_period": 2.81
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 17.8,
+    "zoom_median_abs_pct_s": 2.44,
+    "zoom_net_pct": -25.2,
+    "pan_p90_pctW_s": 8.8,
+    "pan_median_pctW_s": 0.93,
+    "roll_p90_abs_deg_s": 2.73,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.8
+   }
+  },
+  {
+   "name": "R05 world-into-object reveal",
+   "start": 9.5,
+   "end": 11.125,
+   "axis1_share": 0.593,
+   "ink": "#162420",
+   "paper": "#e7f0ed",
+   "sat_share": 0.366,
+   "screen": {
+    "tiles": 403,
+    "mode_share": 0.14,
+    "period_px640": 4.71,
+    "period_pctH": 1.307,
+    "angle_deg": 162.2,
+    "all_tiles_median_period": 4.71
+   },
+   "lens": {
+    "lens_frames": 2,
+    "lens_share": 0.67,
+    "centre_pctW": 43.9,
+    "centre_pctH": 27.2,
+    "R50_over_W": 0.373,
+    "feather_10_90_over_H": 0.211,
+    "fit_residual_px320": 11.7,
+    "outside_luma": 10.7
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 8.1,
+    "zoom_median_abs_pct_s": 7.13,
+    "zoom_net_pct": -2.0,
+    "pan_p90_pctW_s": 10.0,
+    "pan_median_pctW_s": 6.79,
+    "roll_p90_abs_deg_s": 6.38,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.36
+   }
+  },
+  {
+   "name": "R06 object on dark table, loupe",
+   "start": 11.125,
+   "end": 13.458,
+   "axis1_share": 0.72,
+   "ink": "#12201e",
+   "paper": "#e6f1ee",
+   "sat_share": 0.358,
+   "screen": {
+    "tiles": 575,
+    "mode_share": 0.13,
+    "period_px640": 5.06,
+    "period_pctH": 1.405,
+    "angle_deg": 162.0,
+    "all_tiles_median_period": 4.27
+   },
+   "lens": {
+    "lens_frames": 4,
+    "lens_share": 1.0,
+    "centre_pctW": 43.4,
+    "centre_pctH": 29.1,
+    "R50_over_W": 0.361,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 11.9,
+    "outside_luma": 9.7
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.1,
+    "zoom_median_abs_pct_s": 0.07,
+    "zoom_net_pct": 0.1,
+    "pan_p90_pctW_s": 0.9,
+    "pan_median_pctW_s": 0.92,
+    "roll_p90_abs_deg_s": 0.26,
+    "camera_moving_share": 0.0,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R07 loupe macro + foil band (mint)",
+   "start": 13.458,
+   "end": 18.742,
+   "axis1_share": 0.602,
+   "ink": "#27352c",
+   "paper": "#ccf5c2",
+   "sat_share": 0.48,
+   "screen": {
+    "tiles": 1545,
+    "mode_share": 0.13,
+    "period_px640": 2.3,
+    "period_pctH": 0.639,
+    "angle_deg": 135.8,
+    "all_tiles_median_period": 4.53
+   },
+   "lens": {
+    "lens_frames": 10,
+    "lens_share": 1.0,
+    "centre_pctW": 51.1,
+    "centre_pctH": 54.1,
+    "R50_over_W": 0.457,
+    "feather_10_90_over_H": 0.325,
+    "fit_residual_px320": 2.1,
+    "outside_luma": 9.5
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 34.6,
+    "zoom_median_abs_pct_s": 4.06,
+    "zoom_net_pct": 73.5,
+    "pan_p90_pctW_s": 22.2,
+    "pan_median_pctW_s": 0.09,
+    "roll_p90_abs_deg_s": 0.12,
+    "camera_moving_share": 0.87,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R08 peach lens note",
+   "start": 18.95,
+   "end": 20.383,
+   "axis1_share": 0.664,
+   "ink": "#383331",
+   "paper": "#eedeb6",
+   "sat_share": 0.27,
+   "screen": {
+    "tiles": 276,
+    "mode_share": 0.24,
+    "period_px640": 4.12,
+    "period_pctH": 1.145,
+    "angle_deg": 180.0,
+    "all_tiles_median_period": 4.2
+   },
+   "lens": {
+    "lens_frames": 2,
+    "lens_share": 1.0,
+    "centre_pctW": 50.9,
+    "centre_pctH": 53.1,
+    "R50_over_W": 0.461,
+    "feather_10_90_over_H": 0.158,
+    "fit_residual_px320": 1.6,
+    "outside_luma": 9.6
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.9,
+    "zoom_median_abs_pct_s": 0.11,
+    "zoom_net_pct": -0.2,
+    "pan_p90_pctW_s": 2.1,
+    "pan_median_pctW_s": 0.05,
+    "roll_p90_abs_deg_s": 0.29,
+    "camera_moving_share": 0.29,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R09 top-down rosette (peach)",
+   "start": 20.5,
+   "end": 21.27,
+   "axis1_share": 0.931,
+   "ink": "#3b322a",
+   "paper": "#f8daa2",
+   "sat_share": 0.79,
+   "screen": {
+    "tiles": 130,
+    "mode_share": 0.22,
+    "period_px640": 6.37,
+    "period_pctH": 1.769,
+    "angle_deg": 179.2,
+    "all_tiles_median_period": 4.92
+   },
+   "lens": {
+    "lens_frames": 1,
+    "lens_share": 1.0,
+    "centre_pctW": 50.8,
+    "centre_pctH": 54.2,
+    "R50_over_W": 0.462,
+    "feather_10_90_over_H": 0.167,
+    "fit_residual_px320": 1.7,
+    "outside_luma": 10.0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 2.8,
+    "zoom_median_abs_pct_s": 0.48,
+    "zoom_net_pct": 0.1,
+    "pan_p90_pctW_s": 3.3,
+    "pan_median_pctW_s": 2.14,
+    "roll_p90_abs_deg_s": 0.5,
+    "camera_moving_share": 0.57,
+    "inlier_median": 0.85
+   }
+  },
+  {
+   "name": "R10 tilt-up reveal",
+   "start": 21.27,
+   "end": 22.42,
+   "axis1_share": 0.739,
+   "ink": "#954a4e",
+   "paper": "#eacda6",
+   "sat_share": 0.737,
+   "screen": {
+    "tiles": 274,
+    "mode_share": 0.36,
+    "period_px640": 2.5,
+    "period_pctH": 0.694,
+    "angle_deg": 45.5,
+    "all_tiles_median_period": 2.5
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 101.4,
+    "zoom_median_abs_pct_s": 58.2,
+    "zoom_net_pct": 84.4,
+    "pan_p90_pctW_s": 46.5,
+    "pan_median_pctW_s": 27.83,
+    "roll_p90_abs_deg_s": 9.91,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.14
+   }
+  },
+  {
+   "name": "R11 hero colonnade (crimson)",
+   "start": 22.42,
+   "end": 25.2,
+   "axis1_share": 0.626,
+   "ink": "#8f424a",
+   "paper": "#ddccb6",
+   "sat_share": 0.529,
+   "screen": {
+    "tiles": 782,
+    "mode_share": 0.46,
+    "period_px640": 2.5,
+    "period_pctH": 0.694,
+    "angle_deg": 46.0,
+    "all_tiles_median_period": 2.5
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 2.5,
+    "zoom_median_abs_pct_s": 0.03,
+    "zoom_net_pct": 1.2,
+    "pan_p90_pctW_s": 0.9,
+    "pan_median_pctW_s": 0.03,
+    "roll_p90_abs_deg_s": 0.06,
+    "camera_moving_share": 0.18,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R12 merge/morph",
+   "start": 25.2,
+   "end": 27.04,
+   "axis1_share": 0.832,
+   "ink": "#97444c",
+   "paper": "#dfcebb",
+   "sat_share": 0.528,
+   "screen": {
+    "tiles": 482,
+    "mode_share": 0.43,
+    "period_px640": 2.73,
+    "period_pctH": 0.759,
+    "angle_deg": 45.0,
+    "all_tiles_median_period": 2.81
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 30.4,
+    "zoom_median_abs_pct_s": 0.62,
+    "zoom_net_pct": 13.1,
+    "pan_p90_pctW_s": 0.9,
+    "pan_median_pctW_s": 0.15,
+    "roll_p90_abs_deg_s": 0.13,
+    "camera_moving_share": 0.56,
+    "inlier_median": 0.91
+   }
+  },
+  {
+   "name": "R13 lavender underwater",
+   "start": 27.5,
+   "end": 32.542,
+   "axis1_share": 0.823,
+   "ink": "#4b437b",
+   "paper": "#d7d2ec",
+   "sat_share": 0.127,
+   "screen": {
+    "tiles": 710,
+    "mode_share": 0.12,
+    "period_px640": 4.92,
+    "period_pctH": 1.368,
+    "angle_deg": 179.2,
+    "all_tiles_median_period": 4.56
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 1.1,
+    "zoom_median_abs_pct_s": 0.68,
+    "zoom_net_pct": -2.1,
+    "pan_p90_pctW_s": 0.8,
+    "pan_median_pctW_s": 0.58,
+    "roll_p90_abs_deg_s": 0.93,
+    "camera_moving_share": 0.88,
+    "inlier_median": 0.71
+   }
+  },
+  {
+   "name": "R14 lighthouse wide (mint)",
+   "start": 32.542,
+   "end": 35.75,
+   "axis1_share": 0.646,
+   "ink": "#587852",
+   "paper": "#c8eab8",
+   "sat_share": 0.111,
+   "screen": {
+    "tiles": 810,
+    "mode_share": 0.58,
+    "period_px640": 2.01,
+    "period_pctH": 0.557,
+    "angle_deg": 44.9,
+    "all_tiles_median_period": 2.01
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 1.1,
+    "zoom_median_abs_pct_s": 0.64,
+    "zoom_net_pct": 2.0,
+    "pan_p90_pctW_s": 0.4,
+    "pan_median_pctW_s": 0.23,
+    "roll_p90_abs_deg_s": 0.31,
+    "camera_moving_share": 0.7,
+    "inlier_median": 0.92
+   }
+  },
+  {
+   "name": "R15 lighthouse close (mint)",
+   "start": 35.75,
+   "end": 38.875,
+   "axis1_share": 0.634,
+   "ink": "#557358",
+   "paper": "#c6ecbc",
+   "sat_share": 0.133,
+   "screen": {
+    "tiles": 781,
+    "mode_share": 0.21,
+    "period_px640": 2.45,
+    "period_pctH": 0.682,
+    "angle_deg": 180.0,
+    "all_tiles_median_period": 2.55
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.8,
+    "zoom_median_abs_pct_s": 0.3,
+    "zoom_net_pct": -0.9,
+    "pan_p90_pctW_s": 0.4,
+    "pan_median_pctW_s": 0.33,
+    "roll_p90_abs_deg_s": 0.38,
+    "camera_moving_share": 0.29,
+    "inlier_median": 0.79
+   }
+  },
+  {
+   "name": "R16 reef wide (grey)",
+   "start": 39.292,
+   "end": 40.583,
+   "axis1_share": 0.896,
+   "ink": "#2b323d",
+   "paper": "#dee9e0",
+   "sat_share": 0.031,
+   "screen": {
+    "tiles": 156,
+    "mode_share": 0.06,
+    "period_px640": 5.33,
+    "period_pctH": 1.481,
+    "angle_deg": 90.0,
+    "all_tiles_median_period": 5.04
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.3,
+    "zoom_median_abs_pct_s": 0.27,
+    "zoom_net_pct": -0.0,
+    "pan_p90_pctW_s": 0.5,
+    "pan_median_pctW_s": 0.45,
+    "roll_p90_abs_deg_s": 0.76,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.74
+   }
+  },
+  {
+   "name": "R17 shell close + crane (grey)",
+   "start": 40.583,
+   "end": 46.875,
+   "axis1_share": 0.902,
+   "ink": "#22272f",
+   "paper": "#dde8de",
+   "sat_share": 0.035,
+   "screen": {
+    "tiles": 1041,
+    "mode_share": 0.09,
+    "period_px640": 2.45,
+    "period_pctH": 0.679,
+    "angle_deg": 85.9,
+    "all_tiles_median_period": 5.06
+   },
+   "lens": {
+    "lens_frames": 2,
+    "lens_share": 0.17,
+    "centre_pctW": 45.7,
+    "centre_pctH": 39.6,
+    "R50_over_W": 0.316,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 55.8,
+    "outside_luma": 14.0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 1.7,
+    "zoom_median_abs_pct_s": 0.46,
+    "zoom_net_pct": 2.3,
+    "pan_p90_pctW_s": 1.7,
+    "pan_median_pctW_s": 0.57,
+    "roll_p90_abs_deg_s": 1.05,
+    "camera_moving_share": 0.66,
+    "inlier_median": 0.86
+   }
+  },
+  {
+   "name": "R18 loupe bill island (green)",
+   "start": 47.042,
+   "end": 48.208,
+   "axis1_share": 0.889,
+   "ink": "#1d2c20",
+   "paper": "#d9ecc3",
+   "sat_share": 0.061,
+   "screen": {
+    "tiles": 338,
+    "mode_share": 0.31,
+    "period_px640": 5.31,
+    "period_pctH": 1.476,
+    "angle_deg": 0.7,
+    "all_tiles_median_period": 4.1
+   },
+   "lens": {
+    "lens_frames": 2,
+    "lens_share": 1.0,
+    "centre_pctW": 63.5,
+    "centre_pctH": 62.1,
+    "R50_over_W": 0.244,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 27.7,
+    "outside_luma": 9.0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 3.8,
+    "zoom_median_abs_pct_s": 2.08,
+    "zoom_net_pct": -1.8,
+    "pan_p90_pctW_s": 3.6,
+    "pan_median_pctW_s": 0.11,
+    "roll_p90_abs_deg_s": 0.54,
+    "camera_moving_share": 1.0,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R19 3D letters on bill (green)",
+   "start": 48.375,
+   "end": 49.542,
+   "axis1_share": 0.871,
+   "ink": "#193020",
+   "paper": "#e4edca",
+   "sat_share": 0.144,
+   "screen": {
+    "tiles": 345,
+    "mode_share": 0.42,
+    "period_px640": 2.0,
+    "period_pctH": 0.556,
+    "angle_deg": 179.2,
+    "all_tiles_median_period": 4.05
+   },
+   "lens": {
+    "lens_frames": 2,
+    "lens_share": 1.0,
+    "centre_pctW": 50.3,
+    "centre_pctH": 104.9,
+    "R50_over_W": 0.465,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 16.7,
+    "outside_luma": 11.6
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 7.9,
+    "zoom_median_abs_pct_s": 4.02,
+    "zoom_net_pct": -4.1,
+    "pan_p90_pctW_s": 3.0,
+    "pan_median_pctW_s": 0.17,
+    "roll_p90_abs_deg_s": 0.42,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.92
+   }
+  },
+  {
+   "name": "R20 seal under loupe (cream/green)",
+   "start": 49.708,
+   "end": 51.63,
+   "axis1_share": 0.813,
+   "ink": "#2b3427",
+   "paper": "#f6f2db",
+   "sat_share": 0.068,
+   "screen": {
+    "tiles": 578,
+    "mode_share": 0.11,
+    "period_px640": 6.37,
+    "period_pctH": 1.769,
+    "angle_deg": 179.0,
+    "all_tiles_median_period": 4.27
+   },
+   "lens": {
+    "lens_frames": 4,
+    "lens_share": 1.0,
+    "centre_pctW": 46.4,
+    "centre_pctH": -18.9,
+    "R50_over_W": 0.413,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 6.7,
+    "outside_luma": 9.5
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 5.1,
+    "zoom_median_abs_pct_s": 1.82,
+    "zoom_net_pct": -4.0,
+    "pan_p90_pctW_s": 0.2,
+    "pan_median_pctW_s": 0.05,
+    "roll_p90_abs_deg_s": 0.16,
+    "camera_moving_share": 0.86,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R21 pull-back to whole note",
+   "start": 51.63,
+   "end": 54.29,
+   "axis1_share": 0.676,
+   "ink": "#2a462c",
+   "paper": "#ebdec8",
+   "sat_share": 0.168,
+   "screen": {
+    "tiles": 729,
+    "mode_share": 0.1,
+    "period_px640": 5.82,
+    "period_pctH": 1.616,
+    "angle_deg": 0.1,
+    "all_tiles_median_period": 4.92
+   },
+   "lens": {
+    "lens_frames": 4,
+    "lens_share": 0.8,
+    "centre_pctW": 50.3,
+    "centre_pctH": 42.2,
+    "R50_over_W": 0.272,
+    "feather_10_90_over_H": NaN,
+    "fit_residual_px320": 28.2,
+    "outside_luma": 0.9
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 82.2,
+    "zoom_median_abs_pct_s": 20.32,
+    "zoom_net_pct": -57.8,
+    "pan_p90_pctW_s": 0.6,
+    "pan_median_pctW_s": 0.21,
+    "roll_p90_abs_deg_s": 0.12,
+    "camera_moving_share": 1.0,
+    "inlier_median": 0.88
+   }
+  },
+  {
+   "name": "R22 3D device + cloth note",
+   "start": 54.75,
+   "end": 55.96,
+   "axis1_share": 0.896,
+   "ink": "#141f14",
+   "paper": "#d8dbc9",
+   "sat_share": 0.005,
+   "screen": {
+    "tiles": 102,
+    "mode_share": 0.09,
+    "period_px640": 2.0,
+    "period_pctH": 0.556,
+    "angle_deg": 90.0,
+    "all_tiles_median_period": 4.92
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.1,
+    "zoom_median_abs_pct_s": 0.07,
+    "zoom_net_pct": -0.0,
+    "pan_p90_pctW_s": 0.1,
+    "pan_median_pctW_s": 0.07,
+    "roll_p90_abs_deg_s": 0.02,
+    "camera_moving_share": 0.0,
+    "inlier_median": 0.75
+   }
+  },
+  {
+   "name": "R23 product hold (neutral)",
+   "start": 55.96,
+   "end": 59.67,
+   "axis1_share": 0.999,
+   "ink": "#1f1f1f",
+   "paper": "#fdfdfd",
+   "sat_share": 0.0,
+   "screen": {
+    "tiles": 457,
+    "mode_share": 0.28,
+    "period_px640": 5.33,
+    "period_pctH": 1.481,
+    "angle_deg": 90.0,
+    "all_tiles_median_period": 4.92
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.0,
+    "zoom_median_abs_pct_s": 0.01,
+    "zoom_net_pct": 0.2,
+    "pan_p90_pctW_s": 0.1,
+    "pan_median_pctW_s": 0.01,
+    "roll_p90_abs_deg_s": 0.03,
+    "camera_moving_share": 0.02,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R24 metal emblem + plate",
+   "start": 60.458,
+   "end": 63.04,
+   "screen": {
+    "tiles": 120,
+    "mode_share": 0.13,
+    "period_px640": 6.4,
+    "period_pctH": 1.778,
+    "angle_deg": 90.0,
+    "all_tiles_median_period": 4.32
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.2,
+    "zoom_median_abs_pct_s": 0.03,
+    "zoom_net_pct": -0.1,
+    "pan_p90_pctW_s": 0.1,
+    "pan_median_pctW_s": 0.05,
+    "roll_p90_abs_deg_s": 0.06,
+    "camera_moving_share": 0.0,
+    "inlier_median": 1.0
+   }
+  },
+  {
+   "name": "R25 flat lockup + fade",
+   "start": 63.04,
+   "end": 66.75,
+   "screen": {
+    "tiles": 66,
+    "mode_share": 0.38,
+    "period_px640": 5.33,
+    "period_pctH": 1.481,
+    "angle_deg": 0.0,
+    "all_tiles_median_period": 5.33
+   },
+   "lens": {
+    "lens_frames": 0
+   },
+   "camera": {
+    "zoom_p90_abs_pct_s": 0.0,
+    "zoom_median_abs_pct_s": 0.0,
+    "zoom_net_pct": 0.0,
+    "pan_p90_pctW_s": 0.1,
+    "pan_median_pctW_s": 0.0,
+    "roll_p90_abs_deg_s": 0.0,
+    "camera_moving_share": 0.0,
+    "inlier_median": 1.0
+   }
+  }
+ ]
+}

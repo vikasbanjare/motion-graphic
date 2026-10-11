@@ -1,0 +1,330 @@
+{
+ "source": "cast",
+ "words": [
+  {
+   "text": "India",
+   "startMs": 0.0,
+   "endMs": 357.7
+  },
+  {
+   "text": "still",
+   "startMs": 357.7,
+   "endMs": 715.4
+  },
+  {
+   "text": "writes",
+   "startMs": 715.4,
+   "endMs": 1132.7
+  },
+  {
+   "text": "by",
+   "startMs": 1132.7,
+   "endMs": 1311.5
+  },
+  {
+   "text": "hand.",
+   "startMs": 1311.5,
+   "endMs": 1669.2
+  },
+  {
+   "text": "In",
+   "startMs": 1669.2,
+   "endMs": 1848.0
+  },
+  {
+   "text": "twenty",
+   "startMs": 1848.0,
+   "endMs": 2265.3
+  },
+  {
+   "text": "two",
+   "startMs": 2265.3,
+   "endMs": 2503.8
+  },
+  {
+   "text": "languages.",
+   "startMs": 2503.8,
+   "endMs": 3159.5
+  },
+  {
+   "text": "And",
+   "startMs": 3339.5,
+   "endMs": 3585.6
+  },
+  {
+   "text": "every",
+   "startMs": 3585.6,
+   "endMs": 3954.7
+  },
+  {
+   "text": "form",
+   "startMs": 3954.7,
+   "endMs": 4262.3
+  },
+  {
+   "text": "gets",
+   "startMs": 4262.3,
+   "endMs": 4569.9
+  },
+  {
+   "text": "typed",
+   "startMs": 4569.9,
+   "endMs": 4939.0
+  },
+  {
+   "text": "in",
+   "startMs": 4939.0,
+   "endMs": 5123.5
+  },
+  {
+   "text": "again,",
+   "startMs": 5123.5,
+   "endMs": 5554.1
+  },
+  {
+   "text": "one",
+   "startMs": 5554.1,
+   "endMs": 5800.2
+  },
+  {
+   "text": "field",
+   "startMs": 5800.2,
+   "endMs": 6169.3
+  },
+  {
+   "text": "at",
+   "startMs": 6169.3,
+   "endMs": 6353.9
+  },
+  {
+   "text": "a",
+   "startMs": 6353.9,
+   "endMs": 6476.9
+  },
+  {
+   "text": "time.",
+   "startMs": 6476.9,
+   "endMs": 6846.0
+  },
+  {
+   "text": "Now,",
+   "startMs": 7926.0,
+   "endMs": 8181.1
+  },
+  {
+   "text": "Sarvam",
+   "startMs": 8181.1,
+   "endMs": 8538.2
+  },
+  {
+   "text": "Vision",
+   "startMs": 8538.2,
+   "endMs": 8895.3
+  },
+  {
+   "text": "two",
+   "startMs": 8895.3,
+   "endMs": 9099.3
+  },
+  {
+   "text": "point",
+   "startMs": 9099.3,
+   "endMs": 9405.4
+  },
+  {
+   "text": "one",
+   "startMs": 9405.4,
+   "endMs": 9609.4
+  },
+  {
+   "text": "reads",
+   "startMs": 9609.4,
+   "endMs": 9915.5
+  },
+  {
+   "text": "the",
+   "startMs": 9915.5,
+   "endMs": 10119.6
+  },
+  {
+   "text": "whole",
+   "startMs": 10119.6,
+   "endMs": 10425.6
+  },
+  {
+   "text": "form",
+   "startMs": 10425.6,
+   "endMs": 10680.7
+  },
+  {
+   "text": "for",
+   "startMs": 10680.7,
+   "endMs": 10884.8
+  },
+  {
+   "text": "you.",
+   "startMs": 10884.8,
+   "endMs": 11139.8
+  },
+  {
+   "text": "Forms.",
+   "startMs": 12139.8,
+   "endMs": 12603.1
+  },
+  {
+   "text": "Complex",
+   "startMs": 12603.1,
+   "endMs": 13132.6
+  },
+  {
+   "text": "tables.",
+   "startMs": 13132.6,
+   "endMs": 13662.0
+  },
+  {
+   "text": "Even",
+   "startMs": 13662.0,
+   "endMs": 13992.9
+  },
+  {
+   "text": "handwriting.",
+   "startMs": 13992.9,
+   "endMs": 14853.3
+  },
+  {
+   "text": "In",
+   "startMs": 15033.3,
+   "endMs": 15193.0
+  },
+  {
+   "text": "English,",
+   "startMs": 15193.0,
+   "endMs": 15672.1
+  },
+  {
+   "text": "and",
+   "startMs": 15672.1,
+   "endMs": 15885.0
+  },
+  {
+   "text": "in",
+   "startMs": 15885.0,
+   "endMs": 16044.7
+  },
+  {
+   "text": "twenty",
+   "startMs": 16044.7,
+   "endMs": 16417.4
+  },
+  {
+   "text": "two",
+   "startMs": 16417.4,
+   "endMs": 16630.3
+  },
+  {
+   "text": "Indian",
+   "startMs": 16630.3,
+   "endMs": 17002.9
+  },
+  {
+   "text": "languages",
+   "startMs": 17002.9,
+   "endMs": 17535.3
+  },
+  {
+   "text": "too.",
+   "startMs": 17535.3,
+   "endMs": 17801.5
+  },
+  {
+   "text": "State",
+   "startMs": 17981.5,
+   "endMs": 18325.1
+  },
+  {
+   "text": "of",
+   "startMs": 18325.1,
+   "endMs": 18496.9
+  },
+  {
+   "text": "the",
+   "startMs": 18496.9,
+   "endMs": 18726.0
+  },
+  {
+   "text": "art",
+   "startMs": 18726.0,
+   "endMs": 18955.1
+  },
+  {
+   "text": "on",
+   "startMs": 18955.1,
+   "endMs": 19126.9
+  },
+  {
+   "text": "olmOCR-Bench,",
+   "startMs": 19126.9,
+   "endMs": 19928.8
+  },
+  {
+   "text": "at",
+   "startMs": 19928.8,
+   "endMs": 20100.6
+  },
+  {
+   "text": "eighty",
+   "startMs": 20100.6,
+   "endMs": 20501.5
+  },
+  {
+   "text": "seven",
+   "startMs": 20501.5,
+   "endMs": 20845.1
+  },
+  {
+   "text": "point",
+   "startMs": 20845.1,
+   "endMs": 21188.8
+  },
+  {
+   "text": "three.",
+   "startMs": 21188.8,
+   "endMs": 21589.7
+  },
+  {
+   "text": "Sarvam",
+   "startMs": 21769.7,
+   "endMs": 22229.2
+  },
+  {
+   "text": "Vision",
+   "startMs": 22229.2,
+   "endMs": 22688.7
+  },
+  {
+   "text": "two",
+   "startMs": 22688.7,
+   "endMs": 22951.3
+  },
+  {
+   "text": "point",
+   "startMs": 22951.3,
+   "endMs": 23345.2
+  },
+  {
+   "text": "one.",
+   "startMs": 23345.2,
+   "endMs": 23673.4
+  },
+  {
+   "text": "Live",
+   "startMs": 23673.4,
+   "endMs": 24001.6
+  },
+  {
+   "text": "now.",
+   "startMs": 24001.6,
+   "endMs": 24329.8
+  }
+ ]
+}

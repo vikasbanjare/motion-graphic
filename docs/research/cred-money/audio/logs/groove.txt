@@ -1,0 +1,64 @@
+big-hit onsets [14.46  16.382 18.3   20.222 22.143 24.062 25.98  29.82  31.742 33.66 ]
+fitted bar=1.9200s  -> BPM=125.00; anchor=14.461s; residual ms [-1.1  0.4 -1.   0.5  2.   0.6 -0.8 -0.7  0.7 -0.7]
+
+intro 6-12.9: bars from 6.78s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     2   10    6    4    3    9    4    2   -0   12    2    3    4   12    2    5
+  lo150-400    4    3    6    0    3    8    1    0    1    6    4    2    1   10   -0   -0
+  sn1-5k       2    6    3    4    5    4    4    2    2    5    2    5    6    4    3    5
+  hat8-16k     4    3    2    2    3    4    6    4    3    2    2    2    4    6    5    6
+
+A groove: bars from 14.46s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     5    6    3    6    5   10    1   19    2   20    2    5    2   18    1    1
+  lo150-400    4    6    0    1    3    7   -1    5   -1    9   -0    0    1    7   -1   -0
+  sn1-5k       6    1    2    5    5    6    2    2    1    5    2    6    4    5    5   -0
+  hat8-16k     3    2    2    6    7    5    5    4    5    6    4    9    8    5    3    3
+
+B drop: bars from 29.82s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     1    1    1    1    1    1    1    8    2    6    0    3    1    7    1    1
+  lo150-400    2    4    1    0    3    5   -1    5   -0    6    1    2    2    6   -0    1
+  sn1-5k       6    2    2    6    4    6    2    2    2    5    2    5    3    4    4    1
+  hat8-16k     7    3    4    4    3    5    7    4    4    4    2    4   12    4    8    4
+
+breakdown: bars from 45.18s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     1   -1    0    1    1   -0    1    1    0    0    1    1    1   -1    0    1
+  lo150-400    1    2    4    4    2    5    1    1    2    1    3   -0    3    4    2    2
+  sn1-5k       0    1    2    3    2    1    3    3    2    1    2    1    2   -1    2    4
+  hat8-16k    -0    1   14    2    9    2   -0   12    2    1    3    1    0   -2   -1    5
+
+B2 drop: bars from 52.86s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     0    1    1    1    1    1   -0   -2    0   -0    1   -1   -0   -1    2    4
+  lo150-400    0    1    0    0    1    0    0    1   -1    1   -1   -1    1   -0    1    1
+  sn1-5k      -0   -0   -0    0   -0    0    0    0    0    1   -0   -1    1   -0    0    9
+  hat8-16k     0    3    0    5   -0    5    4    1    0    5   -0    3    1    3   -1    3
+
+outro: bars from 64.38s (rise in dB at each 16th; columns 1 e + a 2 e + a 3 e + a 4 e + a)
+  sub30-90     0    6    0    4    1    2   -4   -2    1   -2    4    1    6    5    3    4
+  lo150-400    1    0   -2    1   -0   -2    2    1   -0    0    2    1    1    1    0   -1
+  sn1-5k      -1    1    7   11    1    1    1    1    0   -0   -1   -0    2   -1   -0    9
+  hat8-16k    -1    1    9    7    1   -0    3    1   -1   -1   10    4    2    5   -0    2
+event   0.70s -> bar  -8 beat 4.33  (off nearest beat by  -158 ms)
+event   2.92s -> bar  -7 beat 4.96  (off nearest beat by   +22 ms)
+event   4.05s -> bar  -6 beat 3.31  (off nearest beat by  -149 ms)
+event   4.30s -> bar  -6 beat 3.83  (off nearest beat by   +81 ms)
+event   5.33s -> bar  -5 beat 1.98  (off nearest beat by   +11 ms)
+event   6.00s -> bar  -5 beat 3.37  (off nearest beat by  -179 ms)
+event   9.87s -> bar  -3 beat 3.43  (off nearest beat by  -209 ms)
+event  12.99s -> bar  -1 beat 1.93  (off nearest beat by   +31 ms)
+event  13.46s -> bar  -1 beat 2.91  (off nearest beat by   +41 ms)
+event  21.97s -> bar   3 beat 4.64  (off nearest beat by  +171 ms)
+event  27.21s -> bar   6 beat 3.56  (off nearest beat by  +211 ms)
+event  29.00s -> bar   7 beat 3.29  (off nearest beat by  -139 ms)
+event  32.54s -> bar   9 beat 2.66  (off nearest beat by  +161 ms)
+event  35.75s -> bar  11 beat 1.35  (off nearest beat by  -169 ms)
+event  39.08s -> bar  12 beat 4.29  (off nearest beat by  -139 ms)
+event  42.83s -> bar  14 beat 4.10  (off nearest beat by   -49 ms)
+event  44.40s -> bar  15 beat 3.37  (off nearest beat by  -179 ms)
+event  46.96s -> bar  16 beat 4.71  (off nearest beat by  +141 ms)
+event  48.29s -> bar  17 beat 3.48  (off nearest beat by  -229 ms)
+event  49.63s -> bar  18 beat 2.27  (off nearest beat by  -129 ms)
+event  51.45s -> bar  19 beat 2.06  (off nearest beat by   -29 ms)
+event  56.29s -> bar  21 beat 4.14  (off nearest beat by   -70 ms)
+event  60.65s -> bar  24 beat 1.23  (off nearest beat by  -110 ms)
+event  63.30s -> bar  25 beat 2.75  (off nearest beat by  +120 ms)
+event  63.48s -> bar  25 beat 3.12  (off nearest beat by   -60 ms)
+event  67.12s -> bar  27 beat 2.71  (off nearest beat by  +140 ms)

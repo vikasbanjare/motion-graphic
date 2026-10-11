@@ -1,0 +1,18 @@
+{
+  "_note": "Kit showcase, free tier: two voices (English narrator, Hindi line), synthesized SFX and music.",
+  "spec": "specs/showcase.json",
+  "voices": {
+    "gapMs": 200,
+    "beats": [
+      { "voice": "am_eric", "speed": 1.1, "before": [{ "sfx": "riser", "sec": 0.8, "gain": 0.6 }] },
+      { "voice": "am_eric", "speed": 1.0, "speak": "Script. Voice. Music. Cut.", "after": [{ "sfx": "impact", "gain": 0.5 }] },
+      { "voice": "am_eric", "speed": 1.1, "under": [{ "sfx": "typing", "gain": 0.5 }] },
+      { "voice": "am_eric", "speed": 1.1, "speak": "Every cut is timed from five hundred sixty two films, studied frame by frame." },
+      { "voice": "am_eric", "speed": 1.1 },
+      { "voice": "hf_alpha", "speed": 1.0, "speak": "हिंदी में भी। बिल्कुल ऑफ़लाइन।", "before": [{ "sfx": "notify", "gain": 0.6 }] },
+      { "voice": "am_eric", "speed": 1.1 },
+      { "voice": "am_eric", "speed": 1.05, "after": [{ "sfx": "chime", "gain": 0.6 }] }
+    ]
+  },
+  "music": { "mood": "tech", "volume": 0.16, "prompt": "Modern electronic launch bed, pulsing synth arpeggio, soft kick, builds at one third, calm ending, no vocals" }
+}

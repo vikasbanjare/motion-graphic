@@ -1,0 +1,18 @@
+{
+ "video": {
+  "duration": 69.0,
+  "still_pct": 17.8,
+  "longest_still_s": 5.4,
+  "motion_median": 0.0182,
+  "empty_pct": 0.3,
+  "lufs": -16.9,
+  "true_peak": -0.5,
+  "longest_silence_ms": 710,
+  "onsets_per_s": 2.68,
+  "hit_prominence_db": 3.3,
+  "first_100ms_db": -120.0,
+  "tail_drop_db": 9.5,
+  "clicks": 0
+ },
+ "refs": {}
+}

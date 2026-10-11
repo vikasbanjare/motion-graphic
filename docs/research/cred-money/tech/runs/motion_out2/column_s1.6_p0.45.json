@@ -1,0 +1,79 @@
+{
+  "source": "../runs/motion_in2/column_s1.6_p0.45.mp4",
+  "file": "column_s1.6_p0.45.mp4",
+  "duration": 2,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2,
+  "motion": 0.019,
+  "palette": [
+    {
+      "hex": "#F3BD9E",
+      "share": 0.763
+    },
+    {
+      "hex": "#A4585A",
+      "share": 0.063
+    },
+    {
+      "hex": "#8B3945",
+      "share": 0.059
+    },
+    {
+      "hex": "#B9766B",
+      "share": 0.048
+    },
+    {
+      "hex": "#D59984",
+      "share": 0.036
+    },
+    {
+      "hex": "#C78878",
+      "share": 0.031
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#F3BD9E"
+    },
+    "why": [
+      "a cut every 2.0 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained picture → theme \"clean\"",
+      "its canvas is #F3BD9E (76% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.011,
+    0.011,
+    0.016,
+    0.012,
+    0.018,
+    0.014,
+    0.015,
+    0.025,
+    0.019,
+    0.031,
+    0.024,
+    0.025,
+    0.038,
+    0.029,
+    0.034,
+    0.019,
+    0.019,
+    0.024,
+    0.018
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "_note": "Example launch film in the calm 'studio' style. Lumen is a fictional product; replace every claim with your own verified facts.",
+  "format": "landscape",
+  "theme": "studio",
+  "scenes": [
+    {
+      "type": "orb",
+      "say": "Meet Lumen. A voice that sounds like you.",
+      "headline": "Meet *Lumen*.",
+      "sub": "A voice that sounds like you."
+    },
+    {
+      "type": "kinetic",
+      "say": "Type a line. Pick a mood. Hear it instantly.",
+      "lines": ["Type a line.", "Pick a mood.", "Hear it *instantly*."]
+    },
+    {
+      "type": "prompt",
+      "say": "Describe the voice you want, and Lumen designs it in seconds.",
+      "label": "Describe a voice",
+      "prompt": "Warm Indian English narrator, calm, mid-thirties, a slight smile",
+      "button": "Generate",
+      "result": "Aarav · warm narrator",
+      "resultKind": "audio"
+    },
+    {
+      "type": "wave",
+      "say": "Every word lands exactly where you want it.",
+      "label": "Voice · Aarav",
+      "tags": ["[calm]", "Hinglish", "Studio"]
+    },
+    {
+      "type": "stat",
+      "say": "Seventy five milliseconds from text to sound.",
+      "kicker": "Latency",
+      "value": "75ms",
+      "label": "from text to *sound*"
+    },
+    {
+      "type": "list",
+      "say": "Twenty nine languages. Real emotion. Studio quality.",
+      "style": "lines",
+      "items": ["29 languages", "Real emotion", "Studio quality"]
+    },
+    {
+      "type": "cta",
+      "say": "Try Lumen today.",
+      "kicker": "Your voice, everywhere.",
+      "action": "Try Lumen",
+      "handle": "lumen.example"
+    },
+    { "type": "logo", "name": "Lumen", "tagline": "Voice studio" }
+  ]
+}

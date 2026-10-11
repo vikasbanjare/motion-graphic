@@ -1,0 +1,30 @@
+sfx                               onset   peak    end   att   rel  rise overbed   pan    S-M    cen   slope | visual anchor (t) : onset-vis / peak-vis
+pen scribble (line drawing)        0.54   1.23   3.99  0.69  2.76 146.3  +146.3  +0.0 -169.9   6688     +58 | first line appears (0.33) : +0.21 / +0.90
+reverse swell into reveal          4.23   5.38   5.90  1.14  0.52  65.5   +21.3  -0.5   +1.2    460     +29 | flowers pop in (circle reveal completes) (5.17) : -0.94 / +0.20
+high air bed 4.3-6.3k              5.31   7.39  10.29  2.08  2.90  46.5   +41.8  -1.9   +4.6   5418      -7 | flower scene / music entry (6.0) : -0.69 / +1.39
+wing flutter                       7.50   7.52   7.55  0.02  0.03  14.5   +13.5  -0.5   -0.0  10837     +86 | hummingbird motion onset (7.17) : +0.33 / +0.35
+bird chirps (x4)                   8.23   8.97   9.14  0.74  0.17  37.4   +28.2  -1.5  -11.8   3542    -386 | hummingbird hovering (8.2) : +0.03 / +0.77
+lens swell                         9.69  10.10  10.43  0.41  0.33  32.7   +10.7  -4.7   +1.7    454    +107 | lens ring sweeps in (9.67) : +0.02 / +0.43
+cut hit + first sub (groove A)    13.12  13.30  13.46  0.18  0.17  56.8   +54.4  -0.0  -28.0     70     -81 | hard cut to holo band (13.458) : -0.34 / -0.16
+glass shimmer partials            14.12  14.60  16.62  0.48  2.02  19.3   +24.4  -1.2   -4.3   2786     -47 | hard cut to holo band (13.458) : +0.66 / +1.14
+whip A1                           18.40  18.42  18.45  0.01  0.03  32.8   +20.3  -3.1  -10.1   4154  +22084 | whip-pan cut 1 (18.792) : -0.39 / -0.38
+whip A2                           19.07  19.33  19.36  0.26  0.03  27.6   +17.3  -0.2  -18.2   8351   -1185 | whip-pan cut 1 (18.792) : +0.28 / +0.54
+whip B                            20.29  20.34  20.45  0.04  0.11  31.6   +21.5  -0.4   -7.0   5451  +29168 | whip-pan cut 2 (20.417) : -0.12 / -0.08
+air riser                         21.53  21.96  22.29  0.43  0.33  41.2   +19.9  -0.0   +0.6   8330    -854 | camera pulls back through columns (21.67) : -0.14 / +0.29
+column wipe texture               27.05  27.12  28.60  0.08  1.47  14.2   +17.6  -0.7   -3.3   1184      -5 | column wipe to purple scene (27.1) : -0.06 / +0.02
+lighthouse low hum                33.32  34.52  36.41  1.20  1.90  31.9   +10.1  -0.3  -12.1    146      +9 | hard cut to lighthouse (32.542) : +0.78 / +1.97
+gull cries                        35.56  35.70  35.80  0.14  0.11  32.9   +18.2  -0.4   -8.8   2867   +3155 | light beam sweep (33.08) : +2.48 / +2.62
+rising tone into cut              35.13  35.72  36.40  0.58  0.68  26.8   +15.5  +0.7   -6.5    401     -25 | hard cut to reminders (35.75) : -0.62 / -0.04
+underwater whoosh                 39.04  39.22  39.59  0.18  0.37  12.2   +12.8  -0.9   -2.7   1296   +1722 | dissolve to underwater (38.96) : +0.08 / +0.26
+pearl shimmer                     42.58  42.97  44.00  0.39  1.03  28.0   +20.5  +0.1   -5.9   6670    -114 | hard cut to shell/pearl (40.583) : +2.00 / +2.39
+shell-close swell                 43.58  43.62  44.06  0.05  0.43  12.0   +12.7  -0.4   -8.9    887    -368 | shell closes + text (42.75) : +0.82 / +0.87
+whip C1                           46.50  46.72  46.92  0.22  0.20  55.3   +31.7  -0.0  -26.4   8220   +6709 | whip-pan cut 3 (46.958) : -0.46 / -0.24
+whip C2                           47.03  47.29  47.32  0.26  0.03  28.0   +29.9  -0.0  -33.2   8391   -1865 | whip-pan cut 3 (46.958) : +0.08 / +0.34
+whip D                            47.93  48.26  48.29  0.33  0.03  61.3   +23.7  -0.0  -25.7   8498   -1395 | whip-pan cut 4 (48.292) : -0.37 / -0.03
+whip E                            49.19  49.51  49.62  0.32  0.11  46.3   +21.6  -0.1   +0.3   8449   +1776 | whip-pan cut 5 (to seal) (49.625) : -0.44 / -0.12
+seal sparkle                      50.24  50.37  50.95  0.12  0.59  30.9   +28.0  +0.3  -10.0   8162    +572 | seal settles (49.75) : +0.49 / +0.62
+drop-2 sub impact                 51.80  51.86  52.30  0.06  0.43  58.2   +51.8  -0.0  -28.8     62     -40 | (no cut: seal holding) (51.45) : +0.35 / +0.41
+whoosh F (bill wraps phone)       56.12  56.44  57.04  0.31  0.60  26.1   +16.0  -0.1   -7.5   9736     +50 | text ignorance to bliss (56.11) : +0.01 / +0.33
+logo ring swell                   61.88  62.23  62.47  0.36  0.24  10.0   +10.5  -1.7   -3.9   2396   -1887 | logo ring ripple (61.83) : +0.05 / +0.41
+end high shimmer                  66.21  67.16  67.23  0.95  0.07  52.2   +25.9  +0.7   +2.8   5477    +141 | logo fades to black (66.0) : +0.21 / +1.16
+end ring-out (tail)               66.61  66.68  66.75  0.07  0.06   9.4   +24.1  -1.9  -11.3   1557    -732 | black (67.0) : -0.39 / -0.32

@@ -1,0 +1,84 @@
+{
+  "_recipe": {
+    "title": "Local festive offer",
+    "when": "A local shop's Diwali / Holi / Eid / wedding-season sale in Hinglish. Reels, WhatsApp Status.",
+    "beats": [
+      "Hook: the festival + old price struck out + new price lands by ~2s.",
+      "Who + what: shop name and the sale name in a highlight box.",
+      "What's on offer: four tiles with emoji, item + price.",
+      "The big discount as a counting number on a full-colour marigold background.",
+      "Extra perks as checks (delivery, gift wrap, free sample).",
+      "Urgency: last date + which store.",
+      "CTA: WhatsApp / call / visit, with the number and handle."
+    ],
+    "copyTips": [
+      "Prices, discount, last date, phone number and address must come from the shop owner. Never guess them.",
+      "Swap the festival word in beats 1-2 (Holi, Eid, Navratri, wedding season); for Holi try --theme pop.",
+      "Desi + bouncy + fast = festive energy; Hindi in Devanagari renders correctly in this theme.",
+      "Say prices as words, show them as ₹999. Beat 1 must reach \"ab sirf\" inside ~2.5s: at most four words before it, and prices the short way (\"Diwali special! Nineteen ninety-nine? Ab sirf nine ninety-nine!\").",
+      "This cut runs ~30s, right for Stories and WhatsApp Status. Adding copy? Drop the perks beat rather than squeezing words."
+    ]
+  },
+  "format": "reel",
+  "theme": "desi",
+  "motion": "bouncy",
+  "pace": "fast",
+  "brand": { "name": "[SHOP NAME]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "Diwali special! [OLD PRICE]? Ab sirf [NEW PRICE]!",
+      "setup": "Diwali special 🪔",
+      "strike": "₹[1,999]",
+      "punch": "Ab sirf *₹[999]!*"
+    },
+    {
+      "type": "title",
+      "say": "[SHOP NAME] ka Diwali Mega Sale, ab [CITY] mein. Shuru ho gaya hai!",
+      "kicker": "[SHOP NAME]",
+      "headline": "Diwali ==Mega Sale==",
+      "sub": "Ab [CITY] mein"
+    },
+    {
+      "type": "grid",
+      "say": "Offer pe kya hai? [ITEM ONE], [ITEM TWO], [ITEM THREE] aur [ITEM FOUR], sab offer pe.",
+      "title": "Offer pe kya hai",
+      "items": [
+        { "icon": "🪔", "label": "[ITEM ONE]", "sub": "₹[299] se" },
+        { "icon": "🎁", "label": "[ITEM TWO]", "sub": "₹[499] se" },
+        { "icon": "👗", "label": "[ITEM THREE]", "sub": "₹[799] se" },
+        { "icon": "🍬", "label": "[ITEM FOUR]", "sub": "₹[199] se" }
+      ]
+    },
+    {
+      "type": "stat",
+      "say": "Flat [TEES] percent off, [CATEGORY] par!",
+      "kicker": "Flat discount",
+      "value": "[30]%",
+      "label": "off on [CATEGORY]",
+      "bg": "accent"
+    },
+    {
+      "type": "list",
+      "say": "Saath mein [PERK ONE], [PERK TWO] aur [PERK THREE] bhi milega.",
+      "title": "Saath mein",
+      "items": ["[PERK ONE]", "[PERK TWO]", "*[PERK THREE]*"],
+      "style": "checks"
+    },
+    {
+      "type": "title",
+      "say": "Jaldi karo, offer sirf [LAST DATE] tak. [AREA] wala store.",
+      "kicker": "Jaldi karo",
+      "headline": "Sirf *[LAST DATE]* tak",
+      "sub": "[AREA] wala store"
+    },
+    {
+      "type": "cta",
+      "say": "Abhi WhatsApp karo, [PHONE NUMBER] par.",
+      "kicker": "Abhi order karo 👇",
+      "action": "WhatsApp karo",
+      "sub": "*[PHONE NUMBER]*",
+      "handle": "@[HANDLE]"
+    }
+  ]
+}

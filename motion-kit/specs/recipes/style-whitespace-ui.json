@@ -1,0 +1,83 @@
+{
+  "_recipe": {
+    "title": "Style: whitespace UI film",
+    "when": "Light, quiet product film in the Claude / Apple / Tavus style: warm off-white, tiny type, one floating UI card at a time, the cursor does the work.",
+    "beats": [
+      "Open small: one short line on an empty canvas (\"Introducing\" then the name). Small type on a big empty frame reads as confidence.",
+      "Name card: the product name large, one accent word, nothing else.",
+      "Demo: a real prompt typed into a floating card; the cursor clicks; the result appears.",
+      "Second demo: a question and the real answer, as a chat.",
+      "Three capabilities as big dimming lines (no cards, no icons).",
+      "Proof: one real number that counts up.",
+      "CTA: a quiet \"Try [PRODUCT] →\" link, then the logo."
+    ],
+    "copyTips": [
+      "Measured on 39 whitespace-UI references: median 5.5 s per shot, and a third of them are one continuous shot. Fewer, longer beats; let the cursor carry the cuts.",
+      "Keep type small. The references set body lines at 2-3% of frame height and headlines rarely above 8%. The emptiness is the style.",
+      "One accent colour only (warm coral, brand blue or brand orange) and use it on one word per beat.",
+      "Never fake UI output: the prompt and result must be copied from the real product.",
+      "Night version: --theme studio-dark keeps the same beats."
+    ]
+  },
+  "format": "landscape",
+  "theme": "studio",
+  "motion": "calm",
+  "pace": "relaxed",
+  "transition": "blur",
+  "look": { "bg": "#F4F2EE", "displayFont": "Instrument Serif", "bodyFont": "Inter", "background": "plain", "grain": true, "corners": "round", "ctaStyle": "link", "kicker": "plain" },
+  "scenes": [
+    {
+      "type": "title",
+      "say": "Introducing [PRODUCT].",
+      "kicker": "Introducing",
+      "headline": "*[PRODUCT]*"
+    },
+    {
+      "type": "title",
+      "say": "[THE ONE-LINE PROMISE].",
+      "headline": "[THE ONE-LINE PROMISE]"
+    },
+    {
+      "type": "prompt",
+      "say": "Describe what you need in plain words, and [PRODUCT] does the rest.",
+      "label": "[INPUT LABEL]",
+      "prompt": "[A REAL REQUEST A USER WOULD TYPE]",
+      "button": "[BUTTON]",
+      "result": "[WHAT THE PRODUCT REALLY RETURNS]",
+      "resultKind": "text"
+    },
+    {
+      "type": "chat",
+      "say": "Ask it anything about your work, and get a straight answer.",
+      "label": "You → [PRODUCT]",
+      "prompt": "[A REAL QUESTION]",
+      "reply": "[THE REAL ANSWER]"
+    },
+    {
+      "type": "list",
+      "say": "[CAPABILITY ONE]. [CAPABILITY TWO]. [CAPABILITY THREE].",
+      "style": "lines",
+      "items": ["[CAPABILITY ONE]", "[CAPABILITY TWO]", "[CAPABILITY THREE]"]
+    },
+    {
+      "type": "stat",
+      "say": "[THE NUMBER IN WORDS] [WHAT IT MEASURES].",
+      "kicker": "[SOURCE OR PERIOD]",
+      "value": "[75]ms",
+      "label": "[WHAT IT *MEASURES*]"
+    },
+    {
+      "type": "cta",
+      "say": "Try [PRODUCT] today.",
+      "kicker": "[THE CLOSING PROMISE].",
+      "action": "Try [PRODUCT]",
+      "handle": "[WEBSITE]",
+      "style": "link"
+    },
+    {
+      "type": "logo",
+      "name": "[PRODUCT]",
+      "tagline": "[TAGLINE]"
+    }
+  ]
+}
