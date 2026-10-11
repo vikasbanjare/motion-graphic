@@ -212,3 +212,10 @@ do not fight:
   products world as a still life with an arcade and plants); (3) designed models for every product. Keep: the opening
   rings (ours), the beat table, the mix. Rule stands: stills sheet to the user after every pass, no motion until the
   sheet is right.
+- 2026-10-11, AI-plate test (user approved up to 1 credit): Higgsfield image costs measured by `get_cost` preflight at
+  16:9 1k: Nano Banana 2 = 1.5 cr, Nano Banana 2 Lite = 1.0, Recraft V4.1 = 1.25, GPT Image 2 (low) = 0.5, Z Image =
+  0.15 (2048x1152). Three test plates made (GPT Image 2 parcel world; Z Image luggage tag and travel world), 0.80 cr
+  spent. Two walls hit: the environment's network policy denies `upload.higgsfield.ai` (no image references can be
+  uploaded) and `d8j0ntlcm91z4.cloudfront.net` (results cannot be downloaded into the sandbox); the user must allow
+  both hosts in the environment's network settings before plates can be used in a film. Results are visible to the
+  user in the Higgsfield gallery widget. Z Image rate-limits parallel requests: submit one at a time.
