@@ -230,3 +230,12 @@ do not fight:
   min each, concat, the v2 mix, two-pass master; film_qa all green (-14.0 LUFS, -1.3 dBTP, still 14.7 %, no clicks);
   jerk scan flags only the designed cuts (22, 40, 58, 207, 484, 561, 645). The gate that mattered for the user was the
   stills sheet after every pass, not any numeric check.
+- 2026-10-11, flow pass after the user's note ("line colours, transitions not matching, flow of each scene must be
+  smooth"). Measured on the finished film: per-frame change, mean-colour distance per frame, and the second
+  difference of smoothed motion (acceleration). Found: four hard cuts with colour jumps of 0.4-1.4 (macro, cartouche,
+  studio, lockup), a one-frame lens-drop entry (the measured keyframes begin with the lens already half in frame), an
+  abrupt ring switch-off, a wipe starting at full speed, and a field ink that switched colour at wash 0.5. Fixes: takes
+  take a `lead` prop so a Sequence can start early and dissolve in without moving the take's clock (8 frames); the lens
+  pre-rolls from above over the lead frames; the ring dissolves; a two-frame wipe lead-in; one pen ink graded into the
+  wash. After: max per-frame change 0.13 (was 0.8), no colour jump above 0.2 outside the fade to black. Lesson: the
+  reference's hard cuts are not what this user hears as "smooth"; measure acceleration, not only snaps.
