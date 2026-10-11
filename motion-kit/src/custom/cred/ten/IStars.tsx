@@ -182,8 +182,7 @@ const Sky: React.FC<{ f: number }> = ({ f }) => {
   setRange(geo.hotel.lines, hotelDraw);
   setRange(geo.ring.lines, ringDraw);
   geo.products.forEach((p, i) => setRange(p.lines, storeDraw(i)));
-  const flyQ = useMemo(() => new THREE.Quaternion(), []);
-  flyQ.setFromAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(-30 * fly));
+  const flyQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(-30 * fly));
   const S = { ambient: 0.9, lift: 0.9 };
   const G = { ambient: 1.0, lift: 1.0, foilPhase: f * 0.02 };
   return (

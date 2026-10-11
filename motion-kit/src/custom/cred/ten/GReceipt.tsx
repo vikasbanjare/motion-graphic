@@ -235,8 +235,7 @@ const Desk: React.FC<{ f: number }> = ({ f }) => {
   const tagsOn = (i: number) => ramp(f, T.tags + 12 + i * 10, T.tags + 36 + i * 10, expoOut);
   const tear = ramp(f, T.tear + 6, T.real + 6, inOut);
   const L = { ambient: 0.16, lift: 0.08, key: [-0.4, -0.5, 0.75] as V3 };
-  const hingeQ = useMemo(() => new THREE.Quaternion(), []);
-  hingeQ.setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI * 0.92 * sleeveF);
+  const hingeQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI * 0.92 * sleeveF);
   return (
     <>
       <CamN pos={pos.toArray() as V3} target={target.toArray() as V3} fov={lerp(36, 44, onRide)} />

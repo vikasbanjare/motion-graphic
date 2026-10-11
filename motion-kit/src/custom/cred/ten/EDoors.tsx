@@ -82,8 +82,7 @@ const Door: React.FC<{ y: number; open: number; pal: typeof P.teal; seed: number
     const handle = new THREE.CylinderGeometry(0.04, 0.04, 0.3, 10).rotateZ(Math.PI / 2).translate(0.75, -0.12, 1.4);
     return { frame, leaf, panels, slotG, handle };
   }, [arched]);
-  const hinge = useMemo(() => new THREE.Quaternion(), []);
-  hinge.setFromAxisAngle(new THREE.Vector3(0, 0, 1), -open * 1.75);
+  const hinge = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -open * 1.75); // fresh object each render
   return (
     <group position={[0, y, 0]}>
       <EMesh g={g.frame} m={m(pal, seed)} live={live} />
@@ -204,10 +203,8 @@ const Hall: React.FC<{ f: number }> = ({ f }) => {
   const near = (y: number, w = 2.5) => Math.max(0, 1 - Math.abs(camY - y) / w);
   const base: Live = { ambient: 0.14, lift: 0.05, key: [-0.4, -0.5, 0.75] };
   const hotelUp = ramp(f, T.hotel - 4, T.hotel + 40, expoOut);
-  const hingeL = useMemo(() => new THREE.Quaternion(), []);
-  const hingeR = useMemo(() => new THREE.Quaternion(), []);
-  hingeL.setFromAxisAngle(new THREE.Vector3(0, 1, 0), (Math.PI / 2) * (1 - hotelUp));
-  hingeR.setFromAxisAngle(new THREE.Vector3(0, 1, 0), -(Math.PI / 2) * (1 - hotelUp));
+  const hingeL = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), (Math.PI / 2) * (1 - hotelUp));
+  const hingeR = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -(Math.PI / 2) * (1 - hotelUp));
   const glowBeyond = ramp(f, T.lastOpen, T.lastOpen + 40, inOut);
   return (
     <>

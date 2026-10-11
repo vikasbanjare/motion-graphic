@@ -199,8 +199,7 @@ const Table: React.FC<{ f: number }> = ({ f }) => {
   const pos = new THREE.Vector3(5.5 + 0.3 * Math.sin(f / 40), camY - 5.5, 4.2 + 2.0 * planeLook).lerp(new THREE.Vector3(0.4, Y.land - 5.5, 3.2), back);
   const target = new THREE.Vector3(0, camY + 1.0, 0.5 + 3.5 * planeLook).lerp(new THREE.Vector3(0, Y.land - 1.6, 0.4), back);
   const L = { ambient: 0.16, lift: 0.08, key: [-0.4, -0.5, 0.75] as V3 };
-  const doorQ = useMemo(() => new THREE.Quaternion(), []);
-  doorQ.setFromAxisAngle(new THREE.Vector3(0, 0, 1), -1.5 * ramp(f, T.hotel + 6, T.hotel + 24, expoOut) * (1 - ramp(f, T.door - 12, T.door - 2, inOut)));
+  const doorQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -1.5 * ramp(f, T.hotel + 6, T.hotel + 24, expoOut) * (1 - ramp(f, T.door - 12, T.door - 2, inOut)));
   const sparkleOn = ramp(f, T.shop + 20, T.shop + 50, expoOut);
   return (
     <>

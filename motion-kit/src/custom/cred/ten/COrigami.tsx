@@ -52,8 +52,7 @@ const Env: React.FC = () => {
 
 /** A hinge: rotates its children about `axis` through `at` by `angle`. */
 const Hinge: React.FC<{ at: V3; axis: V3; angle: number; children: React.ReactNode }> = ({ at, axis, angle, children }) => {
-  const q = useMemo(() => new THREE.Quaternion(), []);
-  q.setFromAxisAngle(new THREE.Vector3(...axis).normalize(), angle);
+  const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(...axis).normalize(), angle); // fresh object: R3F only re-applies a changed reference
   return <group position={at} quaternion={q}>{children}</group>;
 };
 
