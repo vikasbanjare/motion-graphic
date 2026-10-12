@@ -2,3 +2,4 @@ motion-kit/public/plates/
 __pycache__/
 motion-kit/public/voice/takes/
 motion-kit/public/music/*-music.*
+out/
