@@ -16,7 +16,7 @@ import { C, SERIF, T, easeIn, expoOut, lerp, ramp } from "./look.ts";
 
 const BAND = ["#f1caca", "#fbd8b9", "#fcd8a3", "#fadba3", "#ebdbaf", "#c7e5d2", "#a3c8e4", "#8daad3", "#89a0c8", "#889bbc"];
 
-const faceTexture = (back = false, detailed = false) => {
+export const faceTexture = (back = false, detailed = false) => {
   const W = 2048, H = 1292;
   const c = document.createElement("canvas");
   c.width = W;

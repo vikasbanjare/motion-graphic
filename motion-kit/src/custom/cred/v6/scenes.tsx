@@ -217,83 +217,229 @@ const CardFace: React.FC<{ F: number; holo: number }> = ({ F, holo }) => (
   </div>
 );
 
-export const CardTake: React.FC<{ from: number }> = ({ from }) => {
-  const F = useCurrentFrame() + from;
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+/** Strip centre on the card (card px): the push ends with the strip horizontal across the loupe. */
+const FOCUS = { x: 1545, y: 560 };
+
+/**
+ * One continuous camera on the card from 150 to the magnifier: the frame shrinks into the card and tilts back, keeps
+ * breathing, then pushes into the foil strip while turning it level. The print keeps living (the fox never stops).
+ */
+const cardPose = (F: number) => {
   const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
   const t = (F - T.reveal) / 24;
-  // the frame shrinks into the card and tilts back, then keeps breathing (slow drift, never frozen)
-  const s = 1 - 0.55 * k + 0.012 * t;
-  const rx = 38 * k + 2.2 * Math.sin(t * 1.3) * k, rz = -9 * k + 1.6 * t * k;
-  const ty = -30 * k + 8 * Math.sin(t * 0.9) * k;
+  const s0 = 1 - 0.55 * k + 0.012 * t;
+  const rx0 = 38 * k + 2.2 * Math.sin(t * 1.3) * k;
+  const rz0 = -9 * k + 1.6 * t * k;
+  const ty0 = -30 * k + 8 * Math.sin(t * 0.9) * k;
+  const z = easeInOut(ramp(F, T.macro - 18, T.push + 4));
+  const drift = Math.max(0, F - (T.push + 4)) * 0.012;
+  return {
+    s: lerp(s0, 4.2, z) + drift,
+    rx: lerp(rx0, 0, z),
+    rz: lerp(rz0, -68, z),
+    ty: lerp(ty0, 0, z),
+    fx: lerp(W / 2, FOCUS.x, z),
+    fy: lerp(H / 2, FOCUS.y, z),
+  };
+};
+
+export const CardTake: React.FC<{ from: number }> = ({ from }) => {
+  const F = useCurrentFrame() + from;
+  const p = cardPose(F);
+  const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
+  const head = expoOut(ramp(F, T.reveal + 18, T.reveal + 32)) * (1 - ramp(F, T.macro - 16, T.macro - 4));
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
       <AbsoluteFill style={{ perspective: 1800 }}>
-        <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transform: `translateY(${ty}px) scale(${s}) rotateX(${rx}deg) rotateZ(${rz}deg)`, transformOrigin: "50% 50%" }}>
-          <CardFace F={Math.min(F, T.reveal + 40)} holo={(F - T.reveal) / 70} />
+        <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "0 0", transform: `translate(${W / 2}px, ${H / 2 + p.ty}px) scale(${p.s}) rotateX(${p.rx}deg) rotateZ(${p.rz}deg) translate(${-p.fx}px, ${-p.fy}px)` }}>
+          <CardFace F={F} holo={(F - T.reveal) / 70} />
         </div>
       </AbsoluteFill>
-      <Lens r={0.62 + 0.4 * (1 - k)} soft={0.18} />
-      {F > T.reveal + 18 ? <Headline text="the CRED IndusInd Bank" sub="RuPay credit card" grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={expoOut(ramp(F, T.reveal + 18, T.reveal + 32))} size={60} top={70} /> : null}
+      <AbsoluteFill style={{ opacity: 1 - ramp(F, 262, 280) }}>
+        <Lens r={0.62 + 0.4 * (1 - k)} soft={0.18} />
+      </AbsoluteFill>
+      {head > 0 ? <Headline text="the CRED IndusInd Bank" sub="RuPay credit card" grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={head} size={60} top={70} /> : null}
     </AbsoluteFill>
+  );
+};
+
+/** The magnifying glass: where it is and how big, frame by frame (shared by the travel world it reveals). */
+export const glass = (F: number) => {
+  const a = expoOut(ramp(F, 258, 280));
+  const b = easeInOut(ramp(F, 282, 302));
+  const x0 = lerp(W * 1.2, W * 0.6, a), y0 = lerp(H * 1.1, H * 0.5, a);
+  return { x: lerp(x0, W / 2, b), y: lerp(y0, H / 2, b), r: 230 + 1500 * b * b, on: F >= 258 };
+};
+
+/** Metal rim, glass glare and handle of the magnifier, drawn around glass(F). */
+export const Magnifier: React.FC<{ F: number }> = ({ F }) => {
+  const g = glass(F);
+  if (!g.on || g.r > 1300) return null;
+  const rim = Math.max(18, g.r * 0.1);
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      {/* handle */}
+      <div style={{ position: "absolute", left: g.x, top: g.y, width: g.r * 1.9, height: g.r * 0.24, transformOrigin: "0 50%", transform: `rotate(38deg) translate(${g.r + rim * 0.6}px, -50%)`, borderRadius: g.r * 0.12, background: "linear-gradient(180deg, #3a3330, #15110f 55%, #2a2421)", boxShadow: "0 18px 40px rgba(0,0,0,0.45)" }}>
+        <div style={{ position: "absolute", left: 0, top: -g.r * 0.02, width: g.r * 0.3, height: g.r * 0.28, borderRadius: g.r * 0.05, background: "linear-gradient(180deg, #e9e4d8, #9d9686 50%, #d8d2c4)" }} />
+      </div>
+      {/* rim */}
+      <div style={{ position: "absolute", left: g.x - g.r - rim, top: g.y - g.r - rim, width: 2 * (g.r + rim), height: 2 * (g.r + rim), borderRadius: "50%", background: "conic-gradient(from 30deg, #f4efe4, #9a917f, #e7e1d3, #7d7565, #efe9dc, #a59c89, #f4efe4)", WebkitMask: `radial-gradient(circle, transparent ${g.r}px, #000 ${g.r + 1}px)`, mask: `radial-gradient(circle, transparent ${g.r}px, #000 ${g.r + 1}px)`, boxShadow: "0 22px 50px rgba(0,0,0,0.45)" }} />
+      {/* glare on the glass */}
+      <div style={{ position: "absolute", left: g.x - g.r, top: g.y - g.r, width: 2 * g.r, height: 2 * g.r, borderRadius: "50%", background: "radial-gradient(ellipse 55% 35% at 32% 22%, rgba(255,255,255,0.38), rgba(255,255,255,0) 70%)", boxShadow: "inset 0 0 40px rgba(0,0,0,0.35)" }} />
+    </AbsoluteFill>
+  );
+};
+
+// ---- 3. travel: a hotel at dusk, flights arcing over the globe --------------------------------------------------
+/** Hotel facade texture: a grid of windows, a cornice band and an entrance arch (no lettering). */
+const hotelTex = (() => {
+  const c = document.createElement("canvas");
+  c.width = 512;
+  c.height = 1024;
+  const x = c.getContext("2d")!;
+  x.fillStyle = "#ece8f4";
+  x.fillRect(0, 0, 512, 1024);
+  for (let r = 0; r < 14; r++)
+    for (let k = 0; k < 6; k++) {
+      x.fillStyle = (r * 7 + k * 3) % 5 === 0 ? "#cfc6e6" : "#2a2a52";
+      x.fillRect(40 + k * 74, 60 + r * 62, 42, 40);
+    }
+  x.fillStyle = "#3a3a66";
+  for (let r = 0; r < 15; r++) x.fillRect(0, 48 + r * 62, 512, 4);
+  x.fillRect(0, 930, 512, 94);
+  x.fillStyle = "#ece8f4";
+  x.beginPath();
+  x.arc(256, 1024, 70, Math.PI, 0);
+  x.fill();
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
+})();
+const towerG = new THREE.BoxGeometry(2.4, 5.4, 1.8);
+const wingG = new THREE.BoxGeometry(1.5, 3.4, 1.5);
+const crownG = new THREE.BoxGeometry(1.5, 0.7, 1.2);
+const spireG = new THREE.CylinderGeometry(0.05, 0.22, 1.2, 12);
+const canopyG = new THREE.BoxGeometry(1.4, 0.1, 0.9);
+
+const Hotel: React.FC<{ pos: [number, number, number]; rise: number }> = ({ pos, rise }) => {
+  const m = { palette: PAL.indigo, seed: 44, angleDeg: 4, map: hotelTex, mapAmt: 0.9 } as never;
+  return (
+    <group position={pos} scale={[1, Math.max(0.001, rise), 1]}>
+      <EMesh g={towerG} m={m} pos={[0, 2.7, 0]} />
+      <EMesh g={wingG} m={m} pos={[-1.95, 1.7, 0.1]} />
+      <EMesh g={wingG} m={m} pos={[1.95, 1.7, 0.1]} />
+      <EMesh g={crownG} m={{ palette: PAL.indigo, seed: 45, angleDeg: 4 }} pos={[0, 5.75, 0]} />
+      <EMesh g={spireG} m={{ palette: PAL.indigo, seed: 46, foil: 0.6 }} pos={[0, 6.7, 0]} />
+      <EMesh g={canopyG} m={{ palette: PAL.lilac, seed: 47 }} pos={[0, 0.9, 1.1]} />
+    </group>
+  );
+};
+
+/** Great-circle arc between two lon/lat points, lifted off the globe, projected like <Globe> (orthographic). */
+const flightArc = (a: [number, number], b: [number, number], lon0: number, lat0: number, R: number, cx: number, cy: number): Pt[] => {
+  const r = Math.PI / 180;
+  const v = ([lo, la]: [number, number]) => [Math.cos(la * r) * Math.cos(lo * r), Math.cos(la * r) * Math.sin(lo * r), Math.sin(la * r)];
+  const A = v(a), B = v(b);
+  const om = Math.acos(Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
+  const out: Pt[] = [];
+  for (let i = 0; i <= 60; i++) {
+    const t = i / 60;
+    const s0 = Math.sin((1 - t) * om) / Math.sin(om), s1 = Math.sin(t * om) / Math.sin(om);
+    const p = [A[0] * s0 + B[0] * s1, A[1] * s0 + B[1] * s1, A[2] * s0 + B[2] * s1];
+    const lift = 1 + 0.22 * Math.sin(Math.PI * t);
+    const lon = Math.atan2(p[1], p[0]) / r, lat = Math.asin(p[2]) / r;
+    const l = (lon - lon0) * r, ph = lat * r, p0 = lat0 * r;
+    const x = Math.cos(ph) * Math.sin(l), y = -(Math.cos(p0) * Math.sin(ph) - Math.sin(p0) * Math.cos(ph) * Math.cos(l));
+    out.push([cx + x * R * lift, cy + y * R * lift]);
+  }
+  return out;
+};
+const PLANE = "M0,-14 L3,-4 L14,2 L14,5 L3,2 L2,10 L6,13 L6,15 L0,13 L-6,15 L-6,13 L-2,10 L-3,2 L-14,5 L-14,2 L-3,-4 Z";
+const ROUTES: { to: [number, number]; at: number }[] = [
+  { to: [55.27, 25.2], at: 300 },
+  { to: [-0.13, 51.51], at: 312 },
+  { to: [103.82, 1.35], at: 324 },
+  { to: [2.35, 48.86], at: 340 },
+];
+
+const Flights: React.FC<{ F: number; cx: number; cy: number; R: number; lon: number }> = ({ F, cx, cy, R, lon }) => {
+  const home: [number, number] = [72.88, 19.08];
+  return (
+    <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
+      {ROUTES.map((rt, i) => {
+        const pts = flightArc(home, rt.to, lon, 18, R, cx, cy);
+        const k = Math.min(1, Math.max(0, (F - rt.at) / 30));
+        const e = 1 - Math.pow(1 - k, 2);
+        if (e <= 0) return null;
+        const n = Math.max(2, Math.round(e * (pts.length - 1)));
+        const seg = pts.slice(0, n + 1);
+        const [px, py] = seg[seg.length - 1];
+        const [qx, qy] = seg[Math.max(0, seg.length - 2)];
+        const ang = (Math.atan2(py - qy, px - qx) * 180) / Math.PI + 90;
+        return (
+          <g key={i}>
+            <path d={polyD(seg)} fill="none" stroke="#3d3a8f" strokeWidth={2.4} strokeDasharray="2 9" strokeLinecap="round" opacity={0.85} />
+            <circle cx={pts[0][0]} cy={pts[0][1]} r={6} fill="#3d3a8f" />
+            {k < 1 ? (
+              <g transform={`translate(${px},${py}) rotate(${ang}) scale(1.5)`}>
+                <path d={PLANE} fill="#2a2770" stroke="#f2eefa" strokeWidth={0.8} />
+              </g>
+            ) : (
+              <circle cx={px} cy={py} r={5} fill="#f2eefa" stroke="#3d3a8f" strokeWidth={2} />
+            )}
+          </g>
+        );
+      })}
+    </svg>
   );
 };
 
 /**
- * 207-298: the reference's zoom is two scale-step cuts on the beat, not one long push:
- *   view 1  the strip runs straight across the loupe, copy small, print behind it drifting
- *   view 2  much closer: the strip fills a band of the lens, copy large and sliding, guilloche waves in the film
- * then the loupe closes and the travel world opens inside it.
+ * 258-392. Revealed through the magnifying glass (glass(F) from the card take), then:
+ *   flights arc out from India over the globe with planes riding the arcs; a hotel rises on the left, the lantern
+ *   lights its door, the fox runs past. Leaves by a dive into the globe whose grid becomes the colonnade's floor.
  */
-export const MacroTake: React.FC<{ from: number }> = ({ from }) => {
-  const F = useCurrentFrame() + from;
-  const cut = onsetAfter(T.push - 22);
-  const v2 = F >= cut;
-  const t = (F - (v2 ? cut : T.macro)) / 24;
-  const iris = 0.62 - 0.5 * expoOut(ramp(F, T.swap - 14, T.swap));
-  const printScale = v2 ? 3.2 + 0.08 * t : 1.7 + 0.06 * t;
-  const stripH = v2 ? 200 : 74;
-  return (
-    <AbsoluteFill style={{ background: "#0a0c0b" }}>
-      <AbsoluteFill style={{ transform: `scale(${printScale}) translate(${-40 * t}px, ${v2 ? 20 : -10}px) rotate(${v2 ? -2 : 3}deg)`, transformOrigin: "50% 50%" }}>
-        <Print F={T.reveal + 40} />
-      </AbsoluteFill>
-      <div style={{ position: "absolute", left: -100, top: H / 2 - stripH / 2 + (v2 ? 0 : 20), transform: `rotate(${v2 ? -2 : 3}deg)` }}>
-        <Strip w={W + 200} h={stripH} phase={(F - T.reveal) / 70} slide={v2 ? 600 + (F - cut) * 9 : (F - T.macro) * 3.5} font={v2 ? 92 : 30} />
-      </div>
-      <Lens r={iris} soft={0.18} />
-    </AbsoluteFill>
-  );
-};
-
-// ---- 3. travel: lanterns light the way at dusk ----------------------------------------------------------------------
 export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
-  const open = expoOut(ramp(F, T.swap - 2, T.swap + 16));
+  const g = glass(F);
   const cut = step(F, [onsetAfter(334)]);
   const cam = cut === 0
-    ? { pos: [-1.2 + (F - T.swap) * 0.01, 1.6, 7.5] as [number, number, number], target: [0.4, 1.4, -2] as [number, number, number], fov: 36 }
-    : { pos: [0.6 + (F - 334) * 0.008, 1.0, 5.4] as [number, number, number], target: [0.8, 1.3, -1] as [number, number, number], fov: 32 };
+    ? { pos: [-0.8 + (F - T.swap) * 0.01, 1.8, 8.4] as [number, number, number], target: [0.2, 1.9, -2] as [number, number, number], fov: 36 }
+    : { pos: [-0.2 + (F - 334) * 0.01, 1.6, 7.2] as [number, number, number], target: [0.4, 2.1, -2] as [number, number, number], fov: 34 };
+  const lon = 40 + 22 * ramp(F, T.swap, T.matte);
+  const G = { cx: W * 0.7, cy: H * 0.6, R: 340 };
+  // exit: dive into the globe
+  const dive = ramp(F, T.matte - 16, T.products) ** 2.2;
+  const z = 1 + 7 * dive;
+  // inside the glass the world is magnified a little (a real magnifier, not a hole)
+  const mag = g.r < 1200 ? 1.22 - 0.22 * Math.min(1, (g.r - 230) / 900) : 1;
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
-      <AbsoluteFill style={{ clipPath: `circle(${0.12 * H + 1500 * open}px at 50% 50%)` }}>
-        <Paper color="#d6d0ea" grain={0.35} />
-        <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
-        <Globe cx={W * 0.66} cy={H * 0.58 + 40 - 30 * ramp(F, T.swap, T.matte)} r={380} lon={40 + 30 * ramp(F, T.swap, T.matte)} lat={18} draw={expoOut(ramp(F, T.swap, T.swap + 30))} land="#c3bce4" graticule={0.4} />
-        <World aa>
-          <Cam {...cam} />
-          <RefDepth.Provider value={7}>
-            <Detail.Provider value={ENGRAVE}>
-              <Rig url={M + "Lantern.glb"} size={5.2} pos={[4.6, -0.4, -0.6]} rot={[0, -2.2, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
-              <Rig url={M + "ToyCar.glb"} size={1.5} pos={[-6 + (F - T.swap) * 0.07, 0, -3.4]} rot={[0, Math.PI / 2, 0]} keep={(n) => n !== "Glass"} m={{ palette: PAL.lilac, seed: 41 }} />
-              <Rig url={M + "Fox.glb"} size={1.6} pos={[-3 + (F - T.swap) * 0.05, 0, 0.6]} rot={[0, Math.PI / 2 - 0.1, 0]} clip="Run" time={t} m={{ palette: PAL.lilac }} />
-              <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.6} pos={[-3.6, -0.8, 1.8]} rot={[0, 1, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.indigo, follow: 0, wobble: 0.7, seed: 48 }} />
-            </Detail.Provider>
-          </RefDepth.Provider>
-        </World>
-        {F > T.tilt ? <Headline text="redeem on flights, hotels" grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={76} top={150} /> : null}
-        {F > T.matte - 18 ? <Lens r={1.3 - 0.98 * expoOut(ramp(F, T.matte - 18, T.matte))} soft={0.2} /> : null}
+      <AbsoluteFill style={{ clipPath: `circle(${g.r}px at ${g.x}px ${g.y}px)` }}>
+        <AbsoluteFill style={{ transform: `scale(${mag * z})`, transformOrigin: dive > 0 ? `${G.cx}px ${G.cy}px` : `${g.x}px ${g.y}px` }}>
+          <Paper color="#d6d0ea" grain={0.35} />
+          <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
+          <Globe cx={G.cx} cy={G.cy} r={G.R} lon={lon} lat={18} draw={expoOut(ramp(F, 262, 296))} land="#c3bce4" graticule={0.45} />
+          <Flights F={F} cx={G.cx} cy={G.cy} R={G.R} lon={lon} />
+          <World aa>
+            <Cam {...cam} />
+            <RefDepth.Provider value={8}>
+              <Detail.Provider value={ENGRAVE}>
+                <Hotel pos={[-3.6, 0, -3.2]} rise={expoOut(ramp(F, 296, 322))} />
+                <Rig url={M + "Lantern.glb"} size={3.6} pos={[-1.3, -0.2, -1.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
+                <Rig url={M + "ToyCar.glb"} size={1.3} pos={[-7 + Math.min(F - T.swap, 70) * 0.075, 0, -1.0]} rot={[0, Math.PI / 2, 0]} keep={(n) => n !== "Glass"} m={{ palette: PAL.lilac, seed: 41 }} />
+                <Rig url={M + "Fox.glb"} size={1.4} pos={[-4.5 + (F - T.swap) * 0.06, 0, 1.2]} rot={[0, Math.PI / 2 - 0.1, 0]} clip="Run" time={t} m={{ palette: PAL.lilac }} />
+                <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.2} pos={[-4.6, -0.8, 2.0]} rot={[0, 1, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.indigo, follow: 0, wobble: 0.7, seed: 48 }} />
+              </Detail.Provider>
+            </RefDepth.Provider>
+          </World>
+          {F > T.tilt ? <Headline text="redeem on flights, hotels" grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={76} top={130} /> : null}
+        </AbsoluteFill>
       </AbsoluteFill>
+      <Magnifier F={F} />
     </LookCtx.Provider>
   );
 };
@@ -389,7 +535,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const cols = Array.from({ length: 10 }, (_, i) => (i / 10) * Math.PI * 2 + 0.31);
   return (
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
-      <AbsoluteFill>
+      <AbsoluteFill style={{ opacity: ramp(F, T.matte + 2, T.products) }}>
         <Paper color="#f1d9c6" grain={0.35} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
@@ -420,8 +566,6 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
             <Headline text="2,000+ products" sub="on CRED store" grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} top={140} />
           </>
         ) : null}
-        {/* the loupe from the travel world opens out as the crane comes down */}
-        <Lens r={0.32 + 1.1 * expoOut(ramp(F, T.products + 10, T.products + 40))} soft={0.2} />
       </AbsoluteFill>
     </LookCtx.Provider>
   );
@@ -430,30 +574,18 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
 // ---- 5. zero joining fee: ₹0 rises from an abalone like a pearl -------------------------------------------------
 const Pearl: React.FC<{ F: number }> = ({ F }) => {
   const k = expoOut(ramp(F, T.card + 22, T.card + 44));
-  const ph = (F - T.card) / 60;
+  const lab = expoOut(ramp(F, T.card + 30, T.card + 44));
+  const ph = (F - T.card) / 50;
+  const foil = `linear-gradient(110deg, #8f7cff ${-30 + ph * 100}%, #6fd6ea ${0 + ph * 100}%, #b4f2c2 ${25 + ph * 100}%, #ffeea0 ${50 + ph * 100}%, #ffb2d4 ${75 + ph * 100}%, #8f7cff ${105 + ph * 100}%)`;
+  const big: React.CSSProperties = { fontFamily: "Newsreader", fontWeight: 700, fontSize: 280, lineHeight: 1, letterSpacing: -10 };
   return (
     <AbsoluteFill style={{ alignItems: "center", pointerEvents: "none" }}>
-      <div
-        style={{
-          position: "absolute",
-          top: 120 + 260 * (1 - k),
-          fontFamily: "Newsreader",
-          fontWeight: 700,
-          fontSize: 300,
-          lineHeight: 1,
-          letterSpacing: -8,
-          background: `linear-gradient(110deg, #9d8cff ${-30 + ph * 100}%, #7fe0f0 ${0 + ph * 100}%, #b8f5c4 ${25 + ph * 100}%, #fff0a8 ${50 + ph * 100}%, #ffb8d8 ${75 + ph * 100}%, #9d8cff ${105 + ph * 100}%)`,
-          WebkitBackgroundClip: "text",
-          backgroundClip: "text",
-          color: "transparent",
-          opacity: Math.min(1, k * 1.5),
-          transform: `scale(${0.6 + 0.4 * k})`,
-          filter: "drop-shadow(0 6px 14px rgba(30,40,60,0.25))",
-        }}
-      >
-        ₹0
-      </div>
-      <div style={{ position: "absolute", top: 440, fontFamily: "Newsreader", fontWeight: 600, fontSize: 64, color: "#2a3340", opacity: expoOut(ramp(F, T.card + 34, T.card + 46)), letterSpacing: -1 }}>joining fee</div>
+      {/* label */}
+      <div style={{ position: "absolute", top: 112, fontFamily: "Lexend", fontWeight: 500, fontSize: 26, letterSpacing: 26 * 0.42, color: "#3a4452", opacity: lab, paddingLeft: 26 * 0.42 }}>JOINING FEE</div>
+      {/* soft shadow as its own layer (a filter on clipped text paints the gradient as a box) */}
+      <div style={{ ...big, position: "absolute", top: 160 + 220 * (1 - k) + 12, color: "rgba(30,40,60,0.16)", filter: "blur(14px)", opacity: k, transform: `scale(${0.7 + 0.3 * k})` }}>₹0</div>
+      <div style={{ ...big, position: "absolute", top: 160 + 220 * (1 - k), background: foil, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", opacity: Math.min(1, k * 1.4), transform: `scale(${0.7 + 0.3 * k})` }}>₹0</div>
+      <div style={{ position: "absolute", top: 452, width: 240 * lab, height: 1.5, background: "#3a4452", opacity: 0.6 }} />
     </AbsoluteFill>
   );
 };
