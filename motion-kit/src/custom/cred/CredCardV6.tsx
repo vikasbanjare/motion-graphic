@@ -41,8 +41,8 @@ export const CredCardV6: React.FC = () => {
       <Sequence from={T.macro} durationInFrames={T.swap + 20 - T.macro} name="macro: into the foil band, iris">
         <MacroTake from={T.macro} />
       </Sequence>
-      <Sequence from={T.swap} durationInFrames={T.products - T.swap} name="travel: lanterns, globe, the fox runs">
-        <TravelTake from={T.swap} />
+      <Sequence from={T.swap - 10} durationInFrames={T.products - T.swap + 10} name="travel: opens inside the closing lens, lantern, globe, the fox runs">
+        <TravelTake from={T.swap - 10} />
       </Sequence>
       <Sequence from={T.matte} durationInFrames={T.card + 22 - T.matte} name="products: colonnade still life">
         <ProductsTake from={T.matte} />

@@ -119,7 +119,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
 export const MacroTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const z = 1 + 5 * expoOut(ramp(F, T.macro, T.push + 10)) ** 1.4;
-  const iris = 0.62 - 0.6 * expoOut(ramp(F, T.swap - 14, T.swap));
+  const iris = 0.62 - 0.5 * expoOut(ramp(F, T.swap - 14, T.swap));
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
       <AbsoluteFill style={{ perspective: 1800 }}>
@@ -136,14 +136,14 @@ export const MacroTake: React.FC<{ from: number }> = ({ from }) => {
 export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
-  const open = expoOut(ramp(F, T.swap, T.swap + 18));
+  const open = expoOut(ramp(F, T.swap - 2, T.swap + 16));
   const cut = step(F, [onsetAfter(334)]);
   const cam = cut === 0
     ? { pos: [-1.2 + (F - T.swap) * 0.01, 1.6, 7.5] as [number, number, number], target: [0.4, 1.4, -2] as [number, number, number], fov: 36 }
     : { pos: [0.6 + (F - 334) * 0.008, 1.2, 4.6] as [number, number, number], target: [0.8, 1.0, -1] as [number, number, number], fov: 32 };
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
-      <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 0.02 * H + 1500 * open)}px at 50% 50%)` }}>
+      <AbsoluteFill style={{ clipPath: `circle(${0.12 * H + 1500 * open}px at 50% 50%)` }}>
         <Paper color="#d6d0ea" grain={0.35} />
         <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
         <Globe cx={W * 0.68} cy={H * 0.5 + 60 - 40 * ramp(F, T.swap, T.matte)} r={430} lon={40 + 30 * ramp(F, T.swap, T.matte)} lat={18} draw={expoOut(ramp(F, T.swap, T.swap + 30))} land="#c3bce4" graticule={0.4} />
