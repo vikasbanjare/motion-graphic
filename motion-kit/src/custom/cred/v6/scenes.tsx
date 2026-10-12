@@ -376,7 +376,9 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const orbit = 0.18 + (F - T.products) * 0.0016;
   const eye: [number, number, number] = [Math.sin(orbit) * 9.2, 2.4, Math.cos(orbit) * 9.2];
   const over: [number, number, number] = [0.01, 15, 0.4];
-  const pos: [number, number, number] = cut === 0 ? [over[0] + (eye[0] - over[0]) * crane, over[1] + (eye[1] - over[1]) * crane, over[2] + (eye[2] - over[2]) * crane] : [1.6 + (F - 446) * 0.008, 2.3, 5.6];
+  // swing outward first, then down, so the crane never passes through the ring beam
+  const hr = 0.4 + 8.8 * expoOut(Math.min(1, crane * 2.2));
+  const pos: [number, number, number] = cut === 0 ? [Math.sin(orbit) * hr, over[1] + (eye[1] - over[1]) * crane, Math.cos(orbit) * hr] : [1.6 + (F - 446) * 0.008, 2.3, 5.6];
   const target: [number, number, number] = cut === 0 ? [0, 2.2 * crane, 0] : [0.6, 2.0, 0];
   const items: [string, number, number, number, number, Partial<{ foil: number }>][] = [
     ["BoomBox.glb", -2.2, 1.5, 0.9, onsetAfter(T.products + 30, 0), {}],
