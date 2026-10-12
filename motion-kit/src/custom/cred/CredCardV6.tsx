@@ -41,12 +41,12 @@ export const CredCardV6: React.FC = () => {
       <Sequence from={T.studio} durationInFrames={T.lockup - T.studio} name="outro: the card on a white set drops into the phone; push into the dark screen">
         <Outro from={T.studio} />
       </Sequence>
-      <Sequence from={T.lockup} durationInFrames={T.end - T.lockup} name="lockup (official logo file)">
+      <Sequence from={T.lockup - 6} durationInFrames={T.end - T.lockup + 6} name="lockup (official logo file); overlaps the push so no frame is dead black">
         <Drift>
           <Lockup />
         </Drift>
       </Sequence>
-      <Audio src={staticFile("custom/cred-v2/mix.wav")} />
+      <Audio src={staticFile("custom/cred-v6/score.wav")} />
     </AbsoluteFill>
   );
 };

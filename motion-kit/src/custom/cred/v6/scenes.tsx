@@ -8,7 +8,7 @@ import { Field } from "../../../ensemble/paint2d.tsx";
 import { Globe } from "../../../ensemble/globe-type.tsx";
 import { LookCtx, mix, type Look } from "../../../ensemble/look.ts";
 import { circle, polyD, trim, type Pt } from "../../../ensemble/paths.ts";
-import { expoOut, onsetAfter, pop, ramp } from "../../../ensemble/score.ts";
+import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
 import { ENGRAVE, Headline, Holo, Lens, M, PAL } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
@@ -37,15 +37,11 @@ const wave = (y: number, amp: number, lam: number, phase: number): Pt[] =>
   });
 // the reference's opening: lines arrive one by one from the left edge, each its own length, ragged ends, then the
 // scale-step to the fine field (same ragged edge), then a pale disc slides in from the right and the scene grows in it
-const LINES = [
-  { dy: 0, s: 2, end: 0.52 },
-  { dy: -36, s: 9, end: 0.4 },
-  { dy: 36, s: 13, end: 0.6 },
-  { dy: -72, s: 18, end: 0.33 },
-  { dy: 72, s: 22, end: 0.47 },
-  { dy: -108, s: 27, end: 0.28 },
-  { dy: 108, s: 31, end: 0.42 },
-];
+const LINES = Array.from({ length: 13 }, (_, i) => {
+  const k = i - 6;
+  // centre line first, then outward in pairs; alternate sides so the frame fills from both edges at once
+  return { dy: k * 38, s: Math.abs(k) * 1.6, end: 0.72 + 0.26 * Math.abs(Math.sin(i * 2.3)), rev: i % 2 === 1 };
+});
 /** Pen strokes (perfect-freehand outlines) on a canvas: the SVG version hit a raster-tile duplication glitch here. */
 const CanvasPen: React.FC<{ strokes: Stroke[] }> = ({ strokes }) => {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -68,18 +64,23 @@ const CanvasPen: React.FC<{ strokes: Stroke[] }> = ({ strokes }) => {
   return <canvas ref={ref} width={W} height={H} style={{ position: "absolute", inset: 0 }} />;
 };
 
+/** The lines hand over to the fine field on this beat. */
+const LINES_END = 25;
 export const Ground: React.FC<{ F: number }> = ({ F }) => {
-  const ink = mix("#3a3a3e", "#b4b6ad", ramp(F, 70, 104));
-  const discR = 1120 * expoOut(ramp(F, 58, 96));
-  const strokes: Stroke[] = F < T.stepC
-    ? LINES.filter((l) => F >= l.s).map((l) => ({ pts: wave(H * 0.45 + l.dy, 13, 460, F * 4 + l.dy * 3), t1: l.end * expoOut(Math.min(1, (F - l.s) / 18)), size: 1.15, color: ink, taper: 30 }))
+  const ink = mix("#3a3a3e", "#b4b6ad", ramp(F, 38, 66));
+  const discR = 1120 * expoOut(ramp(F, 18, 46));
+  const strokes: Stroke[] = F < LINES_END
+    ? LINES.filter((l) => F >= l.s).map((l) => {
+        const pts = wave(H * 0.45 + l.dy, 13, 460, F * 6 + l.dy * 3);
+        return { pts: l.rev ? pts.reverse() : pts, t1: l.end * expoOut(Math.min(1, (F - l.s) / 9)), size: 1.3, color: ink, taper: 30 };
+      })
     : [];
   return (
     <LookCtx.Provider value={look("#ebebe7", "#3a3a3e")}>
       <AbsoluteFill>
         <Paper color="#ebebe7" grain={0.4} />
         {strokes.length ? <CanvasPen strokes={strokes} /> : null}
-        {F >= T.stepC ? <Field f={F} pitch={25.5} lambda={105} amp={6} speed={3.2} width={2.2} color={ink} angle={-3} reveal={0.4 + 0.2 * expoOut(ramp(F, T.stepC, T.stepC + 26))} ragged={150} noiseAmp={0.3} /> : null}
+        {F >= LINES_END ? <Field f={F} pitch={25.5} lambda={105} amp={6} speed={3.2} width={2.2} color={ink} angle={-3} reveal={0.4 + 0.2 * expoOut(ramp(F, LINES_END, LINES_END + 22))} ragged={150} noiseAmp={0.3} /> : null}
         {discR > 1 ? (
           <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
             <defs>
@@ -99,12 +100,12 @@ export const Ground: React.FC<{ F: number }> = ({ F }) => {
 // ---- 1. rewards: the fox in the hedge -----------------------------------------------------------------------------
 /** Growth 0..1 of a plant at world x: a wave that follows the green disc in from the right (right side first). */
 const sprout = (F: number, x: number, delay = 0) => {
-  const at = 64 + (6 - x) * 2.6 + delay;
+  const at = 34 + (6 - x) * 2.2 + delay;
   const u = Math.min(1, Math.max(0, (F - at) / 22));
   return u * u * (3 - 2 * u) * (1 + 0.04 * Math.sin(u * Math.PI)); // smoothstep with a breath of overshoot
 };
 /** Foreground branches slide in from the frame edge (0..1), staggered. */
-const sweep = (F: number, delay: number) => expoOut(Math.min(1, Math.max(0, (F - 70 - delay) / 30)));
+const sweep = (F: number, delay: number) => expoOut(Math.min(1, Math.max(0, (F - 40 - delay) / 26)));
 /** A plant that grows up from its own base: height first, then width, unfurling from a lean. */
 const Sprout: React.FC<{ at: [number, number, number]; g: number; lean: number; children: React.ReactNode }> = ({ at, g, lean, children }) =>
   g <= 0.001 ? null : (
@@ -114,10 +115,10 @@ const Sprout: React.FC<{ at: [number, number, number]; g: number; lean: number; 
   );
 export const RewardsWorld: React.FC<{ F: number; framing?: number; bare?: boolean }> = ({ F, framing, bare }) => {
   const t = F / 24;
-  const cut = framing ?? step(F, [onsetAfter(118)]);
+  const cut = framing ?? step(F, [112]);
   const cam = cut === 0
-    ? { pos: [0.2 + (F - 72) * 0.006, 1.25, 6.6 - (F - 72) * 0.008] as [number, number, number], target: [0.2, 1.0, 0] as [number, number, number], fov: 34 }
-    : { pos: [0.4 + (F - 118) * 0.008, 1.05, 4.0 - (F - 118) * 0.004] as [number, number, number], target: [0.5, 0.9, 0] as [number, number, number], fov: 32 };
+    ? { pos: [0.2 + (F - 40) * 0.008, 1.25, 6.9 - (F - 40) * 0.012] as [number, number, number], target: [0.2, 1.0, 0] as [number, number, number], fov: 34 }
+    : { pos: [0.4 + (F - 112) * 0.01, 1.05, 4.0 - (F - 112) * 0.006] as [number, number, number], target: [0.5, 0.9, 0] as [number, number, number], fov: 32 };
   return (
     <LookCtx.Provider value={look("#e3ead0", "#9aa08c")}>
       <AbsoluteFill>
@@ -144,7 +145,7 @@ export const RewardsWorld: React.FC<{ F: number; framing?: number; bare?: boolea
                   <Rig url={M + "GlassVaseFlowers.glb"} size={2.4} rot={[0, i * 1.7 + t * 0.05, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, atmos: 0.2, seed: 20 + i }} />
                 </Sprout>
               ))}
-              <Rig url={M + "Fox.glb"} size={2.4} pos={[-4.2 + (F - 84) * 0.04, 0, -0.2]} rot={[0, Math.PI / 2 - 0.25, 0]} clip="Walk" time={t} m={{ palette: PAL.violet, foil: 0.35 }} foilPhase={t * 0.15} />
+              <Rig url={M + "Fox.glb"} size={2.4} pos={[-4.6 + (F - 48) * 0.042, 0, -0.2]} rot={[0, Math.PI / 2 - 0.25, 0]} clip="Walk" time={t} m={{ palette: PAL.violet, foil: 0.35 }} foilPhase={t * 0.15} />
               {/* foreground branches sweep in from the frame edges (the reference's branch entrance) */}
               <group position={[-6 * (1 - sweep(F, 0)), -1.2 * (1 - sweep(F, 0)), 0]} rotation={[0, 0, 0.5 * (1 - sweep(F, 0))]}>
                 <Rig url={M + "DiffuseTransmissionPlant.glb"} size={4.4} pos={[-3.0, -0.6, 1.4]} rot={[0, 0.6 + t * 0.02, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, seed: 31 }} />
@@ -171,9 +172,12 @@ export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   return (
     <AbsoluteFill>
-      <Ground F={F} />
-      {F >= 66 ? <RewardsWorld F={F} bare /> : null}
-      {F >= 98 ? <Headline text="5% rewards" sub="on online shopping" grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 98, 112))} /> : null}
+      {/* the opening pulls back as the lines race in, then scale-steps to the field on the beat */}
+      <AbsoluteFill style={{ transform: `scale(${F < 25 ? 1.22 - 0.16 * expoOut(F / 25) : 1.04 - 0.04 * expoOut(ramp(F, 25, 60))})` }}>
+        <Ground F={F} />
+      </AbsoluteFill>
+      {F >= 30 ? <RewardsWorld F={F} bare /> : null}
+      {F >= 62 ? <Headline text="5% rewards" sub="on online shopping" grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 62, 76))} /> : null}
     </AbsoluteFill>
   );
 };
@@ -432,14 +436,14 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
   const b = band(F);
-  const cut = step(F, [onsetAfter(334)]);
+  const cut = step(F, [336]);
   const cam = cut === 0
-    ? { pos: [-0.8 + (F - T.swap) * 0.018, 1.8, 8.4] as [number, number, number], target: [0.2, 1.9, -2] as [number, number, number], fov: 36 }
-    : { pos: [-0.2 + (F - 334) * 0.018, 1.6, 7.2] as [number, number, number], target: [0.4, 2.1, -2] as [number, number, number], fov: 34 };
-  const lon = 40 + 22 * ramp(F, T.swap, T.matte);
+    ? { pos: [-0.8 + (F - T.swap) * 0.018, 1.35, 8.4] as [number, number, number], target: [0.2, 1.45, -2] as [number, number, number], fov: 36 }
+    : { pos: [-0.2 + (F - 336) * 0.018, 1.2, 7.2] as [number, number, number], target: [0.4, 1.65, -2] as [number, number, number], fov: 34 };
+  const lon = 40 + 22 * ramp(F, T.swap, MATCH - 30) + 0.9 * Math.max(0, F - (MATCH - 30)); // keeps turning through the match
   const G = { cx: W * 0.7, cy: H * 0.6, R: 340 };
   // exit: the globe glides to frame centre and grows to the size of the colonnade's floor seen from above (MATCH)
-  const d = easeInOut(ramp(F, MATCH - 30, MATCH));
+  const d = 0.85 * easeInOut(ramp(F, MATCH - 30, MATCH)) + 0.15 * ramp(F, MATCH - 30, MATCH);
   const mag = 1.04 + 0.05 * ramp(F, OPEN, MATCH - 30);
   const S = lerp(mag, GLOBE_TO_FLOOR, d) + 0.004 * Math.max(0, F - MATCH);
   return (
@@ -457,7 +461,7 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
                 <Hotel pos={[-3.6, 0, -3.2]} rise={expoOut(ramp(F, 296, 322))} />
                 <Rig url={M + "Lantern.glb"} size={3.6} pos={[-1.3, -0.2, -1.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
                 <Rig url={M + "ToyCar.glb"} size={1.3} pos={[-7 + Math.min(F - T.swap, 70) * 0.075, 0, -1.0]} rot={[0, Math.PI / 2, 0]} keep={(n) => n !== "Glass"} m={{ palette: PAL.lilac, seed: 41 }} />
-                <Rig url={M + "Fox.glb"} size={1.4} pos={[-4.5 + (F - T.swap) * 0.06, 0, 1.2]} rot={[0, Math.PI / 2 - 0.1, 0]} clip="Run" time={t} m={{ palette: PAL.lilac }} />
+                <Rig url={M + "Fox.glb"} size={1.8} pos={[-5.2 + (F - T.swap) * 0.07, 0, -0.4]} rot={[0, Math.PI / 2 - 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} />
                 <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.2} pos={[-4.6, -0.8, 2.0]} rot={[0, 1, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.indigo, follow: 0, wobble: 0.7, seed: 48 }} />
               </Detail.Provider>
             </RefDepth.Provider>
@@ -547,9 +551,9 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
   // overhead (the ring of capitals, as the reference opens its temple), then the crane tilts down to eye level
-  const crane = expoOut(ramp(F, T.products + 4, T.products + 40));
-  const cut = step(F, [onsetAfter(446)]);
-  const orbit = 0.18 + (F - T.products) * 0.0016;
+  const crane = expoOut(ramp(F, MATCH + 2, MATCH + 42));
+  const cut = step(F, [446]);
+  const orbit = 0.18 + (F - MATCH) * 0.003;
   const eye: [number, number, number] = [Math.sin(orbit) * 9.2, 2.4, Math.cos(orbit) * 9.2];
   const over: [number, number, number] = [0.01, 15, 0.4];
   // swing outward first, then down, so the crane never passes through the ring beam
@@ -557,15 +561,15 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const pos: [number, number, number] = cut === 0 ? [Math.sin(orbit) * hr, over[1] + (eye[1] - over[1]) * crane, Math.cos(orbit) * hr] : [1.6 + (F - 446) * 0.02, 2.3, 5.6 - (F - 446) * 0.01];
   const target: [number, number, number] = cut === 0 ? [0, 2.2 * crane, 0] : [0.6, 2.0, 0];
   const items: [string, number, number, number, number, Partial<{ foil: number }>][] = [
-    ["BoomBox.glb", -2.2, 1.5, 0.9, onsetAfter(T.products + 30, 0), {}],
-    ["WaterBottle.glb", -0.7, 1.7, -1.4, onsetAfter(T.products + 30, 1), {}],
-    ["MaterialsVariantsShoe.glb", 0.8, 1.7, 1.1, onsetAfter(T.products + 30, 2), { foil: 0.6 }],
-    ["Avocado.glb", 2.2, 1.2, -0.7, onsetAfter(T.products + 30, 3), {}],
+    ["BoomBox.glb", -2.2, 1.5, 0.9, 409, {}],
+    ["WaterBottle.glb", -0.7, 1.7, -1.4, 421, {}],
+    ["MaterialsVariantsShoe.glb", 0.8, 1.7, 1.1, 434, { foil: 0.6 }],
+    ["Avocado.glb", 2.2, 1.2, -0.7, 459, {}],
   ];
   const cols = Array.from({ length: 10 }, (_, i) => (i / 10) * Math.PI * 2 + 0.31);
   return (
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
-      <AbsoluteFill style={{ opacity: ramp(F, MATCH - 2, MATCH + 6), clipPath: `circle(${941 * (1 + 0.004 * Math.max(0, F - MATCH) / GLOBE_TO_FLOOR) + 1500 * easeInOut(ramp(F, MATCH + 6, MATCH + 22))}px at 50% 50%)` }}>
+      <AbsoluteFill style={{ opacity: ramp(F, MATCH - 4, MATCH + 4), clipPath: `circle(${941 * (1 + 0.004 * Math.max(0, F - MATCH) / GLOBE_TO_FLOOR) + 1500 * Math.pow(ramp(F, MATCH + 2, MATCH + 20), 1.6)}px at 50% 50%)` }}>
         <Paper color="#f1d9c6" grain={0.35} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
@@ -638,7 +642,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
   const k = expoOut(ramp(F, T.card, T.card + 20));
-  const cut = step(F, [onsetAfter(520)]);
+  const cut = step(F, [520]);
   // the dive: the camera falls into the shell's iridescence, which becomes the card's foil stripe
   const dive = ramp(F, T.whip - 14, T.studio);
   const z = 1 + 9 * dive ** 2.4;

@@ -134,7 +134,7 @@ const Card: React.FC<{ src: string; w: number; gloss: number; shadow?: number }>
 const PW = 430, PH = 880;
 const SLOT = { x: 24, y: 150, w: PW - 2 * 18 - 48 }; // card slot inside the screen
 const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> = ({ src, F, dark, cardIn }) => {
-  const row = (i: number) => expoOut(ramp(F, 612 + i * 6, 622 + i * 6));
+  const row = (i: number) => expoOut(ramp(F, 609 + i * 6, 619 + i * 6));
   const rows = ["5% rewards on online shopping", "zero joining fee", "redeem on flights, hotels and 2,000+ products on CRED store"];
   return (
     <div style={{ position: "relative", width: PW, height: PH, borderRadius: 74, background: "linear-gradient(135deg, #d9d9dd, #8d8d93 40%, #e6e6ea 60%, #a6a6ac)", padding: 6, boxShadow: "0 40px 90px rgba(20,22,30,0.28), 0 10px 24px rgba(20,22,30,0.18)" }}>
@@ -143,25 +143,27 @@ const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> 
       <div style={{ position: "absolute", left: -4, top: 280, width: 5, height: 70, borderRadius: 3, background: "#9a9aa0" }} />
       <div style={{ position: "absolute", right: -4, top: 240, width: 5, height: 110, borderRadius: 3, background: "#9a9aa0" }} />
       <div style={{ position: "absolute", inset: 6, borderRadius: 68, background: "#0b0b0d", padding: 12 }}>
-        <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: 56, overflow: "hidden", background: "#f5f5f3" }}>
+        <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: 56, overflow: "hidden", background: "radial-gradient(ellipse 120% 60% at 50% 0%, #1c1c22, #0c0c0f 60%)" }}>
           {/* status bar + island */}
-          <div style={{ position: "absolute", left: 30, top: 18, fontFamily: "Lexend", fontWeight: 500, fontSize: 17, color: "#111" }}>9:41</div>
+          <div style={{ position: "absolute", left: 30, top: 18, fontFamily: "Lexend", fontWeight: 500, fontSize: 17, color: "#f2f2f2" }}>9:41</div>
           <div style={{ position: "absolute", left: "50%", top: 12, width: 118, height: 34, marginLeft: -59, borderRadius: 20, background: "#0b0b0d" }} />
-          <div style={{ position: "absolute", left: 24, top: 82, fontFamily: "Newsreader", fontWeight: 600, fontSize: 30, color: "#141416", letterSpacing: -0.5 }}>your card</div>
+          <div style={{ position: "absolute", left: 24, top: 82, fontFamily: "Newsreader", fontWeight: 600, fontSize: 30, color: "#f4f4f2", letterSpacing: -0.5 }}>your card</div>
           {/* card slot */}
           <div style={{ position: "absolute", left: SLOT.x, top: SLOT.y, opacity: cardIn }}>
             <Card src={src} w={SLOT.w} gloss={ramp(F, 606, 640)} shadow={0.6} />
           </div>
           <div style={{ position: "absolute", left: 24, top: SLOT.y + (SLOT.w * CH) / CW + 26, right: 24, opacity: expoOut(ramp(F, 606, 616)) }}>
-            <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 19, color: "#141416" }}>CRED IndusInd Bank RuPay credit card</div>
-            <div style={{ height: 1, background: "#e2e2de", margin: "18px 0 10px" }} />
+            <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 19, color: "#f4f4f2" }}>CRED IndusInd Bank RuPay credit card</div>
+            <div style={{ height: 1, background: "rgba(255,255,255,0.12)", margin: "18px 0 10px" }} />
             {rows.map((r, i) => (
               <div key={r} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", opacity: row(i), transform: `translateY(${(1 - row(i)) * 10}px)` }}>
-                <div style={{ flex: "0 0 24px", height: 24, borderRadius: 12, background: "#1f7a55", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 14, fontFamily: "Lexend" }}>✓</div>
-                <div style={{ fontFamily: "Lexend", fontWeight: 400, fontSize: 16, lineHeight: 1.35, color: "#2a2a30" }}>{r}</div>
+                <div style={{ flex: "0 0 24px", height: 24, borderRadius: 12, background: "#2fa36f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 14, fontFamily: "Lexend" }}>✓</div>
+                <div style={{ fontFamily: "Lexend", fontWeight: 400, fontSize: 16, lineHeight: 1.35, color: "rgba(244,244,242,0.82)" }}>{r}</div>
               </div>
             ))}
           </div>
+          {/* a glass glare that slides across the screen as the phone turns */}
+          <div style={{ position: "absolute", inset: 0, background: `linear-gradient(120deg, rgba(255,255,255,0) ${ramp(F, 600, 640) * 160 - 50}%, rgba(255,255,255,0.10) ${ramp(F, 600, 640) * 160 - 32}%, rgba(255,255,255,0) ${ramp(F, 600, 640) * 160 - 14}%)` }} />
           {/* the screen goes dark before the push-in */}
           <div style={{ position: "absolute", inset: 0, background: "#000", opacity: dark }} />
         </div>
@@ -191,7 +193,8 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const pull = expoOut(ramp(F, T.studio, T.studio + 18));
   const stripe = { x: (1630 / 2048) * CW, y: (360 / 1292) * CH }; // the pull-back starts on the milled chip
   // 2. the card floats, then tilts back and drops into the phone
-  const drop = smooth(ramp(F, 590, 606));
+  const drop = smooth(ramp(F, 588, 606));
+  const drift = ramp(F, T.studio + 10, 588); // the floating card keeps turning until the drop takes over
   const phoneIn = expoOut(ramp(F, 586, 606));
   const phoneY = H / 2 - PH / 2 + 980 * (1 - phoneIn);
   // card position: centre of the set -> the phone's card slot
@@ -199,7 +202,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const cardW = CW + (SLOT.w - CW) * drop;
   const cx = W / 2 - CW / 2 + (slotX - (W / 2 - CW / 2)) * drop;
   const cy = H / 2 - CH / 2 - 10 + Math.sin(((F - T.studio) / 24) * 1.4) * 6 * (1 - drop) + (slotY - (H / 2 - CH / 2)) * drop;
-  const tiltX = 10 * (1 - drop) + 55 * Math.sin(Math.PI * drop), tiltY = -14 * (1 - drop);
+  const tiltX = (10 - 4 * drift) * (1 - drop) + 55 * Math.sin(Math.PI * drop), tiltY = (-16 + 12 * drift) * (1 - drop);
   const handed = F >= 606; // the card now lives inside the phone's screen
   // 3. the screen goes dark and the camera pushes into it
   const dark = ramp(F, 630, 638);
@@ -211,9 +214,14 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
       <AbsoluteFill style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.045) 1px, transparent 1px)", backgroundSize: "120px 120px", backgroundPosition: "center" }} />
       <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${W / 2}px ${phoneY + PH / 2}px` }}>
         {F >= 584 ? (
-          <div style={{ position: "absolute", left: W / 2 - PW / 2, top: phoneY }}>
-            <Phone src={src} F={F} dark={dark} cardIn={handed ? 1 : 0} />
-          </div>
+          <>
+            <div style={{ position: "absolute", left: W / 2 - 300, width: 600, top: H / 2 + PH / 2 + 10, height: 70, borderRadius: "50%", background: "radial-gradient(ellipse at 50% 50%, rgba(20,22,30,0.28), rgba(20,22,30,0) 70%)", opacity: phoneIn, transform: `scale(${0.6 + 0.4 * phoneIn})` }} />
+            <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, perspective: 2200 }}>
+              <div style={{ position: "absolute", left: W / 2 - PW / 2, top: phoneY, transformStyle: "preserve-3d", transform: `rotateY(${-22 * (1 - phoneIn) + 5 * Math.sin((F - 586) / 24 * 0.9) * phoneIn}deg) rotateX(${8 * (1 - phoneIn) + 2 * Math.sin((F - 586) / 24 * 0.7)}deg)` }}>
+                <Phone src={src} F={F} dark={dark} cardIn={handed ? 1 : 0} />
+              </div>
+            </div>
+          </>
         ) : null}
         {!handed ? (
           <AbsoluteFill style={{ perspective: 1600 }}>
