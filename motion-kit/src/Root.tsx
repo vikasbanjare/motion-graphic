@@ -34,6 +34,8 @@ import { BRUSH_TEST_FRAMES, BrushTest } from "./custom/lab/BrushTest.tsx";
 import { SpriteTest } from "./custom/lab/SpriteTest.tsx";
 import { LookTest, V6_LOOK_FRAMES } from "./custom/cred/v6/LookTest.tsx";
 import { CRED_V6_FRAMES, CredCardV6 } from "./custom/cred/CredCardV6.tsx";
+import { ClaimFilm, type Plan } from "./custom/claimfilm/ClaimFilm.tsx";
+import claimFilmExample from "../public/claim-film/lumen-demo/plan.json";
 
 /**
  * "Video" renders whatever spec you pass with --props=specs/your-video.json.
@@ -90,6 +92,16 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="TenH" component={HBoard} durationInFrames={H_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="TenJ" component={JFee} durationInFrames={J_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV6" component={CredCardV6} durationInFrames={CRED_V6_FRAMES} fps={24} width={1920} height={1080} />
+      <Composition
+        id="ClaimFilm"
+        component={ClaimFilm}
+        defaultProps={{ plan: claimFilmExample as unknown as Plan }}
+        durationInFrames={claimFilmExample.frames}
+        fps={24}
+        width={1920}
+        height={1080}
+        calculateMetadata={({ props }) => ({ durationInFrames: props.plan.frames, fps: props.plan.fps })}
+      />
       <Composition id="V6Look" component={LookTest} durationInFrames={V6_LOOK_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="LabSprite" component={SpriteTest} durationInFrames={1} fps={24} width={1920} height={1080} />
       <Composition id="LabBrush" component={BrushTest} durationInFrames={BRUSH_TEST_FRAMES} fps={24} width={1920} height={1080} />

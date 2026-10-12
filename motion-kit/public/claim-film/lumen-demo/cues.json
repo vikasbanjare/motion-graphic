@@ -1,0 +1,319 @@
+{
+ "title": "Lumen",
+ "fps": 24,
+ "frames": 588,
+ "key": "E",
+ "sections": [
+  {
+   "name": "open",
+   "from": 0,
+   "to": 60,
+   "beats": 5,
+   "style": "intro",
+   "drums_from": 36
+  },
+  {
+   "name": "2% cashback",
+   "from": 60,
+   "to": 180,
+   "beats": 10,
+   "style": "groove"
+  },
+  {
+   "name": "no annual fee",
+   "from": 180,
+   "to": 300,
+   "beats": 10,
+   "style": "drive"
+  },
+  {
+   "name": "instant payments",
+   "from": 300,
+   "to": 420,
+   "beats": 10,
+   "style": "groove"
+  },
+  {
+   "name": "outro",
+   "from": 420,
+   "to": 516,
+   "beats": 8,
+   "style": "groove",
+   "quiet": [
+    [
+     498,
+     516
+    ]
+   ]
+  },
+  {
+   "name": "lockup",
+   "from": 516,
+   "to": 588,
+   "beats": 6,
+   "style": "end"
+  }
+ ],
+ "events": [
+  {
+   "at": 0.0,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": 0.5
+  },
+  {
+   "at": 1.4,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": -0.5
+  },
+  {
+   "at": 2.8,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": 0.5
+  },
+  {
+   "at": 4.2,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": -0.5
+  },
+  {
+   "at": 5.6,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": 0.5
+  },
+  {
+   "at": 7.0,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": -0.5
+  },
+  {
+   "at": 8.4,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": 0.5
+  },
+  {
+   "at": 9.8,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": -0.5
+  },
+  {
+   "at": 11.2,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": 0.5
+  },
+  {
+   "at": 12.6,
+   "fx": "pen",
+   "sec": 0.35,
+   "gain": 0.8,
+   "pan": -0.5
+  },
+  {
+   "at": 25,
+   "fx": "tick",
+   "freq": 1800,
+   "gain": 0.7
+  },
+  {
+   "at": 60,
+   "fx": "swell",
+   "sec": 0.5,
+   "gain": 0.7
+  },
+  {
+   "at": 60,
+   "fx": "impact",
+   "big": 0.6,
+   "gain": 0.6
+  },
+  {
+   "at": 48,
+   "fx": "whoosh",
+   "sec": 1.0,
+   "lo": 400,
+   "hi": 4000,
+   "gain": 0.6,
+   "pan": -0.3
+  },
+  {
+   "at": 78,
+   "fx": "sparkle",
+   "sec": 0.9,
+   "base": 86,
+   "gain": 0.3
+  },
+  {
+   "at": 64,
+   "fx": "pop",
+   "freq": 330,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 76,
+   "fx": "pop",
+   "freq": 390,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 180,
+   "fx": "swell",
+   "sec": 0.5,
+   "gain": 0.7
+  },
+  {
+   "at": 180,
+   "fx": "impact",
+   "big": 0.6,
+   "gain": 0.6
+  },
+  {
+   "at": 168,
+   "fx": "whoosh",
+   "sec": 1.0,
+   "lo": 400,
+   "hi": 4000,
+   "gain": 0.6,
+   "pan": 0.3
+  },
+  {
+   "at": 198,
+   "fx": "sparkle",
+   "sec": 0.9,
+   "base": 86,
+   "gain": 0.3
+  },
+  {
+   "at": 184,
+   "fx": "pop",
+   "freq": 330,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 196,
+   "fx": "pop",
+   "freq": 390,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 300,
+   "fx": "swell",
+   "sec": 0.5,
+   "gain": 0.7
+  },
+  {
+   "at": 300,
+   "fx": "impact",
+   "big": 0.6,
+   "gain": 0.6
+  },
+  {
+   "at": 288,
+   "fx": "whoosh",
+   "sec": 1.0,
+   "lo": 400,
+   "hi": 4000,
+   "gain": 0.6,
+   "pan": -0.3
+  },
+  {
+   "at": 318,
+   "fx": "sparkle",
+   "sec": 0.9,
+   "base": 86,
+   "gain": 0.3
+  },
+  {
+   "at": 304,
+   "fx": "pop",
+   "freq": 330,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 316,
+   "fx": "pop",
+   "freq": 390,
+   "gain": 0.7,
+   "pan": 0.2
+  },
+  {
+   "at": 420,
+   "fx": "impact",
+   "big": 0.6,
+   "gain": 0.7
+  },
+  {
+   "at": 424,
+   "fx": "whoosh",
+   "sec": 0.9,
+   "lo": 300,
+   "hi": 2200,
+   "gain": 0.6
+  },
+  {
+   "at": 448,
+   "fx": "click",
+   "gain": 0.8
+  },
+  {
+   "at": 460,
+   "fx": "tick",
+   "freq": 2600,
+   "gain": 0.5,
+   "pan": 0.15
+  },
+  {
+   "at": 468,
+   "fx": "tick",
+   "freq": 2600,
+   "gain": 0.5,
+   "pan": 0.15
+  },
+  {
+   "at": 476,
+   "fx": "tick",
+   "freq": 2600,
+   "gain": 0.5,
+   "pan": 0.15
+  },
+  {
+   "at": 498,
+   "fx": "riser",
+   "until": 516,
+   "gain": 0.6
+  },
+  {
+   "at": 516,
+   "fx": "swell",
+   "sec": 0.5,
+   "gain": 0.8
+  },
+  {
+   "at": 516,
+   "fx": "impact",
+   "big": 1.0,
+   "gain": 0.9
+  }
+ ]
+}
