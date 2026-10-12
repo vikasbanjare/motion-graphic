@@ -1,49 +1,38 @@
-"""Original score + SFX for the CRED v6 film, composed to picture (numpy only; every note is generated here).
+"""Score to picture: original music + SFX for a cut, from a cue sheet (numpy only; every note is generated here).
 
-    python3 -I tools/cred_score.py --out public/custom/cred-v6/score
+    python3 -I tools/score_to_picture.py public/custom/cred-v6/cues.json --out public/custom/cred-v6/score
 
-Writes <out>.music.wav, <out>.sfx.wav and <out>.wav (the mix), 44.1 kHz stereo, exactly 30.0 s.
+Writes <out>.music.wav, <out>.sfx.wav and <out>.wav (the mix), 44.1 kHz stereo, exactly frames / fps seconds.
 
-The tempo map follows the film's sections (frames at 24 fps): each section has a whole number of beats, so every
-scale-step cut and hand-over in the edit lands on a beat. Keep CUES in sync with src/custom/cred/v6 (frame numbers).
-Sound: glassy FM bells and a warm pad in D major (Dmaj9 / Bm11 / Gmaj9 / Asus), sub bass, a soft kick/snap/shaker
-groove that drops out for the push and the deep-sea shell, and SFX on the visual events (whooshes, hits, risers,
-pops, laser scans, a card click, UI ticks, a ₹0 sparkle, bubbles).
+The cue sheet is the film's edit as data:
+  fps, frames, key ("D", "F#", ...)
+  sections: [{name, from, to, beats, style, drums_from?, quiet?: [[from, to], ...]}]
+      Give each section a whole number of beats so every cut in it lands on a beat.
+      style: intro (filter opens; drums enter at drums_from) | groove (8th bells, kick/snap) |
+             drive (16th bells, kick/snap) | ambient (no drums, high slow bells, dark pad) |
+             end (final chord + long tail; put it last)
+      quiet: frame ranges where the drums drop out and the bells thin (tension before a reveal)
+  events: [{at, fx, gain?, pan?, ...params}] SFX on visual events (frames). fx and params:
+      tick{freq} whoosh{sec, lo, hi, up} riser{until|sec} impact{big} swell{sec} (ends AT the frame)
+      pop{freq} laser{until|sec} click sparkle{sec, base} bubbles{until|sec, count} pen{sec} rumble{sec}
+
+Sound: glassy FM bells, warm pad, sub, soft kick/snap/shaker, convolution reverb. Clean and simple, not a
+produced track; for a richer score use an AI music tool on a stated budget and keep these SFX.
 """
 
 import argparse
+import json
 import wave
 
 import numpy as np
 
 SR = 44100
-FPS = 24
-DUR = 30.0
-N = int(SR * DUR)
 rng = np.random.default_rng(23)
+FPS = 24
 
 
 def fr(f):
     return f / FPS
-
-
-# ---- tempo map: (start frame, end frame, beats) ------------------------------------------------------------------
-SECTIONS = [
-    ("intro", 0, 150, 12),
-    ("card", 150, 276, 10),
-    ("travel", 276, 384, 9),
-    ("products", 384, 484, 8),
-    ("shell", 484, 561, 6),
-    ("outro", 561, 645, 7),
-    ("lockup", 645, 720, 6),
-]
-
-
-def beats(name):
-    for n, a, b, k in SECTIONS:
-        if n == name:
-            return [fr(a + (b - a) * i / k) for i in range(k)], fr((b - a) / k)
-    raise KeyError(name)
 
 
 # ---- dsp helpers --------------------------------------------------------------------------------------------------
@@ -260,143 +249,121 @@ def pen(sec=0.4):
 
 
 # ---- composition --------------------------------------------------------------------------------------------------
-# chords as MIDI notes (D major colour)
-DMAJ9 = [50, 57, 61, 64, 66]   # D A C# E F#
-BM11 = [47, 54, 57, 62, 64]    # B F# A D E
-GMAJ9 = [43, 50, 54, 57, 62]   # G D F# A D(9 voiced as A/D)
-ASUS = [45, 52, 57, 59, 62]    # A E A B D
+NOTES = {"C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6, "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11}
+# D major colour; transposed to the cue sheet's key
+DMAJ9 = [50, 57, 61, 64, 66]
+BM11 = [47, 54, 57, 62, 64]
+GMAJ9 = [43, 50, 54, 57, 62]
+ASUS = [45, 52, 57, 59, 62]
 PROG = [DMAJ9, BM11, GMAJ9, ASUS]
-ROOTS = [38, 35, 31, 33]       # bass roots
-ARP = [0, 2, 4, 3, 1, 4, 2, 3]  # index pattern into the chord (upper octave)
+ROOTS = [38, 35, 31, 33]
+ARP = [0, 2, 4, 3, 1, 4, 2, 3]
 
 
-def music():
+def in_ranges(f, ranges):
+    return any(a <= f < b for a, b in ranges or [])
+
+
+def music(cue, N, tr):
+    dur = N / SR
     m = np.zeros((N, 2))
     pads = np.zeros((N, 2))
     drums = np.zeros((N, 2))
     duck = np.ones(N)
-
-    def chord_at(sec_idx, bar):
-        return (sec_idx + bar) % 4
-
-    for si, (name, a, b, k) in enumerate(SECTIONS):
-        bt, bl = beats(name)
+    prog = [[n + tr for n in c] for c in PROG]
+    roots = [r + tr for r in ROOTS]
+    for si, s in enumerate(cue["sections"]):
+        a, b, k, style = s["from"], s["to"], s["beats"], s["style"]
+        bl = fr((b - a) / k)
+        bt = [fr(a) + i * bl for i in range(k)]
         start, end = fr(a), fr(b)
-        # pad: one chord per two beats (one per beat-pair), filter opens through the intro
-        for j in range(0, k, 2):
-            ci = chord_at(si, j // 2)
-            sec = min(bl * 2 + 0.6, DUR - bt[j])
-            cut = 900 + 2600 * min(1, bt[j] / 5.5) if name == "intro" else (700 if name == "shell" else 2400)
-            place(pads, pad(PROG[ci], sec, cut), bt[j], 0.9 if name != "lockup" else 0)
-            if name not in ("shell", "lockup"):
-                place(m, sub(ROOTS[ci], bl * 2 * 0.95), bt[j], 0.32 if bt[j] > 2.6 else 0.0)
-        # bells: 8th-note arpeggio (16ths in travel/products for lift), panned left/right
-        div = 4 if name in ("travel", "products") else 2
-        if name == "shell":
-            div = 1
-        if name == "lockup":
+        quiet = s.get("quiet")
+        drums_from = fr(s.get("drums_from", a))
+        if style == "end":
+            for i, note in enumerate(prog[0] + [69 + tr, 73 + tr, 78 + tr]):
+                place(m, bell(hz(note + 12), 4.5, 0.7), start + i * 0.035, 0.5, pan=(i % 3 - 1) * 0.4)
+            place(pads, pad(prog[0], dur - start, 1800), start, 1.0)
+            place(m, sub(roots[0], 2.2), start, 0.5)
             continue
+        for j in range(0, k, 2):
+            ci = (si + j // 2) % 4
+            sec = min(bl * 2 + 0.6, dur - bt[j])
+            cut = 900 + 2600 * (bt[j] - start) / max(1e-6, end - start) if style == "intro" else (700 if style == "ambient" else 2400)
+            place(pads, pad(prog[ci], sec, cut), bt[j], 0.9)
+            if style != "ambient":
+                place(m, sub(roots[ci], bl * 2 * 0.95), bt[j], 0.32 if bt[j] >= drums_from else 0.0)
+        div = {"drive": 4, "ambient": 1}.get(style, 2)
         for j in range(k * div):
             at = start + j * bl / div
             if at >= end:
                 break
-            ci = chord_at(si, int(j // div) // 2)
-            note = PROG[ci][ARP[j % len(ARP)]] + 12
-            if name == "shell":
-                note += 12
+            ci = (si + int(j // div) // 2) % 4
+            note = prog[ci][ARP[j % len(ARP)]] + (24 if style == "ambient" else 12)
             g = 0.75 if div == 4 and j % 2 else 1.0
-            if name == "card" and fr(250) <= at < fr(276):
-                g *= 0.4  # the push thins out before the strip opens
-            place(m, bell(hz(note), 1.4 if name != "shell" else 2.6, 0.8 if name == "shell" else 1.0), at, 0.55 * g, pan=-0.35 if j % 2 else 0.35)
-        # groove
-        if name in ("intro", "card", "travel", "products", "outro"):
-            for j, at in enumerate(bt):
-                in_groove = True
-                if name == "intro" and at < fr(62):
-                    in_groove = False  # lines + disc: shaker only
-                if name == "card" and fr(250) <= at < fr(276):
-                    in_groove = False  # tension before the strip opens
-                if name == "outro" and at >= fr(630):
-                    in_groove = False
-                # shaker on 8ths everywhere in these sections
-                for h in range(2):
-                    place(drums, shaker(h == 1), at + h * bl / 2, 0.9, pan=0.25)
-                if not in_groove:
-                    continue
-                if j % 2 == 0:
-                    place(drums, kick(), at, 0.9)
-                    i0 = int(at * SR)
-                    w = int(SR * 0.22)
-                    duck[i0:i0 + w] = np.minimum(duck[i0:i0 + w], 0.55 + 0.45 * np.linspace(0, 1, len(duck[i0:i0 + w])))
-                else:
-                    place(drums, snap(), at, 0.8, pan=-0.1)
-    # final chord: the lockup
-    lock = fr(645)
-    for i, note in enumerate(DMAJ9 + [69, 73, 78]):
-        place(m, bell(hz(note + 12), 4.5, 0.7), lock + i * 0.035, 0.5, pan=(i % 3 - 1) * 0.4)
-    place(pads, pad(DMAJ9, DUR - lock, 1800), lock, 1.0)
-    place(m, sub(38, 2.2), lock, 0.5)
+            if in_ranges(at * FPS, quiet):
+                g *= 0.4
+            place(m, bell(hz(note), 2.6 if style == "ambient" else 1.4, 0.8 if style == "ambient" else 1.0), at, 0.55 * g, pan=-0.35 if j % 2 else 0.35)
+        if style == "ambient":
+            continue
+        for j, at in enumerate(bt):
+            for h in range(2):
+                place(drums, shaker(h == 1), at + h * bl / 2, 0.9, pan=0.25)
+            if at < drums_from or in_ranges(at * FPS, quiet):
+                continue
+            if j % 2 == 0:
+                place(drums, kick(), at, 0.9)
+                i0, w = int(at * SR), int(SR * 0.22)
+                seg = duck[i0:i0 + w]
+                duck[i0:i0 + w] = np.minimum(seg, 0.55 + 0.45 * np.linspace(0, 1, len(seg)))
+            else:
+                place(drums, snap(), at, 0.8, pan=-0.1)
     pads *= duck[:, None]
     for c in range(2):
         pads[:, c] = highpass(pads[:, c], 160)  # leave the low end to the sub and kick
-    mix = m + pads * 0.85
-    mix = reverb(mix, 2.6, 0.32, 7000, seed=3) + drums
-    # fade the tail to silence by 30.0 s, and a short fade-in so the first sample is clean
-    tail = int(SR * 2.2)
+    mix = reverb(m + pads * 0.85, 2.6, 0.32, 7000, seed=3) + drums
+    tail = int(SR * min(2.2, dur / 4))
     mix[-tail:] *= np.linspace(1, 0, tail)[:, None] ** 1.5
     mix[: int(SR * 0.01)] *= np.linspace(0, 1, int(SR * 0.01))[:, None]
     return mix
 
 
-def sfx():
+def rumble(sec=1.1):
+    return lowpass(rng.standard_normal(int(SR * sec)), 160) * np.sin(np.pi * t_(sec) / sec) * 0.5
+
+
+def sfx(cue, N):
     s = np.zeros((N, 2))
-    # intro: pen swishes as the lines race in (alternating sides), field cut tick, disc swell
-    for i in range(13):
-        k = abs(i - 6)
-        place(s, pen(0.35), fr(k * 1.6), 0.9, pan=-0.6 if i % 2 else 0.6)
-    place(s, tick(1800), fr(25), 0.8)
-    place(s, whoosh(0.9, 200, 1800), fr(18), 0.7, pan=0.5)
-    place(s, reverse_swell(0.5), fr(62) - 0.5, 0.7)
-    place(s, tick(2200), fr(112), 0.6)
-    # card reveal
-    place(s, reverse_swell(1.0), fr(150) - 1.0, 1.0)
-    place(s, impact(0.8), fr(150), 0.9)
-    place(s, whoosh(0.8, 400, 3000, up=False), fr(150), 0.6)
-    # the push into the strip, then the strip tears open
-    place(s, riser(fr(276 - 200)), fr(200), 0.8)
-    place(s, impact(0.6), fr(276), 0.6)
-    place(s, whoosh(1.0, 600, 6000), fr(276), 0.8)
-    place(s, sparkle(1.0, 86), fr(280), 0.35)
-    # travel: plane fly-bys, hotel rise rumble, cut tick, globe grows into the match
-    for at, p in ((292, -0.6), (312, 0.6), (326, -0.3)):
-        place(s, whoosh(0.9, 500, 2500), fr(at), 0.35, pan=p)
-    hot = lowpass(rng.standard_normal(int(SR * 1.1)), 160) * np.sin(np.pi * t_(1.1) / 1.1) * 0.5
-    place(s, hot, fr(296), 0.6, pan=-0.5)
-    place(s, tick(2000), fr(336), 0.6)
-    place(s, riser(fr(30)), fr(354), 0.6)
-    place(s, impact(0.5), fr(384), 0.55)
-    # products: crane whoosh, four drops on the beat, cut tick
-    place(s, whoosh(1.6, 250, 1500, up=False), fr(386), 0.6)
-    for at, f in ((409, 330), (421, 392), (434, 440), (459, 494)):
-        place(s, pop(f), fr(at), 0.8, pan=0.2)
-    place(s, tick(2400), fr(446), 0.5)
-    # zero fee: iris swell, bubbles, the ₹0 sparkle, the dive
-    place(s, whoosh(0.9, 150, 900), fr(484), 0.7)
-    place(s, bubbles(fr(561 - 486), 26), fr(486), 1.0, pan=-0.2)
-    place(s, sparkle(1.3, 84), fr(506), 0.7)
-    place(s, riser(fr(25)), fr(536), 0.7)
-    # outro: hit into the card, lasers, phone up, card click, UI ticks, push, lockup
-    place(s, impact(0.7), fr(561), 0.8)
-    place(s, whoosh(0.8, 500, 3500, up=False), fr(561), 0.5)
-    place(s, laser(fr(20)), fr(571), 1.0, pan=-0.3)
-    place(s, laser(fr(16)), fr(573), 0.9, pan=0.3)
-    place(s, whoosh(0.9, 300, 2200), fr(586), 0.6)
-    place(s, card_click(), fr(606), 0.9)
-    for at in (609, 615, 621):
-        place(s, tick(2600), fr(at), 0.55, pan=0.15)
-    place(s, riser(fr(645 - 630)), fr(630), 0.6)
-    place(s, reverse_swell(0.5), fr(645) - 0.5, 0.8)
-    place(s, impact(1.0), fr(645), 0.9)
+    for e in cue.get("events", []):
+        at, fx = e["at"], e["fx"]
+        span = fr(e["until"] - at) if "until" in e else e.get("sec")
+        if fx == "tick":
+            x = tick(e.get("freq", 2400))
+        elif fx == "whoosh":
+            x = whoosh(e.get("sec", 0.8), e.get("lo", 300), e.get("hi", 3000), e.get("up", True))
+        elif fx == "riser":
+            x = riser(span or 1.5)
+        elif fx == "impact":
+            x = impact(e.get("big", 0.8))
+        elif fx == "swell":
+            x = reverse_swell(e.get("sec", 0.8))
+            at -= e.get("sec", 0.8) * FPS  # a swell ends on its frame
+        elif fx == "pop":
+            x = pop(e.get("freq", 520))
+        elif fx == "laser":
+            x = laser(span or 0.8)
+        elif fx == "click":
+            x = card_click()
+        elif fx == "sparkle":
+            x = sparkle(e.get("sec", 1.2), e.get("base", 86))
+        elif fx == "bubbles":
+            x = bubbles(span or 3.0, e.get("count", 22))
+        elif fx == "pen":
+            x = pen(e.get("sec", 0.35))
+        elif fx == "rumble":
+            x = rumble(e.get("sec", 1.1))
+        else:
+            raise SystemExit(f"unknown fx '{fx}' at frame {at}")
+        place(s, x, fr(at), e.get("gain", 0.8), pan=e.get("pan", 0.0))
     return reverb(s, 1.4, 0.18, 8000, seed=5)
 
 
@@ -410,10 +377,18 @@ def write(path, x):
 
 
 def main():
+    global FPS
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", required=True, help="output path prefix, e.g. public/custom/cred-v6/score")
+    ap.add_argument("cues", help="cue sheet JSON")
+    ap.add_argument("--out", required=True, help="output path prefix, e.g. public/music/film-score")
     a = ap.parse_args()
-    mu, fx = music(), sfx()
+    cue = json.load(open(a.cues))
+    FPS = cue.get("fps", 24)
+    N = int(SR * cue["frames"] / FPS)
+    tr = NOTES[cue.get("key", "D")] - 2
+    if tr > 5:
+        tr -= 12
+    mu, fx = music(cue, N, tr), sfx(cue, N)
     mu *= 0.5 / (np.abs(mu).max() + 1e-9)
     fx *= 0.55 / (np.abs(fx).max() + 1e-9)
     mix = mu * 0.95 + fx * 0.85
