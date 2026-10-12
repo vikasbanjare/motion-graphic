@@ -204,7 +204,8 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   // 3. the screen goes dark and the camera pushes into it
   const dark = ramp(F, 630, 638);
   const push = ramp(F, 634, T.lockup);
-  const z = 1 + 9 * push * push;
+  // a slow continuous push from the moment the phone lands, so the hold never freezes
+  const z = (1 + 0.08 * ramp(F, 590, 640)) * (1 + 9 * push * push);
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 50% 45%, #ffffff, #ececea 70%, #e2e2df)" }}>
       <AbsoluteFill style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.045) 1px, transparent 1px)", backgroundSize: "120px 120px", backgroundPosition: "center" }} />

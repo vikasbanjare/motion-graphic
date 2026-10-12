@@ -1,9 +1,9 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { T } from "./v5/looks.ts";
 import { Lockup } from "./v2/Lockup.tsx";
 import { useV6Fonts } from "./v6/LookTest.tsx";
-import { CardTake, ProductsTake, RewardsTake, ShellTake, TravelTake } from "./v6/scenes.tsx";
+import { CardTake, MATCH, OPEN, ProductsTake, RewardsTake, ShellTake, TravelTake } from "./v6/scenes.tsx";
 import { Outro } from "./v6/outro.tsx";
 
 /**
@@ -13,6 +13,12 @@ import { Outro } from "./v6/outro.tsx";
  */
 export const CRED_V6_FRAMES = T.end;
 
+/** The lockup keeps breathing: a slow push so the final hold never reads as a freeze. */
+const Drift: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const f = useCurrentFrame();
+  return <AbsoluteFill style={{ transform: `scale(${1 + 0.0006 * f})` }}>{children}</AbsoluteFill>;
+};
+
 export const CredCardV6: React.FC = () => {
   useV6Fonts();
   return (
@@ -20,14 +26,14 @@ export const CredCardV6: React.FC = () => {
       <Sequence durationInFrames={T.reveal + 2} name="opening lines, field, green disc; 5% rewards: fox in the hedge">
         <RewardsTake from={0} />
       </Sequence>
-      <Sequence from={T.reveal} durationInFrames={310 - T.reveal} name="card: the world becomes the print; one continuous push into the foil strip">
+      <Sequence from={T.reveal} durationInFrames={OPEN + 28 - T.reveal} name="card: the world becomes the print; one continuous push into the foil strip, which splits open">
         <CardTake from={T.reveal} />
       </Sequence>
-      <Sequence from={258} durationInFrames={T.products - 258} name="travel: revealed through a magnifying glass; hotel, flights over the globe; dive into the globe">
-        <TravelTake from={258} />
+      <Sequence from={OPEN - 4} durationInFrames={MATCH + 24 - (OPEN - 4)} name="travel: revealed through the split strip; hotel, flights over the globe; the globe becomes the colonnade floor">
+        <TravelTake from={OPEN - 4} />
       </Sequence>
-      <Sequence from={T.matte} durationInFrames={T.card + 22 - T.matte} name="products: the globe grid becomes the sunburst floor; colonnade still life">
-        <ProductsTake from={T.matte} />
+      <Sequence from={MATCH - 4} durationInFrames={T.card + 22 - (MATCH - 4)} name="products: the globe matches the sunburst floor from above; colonnade still life">
+        <ProductsTake from={MATCH - 4} />
       </Sequence>
       <Sequence from={T.card} durationInFrames={T.studio + 16 - T.card} name="zero joining fee: abalone in the deep">
         <ShellTake from={T.card} />
@@ -36,7 +42,9 @@ export const CredCardV6: React.FC = () => {
         <Outro from={T.studio} />
       </Sequence>
       <Sequence from={T.lockup} durationInFrames={T.end - T.lockup} name="lockup (official logo file)">
-        <Lockup />
+        <Drift>
+          <Lockup />
+        </Drift>
       </Sequence>
       <Audio src={staticFile("custom/cred-v2/mix.wav")} />
     </AbsoluteFill>
