@@ -20,7 +20,7 @@ say() { STATUS="${STATUS:+$STATUS; }$1"; }
 
 finish() {
   if [ -z "$PROBLEM" ]; then
-    echo "motion-kit ready: $STATUS. Describe a video to start (motion-director skill)."
+    echo "motion-kit ready: $STATUS. Describe a video to start (motion-director skill), or paste a script for a CRED-style film (cred-film skill)."
   else
     echo "motion-kit setup incomplete: $STATUS."
   fi
@@ -135,6 +135,20 @@ else
     [ "$MODE" = "chrome-for-testing" ] && HINT="$HINT REMOTION_CHROME_MODE=chrome-for-testing"
     say "browser found, run: $HINT"
   fi
+fi
+
+# --- Python (cred-film copy check, score_to_picture, motion_qa) ------------------
+if command -v python3 >/dev/null 2>&1; then
+  if ! python3 -c "import numpy, PIL" >/dev/null 2>&1; then
+    python3 -m pip install --quiet --user numpy pillow >>"$LOG" 2>&1 || python3 -m pip install --quiet --break-system-packages numpy pillow >>"$LOG" 2>&1
+  fi
+  if python3 -c "import numpy, PIL" >/dev/null 2>&1; then
+    say "python ok"
+  else
+    say "python numpy/pillow missing (pip install numpy pillow; needed for cred-film, score and motion checks)"
+  fi
+else
+  say "python3 not found (needed for cred-film, score and motion checks)"
 fi
 
 # --- ffmpeg ---------------------------------------------------------------------
