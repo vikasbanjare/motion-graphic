@@ -75,11 +75,11 @@ const Opening: React.FC<{ plan: Plan }> = ({ plan }) => {
 const camFor = (c: Claim, F: number) => {
   const u = (F - c.from) / (c.to - c.from);
   if (c.camera === "orbit") {
-    const a = 0.35 + 0.55 * u;
+    const a = 0.25 + 0.85 * u;
     return { pos: [Math.sin(a) * 7.2, 1.7, Math.cos(a) * 7.2] as [number, number, number], target: [0, 1.0, 0] as [number, number, number], fov: 34 };
   }
   if (c.camera === "crane") return { pos: [0.8 - 0.6 * u, 5.2 - 3.4 * u, 6.6 - 0.8 * u] as [number, number, number], target: [0, 1.0 - 0.1 * u, 0] as [number, number, number], fov: 34 };
-  return { pos: [-0.4 + 0.8 * u, 1.45, 8.0 - 2.2 * u] as [number, number, number], target: [0.1, 1.1, 0] as [number, number, number], fov: 34 };
+  return { pos: [-0.8 + 1.6 * u, 1.45, 8.4 - 3.0 * u] as [number, number, number], target: [0.1, 1.1, 0] as [number, number, number], fov: 34 };
 };
 
 const Worldlet: React.FC<{ c: Claim; idx: number }> = ({ c, idx }) => {
@@ -126,12 +126,14 @@ const Worldlet: React.FC<{ c: Claim; idx: number }> = ({ c, idx }) => {
 const Enter: React.FC<{ c: Claim; children: React.ReactNode }> = ({ c, children }) => {
   const F = useCurrentFrame() + c.from - OV;
   const k = smooth(ramp(F, c.from - OV, c.from + OV));
-  if (k >= 1) return <AbsoluteFill>{children}</AbsoluteFill>;
+  // the incoming world keeps settling for 2 s after the transition, so the hand-over never stops dead
+  const settle = 1 + 0.16 * (1 - ramp(F, c.from - OV, c.from + 48)) ** 2;
+  if (k >= 1) return <AbsoluteFill style={{ transform: `scale(${settle})` }}>{children}</AbsoluteFill>;
   if (c.transition === "split") {
     const half = (H / 2 + 40) * k;
     return (
       <>
-        <AbsoluteFill style={{ clipPath: `inset(${H / 2 - half}px 0px ${H / 2 - half}px 0px)`, transform: `scale(${1.14 - 0.14 * k})` }}>{children}</AbsoluteFill>
+        <AbsoluteFill style={{ clipPath: `inset(${H / 2 - half}px 0px ${H / 2 - half}px 0px)`, transform: `scale(${settle})` }}>{children}</AbsoluteFill>
         <Holo phase={F / 30} style={{ left: 0, right: 0, top: H / 2 - half - 16, height: 16, mixBlendMode: "normal", opacity: 1 }} />
         <Holo phase={F / 30 + 0.3} style={{ left: 0, right: 0, top: H / 2 + half, height: 16, mixBlendMode: "normal", opacity: 1 }} />
       </>
@@ -139,13 +141,13 @@ const Enter: React.FC<{ c: Claim; children: React.ReactNode }> = ({ c, children 
   }
   if (c.transition === "wipe") {
     const x = lerp(-0.3, 1.3, k) * W;
-    return <AbsoluteFill style={{ clipPath: `polygon(0 0, ${x + 300}px 0, ${x - 300}px ${H}px, 0 ${H}px)`, transform: `scale(${1.1 - 0.1 * k})` }}>{children}</AbsoluteFill>;
+    return <AbsoluteFill style={{ clipPath: `polygon(0 0, ${x + 300}px 0, ${x - 300}px ${H}px, 0 ${H}px)`, transform: `scale(${settle})` }}>{children}</AbsoluteFill>;
   }
   if (c.transition === "dive") {
     const flood = 1 - Math.abs(2 * k - 1);
     return (
       <>
-        <AbsoluteFill style={{ opacity: k > 0.5 ? 1 : 0, transform: `scale(${1.2 - 0.2 * k})` }}>{children}</AbsoluteFill>
+        <AbsoluteFill style={{ opacity: k > 0.5 ? 1 : 0, transform: `scale(${settle})` }}>{children}</AbsoluteFill>
         <AbsoluteFill style={{ opacity: Math.min(1, flood * 1.6) }}>
           <Holo phase={0.35 + 0.4 * Math.sin(F / 14)} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.3 * k})` }} />
         </AbsoluteFill>
@@ -153,7 +155,7 @@ const Enter: React.FC<{ c: Claim; children: React.ReactNode }> = ({ c, children 
     );
   }
   // iris
-  return <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 1300 * k)}px at 62% 52%)`, transform: `scale(${1.12 - 0.12 * k})` }}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 1300 * k)}px at 62% 52%)`, transform: `scale(${settle})` }}>{children}</AbsoluteFill>;
 };
 
 // ---- outro: phone mockup with the claims ticking on, then push into the screen ---------------------------------
@@ -198,8 +200,8 @@ const Outro: React.FC<{ plan: Plan }> = ({ plan }) => {
   const F = useCurrentFrame() + o.from - OV;
   const rise = expoOut(ramp(F, o.from - 4, o.from + 22));
   const phoneY = H / 2 - PH / 2 + 980 * (1 - rise);
-  const dark = ramp(F, o.to - 16, o.to - 8);
-  const push = ramp(F, o.to - 12, o.to + 2);
+  const dark = ramp(F, o.to - 14, o.to - 4);
+  const push = ramp(F, o.to - 12, o.to);
   const z = (1 + 0.08 * ramp(F, o.from, o.to)) * (1 + 9 * push * push);
   const word = (txt: string, at: number) =>
     txt.split(" ").map((w, i) => {
@@ -228,12 +230,12 @@ const Outro: React.FC<{ plan: Plan }> = ({ plan }) => {
 // ---- lockup -------------------------------------------------------------------------------------------------------
 const Lockup: React.FC<{ plan: Plan }> = ({ plan }) => {
   const f = useCurrentFrame();
-  const k = expoOut(ramp(f, 4, 20));
-  const line = expoOut(ramp(f, 14, 30));
+  const k = expoOut(ramp(f, 0, 16));
+  const line = expoOut(ramp(f, 10, 26));
   return (
     <AbsoluteFill style={{ background: "#000", alignItems: "center", justifyContent: "center" }}>
-      <AbsoluteFill style={{ background: `linear-gradient(110deg, rgba(255,255,255,0) ${ramp(f, 10, 60) * 160 - 40}%, rgba(255,255,255,0.06) ${ramp(f, 10, 60) * 160 - 25}%, rgba(255,255,255,0) ${ramp(f, 10, 60) * 160 - 10}%)` }} />
-      <div style={{ display: "grid", justifyItems: "center", gap: 26, transform: `scale(${1 + 0.0016 * f})` }}>
+      <AbsoluteFill style={{ background: `linear-gradient(110deg, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 40}%, rgba(255,255,255,0.09) ${ramp(f, 6, 70) * 160 - 25}%, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 10}%)` }} />
+      <div style={{ display: "grid", justifyItems: "center", gap: 26, transform: `scale(${1.06 - 0.06 * expoOut(ramp(f, 0, 30)) + 0.0028 * f})` }}>
         {plan.brand.logo ? (
           <Img src={staticFile(plan.brand.logo)} style={{ height: 150, opacity: k, transform: `translateY(${(1 - k) * 16}px)` }} />
         ) : (
