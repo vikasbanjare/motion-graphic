@@ -246,7 +246,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
       </AbsoluteFill>
       {/* the shell's iridescence resolving into the stripe */}
       <AbsoluteFill style={{ opacity: 1 - ramp(F, T.studio, T.studio + 10) }}>
-        <Holo phase={(F - T.card) / 60 + 0.05 * Math.max(0, F - (T.whip - 6))} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
+        <Holo phase={0.35 + 0.4 * Math.sin((F - T.card) / 14)} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
       </AbsoluteFill>
     </AbsoluteFill>
   );
