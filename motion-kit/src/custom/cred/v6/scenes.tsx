@@ -444,7 +444,8 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const G = { cx: W * 0.7, cy: H * 0.6, R: 340 };
   // exit: the globe glides to frame centre and grows to the size of the colonnade's floor seen from above (MATCH)
   const d = 0.85 * easeInOut(ramp(F, MATCH - 30, MATCH)) + 0.15 * ramp(F, MATCH - 30, MATCH);
-  const mag = 1.04 + 0.05 * ramp(F, OPEN, MATCH - 30);
+  // the world arrives still settling (carries the push through the open strip), then keeps a slow push
+  const mag = 1.16 - 0.12 * expoOut(ramp(F, OPEN, OPEN + 44)) + 0.05 * ramp(F, OPEN, MATCH - 30);
   const S = lerp(mag, GLOBE_TO_FLOOR, d) + 0.004 * Math.max(0, F - MATCH);
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
@@ -681,7 +682,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
         </AbsoluteFill>
         {/* the iridescence floods the frame */}
         <AbsoluteFill style={{ opacity: ramp(F, T.whip - 6, T.studio - 2) }}>
-          <Holo phase={(F - T.card) / 60} style={{ inset: 0, mixBlendMode: "normal", opacity: 1 }} />
+          <Holo phase={(F - T.card) / 60 + 0.05 * Math.max(0, F - (T.whip - 6))} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
         </AbsoluteFill>
       </AbsoluteFill>
     </LookCtx.Provider>

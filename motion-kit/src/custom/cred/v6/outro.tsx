@@ -193,8 +193,8 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const pull = expoOut(ramp(F, T.studio, T.studio + 18));
   const stripe = { x: (1630 / 2048) * CW, y: (360 / 1292) * CH }; // the pull-back starts on the milled chip
   // 2. the card floats, then tilts back and drops into the phone
-  const drop = smooth(ramp(F, 588, 606));
-  const drift = ramp(F, T.studio + 10, 588); // the floating card keeps turning until the drop takes over
+  const drop = smooth(ramp(F, 582, 606));
+  const drift = ramp(F, T.studio + 10, 600); // the floating card keeps turning until the drop takes over
   const phoneIn = expoOut(ramp(F, 586, 606));
   const phoneY = H / 2 - PH / 2 + 980 * (1 - phoneIn);
   // card position: centre of the set -> the phone's card slot
@@ -246,7 +246,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
       </AbsoluteFill>
       {/* the shell's iridescence resolving into the stripe */}
       <AbsoluteFill style={{ opacity: 1 - ramp(F, T.studio, T.studio + 10) }}>
-        <Holo phase={(F - T.card) / 60} style={{ inset: 0, mixBlendMode: "normal", opacity: 1 }} />
+        <Holo phase={(F - T.card) / 60 + 0.05 * Math.max(0, F - (T.whip - 6))} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

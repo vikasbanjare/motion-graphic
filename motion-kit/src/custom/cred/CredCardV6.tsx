@@ -16,7 +16,7 @@ export const CRED_V6_FRAMES = T.end;
 /** The lockup keeps breathing: a slow push so the final hold never reads as a freeze. */
 const Drift: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{ transform: `scale(${1 + 0.0006 * f})` }}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{ transform: `scale(${1 + 0.0016 * f})` }}>{children}</AbsoluteFill>;
 };
 
 export const CredCardV6: React.FC = () => {
