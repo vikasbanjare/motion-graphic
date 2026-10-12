@@ -136,8 +136,8 @@ def cues(p, spec):
     secs.append({"name": "outro", "from": o["from"], "to": o["to"], "beats": OUTRO // BEAT, "style": "groove", "quiet": [[o["to"] - 18, o["to"]]]})
     secs.append({"name": "lockup", "from": lk["from"], "to": lk["to"], "beats": LOCKUP // BEAT, "style": "end"})
     ev += [{"at": o["from"], "fx": "impact", "big": 0.6, "gain": 0.7}, {"at": o["from"] + 4, "fx": "whoosh", "sec": 0.9, "lo": 300, "hi": 2200, "gain": 0.6},
-           {"at": o["from"] + 28, "fx": "click", "gain": 0.8}]
-    ev += [{"at": o["from"] + 40 + i * 8, "fx": "tick", "freq": 2600, "gain": 0.5, "pan": 0.15} for i in range(len(o["rows"]))]
+           {"at": o["from"] + 20, "fx": "click", "gain": 0.8}]
+    ev += [{"at": o["from"] + 28 + i * 8, "fx": "tick", "freq": 2600, "gain": 0.5, "pan": 0.15} for i in range(len(o["rows"]))]
     ev += [{"at": o["to"] - 18, "fx": "riser", "until": o["to"], "gain": 0.6}, {"at": lk["from"], "fx": "swell", "sec": 0.5, "gain": 0.8},
            {"at": lk["from"], "fx": "impact", "big": 1.0, "gain": 0.9}]
     return {"title": p["brand"]["name"], "fps": FPS, "frames": p["frames"], "key": spec.get("key", "D"), "sections": secs, "events": ev}

@@ -160,11 +160,13 @@ const Enter: React.FC<{ c: Claim; children: React.ReactNode }> = ({ c, children 
 
 // ---- outro: phone mockup with the claims ticking on, then push into the screen ---------------------------------
 const PW = 430, PH = 880;
+/** Frames after the outro starts when the first claim row ticks on (tools/claim_film.py puts the tick SFX here too). */
+const ROWS_AT = 28;
 const Phone: React.FC<{ plan: Plan; F: number; dark: number }> = ({ plan, F, dark }) => {
   const o = plan.outro;
   const night = o.screen === "dark";
   const ink = night ? "#f4f4f2" : "#141416";
-  const row = (i: number) => expoOut(ramp(F, o.from + 40 + i * 8, o.from + 50 + i * 8));
+  const row = (i: number) => expoOut(ramp(F, o.from + ROWS_AT + i * 8, o.from + ROWS_AT + 10 + i * 8));
   const c0 = plan.claims[0];
   return (
     <div style={{ position: "relative", width: PW, height: PH, borderRadius: 74, background: "linear-gradient(135deg, #d9d9dd, #8d8d93 40%, #e6e6ea 60%, #a6a6ac)", padding: 6, boxShadow: "0 40px 90px rgba(20,22,30,0.28), 0 10px 24px rgba(20,22,30,0.18)" }}>
@@ -173,11 +175,11 @@ const Phone: React.FC<{ plan: Plan; F: number; dark: number }> = ({ plan, F, dar
           <div style={{ position: "absolute", left: 30, top: 18, fontFamily: "Lexend", fontWeight: 500, fontSize: 17, color: ink }}>9:41</div>
           <div style={{ position: "absolute", left: "50%", top: 12, width: 118, height: 34, marginLeft: -59, borderRadius: 20, background: "#0b0b0d" }} />
           {/* the product tile: the first world's colours, the brand name (or official logo file) */}
-          <div style={{ position: "absolute", left: 22, right: 22, top: 90, height: 210, borderRadius: 18, overflow: "hidden", background: `linear-gradient(135deg, ${c0.grad[0]}, ${c0.grad[1]})`, boxShadow: "0 18px 40px rgba(0,0,0,0.35)", transform: `translateY(${(1 - expoOut(ramp(F, o.from + 14, o.from + 30))) * 140}px)`, opacity: ramp(F, o.from + 14, o.from + 20) }}>
+          <div style={{ position: "absolute", left: 22, right: 22, top: 90, height: 210, borderRadius: 18, overflow: "hidden", background: `linear-gradient(135deg, ${c0.grad[0]}, ${c0.grad[1]})`, boxShadow: "0 18px 40px rgba(0,0,0,0.35)", transform: `translateY(${(1 - expoOut(ramp(F, o.from + 2, o.from + 22))) * 140}px)`, opacity: ramp(F, o.from + 2, o.from + 8) }}>
             <Holo phase={F / 40} style={{ left: 0, right: 0, top: 120, height: 34, mixBlendMode: "screen", opacity: 0.55 }} />
             {plan.brand.logo ? <Img src={staticFile(plan.brand.logo)} style={{ position: "absolute", left: 20, top: 20, height: 42 }} /> : <div style={{ position: "absolute", left: 20, top: 18, fontFamily: "Lexend", fontWeight: 600, fontSize: 30, color: "#fff" }}>{plan.brand.name}</div>}
           </div>
-          <div style={{ position: "absolute", left: 24, right: 24, top: 326, opacity: expoOut(ramp(F, o.from + 30, o.from + 40)) }}>
+          <div style={{ position: "absolute", left: 24, right: 24, top: 326, opacity: expoOut(ramp(F, o.from + 16, o.from + 26)) }}>
             <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 20, color: ink }}>{o.title}</div>
             <div style={{ height: 1, background: night ? "rgba(255,255,255,0.12)" : "#e2e2de", margin: "16px 0 8px" }} />
             {o.rows.map((r, i) => (
@@ -202,7 +204,7 @@ const Outro: React.FC<{ plan: Plan }> = ({ plan }) => {
   const phoneY = H / 2 - PH / 2 + 980 * (1 - rise);
   const dark = ramp(F, o.to - 14, o.to - 4);
   const push = ramp(F, o.to - 12, o.to);
-  const z = (1 + 0.08 * ramp(F, o.from, o.to)) * (1 + 9 * push * push);
+  const z = (1 + 0.14 * ramp(F, o.from - OV, o.to)) * (1 + 9 * push * push);
   const word = (txt: string, at: number) =>
     txt.split(" ").map((w, i) => {
       const k = expoOut(ramp(F, at + i * 3, at + i * 3 + 10));
@@ -220,8 +222,8 @@ const Outro: React.FC<{ plan: Plan }> = ({ plan }) => {
             <Phone plan={plan} F={F} dark={dark} />
           </div>
         </div>
-        <div style={{ ...side, right: W / 2 + PW / 2 + 70, textAlign: "right" }}>{word(plan.brand.name, o.from + 30)}</div>
-        <div style={{ ...side, left: W / 2 + PW / 2 + 70 }}>{word(plan.brand.line || o.title, o.from + 38)}</div>
+        <div style={{ ...side, right: W / 2 + PW / 2 + 70, textAlign: "right" }}>{word(plan.brand.name, o.from + 20)}</div>
+        <div style={{ ...side, left: W / 2 + PW / 2 + 70 }}>{word(plan.brand.line || o.title, o.from + 28)}</div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -234,7 +236,7 @@ const Lockup: React.FC<{ plan: Plan }> = ({ plan }) => {
   const line = expoOut(ramp(f, 10, 26));
   return (
     <AbsoluteFill style={{ background: "#000", alignItems: "center", justifyContent: "center" }}>
-      <AbsoluteFill style={{ background: `linear-gradient(110deg, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 40}%, rgba(255,255,255,0.09) ${ramp(f, 6, 70) * 160 - 25}%, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 10}%)` }} />
+      <AbsoluteFill style={{ background: `linear-gradient(110deg, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 40}%, rgba(255,255,255,0.16) ${ramp(f, 6, 70) * 160 - 25}%, rgba(255,255,255,0) ${ramp(f, 6, 70) * 160 - 10}%)` }} />
       <div style={{ display: "grid", justifyItems: "center", gap: 26, transform: `scale(${1.06 - 0.06 * expoOut(ramp(f, 0, 30)) + 0.0028 * f})` }}>
         {plan.brand.logo ? (
           <Img src={staticFile(plan.brand.logo)} style={{ height: 150, opacity: k, transform: `translateY(${(1 - k) * 16}px)` }} />
@@ -242,6 +244,10 @@ const Lockup: React.FC<{ plan: Plan }> = ({ plan }) => {
           <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 120, color: "#fff", letterSpacing: -3, opacity: k, transform: `translateY(${(1 - k) * 16}px)` }}>{plan.brand.name}</div>
         )}
         {plan.brand.line ? <div style={{ fontFamily: "Lexend", fontWeight: 500, fontSize: 38, letterSpacing: "0.04em", color: "rgba(255,255,255,0.86)", opacity: line }}>{plan.brand.line}</div> : null}
+        {/* a foil hairline draws across under the line and keeps shimmering, so the hold never reads as a freeze */}
+        <div style={{ width: 520 * expoOut(ramp(f, 12, 56)), height: 3, overflow: "hidden", position: "relative" }}>
+          <Holo phase={f / 18} style={{ inset: 0, mixBlendMode: "normal", opacity: 1 }} />
+        </div>
       </div>
       {plan.unofficial ? <div style={{ position: "absolute", bottom: 40, fontFamily: "Lexend", fontSize: 18, letterSpacing: "0.2em", color: "rgba(255,255,255,0.45)" }}>UNOFFICIAL SPEC WORK</div> : null}
     </AbsoluteFill>

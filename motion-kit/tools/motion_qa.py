@@ -54,14 +54,17 @@ def analyse(a, fps, cut=18.0, stall=12, tail=None):
     for c in jumps:
         near_cut.update(range(c - 3, c + 3))
     freezes = []
-    for i in range(3, len(d) - 3):
+    for i in range(4, len(d) - 4):
         if i in near_cut:
             continue
-        ctx = [d[j] for j in (i - 3, i - 2, i + 2, i + 3) if j not in near_cut]
-        if not ctx:
+        before = [d[j] for j in (i - 4, i - 3) if j not in near_cut]
+        after = [d[j] for j in (i + 3, i + 4) if j not in near_cut]
+        if not before or not after:
             continue
-        m = float(np.mean(ctx))
-        if m > 1.0 and d[i] < 0.4 * m:
+        # a freeze is a dip with motion on BOTH sides; a calm before a burst (a subject popping in) is not one
+        m = float(min(np.mean(before), np.mean(after)))
+        # flag only near-stops: well below the motion on both sides AND slow in absolute terms (a lull is not a stop)
+        if m > 0.5 and d[i] < 0.4 * m and d[i] < 1.0:
             freezes.append({"frame": i + 1, "change": round(float(d[i]), 2), "around": round(m, 2)})
     tail = tail if tail is not None else int(fps * 2)
     identical = [i + 1 for i, x in enumerate(d) if x < 0.02 and i + 1 < n - tail]
