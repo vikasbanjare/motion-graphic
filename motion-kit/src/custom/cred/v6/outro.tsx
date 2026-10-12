@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
-import { faceTexture } from "../v2/Studio.tsx";
 import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Holo } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
@@ -16,7 +15,107 @@ const LOGO = staticFile("custom/cred-v2/cred-logo.png");
 const CW = 856, CH = 540; // card on the set
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
-const useCardImage = () => useMemo(() => (faceTexture(false, true).image as HTMLCanvasElement).toDataURL("image/png"), []);
+/**
+ * The card face, after the "clarity meets craft" reference: brushed silver, triple-line circuit traces routed round
+ * the card into a large milled chip, a signal-red block with a small black square. No other brand's marks; the CRED
+ * logo is placed on the red block as the official file (see Card).
+ */
+const craftFace = (): string => {
+  const Wc = 2048, Hc = 1292;
+  const c = document.createElement("canvas");
+  c.width = Wc;
+  c.height = Hc;
+  const x = c.getContext("2d")!;
+  const g = x.createLinearGradient(0, 0, Wc, Hc);
+  g.addColorStop(0, "#f3f4f5");
+  g.addColorStop(0.45, "#d9dbde");
+  g.addColorStop(0.7, "#eceef0");
+  g.addColorStop(1, "#cfd2d6");
+  x.fillStyle = g;
+  x.fillRect(0, 0, Wc, Hc);
+  // brushed grain
+  for (let i = 0; i < 3200; i++) {
+    const y = (i * 7919) % Hc, x0 = (i * 104729) % Wc, len = 80 + ((i * 31) % 300);
+    x.strokeStyle = i % 2 ? "rgba(0,0,0,0.035)" : "rgba(255,255,255,0.18)";
+    x.lineWidth = 1;
+    x.beginPath();
+    x.moveTo(x0, y + 0.5);
+    x.lineTo(x0 + len, y + 0.5);
+    x.stroke();
+  }
+  // circuit traces: three parallel lines with rounded corners
+  const trace = (pts: [number, number][], r: number) => {
+    for (let k = 0; k < 3; k++) {
+      const o = (k - 1) * 16;
+      x.beginPath();
+      x.moveTo(pts[0][0], pts[0][1] + o);
+      for (let i = 1; i < pts.length - 1; i++) x.arcTo(pts[i][0] + o, pts[i][1] + o, pts[i + 1][0] + o, pts[i + 1][1] + o, r);
+      const L = pts[pts.length - 1];
+      x.lineTo(L[0] + o, L[1] + o);
+      x.strokeStyle = "rgba(255,255,255,0.7)";
+      x.lineWidth = 6;
+      x.stroke();
+      x.strokeStyle = "#7c8088";
+      x.lineWidth = 3;
+      x.stroke();
+    }
+  };
+  trace([[-40, 330], [1180, 330], [1180, 560], [1470, 560]], 70);
+  trace([[-40, 1060], [1300, 1060], [1300, 760], [1830, 760], [1830, 520], [1790, 520]], 70);
+  // the chip: milled metal, cross grooves, concentric turning marks
+  const cxp = 1630, cyp = 360, cw = 330, ch = 250;
+  const cg = x.createRadialGradient(cxp - 40, cyp - 40, 10, cxp, cyp, 220);
+  cg.addColorStop(0, "#fbfbfc");
+  cg.addColorStop(0.6, "#b9bcc2");
+  cg.addColorStop(1, "#8d9097");
+  x.fillStyle = cg;
+  x.beginPath();
+  x.roundRect(cxp - cw / 2, cyp - ch / 2, cw, ch, 46);
+  x.fill();
+  x.save();
+  x.beginPath();
+  x.roundRect(cxp - cw / 2, cyp - ch / 2, cw, ch, 46);
+  x.clip();
+  for (let r = 18; r < 260; r += 9) {
+    x.strokeStyle = r % 2 ? "rgba(255,255,255,0.35)" : "rgba(60,62,70,0.16)";
+    x.lineWidth = 2;
+    x.beginPath();
+    x.arc(cxp, cyp, r, 0, Math.PI * 2);
+    x.stroke();
+  }
+  x.restore();
+  x.strokeStyle = "#5d6068";
+  x.lineWidth = 5;
+  x.beginPath();
+  x.moveTo(cxp - cw / 2 + 20, cyp - 20);
+  x.bezierCurveTo(cxp - 40, cyp - 30, cxp - 20, cyp - 60, cxp - 14, cyp - ch / 2 + 16);
+  x.moveTo(cxp + cw / 2 - 20, cyp - 20);
+  x.bezierCurveTo(cxp + 40, cyp - 30, cxp + 20, cyp - 60, cxp + 14, cyp - ch / 2 + 16);
+  x.moveTo(cxp - cw / 2 + 20, cyp + 22);
+  x.bezierCurveTo(cxp - 40, cyp + 30, cxp - 20, cyp + 60, cxp - 14, cyp + ch / 2 - 16);
+  x.moveTo(cxp + cw / 2 - 20, cyp + 22);
+  x.bezierCurveTo(cxp + 40, cyp + 30, cxp + 20, cyp + 60, cxp + 14, cyp + ch / 2 - 16);
+  x.stroke();
+  x.strokeStyle = "rgba(60,62,70,0.6)";
+  x.lineWidth = 3;
+  x.beginPath();
+  x.roundRect(cxp - cw / 2, cyp - ch / 2, cw, ch, 46);
+  x.stroke();
+  // red block and black square
+  const rg = x.createLinearGradient(1500, 900, 2048, 1292);
+  rg.addColorStop(0, "#ee4a30");
+  rg.addColorStop(1, "#c9321f");
+  x.fillStyle = rg;
+  x.fillRect(1520, 900, 528, 392);
+  x.fillStyle = "#121214";
+  x.fillRect(1360, 1112, 160, 180);
+  // micro line along the lower trace
+  x.font = "500 22px Lexend";
+  x.fillStyle = "rgba(90,94,102,0.75)";
+  x.fillText("5% REWARDS ON ONLINE SHOPPING  ·  ZERO JOINING FEE", 120, 1015);
+  return c.toDataURL("image/png");
+};
+const useCardImage = () => useMemo(craftFace, []);
 
 /** The card as a glossy flat object: printed face, official logo, a gloss sweep that crosses once. */
 const Card: React.FC<{ src: string; w: number; gloss: number; shadow?: number }> = ({ src, w, gloss, shadow = 1 }) => {
@@ -24,7 +123,8 @@ const Card: React.FC<{ src: string; w: number; gloss: number; shadow?: number }>
   return (
     <div style={{ position: "relative", width: w, height: h, borderRadius: w * 0.04, overflow: "hidden", boxShadow: `0 ${w * 0.04}px ${w * 0.09}px rgba(20,22,30,${0.35 * shadow})` }}>
       <Img src={src} style={{ position: "absolute", inset: 0, width: w, height: h }} />
-      <Img src={LOGO} style={{ position: "absolute", left: w * 0.06, top: w * 0.055, height: w * 0.11 }} />
+      <Img src={LOGO} style={{ position: "absolute", left: w * 0.87, top: h * 0.85, height: h * 0.15, transform: "translate(-50%, -50%)" }} />
+      <div style={{ position: "absolute", inset: 0, borderRadius: w * 0.04, boxShadow: "inset 0 0 0 1.5px rgba(255,255,255,0.8), inset 0 -3px 8px rgba(0,0,0,0.12)" }} />
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(115deg, rgba(255,255,255,0) ${gloss * 140 - 40}%, rgba(255,255,255,0.32) ${gloss * 140 - 25}%, rgba(255,255,255,0) ${gloss * 140 - 10}%)` }} />
     </div>
   );
@@ -72,7 +172,7 @@ const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> 
 
 /** Words that arrive one by one, small sans, as in the reference. */
 const Words: React.FC<{ text: string; F: number; at: number; align: "left" | "right"; x: number }> = ({ text, F, at, align, x }) => (
-  <div style={{ position: "absolute", top: H / 2 - 40, [align]: x, width: 520, textAlign: align, fontFamily: "Lexend", fontWeight: 500, fontSize: 36, lineHeight: 1.2, color: "#17171b", letterSpacing: -0.5 } as React.CSSProperties}>
+  <div style={{ position: "absolute", top: H / 2 - 30, [align]: x, width: 600, textAlign: align, fontFamily: "Lexend", fontWeight: 500, fontSize: 46, whiteSpace: "nowrap", lineHeight: 1.2, color: "#17171b", letterSpacing: -0.5 } as React.CSSProperties}>
     {text.split(" ").map((w, i) => {
       const k = expoOut(ramp(F, at + i * 3, at + i * 3 + 10));
       return (
@@ -89,7 +189,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const src = useCardImage();
   // 1. pull back from the card's foil stripe (the shell's iridescence was the stripe)
   const pull = expoOut(ramp(F, T.studio, T.studio + 18));
-  const stripe = { x: (1380 / 2048) * CW, y: (646 / 1292) * CH };
+  const stripe = { x: (1630 / 2048) * CW, y: (360 / 1292) * CH }; // the pull-back starts on the milled chip
   // 2. the card floats, then tilts back and drops into the phone
   const drop = smooth(ramp(F, 590, 606));
   const phoneIn = expoOut(ramp(F, 586, 606));
@@ -107,6 +207,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const z = 1 + 9 * push * push;
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 50% 45%, #ffffff, #ececea 70%, #e2e2df)" }}>
+      <AbsoluteFill style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.045) 1px, transparent 1px)", backgroundSize: "120px 120px", backgroundPosition: "center" }} />
       <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${W / 2}px ${phoneY + PH / 2}px` }}>
         {F >= 584 ? (
           <div style={{ position: "absolute", left: W / 2 - PW / 2, top: phoneY }}>
@@ -119,6 +220,13 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
               <Card src={src} w={cardW} gloss={ramp(F, 568, 592)} />
             </div>
           </AbsoluteFill>
+        ) : null}
+        {/* red laser scan across the card (the reference's inspection lasers) */}
+        {F > 570 && F < 592 ? (
+          <>
+            <div style={{ position: "absolute", left: 0, right: 0, top: H / 2 - CH / 2 + CH * ramp(F, 571, 590), height: 3, background: "#ff3b22", boxShadow: "0 0 14px 4px rgba(255,70,40,0.55)", opacity: 1 - ramp(F, 586, 591) }} />
+            <div style={{ position: "absolute", top: 0, bottom: 0, left: W / 2 - CW / 2 + CW * ramp(F, 573, 589), width: 3, background: "#ff3b22", boxShadow: "0 0 14px 4px rgba(255,70,40,0.55)", opacity: 1 - ramp(F, 585, 590) }} />
+          </>
         ) : null}
         {F >= 604 ? (
           <>
