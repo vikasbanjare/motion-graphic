@@ -205,9 +205,11 @@ const Env: React.FC = () => {
   return null;
 };
 
-const Card: React.FC<{ f: number }> = ({ f }) => {
+/** calm (v6): the card is already in place, settles for 1.5 s, then holds still (no drift, no glint, no flip). */
+const SETTLE = 36;
+const Card: React.FC<{ f: number; calm?: boolean }> = ({ f, calm }) => {
   const { fps } = useVideoConfig();
-  const lf = f - T.studio;
+  const lf = calm ? Math.min(f - T.studio, SETTLE) : f - T.studio;
   const detailed = useContext(Detail).maps === true;
   const geo = useMemo(() => {
     const body = cardBody();
@@ -224,13 +226,13 @@ const Card: React.FC<{ f: number }> = ({ f }) => {
     return { front, back, body };
   }, [detailed]);
   // entrance carrying the whip energy (down-left), roll 12 -> 0 on a spring
-  const e = interpolate(lf, [0, 31], [0, 1], { ...C, easing: expoOut });
-  const sp = spring({ frame: Math.max(0, lf), fps, config: { stiffness: 158, damping: 25 } });
+  const e = calm ? 1 : interpolate(lf, [0, 31], [0, 1], { ...C, easing: expoOut });
+  const sp = calm ? 1 : spring({ frame: Math.max(0, lf), fps, config: { stiffness: 158, damping: 25 } });
   const roll = THREE.MathUtils.degToRad(12 * (1 - sp));
   const x = lerp(9.5, -4.0, e) - Math.max(0, lf - 31) * 0.004;
   const y = lerp(6.5, 0.3, e);
   const sc = lerp(0.75, 0.92, e);
-  const flip = ramp(f, T.flip, T.lockup, easeIn);
+  const flip = calm ? 0 : ramp(f, T.flip, T.lockup, easeIn);
   const yaw = THREE.MathUtils.degToRad(-24 + lf * 0.12) + Math.PI * flip;
   const pitch = THREE.MathUtils.degToRad(-8);
   const glint = (lf / 24) * 0.6;
@@ -244,9 +246,10 @@ const Card: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-export const StudioTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
-  const lf = useCurrentFrame() - lead;
-  const f = lf + T.studio;
+export const StudioTake: React.FC<{ lead?: number; calm?: boolean; copy?: React.ReactNode }> = ({ lead = 0, calm, copy }) => {
+  const lfRaw = useCurrentFrame() - lead;
+  const lf = calm ? Math.min(lfRaw, SETTLE) : lfRaw;
+  const f = lfRaw + T.studio;
   const glow = ramp(f, 572, 620);
   const copyIn = ramp(f, 572, 588, expoOut);
   const copyOut = ramp(f, T.flip, T.flip + 14, easeIn);
@@ -263,14 +266,16 @@ export const StudioTake: React.FC<{ lead?: number }> = ({ lead = 0 }) => {
         <directionalLight position={[-6 + Math.sin(keyAng) * 3, 5, 6]} intensity={1.8} color="#fff6ea" />
         <directionalLight position={[8, 2, -6]} intensity={2.4} color="#874bf9" />
         <directionalLight position={[-8, 3, -5]} intensity={1.6} color="#ffffff" />
-        <Card f={f} />
+        <Card f={f} calm={calm} />
       </World>
       <Paper id="studio" mottle={0.02} grain={0.06} />
+      {copy ?? (
       <div style={{ position: "absolute", left: 0.585 * 1920 + (0.03 * (1 - copyIn) + 0.05 * copyOut) * 1920, top: 0.4 * 1080, opacity: copyIn * (1 - copyOut) }}>
         <Sheen t={lf / 24} ink="#2e2e33" sheen="#a7a7b4" boxW={800} fontSize={112} fontFamily={SERIF} letterSpacing="-0.03em" opsz>
           zero joining fee
         </Sheen>
       </div>
+      )}
     </AbsoluteFill>
   );
 };

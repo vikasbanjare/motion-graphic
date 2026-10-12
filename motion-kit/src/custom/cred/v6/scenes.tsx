@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useLayoutEffect, useMemo, useRef } from "react";
+import { getStroke } from "perfect-freehand";
 import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import * as THREE from "three";
 import { Cam, Detail, EMesh, RefDepth, World } from "../v2/three.tsx";
-import { Paper } from "../../../ensemble/layers.tsx";
+import { Paper, type Stroke } from "../../../ensemble/layers.tsx";
 import { Field } from "../../../ensemble/paint2d.tsx";
 import { Globe } from "../../../ensemble/globe-type.tsx";
 import { LookCtx, mix, type Look } from "../../../ensemble/look.ts";
-import { circle, mpD, polyD, roundRect, union, xf, type Ring } from "../../../ensemble/paths.ts";
+import { circle, polyD, trim, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, onsetAfter, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
 import { ENGRAVE, Headline, Holo, Lens, M, PAL } from "./kit.tsx";
@@ -28,42 +29,135 @@ const look = (paper: string, ink: string): Look => ({ paper, ink, inkSoft: ink, 
 /** Scale-step: the reference cuts by jumping scale on a beat. Returns the framing index active at frame F. */
 const step = (F: number, cuts: number[]) => cuts.filter((c) => F >= c).length;
 
+// ---- 0. ground: the opening's lines, the field, the green disc (one continuous layer, 0-158) ----------------------
+const wave = (y: number, amp: number, lam: number, phase: number): Pt[] =>
+  Array.from({ length: 120 }, (_, i) => {
+    const x = -80 + (i / 119) * (W + 160);
+    return [x, y + amp * Math.sin(((x + phase) / lam) * Math.PI * 2)] as Pt;
+  });
+// the reference's opening: lines arrive one by one from the left edge, each its own length, ragged ends, then the
+// scale-step to the fine field (same ragged edge), then a pale disc slides in from the right and the scene grows in it
+const LINES = [
+  { dy: 0, s: 2, end: 0.52 },
+  { dy: -36, s: 9, end: 0.4 },
+  { dy: 36, s: 13, end: 0.6 },
+  { dy: -72, s: 18, end: 0.33 },
+  { dy: 72, s: 22, end: 0.47 },
+  { dy: -108, s: 27, end: 0.28 },
+  { dy: 108, s: 31, end: 0.42 },
+];
+/** Pen strokes (perfect-freehand outlines) on a canvas: the SVG version hit a raster-tile duplication glitch here. */
+const CanvasPen: React.FC<{ strokes: Stroke[] }> = ({ strokes }) => {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useLayoutEffect(() => {
+    const x = ref.current?.getContext("2d");
+    if (!x) return;
+    x.clearRect(0, 0, W, H);
+    for (const s of strokes) {
+      const pts = trim(s.pts, s.t0 ?? 0, s.t1 ?? 1);
+      if (pts.length < 2) continue;
+      const n = pts.length;
+      const o = getStroke(pts.map(([px, py], i) => [px, py, 0.45 + 0.55 * Math.sin((Math.PI * (i + 0.5)) / n)]), { size: (s.size ?? 1) * 2.2 * 2.4, thinning: 0.5, smoothing: 0.35, streamline: 0.12, simulatePressure: false, start: { taper: s.taper ?? 30 }, end: { taper: s.taper ?? 30 } });
+      x.fillStyle = s.color ?? "#3a3a3e";
+      x.beginPath();
+      o.forEach(([px, py], i) => (i ? x.lineTo(px, py) : x.moveTo(px, py)));
+      x.closePath();
+      x.fill();
+    }
+  });
+  return <canvas ref={ref} width={W} height={H} style={{ position: "absolute", inset: 0 }} />;
+};
+
+export const Ground: React.FC<{ F: number }> = ({ F }) => {
+  const ink = mix("#3a3a3e", "#b4b6ad", ramp(F, 70, 104));
+  const discR = 1120 * expoOut(ramp(F, 58, 96));
+  const strokes: Stroke[] = F < T.stepC
+    ? LINES.filter((l) => F >= l.s).map((l) => ({ pts: wave(H * 0.45 + l.dy, 13, 460, F * 4 + l.dy * 3), t1: l.end * expoOut(Math.min(1, (F - l.s) / 18)), size: 1.15, color: ink, taper: 30 }))
+    : [];
+  return (
+    <LookCtx.Provider value={look("#ebebe7", "#3a3a3e")}>
+      <AbsoluteFill>
+        <Paper color="#ebebe7" grain={0.4} />
+        {strokes.length ? <CanvasPen strokes={strokes} /> : null}
+        {F >= T.stepC ? <Field f={F} pitch={25.5} lambda={105} amp={6} speed={3.2} width={2.2} color={ink} angle={-3} reveal={0.4 + 0.2 * expoOut(ramp(F, T.stepC, T.stepC + 26))} ragged={150} noiseAmp={0.3} /> : null}
+        {discR > 1 ? (
+          <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
+            <defs>
+              <radialGradient id="gdisc" gradientUnits="userSpaceOnUse" cx={W * 1.12} cy={H * 0.42} r={Math.max(1, discR)}>
+                <stop offset="0.9" stopColor="#d3e0a8" />
+                <stop offset="1" stopColor="#d3e0a8" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx={W * 1.12} cy={H * 0.42} r={discR} fill="url(#gdisc)" />
+          </svg>
+        ) : null}
+      </AbsoluteFill>
+    </LookCtx.Provider>
+  );
+};
+
 // ---- 1. rewards: the fox in the hedge -----------------------------------------------------------------------------
-export const RewardsWorld: React.FC<{ F: number; framing?: number }> = ({ F, framing }) => {
+/** Growth 0..1 of a plant at world x: a wave that follows the green disc in from the right (right side first). */
+const sprout = (F: number, x: number, delay = 0) => {
+  const at = 64 + (6 - x) * 2.6 + delay;
+  const u = Math.min(1, Math.max(0, (F - at) / 22));
+  return u * u * (3 - 2 * u) * (1 + 0.04 * Math.sin(u * Math.PI)); // smoothstep with a breath of overshoot
+};
+/** Foreground branches slide in from the frame edge (0..1), staggered. */
+const sweep = (F: number, delay: number) => expoOut(Math.min(1, Math.max(0, (F - 70 - delay) / 30)));
+/** A plant that grows up from its own base: height first, then width, unfurling from a lean. */
+const Sprout: React.FC<{ at: [number, number, number]; g: number; lean: number; children: React.ReactNode }> = ({ at, g, lean, children }) =>
+  g <= 0.001 ? null : (
+    <group position={at} rotation={[0, 0, 0.45 * lean * (1 - g)]} scale={[0.35 + 0.65 * g, g, 0.35 + 0.65 * g]}>
+      {children}
+    </group>
+  );
+export const RewardsWorld: React.FC<{ F: number; framing?: number; bare?: boolean }> = ({ F, framing, bare }) => {
   const t = F / 24;
   const cut = framing ?? step(F, [onsetAfter(118)]);
-  // two framings: wide (the hedge) then closer on the fox, both drifting
   const cam = cut === 0
-    ? { pos: [0.2 + (F - 72) * 0.004, 1.25, 6.4 - (F - 72) * 0.006] as [number, number, number], target: [0.2, 1.0, 0] as [number, number, number], fov: 34 }
-    : { pos: [0.4 + (F - 118) * 0.006, 1.05, 4.0] as [number, number, number], target: [0.5, 0.9, 0] as [number, number, number], fov: 32 };
-  const grow = (k: number) => expoOut(Math.min(1, Math.max(0, (F - onsetAfter(76, k)) / 10)));
+    ? { pos: [0.2 + (F - 72) * 0.006, 1.25, 6.6 - (F - 72) * 0.008] as [number, number, number], target: [0.2, 1.0, 0] as [number, number, number], fov: 34 }
+    : { pos: [0.4 + (F - 118) * 0.008, 1.05, 4.0 - (F - 118) * 0.004] as [number, number, number], target: [0.5, 0.9, 0] as [number, number, number], fov: 32 };
   return (
     <LookCtx.Provider value={look("#e3ead0", "#9aa08c")}>
       <AbsoluteFill>
-        <Paper color="#e3ead0" grain={0.35} />
-        <Field f={F} pitch={12} lambda={150} amp={4} speed={1.5} width={1.2} color="#b9bdae" opacity={0.85} />
-        <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
-          <path d={polyD(circle(1500, 520, 700, 120), true)} fill="#d3e0a8" />
-        </svg>
+        {bare ? null : (
+          <>
+            <Paper color="#e3ead0" grain={0.35} />
+            <Field f={F} pitch={12} lambda={150} amp={4} speed={1.5} width={1.2} color="#b9bdae" opacity={0.85} />
+            <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
+              <path d={polyD(circle(1500, 520, 700, 120), true)} fill="#d3e0a8" />
+            </svg>
+          </>
+        )}
         <World aa>
           <Cam {...cam} />
           <RefDepth.Provider value={6}>
             <Detail.Provider value={ENGRAVE}>
               {[-5.5, -3.2, -1.0, 1.4, 3.6, 5.8].map((x, i) => (
-                <group key={`b${i}`} scale={grow(i % 3)}>
-                  <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.2} pos={[x, -0.2, -3.2 - (i % 2)]} rot={[0, i * 1.3, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, atmos: 0.35, seed: 10 + i }} />
-                </group>
+                <Sprout key={`b${i}`} at={[x, -0.2, -3.2 - (i % 2)]} g={sprout(F, x)} lean={i % 2 ? 1 : -1}>
+                  <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.2} rot={[0, i * 1.3, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, atmos: 0.35, seed: 10 + i }} />
+                </Sprout>
               ))}
               {[-4.4, -2.0, 2.2, 4.6].map((x, i) => (
-                <group key={`f${i}`} scale={grow(2 + i)}>
-                  <Rig url={M + "GlassVaseFlowers.glb"} size={2.4} pos={[x, -0.1, -1.6]} rot={[0, i * 1.7 + t * 0.05, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, atmos: 0.2, seed: 20 + i }} />
-                </group>
+                <Sprout key={`f${i}`} at={[x, -0.1, -1.6]} g={sprout(F, x, 6)} lean={i % 2 ? -1 : 1}>
+                  <Rig url={M + "GlassVaseFlowers.glb"} size={2.4} rot={[0, i * 1.7 + t * 0.05, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, atmos: 0.2, seed: 20 + i }} />
+                </Sprout>
               ))}
-              <Rig url={M + "Fox.glb"} size={2.4} pos={[-2.2 + (F - 72) * 0.022, 0, -0.2]} rot={[0, Math.PI / 2 - 0.25, 0]} clip="Walk" time={t} m={{ palette: PAL.violet, foil: 0.35 }} foilPhase={t * 0.15} />
-              <Rig url={M + "DiffuseTransmissionPlant.glb"} size={4.4} pos={[-3.0, -0.6, 1.4]} rot={[0, 0.6 + t * 0.02, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, seed: 31 }} />
-              <Rig url={M + "GlassVaseFlowers.glb"} size={2.8} pos={[2.6, -0.3, 1.0]} rot={[0, -0.4, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, seed: 32 }} />
-              <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.8} pos={[3.8, -0.9, 2.2]} rot={[0, 2.2, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, seed: 33 }} />
-              <Rig url={M + "GlassVaseFlowers.glb"} size={2.2} pos={[-1.6, -0.9, 2.6]} rot={[0, 1.1, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, seed: 34 }} />
+              <Rig url={M + "Fox.glb"} size={2.4} pos={[-4.2 + (F - 84) * 0.04, 0, -0.2]} rot={[0, Math.PI / 2 - 0.25, 0]} clip="Walk" time={t} m={{ palette: PAL.violet, foil: 0.35 }} foilPhase={t * 0.15} />
+              {/* foreground branches sweep in from the frame edges (the reference's branch entrance) */}
+              <group position={[-6 * (1 - sweep(F, 0)), -1.2 * (1 - sweep(F, 0)), 0]} rotation={[0, 0, 0.5 * (1 - sweep(F, 0))]}>
+                <Rig url={M + "DiffuseTransmissionPlant.glb"} size={4.4} pos={[-3.0, -0.6, 1.4]} rot={[0, 0.6 + t * 0.02, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, seed: 31 }} />
+              </group>
+              <group position={[5 * (1 - sweep(F, 4)), -1 * (1 - sweep(F, 4)), 0]} rotation={[0, 0, -0.4 * (1 - sweep(F, 4))]}>
+                <Rig url={M + "GlassVaseFlowers.glb"} size={2.8} pos={[2.6, -0.3, 1.0]} rot={[0, -0.4, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, seed: 32 }} />
+              </group>
+              <group position={[6 * (1 - sweep(F, 8)), -1.4 * (1 - sweep(F, 8)), 0]} rotation={[0, 0, -0.5 * (1 - sweep(F, 8))]}>
+                <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.8} pos={[3.8, -0.9, 2.2]} rot={[0, 2.2, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.green, follow: 0, wobble: 0.7, seed: 33 }} />
+              </group>
+              <Sprout at={[-1.6, -0.9, 2.6]} g={sprout(F, -1.6, 14)} lean={1}>
+                <Rig url={M + "GlassVaseFlowers.glb"} size={2.2} rot={[0, 1.1, 0]} keep={(n) => n === "Flowers"} m={{ palette: PAL.violet, seed: 34 }} />
+              </Sprout>
             </Detail.Provider>
           </RefDepth.Provider>
         </World>
@@ -72,25 +166,53 @@ export const RewardsWorld: React.FC<{ F: number; framing?: number }> = ({ F, fra
   );
 };
 
-/** 72-158: opens inside the disc (the opening's match), then the headline. */
+/** 0-158: the ground layer throughout; the world grows inside the green disc from 70. */
 export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
-  const r = F < T.assembly ? 0.56 * H * expoOut(ramp(F, T.wash, T.assembly)) : 0.56 * H + 1500 * expoOut(ramp(F, T.assembly, T.assembly + 16));
-  const d = polyD(circle(W * 0.29 + W * 0.21 * ramp(F, T.assembly, T.assembly + 16), H / 2, Math.max(1, r), 120), true);
   return (
-    <AbsoluteFill style={{ clipPath: `path('${d}')` }}>
-      <RewardsWorld F={F} />
-      <Headline text="5% rewards" sub="on online shopping" grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 98, 112))} />
+    <AbsoluteFill>
+      <Ground F={F} />
+      {F >= 66 ? <RewardsWorld F={F} bare /> : null}
+      {F >= 98 ? <Headline text="5% rewards" sub="on online shopping" grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 98, 112))} /> : null}
     </AbsoluteFill>
   );
 };
 
-// ---- 2. the card: the world becomes the card's print, tilted under a loupe ----------------------------------------
-const CardFace: React.FC<{ F: number; holo: number }> = ({ F, holo }) => (
-  <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, borderRadius: 64, overflow: "hidden", boxShadow: "0 0 0 10px #f2f6e8 inset" }}>
+// ---- 2. the card: the world becomes the card's print, under a loupe -----------------------------------------------
+const STRIP_TEXT = "5% REWARDS ON ONLINE SHOPPING  ·  ZERO JOINING FEE  ·  ";
+
+/** The foil strip: rainbow film, fine guilloche waves, letterspaced copy sliding through it. */
+const Strip: React.FC<{ w: number; h: number; phase: number; slide: number; font: number }> = ({ w, h, phase, slide, font }) => {
+  const rows = 9;
+  return (
+    <div style={{ position: "relative", width: w, height: h, overflow: "hidden" }}>
+      <Holo phase={phase} style={{ inset: 0, mixBlendMode: "normal", opacity: 0.92 }} />
+      <svg width={w} height={h} style={{ position: "absolute", inset: 0, mixBlendMode: "soft-light" }}>
+        {Array.from({ length: rows }, (_, i) => (
+          <path key={i} d={polyD(Array.from({ length: 90 }, (_, k) => [(k / 89) * w, h * ((i + 0.5) / rows) + h * 0.05 * Math.sin((k / 89) * Math.PI * 6 + i * 0.7 + phase * 6)] as Pt))} fill="none" stroke="#ffffff" strokeWidth={Math.max(1, h / 70)} opacity={0.8} />
+        ))}
+      </svg>
+      <div style={{ position: "absolute", top: 0, height: h, display: "flex", alignItems: "center", whiteSpace: "nowrap", transform: `translateX(${-slide}px)`, fontFamily: "Lexend", fontWeight: 500, fontSize: font, letterSpacing: font * 0.32, color: "rgba(255,255,255,0.95)", textShadow: "0 0 2px rgba(60,40,120,0.35)" }}>
+        {STRIP_TEXT.repeat(8)}
+      </div>
+    </div>
+  );
+};
+
+/** The card's print: the rewards world, greened like a note, with the official logo. */
+const Print: React.FC<{ F: number }> = ({ F }) => (
+  <AbsoluteFill>
     <RewardsWorld F={F} framing={1} />
     <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 }} />
-    <Holo phase={holo} style={{ left: 0, top: 560, width: W, height: 120, transform: "skewY(-4deg)" }} />
+  </AbsoluteFill>
+);
+
+const CardFace: React.FC<{ F: number; holo: number }> = ({ F, holo }) => (
+  <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, borderRadius: 64, overflow: "hidden", boxShadow: "0 0 0 10px #f2f6e8 inset" }}>
+    <Print F={F} />
+    <div style={{ position: "absolute", left: 1180, top: -400, transform: "rotate(68deg)", transformOrigin: "0 0" }}>
+      <Strip w={2200} h={96} phase={holo} slide={(F - T.reveal) * 3} font={30} />
+    </div>
     <Img src={LOGO} style={{ position: "absolute", left: 110, top: 90, height: 170 }} />
   </div>
 );
@@ -98,35 +220,46 @@ const CardFace: React.FC<{ F: number; holo: number }> = ({ F, holo }) => (
 export const CardTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
-  // the frame shrinks into the card and tilts back, like a note under a loupe
-  const s = 1 - 0.55 * k;
-  const rx = 38 * k, rz = -9 * k;
-  const holo = (F - T.reveal) / 70;
+  const t = (F - T.reveal) / 24;
+  // the frame shrinks into the card and tilts back, then keeps breathing (slow drift, never frozen)
+  const s = 1 - 0.55 * k + 0.012 * t;
+  const rx = 38 * k + 2.2 * Math.sin(t * 1.3) * k, rz = -9 * k + 1.6 * t * k;
+  const ty = -30 * k + 8 * Math.sin(t * 0.9) * k;
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
       <AbsoluteFill style={{ perspective: 1800 }}>
-        <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transform: `translateY(${-30 * k}px) scale(${s}) rotateX(${rx}deg) rotateZ(${rz}deg)`, transformOrigin: "50% 50%" }}>
-          <CardFace F={Math.min(F, T.reveal + 40)} holo={holo} />
+        <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transform: `translateY(${ty}px) scale(${s}) rotateX(${rx}deg) rotateZ(${rz}deg)`, transformOrigin: "50% 50%" }}>
+          <CardFace F={Math.min(F, T.reveal + 40)} holo={(F - T.reveal) / 70} />
         </div>
       </AbsoluteFill>
       <Lens r={0.62 + 0.4 * (1 - k)} soft={0.18} />
-      {F > T.reveal + 18 ? <Headline text="the CRED IndusInd Bank" sub="RuPay credit card" grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={expoOut(ramp(F, T.reveal + 18, T.reveal + 32))} size={64} top={64} /> : null}
+      {F > T.reveal + 18 ? <Headline text="the CRED IndusInd Bank" sub="RuPay credit card" grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={expoOut(ramp(F, T.reveal + 18, T.reveal + 32))} size={60} top={70} /> : null}
     </AbsoluteFill>
   );
 };
 
-/** 207-298: the loupe pushes into the foil band, then irises into the travel world. */
+/**
+ * 207-298: the reference's zoom is two scale-step cuts on the beat, not one long push:
+ *   view 1  the strip runs straight across the loupe, copy small, print behind it drifting
+ *   view 2  much closer: the strip fills a band of the lens, copy large and sliding, guilloche waves in the film
+ * then the loupe closes and the travel world opens inside it.
+ */
 export const MacroTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
-  const z = 1 + 5 * expoOut(ramp(F, T.macro, T.push + 10)) ** 1.4;
+  const cut = onsetAfter(T.push - 22);
+  const v2 = F >= cut;
+  const t = (F - (v2 ? cut : T.macro)) / 24;
   const iris = 0.62 - 0.5 * expoOut(ramp(F, T.swap - 14, T.swap));
+  const printScale = v2 ? 3.2 + 0.08 * t : 1.7 + 0.06 * t;
+  const stripH = v2 ? 200 : 74;
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
-      <AbsoluteFill style={{ perspective: 1800 }}>
-        <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "50% 58%", transform: `translateY(-30px) scale(${0.45 * z}) rotateX(${38 - 30 * ramp(F, T.macro, T.push)}deg) rotateZ(${-9 + 6 * ramp(F, T.macro, T.push)}deg)` }}>
-          <CardFace F={T.reveal + 40} holo={(F - T.reveal) / 70} />
-        </div>
+      <AbsoluteFill style={{ transform: `scale(${printScale}) translate(${-40 * t}px, ${v2 ? 20 : -10}px) rotate(${v2 ? -2 : 3}deg)`, transformOrigin: "50% 50%" }}>
+        <Print F={T.reveal + 40} />
       </AbsoluteFill>
+      <div style={{ position: "absolute", left: -100, top: H / 2 - stripH / 2 + (v2 ? 0 : 20), transform: `rotate(${v2 ? -2 : 3}deg)` }}>
+        <Strip w={W + 200} h={stripH} phase={(F - T.reveal) / 70} slide={v2 ? 600 + (F - cut) * 9 : (F - T.macro) * 3.5} font={v2 ? 92 : 30} />
+      </div>
       <Lens r={iris} soft={0.18} />
     </AbsoluteFill>
   );
@@ -140,13 +273,13 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const cut = step(F, [onsetAfter(334)]);
   const cam = cut === 0
     ? { pos: [-1.2 + (F - T.swap) * 0.01, 1.6, 7.5] as [number, number, number], target: [0.4, 1.4, -2] as [number, number, number], fov: 36 }
-    : { pos: [0.6 + (F - 334) * 0.008, 1.2, 4.6] as [number, number, number], target: [0.8, 1.0, -1] as [number, number, number], fov: 32 };
+    : { pos: [0.6 + (F - 334) * 0.008, 1.0, 5.4] as [number, number, number], target: [0.8, 1.3, -1] as [number, number, number], fov: 32 };
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
       <AbsoluteFill style={{ clipPath: `circle(${0.12 * H + 1500 * open}px at 50% 50%)` }}>
         <Paper color="#d6d0ea" grain={0.35} />
         <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
-        <Globe cx={W * 0.68} cy={H * 0.5 + 60 - 40 * ramp(F, T.swap, T.matte)} r={430} lon={40 + 30 * ramp(F, T.swap, T.matte)} lat={18} draw={expoOut(ramp(F, T.swap, T.swap + 30))} land="#c3bce4" graticule={0.4} />
+        <Globe cx={W * 0.66} cy={H * 0.58 + 40 - 30 * ramp(F, T.swap, T.matte)} r={380} lon={40 + 30 * ramp(F, T.swap, T.matte)} lat={18} draw={expoOut(ramp(F, T.swap, T.swap + 30))} land="#c3bce4" graticule={0.4} />
         <World aa>
           <Cam {...cam} />
           <RefDepth.Provider value={7}>
@@ -158,104 +291,217 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
             </Detail.Provider>
           </RefDepth.Provider>
         </World>
-        {F > T.tilt ? <Headline text="redeem on flights, hotels" grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={84} /> : null}
+        {F > T.tilt ? <Headline text="redeem on flights, hotels" grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={76} top={150} /> : null}
+        {F > T.matte - 18 ? <Lens r={1.3 - 0.98 * expoOut(ramp(F, T.matte - 18, T.matte))} soft={0.2} /> : null}
       </AbsoluteFill>
     </LookCtx.Provider>
   );
 };
 
-// ---- 4. products: a still life on a colonnade -----------------------------------------------------------------------
-const columnG = new THREE.CylinderGeometry(0.42, 0.46, 4.2, 28, 1);
-const plinthG = new THREE.BoxGeometry(1.7, 1.2, 1.7);
+// ---- 4. products: a rotunda of classical columns ------------------------------------------------------------------
+/** Classical column parts (base mouldings, fluted shaft, echinus + abacus capital), built once. */
+const lathe = (pts: [number, number][]) => new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), 40);
+const COLUMN = (() => {
+  const H0 = 4.4;
+  const base = lathe([[0, 0], [0.62, 0], [0.62, 0.12], [0.58, 0.14], [0.6, 0.2], [0.54, 0.26], [0.5, 0.3], [0.48, 0.34], [0, 0.34]]);
+  const shaft = new THREE.CylinderGeometry(0.4, 0.46, H0 - 0.9, 48, 12, true);
+  const pos = shaft.getAttribute("position") as THREE.BufferAttribute;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const a = Math.atan2(z, x), r = Math.hypot(x, z);
+    const k = 1 - 0.06 * Math.max(0, Math.cos(a * 20)); // 20 flutes
+    pos.setXYZ(i, Math.cos(a) * r * k, pos.getY(i), Math.sin(a) * r * k);
+  }
+  shaft.computeVertexNormals();
+  shaft.translate(0, 0.34 + (H0 - 0.9) / 2, 0);
+  const cap = lathe([[0, H0 - 0.56], [0.42, H0 - 0.56], [0.46, H0 - 0.5], [0.56, H0 - 0.38], [0.62, H0 - 0.3], [0, H0 - 0.3]]);
+  const abacus = new THREE.BoxGeometry(1.36, 0.3, 1.36);
+  abacus.translate(0, H0 - 0.15, 0);
+  return { base, shaft, cap, abacus, h: H0 };
+})();
+const RING_R = 4.6;
+const beamG = new THREE.TorusGeometry(RING_R, 0.32, 10, 96);
+const plinthG = new THREE.CylinderGeometry(0.9, 0.98, 1.1, 40);
+const floorTex = (() => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 1024;
+  const x = c.getContext("2d")!;
+  x.fillStyle = "#e9e1d6";
+  x.fillRect(0, 0, 1024, 1024);
+  x.translate(512, 512);
+  x.strokeStyle = "#8a6f5a";
+  for (let i = 0; i < 96; i++) {
+    x.lineWidth = i % 4 ? 1 : 2.5;
+    x.beginPath();
+    x.moveTo(0, 0);
+    const a = (i / 96) * Math.PI * 2;
+    x.lineTo(Math.cos(a) * 520, Math.sin(a) * 520);
+    x.stroke();
+  }
+  for (let r = 40; r < 520; r += 34) {
+    x.lineWidth = 2;
+    x.beginPath();
+    for (let k = 0; k <= 360; k++) {
+      const a = (k / 360) * Math.PI * 2;
+      const rr = r + 6 * Math.sin(a * 12 + r * 0.05);
+      if (k) x.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+      else x.moveTo(Math.cos(a) * rr, Math.sin(a) * rr);
+    }
+    x.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
+})();
+const floorG = new THREE.CircleGeometry(9, 96);
 
-const slabs = (F: number): string => {
-  const rs: Ring[] = [0, 1, 2].map((i) => {
-    const k = expoOut(ramp(F, T.matte + i * 2, T.matte + 11 + i * 2));
-    const x = W + 200 - (W + 1400) * k;
-    return xf(roundRect(x + i * 260, -300 + i * 120, 900, 1500, 40, 6), 1, -0.32, 0, 0, x, 0);
-  });
-  return mpD(union(...rs));
+const Column: React.FC<{ pos: [number, number, number]; seed: number }> = ({ pos, seed }) => {
+  const m = { palette: PAL.terra, seed, angleDeg: 6 };
+  return (
+    <group position={pos}>
+      <EMesh g={COLUMN.base} m={m} />
+      <EMesh g={COLUMN.shaft} m={{ ...m, follow: 0.6 }} double />
+      <EMesh g={COLUMN.cap} m={m} />
+      <EMesh g={COLUMN.abacus} m={m} />
+    </group>
+  );
 };
 
 export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
-  const cut = step(F, [onsetAfter(440)]);
-  const cam = cut === 0
-    ? { pos: [0 + (F - T.matte) * 0.006, 2.6, 9.0 - (F - T.matte) * 0.01] as [number, number, number], target: [0, 2.3, 0] as [number, number, number], fov: 36 }
-    : { pos: [1.4 + (F - 440) * 0.006, 2.5, 5.0] as [number, number, number], target: [1.0, 2.5, 0] as [number, number, number], fov: 32 };
+  // overhead (the ring of capitals, as the reference opens its temple), then the crane tilts down to eye level
+  const crane = expoOut(ramp(F, T.products + 4, T.products + 40));
+  const cut = step(F, [onsetAfter(446)]);
+  const orbit = 0.18 + (F - T.products) * 0.0016;
+  const eye: [number, number, number] = [Math.sin(orbit) * 9.2, 2.4, Math.cos(orbit) * 9.2];
+  const over: [number, number, number] = [0.01, 15, 0.4];
+  const pos: [number, number, number] = cut === 0 ? [over[0] + (eye[0] - over[0]) * crane, over[1] + (eye[1] - over[1]) * crane, over[2] + (eye[2] - over[2]) * crane] : [1.6 + (F - 446) * 0.008, 2.3, 5.6];
+  const target: [number, number, number] = cut === 0 ? [0, 2.2 * crane, 0] : [0.6, 2.0, 0];
   const items: [string, number, number, number, number, Partial<{ foil: number }>][] = [
-    ["BoomBox.glb", -3.1, 1.7, 0.3, onsetAfter(T.products + 2, 0), {}],
-    ["WaterBottle.glb", -1.05, 1.9, -0.5, onsetAfter(T.products + 2, 2), {}],
-    ["MaterialsVariantsShoe.glb", 1.05, 1.8, 0.4, onsetAfter(T.products + 2, 4), { foil: 0.6 }],
-    ["Avocado.glb", 3.1, 1.3, -0.4, onsetAfter(T.products + 2, 6), {}],
+    ["BoomBox.glb", -2.2, 1.5, 0.9, onsetAfter(T.products + 30, 0), {}],
+    ["WaterBottle.glb", -0.7, 1.7, -1.4, onsetAfter(T.products + 30, 1), {}],
+    ["MaterialsVariantsShoe.glb", 0.8, 1.7, 1.1, onsetAfter(T.products + 30, 2), { foil: 0.6 }],
+    ["Avocado.glb", 2.2, 1.2, -0.7, onsetAfter(T.products + 30, 3), {}],
   ];
-  const content = (
+  const cols = Array.from({ length: 10 }, (_, i) => (i / 10) * Math.PI * 2 + 0.31);
+  return (
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
       <AbsoluteFill>
         <Paper color="#f1d9c6" grain={0.35} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
-          <Cam {...cam} />
+          <Cam pos={pos} target={target} fov={cut === 0 ? 38 : 32} />
           <RefDepth.Provider value={8}>
             <Detail.Provider value={ENGRAVE}>
-              {[-4.6, -2.0, 2.0, 4.6].map((x, i) => (
-                <EMesh key={`c${i}`} g={columnG} m={{ palette: PAL.terra, seed: 60 + i, angleDeg: 8, atmos: 0.25 }} pos={[x * 1.15, 2.1, -4.2]} />
+              <EMesh g={floorG} m={{ palette: PAL.cream, seed: 59, map: floorTex, mapAmt: 0.85, angleDeg: 4 } as never} rot={[-Math.PI / 2, 0, 0]} />
+              {cols.map((a, i) => (
+                <Column key={i} pos={[Math.cos(a) * RING_R, 0, Math.sin(a) * RING_R]} seed={60 + i} />
               ))}
+              <EMesh g={beamG} m={{ palette: PAL.terra, seed: 58, angleDeg: 6 }} pos={[0, COLUMN.h + 0.3, 0]} rot={[Math.PI / 2, 0, 0]} />
               {items.map(([, x, , z], i) => (
-                <EMesh key={`p${i}`} g={plinthG} m={{ palette: PAL.cream, seed: 70 + i, angleDeg: 10 }} pos={[x, 0.6, z]} />
+                <EMesh key={`p${i}`} g={plinthG} m={{ palette: PAL.cream, seed: 70 + i, angleDeg: 10 }} pos={[x, 0.55, z]} />
               ))}
               {items.map(([url, x, size, z, at, extra], i) => {
                 const p = F >= at ? pop(F, at) : 0;
                 return p > 0 ? (
-                  <Rig key={url} url={M + url} size={size} pos={[x, 1.2 + 2.5 * (1 - p), z]} rot={[0, 0.5 + t * 0.15 + i, 0]} m={{ palette: i % 2 ? PAL.terra : PAL.cream, seed: 80 + i, ...extra }} foilPhase={t * 0.2} />
+                  <Rig key={url} url={M + url} size={size} pos={[x, 1.1 + 2.5 * (1 - p), z]} rot={[0, 0.5 + t * 0.15 + i, 0]} m={{ palette: i % 2 ? PAL.terra : PAL.cream, seed: 80 + i, ...extra }} foilPhase={t * 0.2} />
                 ) : null;
               })}
             </Detail.Provider>
           </RefDepth.Provider>
         </World>
-        {F > T.products + 30 ? <Headline text="2,000+ products" sub="on CRED store" grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 30, T.products + 44))} /> : null}
+        {F > T.products + 42 ? (
+          <>
+            {/* a soft paper plate behind the headline so the columns never cut through the words */}
+            <AbsoluteFill style={{ background: "radial-gradient(ellipse 30% 15% at 50% 19%, rgba(241,217,198,0.96), rgba(241,217,198,0.85) 55%, rgba(241,217,198,0) 100%)", opacity: expoOut(ramp(F, T.products + 40, T.products + 52)) }} />
+            <Headline text="2,000+ products" sub="on CRED store" grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} top={140} />
+          </>
+        ) : null}
+        {/* the loupe from the travel world opens out as the crane comes down */}
+        <Lens r={0.32 + 1.1 * expoOut(ramp(F, T.products + 10, T.products + 40))} soft={0.2} />
       </AbsoluteFill>
     </LookCtx.Provider>
   );
-  return F < T.products ? <AbsoluteFill style={{ clipPath: `path(evenodd, '${slabs(F)}')` }}>{content}</AbsoluteFill> : content;
 };
 
-// ---- 5. zero joining fee: an abalone opening in the deep ------------------------------------------------------------
+// ---- 5. zero joining fee: ₹0 rises from an abalone like a pearl -------------------------------------------------
+const Pearl: React.FC<{ F: number }> = ({ F }) => {
+  const k = expoOut(ramp(F, T.card + 22, T.card + 44));
+  const ph = (F - T.card) / 60;
+  return (
+    <AbsoluteFill style={{ alignItems: "center", pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 120 + 260 * (1 - k),
+          fontFamily: "Newsreader",
+          fontWeight: 700,
+          fontSize: 300,
+          lineHeight: 1,
+          letterSpacing: -8,
+          background: `linear-gradient(110deg, #9d8cff ${-30 + ph * 100}%, #7fe0f0 ${0 + ph * 100}%, #b8f5c4 ${25 + ph * 100}%, #fff0a8 ${50 + ph * 100}%, #ffb8d8 ${75 + ph * 100}%, #9d8cff ${105 + ph * 100}%)`,
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+          opacity: Math.min(1, k * 1.5),
+          transform: `scale(${0.6 + 0.4 * k})`,
+          filter: "drop-shadow(0 6px 14px rgba(30,40,60,0.25))",
+        }}
+      >
+        ₹0
+      </div>
+      <div style={{ position: "absolute", top: 440, fontFamily: "Newsreader", fontWeight: 600, fontSize: 64, color: "#2a3340", opacity: expoOut(ramp(F, T.card + 34, T.card + 46)), letterSpacing: -1 }}>joining fee</div>
+    </AbsoluteFill>
+  );
+};
+
 export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
   const k = expoOut(ramp(F, T.card, T.card + 20));
   const cut = step(F, [onsetAfter(520)]);
-  const whip = ramp(F, T.whip - 4, T.studio);
+  // the dive: the camera falls into the shell's iridescence, which becomes the card's foil stripe
+  const dive = ramp(F, T.whip - 14, T.studio);
+  const z = 1 + 9 * dive ** 2.4;
   const cam = cut === 0
-    ? { pos: [0, 2.0, 7.2] as [number, number, number], target: [0, 1.2, 0] as [number, number, number], fov: 34 }
-    : { pos: [0.4, 2.0, 5.0] as [number, number, number], target: [0, 1.3, 0] as [number, number, number], fov: 30 };
-  const fish = useMemo(() => Array.from({ length: 7 }, (_, i) => ({ y: 1.1 + (i % 3) * 0.45, z: -2.5 - (i % 2) * 1.2, ph: i * 0.9 })), []);
+    ? { pos: [0, 2.0, 7.6] as [number, number, number], target: [0, 1.5, 0] as [number, number, number], fov: 34 }
+    : { pos: [0.4, 2.2, 5.6] as [number, number, number], target: [0, 1.8, 0] as [number, number, number], fov: 30 };
+  const fish = useMemo(() => Array.from({ length: 7 }, (_, i) => ({ x0: -7.5 + ((i * 2.3) % 5), v: 0.55 + 0.12 * ((i * 7) % 3), y: 0.35 + ((i * 5) % 3) * 0.28, z: -2.2 - (i % 3) * 0.9, ph: i * 1.7, s: 1.0 + 0.2 * (i % 2) })), []);
   return (
     <LookCtx.Provider value={look("#dfe4e0", "#58636a")}>
-      <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 1600 * k)}px at 50% 60%)`, transform: `translateX(${-2200 * whip * whip}px)` }}>
-        <Paper color="#dfe4e0" grain={0.35} />
-        <Field f={F} pitch={12} lambda={160} amp={4} speed={2} width={1.1} color="#c3cbc8" opacity={0.9} />
-        <World aa>
-          <Cam {...cam} />
-          <RefDepth.Provider value={7}>
-            <Detail.Provider value={ENGRAVE}>
-              {fish.map((p, i) => (
-                <Rig key={i} url={M + "BarramundiFish.glb"} size={1.2} pos={[-5 + ((F - T.card) * 0.04 + p.ph * 1.6) % 10, p.y, p.z]} rot={[0, Math.PI / 2, 0.05 * Math.sin(t * 6 + p.ph)]} m={{ palette: PAL.slate, atmos: 0.3, seed: 90 + i }} />
-              ))}
-              <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.6} pos={[-3.4, -0.6, 0.6]} rot={[0, 0.4, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.slate, follow: 0, wobble: 0.7, seed: 98 }} />
-              <Rig url={M + "IridescenceAbalone.glb"} size={2.6} pos={[0.2, 0, 0]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
-            </Detail.Provider>
-          </RefDepth.Provider>
-        </World>
-        {F > T.card + 18 ? <Headline text="zero joining fee" grad={["#1f2a8a", "#2f7f86", "#5a2a8a"]} t={expoOut(ramp(F, T.card + 18, T.card + 32))} /> : null}
-      </AbsoluteFill>
-      {whip > 0 ? (
-        <AbsoluteFill style={{ opacity: Math.min(1, whip * 2.2) }}>
-          <Field f={F} pitch={14} lambda={4000} amp={0} speed={0} width={2} color={mix("#dfe4e0", "#58636a", 0.5)} />
+      <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 1600 * k)}px at 50% 60%)` }}>
+        <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: "50% 74%" }}>
+          <Paper color="#dfe4e0" grain={0.35} />
+          <Field f={F} pitch={12} lambda={160} amp={4} speed={2} width={1.1} color="#c3cbc8" opacity={0.9} />
+          <World aa>
+            <Cam {...cam} />
+            <RefDepth.Provider value={7}>
+              <Detail.Provider value={ENGRAVE}>
+                {fish.map((p, i) => {
+                  // each fish swims its own gentle curve, faces where it is going, and sways its body
+                  const tt = (F - T.card) / 24 + p.ph;
+                  const x = p.x0 + p.v * (F - T.card) / 24;
+                  const y = p.y + 0.18 * Math.sin(tt * 0.9);
+                  const z = p.z + 0.5 * Math.sin(tt * 0.55 + p.ph);
+                  const dz = 0.5 * 0.55 * Math.cos(tt * 0.55 + p.ph);
+                  const yaw = Math.atan2(-dz, p.v) + 0.12 * Math.sin(tt * 7 + p.ph);
+                  return <Rig key={i} url={M + "BarramundiFish.glb"} size={p.s} pos={[x, y, z]} rot={[0, Math.PI / 2 + yaw, 0.1 * Math.cos(tt * 0.9)]} m={{ palette: PAL.slate, atmos: 0.25 + 0.1 * (i % 2), seed: 90 + i }} />;
+                })}
+                <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.6} pos={[-3.4, -0.6, 0.6]} rot={[0, 0.4, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.slate, follow: 0, wobble: 0.7, seed: 98 }} />
+                <Rig url={M + "IridescenceAbalone.glb"} size={2.6} pos={[0.2, 0, 0]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
+              </Detail.Provider>
+            </RefDepth.Provider>
+          </World>
         </AbsoluteFill>
-      ) : null}
+        <AbsoluteFill style={{ opacity: 1 - ramp(F, T.whip - 14, T.whip - 4) }}>
+          <Pearl F={F} />
+        </AbsoluteFill>
+        {/* the iridescence floods the frame */}
+        <AbsoluteFill style={{ opacity: ramp(F, T.whip - 6, T.studio - 2) }}>
+          <Holo phase={(F - T.card) / 60} style={{ inset: 0, mixBlendMode: "normal", opacity: 1 }} />
+        </AbsoluteFill>
+      </AbsoluteFill>
     </LookCtx.Provider>
   );
 };
