@@ -18,13 +18,21 @@ THREE.ColorManagement.enabled = false;
 
 export type Pal = [string, number][];
 
+// skinning chunks: a no-op on plain meshes, and lets rigged glTF characters animate under the engraving
 const vert = /* glsl */ `
+#include <common>
+#include <skinning_pars_vertex>
 varying vec3 vNormalV; varying vec3 vPosV; varying vec3 vPosO; varying vec2 vUv;
 varying vec4 vOrigin; // xy = origin in NDC, z = origin view depth
 void main(){
+  #include <beginnormal_vertex>
+  #include <skinbase_vertex>
+  #include <skinnormal_vertex>
+  #include <begin_vertex>
+  #include <skinning_vertex>
   vUv = uv; vPosO = position;
-  vNormalV = normalize(normalMatrix * normal);
-  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  vNormalV = normalize(normalMatrix * objectNormal);
+  vec4 mv = modelViewMatrix * vec4(transformed, 1.0);
   vPosV = mv.xyz;
   vec4 o = modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0);
   vec4 oc = projectionMatrix * o;
