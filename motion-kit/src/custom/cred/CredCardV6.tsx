@@ -5,6 +5,7 @@ import { Lockup } from "./v2/Lockup.tsx";
 import { useV6Fonts } from "./v6/LookTest.tsx";
 import { CardTake, MATCH, OPEN, ProductsTake, RewardsTake, ShellTake, TravelTake } from "./v6/scenes.tsx";
 import { Outro } from "./v6/outro.tsx";
+import { CopyProvider, CRED_COPY, type FilmCopy } from "./v6/copy.tsx";
 
 /**
  * CRED v6: rebuilt from the reference diagnosis (docs/research/cred-v6-diagnosis.md).
@@ -19,9 +20,11 @@ const Drift: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <AbsoluteFill style={{ transform: `scale(${1 + 0.0016 * f})` }}>{children}</AbsoluteFill>;
 };
 
-export const CredCardV6: React.FC = () => {
+/** The CRED v6.4 film. `copy` swaps every word, number and the logo (skills/cred-film); `score` swaps the soundtrack. */
+export const CredCardV6: React.FC<{ copy?: FilmCopy; score?: string }> = ({ copy = CRED_COPY, score = "custom/cred-v6/score.wav" }) => {
   useV6Fonts();
   return (
+    <CopyProvider copy={copy}>
     <AbsoluteFill style={{ background: "#000" }}>
       <Sequence durationInFrames={T.reveal + 2} name="opening lines, field, green disc; 5% rewards: fox in the hedge">
         <RewardsTake from={0} />
@@ -43,10 +46,11 @@ export const CredCardV6: React.FC = () => {
       </Sequence>
       <Sequence from={T.lockup - 6} durationInFrames={T.end - T.lockup + 6} name="lockup (official logo file); overlaps the push so no frame is dead black">
         <Drift>
-          <Lockup />
+          <Lockup logo={copy.logo} line={copy.lockup} />
         </Drift>
       </Sequence>
-      <Audio src={staticFile("custom/cred-v6/score.wav")} />
+      <Audio src={staticFile(score)} />
     </AbsoluteFill>
+    </CopyProvider>
   );
 };

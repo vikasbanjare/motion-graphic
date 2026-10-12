@@ -9,7 +9,9 @@ import { C, SANS, T, expoOut, ramp } from "./look.ts";
  */
 const LOGO = staticFile("custom/cred-v2/cred-logo.png"); // 192 x 228
 
-export const Lockup: React.FC = () => {
+export const Lockup: React.FC<{ logo?: string; line?: string }> = ({ logo, line = "IndusInd Bank RuPay credit card" }) => {
+  const src = logo ? staticFile(logo) : LOGO;
+  const fitBox = !!logo && logo !== "custom/cred-v2/cred-logo.png";
   const lf = useCurrentFrame();
   const f = lf + T.lockup;
   const swing = interpolate(lf, [2, 8], [90, 0], { ...C, easing: expoOut });
@@ -18,15 +20,15 @@ export const Lockup: React.FC = () => {
   const nameIn = ramp(lf, 9, 19, (t) => t);
   const fade = 1 - ramp(f, 700, 713, (t) => t);
   const h = 214; // logo box height (emblem ~10.8 % H)
-  const w = (h * 192) / 228;
+  const w = fitBox ? h * 2.4 : (h * 192) / 228; // another brand's logo: a wide box, the file fitted inside it
   const drift = 1 + lf * 0.0006;
-  const mask = { WebkitMaskImage: `url(${LOGO})`, maskImage: `url(${LOGO})`, WebkitMaskSize: "100% 100%", maskSize: "100% 100%" } as React.CSSProperties;
+  const mask = { WebkitMaskImage: `url(${src})`, maskImage: `url(${src})`, WebkitMaskSize: fitBox ? "contain" : "100% 100%", maskSize: fitBox ? "contain" : "100% 100%", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskPosition: "center", maskPosition: "center" } as React.CSSProperties;
   return (
     <AbsoluteFill style={{ background: "#000", opacity: 1 }}>
       <AbsoluteFill style={{ opacity: fade, transform: `scale(${drift})` }}>
         <div style={{ position: "absolute", left: 960 - w / 2, top: 0.43 * 1080 - h / 2, width: w, height: h, perspective: 700, opacity: lf >= 2 ? 1 : 0 }}>
           <div style={{ position: "absolute", inset: 0, transform: `rotateY(${swing}deg)`, transformOrigin: "90% 50%" }}>
-            <Img src={LOGO} style={{ position: "absolute", inset: 0, width: w, height: h, opacity: 1 - metal }} />
+            <Img src={src} style={{ position: "absolute", inset: 0, width: w, height: h, objectFit: "contain", opacity: 1 - metal }} />
             <div style={{ position: "absolute", inset: 0, ...mask, opacity: metal, background: `linear-gradient(${110 + lf * 4}deg, #4d4d4d 0%, #bdbdbd 30%, #8f8f8f 52%, #e0e0e0 72%, #6a6a6a 100%)` }} />
           </div>
         </div>
@@ -45,7 +47,7 @@ export const Lockup: React.FC = () => {
             opacity: nameIn,
           }}
         >
-          IndusInd Bank RuPay credit card
+          {line}
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

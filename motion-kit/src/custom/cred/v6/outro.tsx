@@ -3,6 +3,7 @@ import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Holo } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
+import { fit, useCopy, type FilmCopy } from "./copy.tsx";
 
 /**
  * Outro (561-645), after the "Milestones on CRED" reference: a clean white set, the card as a glossy flat object,
@@ -11,7 +12,6 @@ import { T } from "../v5/looks.ts";
  * Copy is limited to the approved claims; the logo is the official file, unmodified.
  */
 const W = 1920, H = 1080;
-const LOGO = staticFile("custom/cred-v2/cred-logo.png");
 const CW = 856, CH = 540; // card on the set
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
@@ -20,7 +20,7 @@ const smooth = (t: number) => t * t * (3 - 2 * t);
  * the card into a large milled chip, a signal-red block with a small black square. No other brand's marks; the CRED
  * logo is placed on the red block as the official file (see Card).
  */
-const craftFace = (): string => {
+const craftFace = (print: string): string => {
   const Wc = 2048, Hc = 1292;
   const c = document.createElement("canvas");
   c.width = Wc;
@@ -112,10 +112,10 @@ const craftFace = (): string => {
   // micro line along the lower trace
   x.font = "500 22px Lexend";
   x.fillStyle = "rgba(90,94,102,0.75)";
-  x.fillText("5% REWARDS ON ONLINE SHOPPING  ·  ZERO JOINING FEE", 120, 1015);
+  x.fillText(print, 120, 1015);
   return c.toDataURL("image/png");
 };
-const useCardImage = () => useMemo(craftFace, []);
+const useCardImage = (print: string) => useMemo(() => craftFace(print), [print]);
 
 /** The card as a glossy flat object: printed face, official logo, a gloss sweep that crosses once. */
 const Card: React.FC<{ src: string; w: number; gloss: number; shadow?: number }> = ({ src, w, gloss, shadow = 1 }) => {
@@ -123,7 +123,7 @@ const Card: React.FC<{ src: string; w: number; gloss: number; shadow?: number }>
   return (
     <div style={{ position: "relative", width: w, height: h, borderRadius: w * 0.04, overflow: "hidden", boxShadow: `0 ${w * 0.04}px ${w * 0.09}px rgba(20,22,30,${0.35 * shadow})` }}>
       <Img src={src} style={{ position: "absolute", inset: 0, width: w, height: h }} />
-      <Img src={LOGO} style={{ position: "absolute", left: w * 0.87, top: h * 0.85, height: h * 0.15, transform: "translate(-50%, -50%)" }} />
+      <Img src={staticFile(useCopy().logo)} style={{ position: "absolute", left: w * 0.87, top: h * 0.85, height: h * 0.15, maxWidth: w * 0.21, objectFit: "contain", transform: "translate(-50%, -50%)" }} />
       <div style={{ position: "absolute", inset: 0, borderRadius: w * 0.04, boxShadow: "inset 0 0 0 1.5px rgba(255,255,255,0.8), inset 0 -3px 8px rgba(0,0,0,0.12)" }} />
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(115deg, rgba(255,255,255,0) ${gloss * 140 - 40}%, rgba(255,255,255,0.32) ${gloss * 140 - 25}%, rgba(255,255,255,0) ${gloss * 140 - 10}%)` }} />
     </div>
@@ -135,7 +135,8 @@ const PW = 430, PH = 880;
 const SLOT = { x: 24, y: 150, w: PW - 2 * 18 - 48 }; // card slot inside the screen
 const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> = ({ src, F, dark, cardIn }) => {
   const row = (i: number) => expoOut(ramp(F, 609 + i * 6, 619 + i * 6));
-  const rows = ["5% rewards on online shopping", "zero joining fee", "redeem on flights, hotels and 2,000+ products on CRED store"];
+  const copy: FilmCopy = useCopy();
+  const rows = copy.outro.rows;
   return (
     <div style={{ position: "relative", width: PW, height: PH, borderRadius: 74, background: "linear-gradient(135deg, #d9d9dd, #8d8d93 40%, #e6e6ea 60%, #a6a6ac)", padding: 6, boxShadow: "0 40px 90px rgba(20,22,30,0.28), 0 10px 24px rgba(20,22,30,0.18)" }}>
       {/* side buttons */}
@@ -147,13 +148,13 @@ const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> 
           {/* status bar + island */}
           <div style={{ position: "absolute", left: 30, top: 18, fontFamily: "Lexend", fontWeight: 500, fontSize: 17, color: "#f2f2f2" }}>9:41</div>
           <div style={{ position: "absolute", left: "50%", top: 12, width: 118, height: 34, marginLeft: -59, borderRadius: 20, background: "#0b0b0d" }} />
-          <div style={{ position: "absolute", left: 24, top: 82, fontFamily: "Newsreader", fontWeight: 600, fontSize: 30, color: "#f4f4f2", letterSpacing: -0.5 }}>your card</div>
+          <div style={{ position: "absolute", left: 24, top: 82, fontFamily: "Newsreader", fontWeight: 600, fontSize: 30, color: "#f4f4f2", letterSpacing: -0.5 }}>{copy.outro.screen}</div>
           {/* card slot */}
           <div style={{ position: "absolute", left: SLOT.x, top: SLOT.y, opacity: cardIn }}>
             <Card src={src} w={SLOT.w} gloss={ramp(F, 606, 640)} shadow={0.6} />
           </div>
           <div style={{ position: "absolute", left: 24, top: SLOT.y + (SLOT.w * CH) / CW + 26, right: 24, opacity: expoOut(ramp(F, 606, 616)) }}>
-            <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 19, color: "#f4f4f2" }}>CRED IndusInd Bank RuPay credit card</div>
+            <div style={{ fontFamily: "Lexend", fontWeight: 600, fontSize: 19, color: "#f4f4f2" }}>{copy.outro.title}</div>
             <div style={{ height: 1, background: "rgba(255,255,255,0.12)", margin: "18px 0 10px" }} />
             {rows.map((r, i) => (
               <div key={r} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 0", opacity: row(i), transform: `translateY(${(1 - row(i)) * 10}px)` }}>
@@ -174,7 +175,7 @@ const Phone: React.FC<{ src: string; F: number; dark: number; cardIn: number }> 
 
 /** Words that arrive one by one, small sans, as in the reference. */
 const Words: React.FC<{ text: string; F: number; at: number; align: "left" | "right"; x: number }> = ({ text, F, at, align, x }) => (
-  <div style={{ position: "absolute", top: H / 2 - 30, [align]: x, width: 600, textAlign: align, fontFamily: "Lexend", fontWeight: 500, fontSize: 46, whiteSpace: "nowrap", lineHeight: 1.2, color: "#17171b", letterSpacing: -0.5 } as React.CSSProperties}>
+  <div style={{ position: "absolute", top: H / 2 - 30, [align]: x, width: 600, textAlign: align, fontFamily: "Lexend", fontWeight: 500, fontSize: fit(text, 46, 600, 0.5), whiteSpace: "nowrap", lineHeight: 1.2, color: "#17171b", letterSpacing: -0.5 } as React.CSSProperties}>
     {text.split(" ").map((w, i) => {
       const k = expoOut(ramp(F, at + i * 3, at + i * 3 + 10));
       return (
@@ -188,7 +189,8 @@ const Words: React.FC<{ text: string; F: number; at: number; align: "left" | "ri
 
 export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
-  const src = useCardImage();
+  const copy = useCopy();
+  const src = useCardImage(copy.cardPrint);
   // 1. pull back from the card's foil stripe (the shell's iridescence was the stripe)
   const pull = expoOut(ramp(F, T.studio, T.studio + 18));
   const stripe = { x: (1630 / 2048) * CW, y: (360 / 1292) * CH }; // the pull-back starts on the milled chip
@@ -239,8 +241,8 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
         ) : null}
         {F >= 604 ? (
           <>
-            <Words text="the CRED IndusInd Bank" F={F} at={606} align="right" x={W / 2 + PW / 2 + 70} />
-            <Words text="RuPay credit card." F={F} at={614} align="left" x={W / 2 + PW / 2 + 70} />
+            <Words text={copy.outro.left} F={F} at={606} align="right" x={W / 2 + PW / 2 + 70} />
+            <Words text={copy.outro.right} F={F} at={614} align="left" x={W / 2 + PW / 2 + 70} />
           </>
         ) : null}
       </AbsoluteFill>

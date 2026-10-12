@@ -12,6 +12,7 @@ import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
 import { ENGRAVE, Headline, Holo, Lens, M, PAL } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
+import { fit, useCopy } from "./copy.tsx";
 
 /**
  * CRED v6 worlds. Every subject is a licensed 3D model (public/custom/cred-v6/models/CREDITS.md) drawn through the
@@ -23,7 +24,6 @@ import { T } from "../v5/looks.ts";
  *   zero joining fee                an abalone shell opening in the deep, all foil (nothing to pay to get in)
  */
 const W = 1920, H = 1080;
-const LOGO = staticFile("custom/cred-v2/cred-logo.png");
 const look = (paper: string, ink: string): Look => ({ paper, ink, inkSoft: ink, washes: [paper], accent: ink, weight: 2.2, grain: 0.32, seed: 5 });
 
 /** Scale-step: the reference cuts by jumping scale on a beat. Returns the framing index active at frame F. */
@@ -170,6 +170,7 @@ export const RewardsWorld: React.FC<{ F: number; framing?: number; bare?: boolea
 /** 0-158: the ground layer throughout; the world grows inside the green disc from 70. */
 export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
+  const copy = useCopy();
   return (
     <AbsoluteFill>
       {/* the opening pulls back as the lines race in, then scale-steps to the field on the beat */}
@@ -177,14 +178,13 @@ export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
         <Ground F={F} />
       </AbsoluteFill>
       {F >= 30 ? <RewardsWorld F={F} bare /> : null}
-      {F >= 62 ? <Headline text="5% rewards" sub="on online shopping" grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 62, 76))} /> : null}
+      {F >= 62 ? <Headline text={copy.claim1.head} sub={copy.claim1.sub} grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={expoOut(ramp(F, 62, 76))} size={fit(copy.claim1.head, 92, 1500)} /> : null}
     </AbsoluteFill>
   );
 };
 
 // ---- 2. the card: the world becomes the card's print, under a loupe -----------------------------------------------
 /** Strip copy as fixed slots along the strip, so the close-up can land on a whole phrase (no clipped letters). */
-const PHRASES = ["ZERO JOINING FEE", "5% REWARDS ON ONLINE SHOPPING"];
 const SLOT = 835;
 /** Strip slide (strip px): steady, easing to a slow drift as the camera arrives in close-up; never stops. */
 const SLIDE = (() => {
@@ -206,6 +206,7 @@ const HOLD = 272;
 const Strip: React.FC<{ w: number; h: number; phase: number; F: number; font: number; copy: number }> = ({ w, h, phase, F, font, copy }) => {
   const rows = 9;
   const c0 = U_FOCUS + slideAt(HOLD) - slideAt(F);
+  const PHRASES = useCopy().strip;
   return (
     <div style={{ position: "relative", width: w, height: h, overflow: "hidden" }}>
       <Holo phase={phase} style={{ inset: 0, mixBlendMode: "normal", opacity: 0.92 }} />
@@ -245,7 +246,7 @@ const CardFace: React.FC<{ F: number; holo: number; copy: number }> = ({ F, holo
     <div style={{ position: "absolute", left: 1180, top: -400, transform: "rotate(68deg)", transformOrigin: "0 0" }}>
       <Strip w={2200} h={96} phase={holo} F={F} font={30} copy={copy} />
     </div>
-    <Img src={LOGO} style={{ position: "absolute", left: 110, top: 90, height: 170 }} />
+    <Img src={staticFile(useCopy().logo)} style={{ position: "absolute", left: 110, top: 90, height: 170, maxWidth: 560, objectFit: "contain", objectPosition: "left center" }} />
   </div>
 );
 
@@ -279,6 +280,7 @@ const cardPose = (F: number) => {
 
 export const CardTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
+  const copy = useCopy();
   const p = cardPose(F);
   const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
   const head = expoOut(ramp(F, T.reveal + 18, T.reveal + 32)) * (1 - ramp(F, T.macro - 16, T.macro - 4));
@@ -292,7 +294,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
       <AbsoluteFill style={{ opacity: 1 - ramp(F, 252, 272) }}>
         <Lens r={0.62 + 0.4 * (1 - k)} soft={0.18} />
       </AbsoluteFill>
-      {head > 0 ? <Headline text="the CRED IndusInd Bank" sub="RuPay credit card" grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={head} size={60} top={70} /> : null}
+      {head > 0 ? <Headline text={copy.card.head} sub={copy.card.sub} grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={head} size={fit(copy.card.head, 60, 1500)} top={70} /> : null}
     </AbsoluteFill>
   );
 };
@@ -434,6 +436,7 @@ const GLOBE_TO_FLOOR = 941 / 340;
 
 export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
+  const copy = useCopy();
   const t = F / 24;
   const b = band(F);
   const cut = step(F, [336]);
@@ -471,7 +474,7 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
         </AbsoluteFill>
         {F > T.tilt ? (
           <AbsoluteFill style={{ opacity: 1 - ramp(F, MATCH - 30, MATCH - 18) }}>
-            <Headline text="redeem on flights, hotels" grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={76} top={130} />
+            <Headline text={copy.claim2.head} sub={copy.claim2.sub} grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={fit(copy.claim2.head, 76, 1500)} top={130} />
           </AbsoluteFill>
         ) : null}
       </AbsoluteFill>
@@ -551,6 +554,7 @@ const Column: React.FC<{ pos: [number, number, number]; seed: number }> = ({ pos
 
 export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
+  const copy = useCopy();
   const t = F / 24;
   // overhead (the ring of capitals, as the reference opens its temple), then the crane tilts down to eye level
   const crane = expoOut(ramp(F, MATCH + 2, MATCH + 42));
@@ -599,7 +603,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
           <>
             {/* a soft paper plate behind the headline so the columns never cut through the words */}
             <AbsoluteFill style={{ background: "radial-gradient(ellipse 30% 15% at 50% 19%, rgba(241,217,198,0.96), rgba(241,217,198,0.85) 55%, rgba(241,217,198,0) 100%)", opacity: expoOut(ramp(F, T.products + 40, T.products + 52)) }} />
-            <Headline text="2,000+ products" sub="on CRED store" grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} top={140} />
+            <Headline text={copy.claim3.head} sub={copy.claim3.sub} grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} size={fit(copy.claim3.head, 92, 1500)} top={140} />
           </>
         ) : null}
       </AbsoluteFill>
@@ -609,6 +613,8 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
 
 // ---- 5. zero joining fee: ₹0 rises from an abalone like a pearl -------------------------------------------------
 const Pearl: React.FC<{ F: number }> = ({ F }) => {
+  const copy = useCopy();
+  const vsize = fit(copy.hero.value, 280, 1300, 0.55);
   const k = expoOut(ramp(F, T.card + 22, T.card + 44));
   const lab = expoOut(ramp(F, T.card + 30, T.card + 44));
   const ph = (F - T.card) / 50;
@@ -618,7 +624,7 @@ const Pearl: React.FC<{ F: number }> = ({ F }) => {
   const stops: [string, number][] = [["#8f7cff", -0.3], ["#6fd6ea", 0], ["#b4f2c2", 0.25], ["#ffeea0", 0.5], ["#ffb2d4", 0.75], ["#8f7cff", 1.05]];
   return (
     <AbsoluteFill style={{ alignItems: "center", pointerEvents: "none" }}>
-      <div style={{ position: "absolute", top: 112, fontFamily: "Lexend", fontWeight: 500, fontSize: 26, letterSpacing: 26 * 0.42, color: "#3a4452", opacity: lab, paddingLeft: 26 * 0.42 }}>JOINING FEE</div>
+      <div style={{ position: "absolute", top: 112, fontFamily: "Lexend", fontWeight: 500, fontSize: 26, letterSpacing: 26 * 0.42, color: "#3a4452", opacity: lab, paddingLeft: 26 * 0.42 }}>{copy.hero.label}</div>
       <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
         <defs>
           <linearGradient id="fee-foil" x1="0" y1="0" x2="1" y2="0.36" gradientTransform={`translate(${(ph % 1) - 0.5} 0)`} spreadMethod="repeat">
@@ -631,8 +637,8 @@ const Pearl: React.FC<{ F: number }> = ({ F }) => {
           </filter>
         </defs>
         <g transform={`translate(${W / 2} ${y + 230}) scale(${sc})`} opacity={Math.min(1, k * 1.4)}>
-          <text x={0} y={14} textAnchor="middle" fontFamily="Newsreader" fontWeight={700} fontSize={280} letterSpacing={-10} fill="rgba(30,40,60,0.18)" filter="url(#fee-soft)">₹0</text>
-          <text x={0} y={0} textAnchor="middle" fontFamily="Newsreader" fontWeight={700} fontSize={280} letterSpacing={-10} fill="url(#fee-foil)" stroke="rgba(70,60,140,0.35)" strokeWidth={1.5}>₹0</text>
+          <text x={0} y={14} textAnchor="middle" fontFamily="Newsreader" fontWeight={700} fontSize={vsize} letterSpacing={-10} fill="rgba(30,40,60,0.18)" filter="url(#fee-soft)">{copy.hero.value}</text>
+          <text x={0} y={0} textAnchor="middle" fontFamily="Newsreader" fontWeight={700} fontSize={vsize} letterSpacing={-10} fill="url(#fee-foil)" stroke="rgba(70,60,140,0.35)" strokeWidth={1.5}>{copy.hero.value}</text>
         </g>
       </svg>
       <div style={{ position: "absolute", top: 452, width: 240 * lab, height: 1.5, background: "#3a4452", opacity: 0.6 }} />

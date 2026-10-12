@@ -1,0 +1,42 @@
+{
+ "copy": {
+  "logo": "cred-film/lumen/wordmark.png",
+  "claim1": {
+   "head": "2% cashback",
+   "sub": "on every bill you pay"
+  },
+  "card": {
+   "head": "the Lumen everyday",
+   "sub": "credit card"
+  },
+  "strip": [
+   "NO ANNUAL FEE",
+   "2% CASHBACK ON EVERY BILL"
+  ],
+  "claim2": {
+   "head": "redeem on travel and stays"
+  },
+  "claim3": {
+   "head": "500+ brands",
+   "sub": "in the Lumen store"
+  },
+  "hero": {
+   "label": "ANNUAL FEE",
+   "value": "₹0"
+  },
+  "cardPrint": "2% CASHBACK ON EVERY BILL  ·  NO ANNUAL FEE",
+  "outro": {
+   "screen": "your card",
+   "title": "Lumen everyday credit card",
+   "rows": [
+    "2% cashback on every bill",
+    "no annual fee",
+    "redeem on travel and stays, and 500+ brands in the Lumen store"
+   ],
+   "left": "the Lumen everyday",
+   "right": "credit card."
+  },
+  "lockup": "everyday credit card"
+ },
+ "score": "custom/cred-v6/score.wav"
+}
