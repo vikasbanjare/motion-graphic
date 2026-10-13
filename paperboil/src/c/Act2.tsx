@@ -127,7 +127,7 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
 // disc, tighten and speed up with the riser, then fly at camera on the rush.
 // At 15.2 s everything freezes and pulls back (the vacuum); a ghost of the
 // drop's sun flickers in at 15.8.
-const Sticker: React.FC<{ kind: number }> = ({ kind }) => {
+export const Sticker: React.FC<{ kind: number }> = ({ kind }) => {
   const box = (c: string, extra?: React.CSSProperties): React.CSSProperties => ({ position: "absolute", background: c, ...extra });
   return (
     <div style={{ position: "absolute", inset: 0, background: P.cream, borderRadius: 34, boxShadow: `0 0 0 8px ${P.cream}`, filter: SHADOW_SOFT }}>

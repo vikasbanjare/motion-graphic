@@ -4,6 +4,7 @@ import { arc, clamp, easeIO, impact, popIn, sp, wander } from "../motion";
 import { palette as P } from "../palette";
 import { markFrame, markFrames, shotDuration, type Shot } from "../storyboard";
 import { Accents, Cut, Drift, Ground, halftone, kickPulse, Label, Misreg, RevealType, SHADOW, Stage, Type } from "./kit";
+import { Sticker } from "./Act2";
 import { textOf } from "./text";
 
 type ShotProps = { shot: Shot };
@@ -324,21 +325,61 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", left: -800 - (1 - band) * 3400, top: 590, width: 3600, height: 340, background: P.navy, transform: "rotate(-5deg)", transformOrigin: "50% 50%", filter: SHADOW }}>
           <div style={{ position: "absolute", inset: 0, ...halftone(P.ink, 12, 0.28), opacity: 0.45 }} />
         </div>
+        <HabitsToSlices f={f} stamp={s.at} />
         {f >= s.at ? <Type text={s.text} x={110} y={690} size={150} color={s.color} lineHeight={0.92} rotate={-5} transform={`scale(${stamp})`} origin="20% 50%" /> : null}
         <div style={{ position: "absolute", left: 120, top: 958, width: 760 * under, height: 28, background: P.orange, transform: "rotate(-5deg)", transformOrigin: "0 50%", filter: SHADOW }} />
         <Accents
           f={f}
           pop={pop}
           items={[
-            { x: 1780, y: 620, s: 90, c: P.sky, kind: "sq", r: 18, at: s.at + 3 },
+            { x: 1060, y: 500, s: 80, c: P.sky, kind: "sq", r: 18, at: s.at + 3 },
             { x: 1150, y: 120, s: 60, c: P.navy, kind: "dot", at: s.at + 5 },
-            { x: 1700, y: 1000, s: 90, c: P.orange, kind: "tri", r: -10, at: s.at + 7 },
+            { x: 1770, y: 890, s: 80, c: P.orange, kind: "tri", r: -10, at: s.at + 7 },
           ]}
         />
       </div>
     </Stage>
   );
 };
+
+/**
+ * The day's habits (the Act 1 stickers) land one per beat under "Customer by
+ * habit."; on the stamp each flips into a slice token and lands on the band:
+ * the brands you use → slices you own. Tokens then pulse in a beat chase.
+ */
+const HabitsToSlices: React.FC<{ f: number; stamp: number }> = ({ f, stamp }) => (
+  <>
+    {Array.from({ length: 5 }, (_, i) => {
+      const at = 10 + i * 12;
+      if (f < at) return null;
+      const land = popIn(f, at, "pop", 0.3);
+      const fl = clamp((f - stamp - i * 2) / 6);
+      const go = f < stamp + i * 2 ? 0 : sp(f, stamp + i * 2, "snap");
+      const x0 = 110 + i * 200;
+      const y0 = 610;
+      const x1 = 1090 + i * 150;
+      const y1 = 785 - 0.0875 * (x1 + 68 - 1000) - 68;
+      const [x, y] = arc([x0, y0], [x1, y1], go, 0.25);
+      const flip = Math.abs(Math.cos(fl * Math.PI));
+      const token = fl > 0.5;
+      const beatsIn = Math.floor((f - stamp - 12) / 12);
+      const chase = token && beatsIn >= 0 && beatsIn % 5 === i ? 1 + 0.12 * Math.exp(-((f - stamp - 12) % 12) / 3) : 1;
+      return (
+        <div key={i} style={{ position: "absolute", left: x, top: y, width: 220, height: 220, transform: `scale(${0.7 * land * chase}) scaleX(${flip}) rotate(${(i % 2 ? 6 : -6) * (1 - go) - 5 * go}deg)`, transformOrigin: "0 0" }}>
+          {token ? (
+            <svg width={220} height={220} viewBox="-50 -50 100 100" style={{ filter: SHADOW }}>
+              <circle r={47} fill="#fffdf8" />
+              <circle r={40} fill="none" stroke={P.navy} strokeWidth={8} />
+              <path d={wedge(0.1 + 0.04 * i)} fill={P.orange} />
+            </svg>
+          ) : (
+            <Sticker kind={i} />
+          )}
+        </div>
+      );
+    })}
+  </>
+);
 
 // ── S16 · END CARD — MAPS on the song's final hit; the line tracks out
 // slowly, the sun rises back in for the loop.

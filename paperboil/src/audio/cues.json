@@ -1503,6 +1503,96 @@
       ]
     },
     {
+      "id": "habit-1",
+      "time": 23.6,
+      "frame": 708,
+      "label": "Habit sticker 1 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.6
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 0
+        }
+      ]
+    },
+    {
+      "id": "habit-2",
+      "time": 24.0,
+      "frame": 720,
+      "label": "Habit sticker 2 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.35
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 2
+        }
+      ]
+    },
+    {
+      "id": "habit-3",
+      "time": 24.4,
+      "frame": 732,
+      "label": "Habit sticker 3 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.1
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 4
+        }
+      ]
+    },
+    {
+      "id": "habit-4",
+      "time": 24.8,
+      "frame": 744,
+      "label": "Habit sticker 4 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": 0.15
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "habit-5",
+      "time": 25.2,
+      "frame": 756,
+      "label": "Habit sticker 5 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": 0.4
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 9
+        }
+      ]
+    },
+    {
       "id": "band",
       "time": 25.5333,
       "frame": 766,
@@ -1540,6 +1630,49 @@
         "attack": 0,
         "release": 10
       }
+    },
+    {
+      "id": "slices",
+      "time": 25.6667,
+      "frame": 770,
+      "label": "Habits flip into slice tokens and land on the band",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "var": 1,
+          "offset": 0,
+          "gainDb": -14,
+          "pan": 0.2
+        },
+        {
+          "slot": "card_flick",
+          "var": 2,
+          "offset": 2,
+          "gainDb": -14,
+          "pan": 0.35
+        },
+        {
+          "slot": "card_flick",
+          "var": 3,
+          "offset": 4,
+          "gainDb": -14,
+          "pan": 0.5
+        },
+        {
+          "slot": "card_flick",
+          "var": 4,
+          "offset": 6,
+          "gainDb": -14,
+          "pan": 0.65
+        },
+        {
+          "slot": "card_flick",
+          "var": 1,
+          "offset": 8,
+          "gainDb": -14,
+          "pan": 0.8
+        }
+      ]
     },
     {
       "id": "accents-2",
