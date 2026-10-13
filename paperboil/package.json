@@ -13,6 +13,7 @@
     "music": "bash scripts/music-edit.sh",
     "sfx-fallbacks": "tsx scripts/sfx-fallbacks.ts",
     "mix": "tsx scripts/mix.ts",
+    "cutdown": "tsx scripts/cutdown.ts",
     "audio": "bash scripts/music-edit.sh && tsx scripts/sfx-fallbacks.ts && tsx scripts/mix.ts"
   },
   "dependencies": {
