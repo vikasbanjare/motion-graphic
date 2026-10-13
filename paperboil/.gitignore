@@ -1,0 +1,6 @@
+node_modules
+out
+.DS_Store
+.env
+assets/audio
+docs/storyboard/.panels

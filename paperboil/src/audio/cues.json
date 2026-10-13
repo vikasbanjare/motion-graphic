@@ -1,0 +1,1770 @@
+{
+  "note": "Layered SFX cue sheet on the 150 BPM grid (beat = 12 frames). Each layer names a slot from slots; offset is frames relative to the cue, semis is pitch relative to the slot's root (tonal slots are tuned to the song key, B major), pan is -1..1. scripts/mix.ts renders it.",
+  "key": "B major",
+  "rootHz": 246.94,
+  "vacuumSilence": {
+    "start": 15.5,
+    "end": 15.97
+  },
+  "musicGainDb": -2,
+  "slots": {
+    "paper_tap": {
+      "description": "Soft fingertip tap on thick paper/card. Very short, dry.",
+      "search": "paper tap, card tap, foley tap",
+      "tonal": false,
+      "variations": 1
+    },
+    "ui_pluck": {
+      "description": "Soft marimba/kalimba pluck, single note. Root B (tuned per cue).",
+      "search": "marimba hit, kalimba pluck, mallet note B",
+      "tonal": true,
+      "variations": 1
+    },
+    "soft_tap": {
+      "description": "Finger tap on glass/phone screen.",
+      "search": "phone tap, glass tap, touchscreen",
+      "tonal": false,
+      "variations": 1
+    },
+    "word_hit": {
+      "description": "Soft round 'thock' (felt mallet on wood/cardboard).",
+      "search": "felt thump, soft wood knock, cardboard thock",
+      "tonal": false,
+      "variations": 1
+    },
+    "whoosh_short": {
+      "description": "Short air whoosh (~0.3 s), no tone.",
+      "search": "whoosh short, swish air, fast pass",
+      "tonal": false,
+      "variations": 1
+    },
+    "whoosh_long": {
+      "description": "Longer whoosh into a cut (~0.6 s).",
+      "search": "whoosh transition, swoosh long",
+      "tonal": false,
+      "variations": 1
+    },
+    "tv_thunk": {
+      "description": "Old TV/CRT switching on: thunk + static tick.",
+      "search": "tv on, crt power on, static click",
+      "tonal": false,
+      "variations": 1
+    },
+    "hum": {
+      "description": "Low warm electrical hum bed (loopable, 1 s).",
+      "search": "tv hum, room tone hum",
+      "tonal": false,
+      "variations": 1
+    },
+    "card_thump": {
+      "description": "Cardboard/paper block landing on a table.",
+      "search": "cardboard thud, paper drop, card land",
+      "tonal": false,
+      "variations": 1
+    },
+    "key_tick": {
+      "description": "Single soft keyboard/pencil tap (4 variations: _1.._4).",
+      "search": "soft keyboard tap, laptop key, pencil tap",
+      "tonal": false,
+      "variations": 4
+    },
+    "ping": {
+      "description": "Small bright UI ping (tonal, tuned).",
+      "search": "ui ping, glass ping, notification soft",
+      "tonal": true,
+      "variations": 1
+    },
+    "swish": {
+      "description": "Paper swish / page flick air.",
+      "search": "paper swish, page whoosh",
+      "tonal": false,
+      "variations": 1
+    },
+    "map_boop": {
+      "description": "Low soft tonal 'boop' (tuned).",
+      "search": "soft boop, bubble pop low, ui confirm low",
+      "tonal": true,
+      "variations": 1
+    },
+    "car_pass": {
+      "description": "Small car passing by (cartoon-light), ~0.6 s.",
+      "search": "car pass by, small car whoosh",
+      "tonal": false,
+      "variations": 1
+    },
+    "nfc_chime": {
+      "description": "Contactless payment chime (2-note). Tuned.",
+      "search": "nfc payment chime, tap to pay, success chime",
+      "tonal": true,
+      "variations": 1
+    },
+    "card_tap": {
+      "description": "Plastic card tap on a terminal.",
+      "search": "card tap, plastic tap",
+      "tonal": false,
+      "variations": 1
+    },
+    "paper_flick": {
+      "description": "Paper sticker/card flicked (4 variations).",
+      "search": "paper flick, sticker peel, card flick",
+      "tonal": false,
+      "variations": 4
+    },
+    "reverse_swell": {
+      "description": "Reverse swell/suck into a hit (~0.5 s).",
+      "search": "reverse swell, reverse cymbal short, suck in",
+      "tonal": false,
+      "variations": 1
+    },
+    "sub_drop": {
+      "description": "Sub drop / sub boom 40–60 Hz, 0.5 s.",
+      "search": "sub drop, sub boom, 808 hit low",
+      "tonal": false,
+      "variations": 1
+    },
+    "cardboard_slam": {
+      "description": "Heavy book/cardboard slam (mid crack).",
+      "search": "book slam, box slam, cardboard impact",
+      "tonal": false,
+      "variations": 1
+    },
+    "paper_debris": {
+      "description": "Paper scraps settling after an impact.",
+      "search": "paper debris, paper rustle settle",
+      "tonal": false,
+      "variations": 1
+    },
+    "wood_creak": {
+      "description": "Old wooden door creak (short).",
+      "search": "door creak, wood creak",
+      "tonal": false,
+      "variations": 1
+    },
+    "key_jingle": {
+      "description": "Key ring jingle in motion.",
+      "search": "keys jingle, key ring",
+      "tonal": false,
+      "variations": 1
+    },
+    "metal_clack": {
+      "description": "Key sliding into a lock: metallic clack.",
+      "search": "key insert lock, lock clack",
+      "tonal": false,
+      "variations": 1
+    },
+    "lock_mechanism": {
+      "description": "Lock turning: two-part mechanical click.",
+      "search": "lock turn, deadbolt, key turn click",
+      "tonal": false,
+      "variations": 1
+    },
+    "latch_clunk": {
+      "description": "Door latch releasing: clunk.",
+      "search": "door latch, latch release, door unlock clunk",
+      "tonal": false,
+      "variations": 1
+    },
+    "door_swing": {
+      "description": "Heavy door swinging open (whoosh + low wood).",
+      "search": "door open whoosh, heavy door swing",
+      "tonal": false,
+      "variations": 1
+    },
+    "shimmer": {
+      "description": "Bright shimmer/chime bloom (light).",
+      "search": "magic shimmer, chime sparkle swell, glass shimmer",
+      "tonal": true,
+      "variations": 1
+    },
+    "air_riser": {
+      "description": "Airy riser, 2–3 s, in key or noise-based.",
+      "search": "riser air, noise riser, build up",
+      "tonal": false,
+      "variations": 1
+    },
+    "paper_flutter": {
+      "description": "Confetti/paper flutter passing by.",
+      "search": "paper flutter, confetti whoosh",
+      "tonal": false,
+      "variations": 1
+    },
+    "reverse_cymbal": {
+      "description": "Reverse cymbal ~0.6 s into the drop.",
+      "search": "reverse cymbal, reverse crash",
+      "tonal": false,
+      "variations": 1
+    },
+    "paint_splash": {
+      "description": "Wet paint/brush splash, stereo.",
+      "search": "paint splash, liquid splash, wet splat",
+      "tonal": false,
+      "variations": 1
+    },
+    "sub_boom": {
+      "description": "Big cinematic sub boom for the drop.",
+      "search": "cinematic boom, sub impact, trailer hit low",
+      "tonal": false,
+      "variations": 1
+    },
+    "crash": {
+      "description": "Crash/sizzle sweetener on the drop.",
+      "search": "crash cymbal hit, impact sweetener",
+      "tonal": false,
+      "variations": 1
+    },
+    "pop": {
+      "description": "Bubbly UI pop.",
+      "search": "pop ui, bubble pop",
+      "tonal": false,
+      "variations": 1
+    },
+    "sparkle": {
+      "description": "Sparkle twinkle (tonal, tuned).",
+      "search": "sparkle, twinkle, glitter chime",
+      "tonal": true,
+      "variations": 1
+    },
+    "card_slide": {
+      "description": "Card sliding on glass/table.",
+      "search": "card slide, swipe",
+      "tonal": false,
+      "variations": 1
+    },
+    "button_thunk": {
+      "description": "Soft button press thunk.",
+      "search": "button press soft, ui press",
+      "tonal": false,
+      "variations": 1
+    },
+    "positive_chime": {
+      "description": "Positive confirmation chime (tuned).",
+      "search": "success chime, confirm ding",
+      "tonal": true,
+      "variations": 1
+    },
+    "paper_flip": {
+      "description": "Card/paper flip over.",
+      "search": "paper flip, card flip",
+      "tonal": false,
+      "variations": 1
+    },
+    "card_flick": {
+      "description": "Playing card flick onto a pile (4 variations).",
+      "search": "card flick, playing card deal",
+      "tonal": false,
+      "variations": 4
+    },
+    "paper_lift": {
+      "description": "Paper lifted off a stack.",
+      "search": "paper lift, page lift",
+      "tonal": false,
+      "variations": 1
+    },
+    "card_slap": {
+      "description": "Thick card slapped down on a stack.",
+      "search": "card slap, paper slap",
+      "tonal": false,
+      "variations": 1
+    },
+    "brush_stroke": {
+      "description": "Dry brush/marker stroke on paper.",
+      "search": "brush stroke paper, marker scribble",
+      "tonal": false,
+      "variations": 1
+    },
+    "rubber_stamp": {
+      "description": "Rubber stamp thunk on paper.",
+      "search": "rubber stamp, stamp paper",
+      "tonal": false,
+      "variations": 1
+    },
+    "paper_crunch": {
+      "description": "Short paper crunch/crinkle.",
+      "search": "paper crunch, paper crinkle",
+      "tonal": false,
+      "variations": 1
+    },
+    "tonal_hit": {
+      "description": "Low tonal hit / piano low note (tuned).",
+      "search": "low piano hit, tonal impact, bass note hit",
+      "tonal": true,
+      "variations": 1
+    },
+    "logo_motif": {
+      "description": "Sonic logo: 3-note motif (B–D#–F#) on marimba/celesta. Supply your own mnemonic if you have one.",
+      "search": "logo sting, mnemonic marimba, celesta motif",
+      "tonal": true,
+      "variations": 1
+    },
+    "paper_swoosh": {
+      "description": "Paper swoosh-in.",
+      "search": "paper swoosh, paper whoosh in",
+      "tonal": false,
+      "variations": 1
+    },
+    "paper_rip": {
+      "description": "Big sheet of paper torn in one violent pull (~0.35 s), fibrous crackle.",
+      "search": "paper rip, paper tear fast, cardboard tear",
+      "tonal": false,
+      "variations": 1
+    }
+  },
+  "cues": [
+    {
+      "id": "open",
+      "time": 0.0,
+      "frame": 0,
+      "label": "Sun lands, SCROLL slides in",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -8
+        },
+        {
+          "slot": "word_hit",
+          "gainDb": -10
+        },
+        {
+          "slot": "whoosh_short",
+          "offset": -3,
+          "gainDb": -13,
+          "pan": -0.4
+        }
+      ]
+    },
+    {
+      "id": "phone-rise",
+      "time": 0.1,
+      "frame": 3,
+      "label": "Phone rises",
+      "layers": [
+        {
+          "slot": "card_slide",
+          "gainDb": -13,
+          "pan": -0.3
+        },
+        {
+          "slot": "ui_pluck",
+          "offset": 4,
+          "gainDb": -14,
+          "pan": -0.2
+        }
+      ]
+    },
+    {
+      "id": "feed",
+      "time": 0.2667,
+      "frame": 8,
+      "label": "Feed scrolling",
+      "layers": [
+        {
+          "slot": "card_slide",
+          "gainDb": -17,
+          "pan": -0.2
+        }
+      ]
+    },
+    {
+      "id": "tick-1",
+      "time": 0.4,
+      "frame": 12,
+      "label": "Receipt ticker",
+      "layers": [
+        {
+          "slot": "paper_flick",
+          "gainDb": -12,
+          "pan": 0.4,
+          "var": 1
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -16,
+          "pan": 0.3,
+          "semis": 4
+        }
+      ]
+    },
+    {
+      "id": "wipe-1",
+      "time": 1.0,
+      "frame": 30,
+      "label": "Band wipe",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11,
+          "pan": 0.5
+        }
+      ]
+    },
+    {
+      "id": "stream",
+      "time": 1.2,
+      "frame": 36,
+      "label": "TV lands, STREAM",
+      "layers": [
+        {
+          "slot": "tv_thunk",
+          "gainDb": -8
+        },
+        {
+          "slot": "word_hit",
+          "offset": 2,
+          "gainDb": -11
+        },
+        {
+          "slot": "hum",
+          "gainDb": -22
+        }
+      ]
+    },
+    {
+      "id": "play",
+      "time": 1.3,
+      "frame": 39,
+      "label": "Play pops",
+      "layers": [
+        {
+          "slot": "pop",
+          "gainDb": -11
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -15,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "tick-2",
+      "time": 1.4,
+      "frame": 42,
+      "label": "Ticker",
+      "layers": [
+        {
+          "slot": "paper_flick",
+          "gainDb": -12,
+          "pan": -0.4,
+          "var": 2
+        }
+      ]
+    },
+    {
+      "id": "wipe-2",
+      "time": 1.7333,
+      "frame": 52,
+      "label": "Ring wipe",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "time": 2.0,
+      "frame": 60,
+      "label": "Pill lands, SEARCH",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "gainDb": -9
+        },
+        {
+          "slot": "word_hit",
+          "offset": -4,
+          "gainDb": -11
+        },
+        {
+          "slot": "swish",
+          "offset": 2,
+          "gainDb": -13,
+          "pan": 0.3
+        }
+      ]
+    },
+    {
+      "id": "key-1",
+      "time": 2.1,
+      "frame": 63,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -16,
+          "pan": -0.15,
+          "var": 1
+        }
+      ]
+    },
+    {
+      "id": "key-2",
+      "time": 2.1667,
+      "frame": 65,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -15,
+          "var": 2
+        }
+      ]
+    },
+    {
+      "id": "tick-3",
+      "time": 2.2,
+      "frame": 66,
+      "label": "Ticker",
+      "layers": [
+        {
+          "slot": "paper_flick",
+          "gainDb": -13,
+          "pan": 0.3,
+          "var": 3
+        }
+      ]
+    },
+    {
+      "id": "key-3",
+      "time": 2.2333,
+      "frame": 67,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": 0.15,
+          "var": 3
+        }
+      ]
+    },
+    {
+      "id": "key-4",
+      "time": 2.3,
+      "frame": 69,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -16,
+          "pan": -0.15,
+          "var": 4
+        }
+      ]
+    },
+    {
+      "id": "key-5",
+      "time": 2.3667,
+      "frame": 71,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -15,
+          "var": 1
+        }
+      ]
+    },
+    {
+      "id": "key-6",
+      "time": 2.4333,
+      "frame": 73,
+      "label": "Typing",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": 0.15,
+          "var": 2
+        }
+      ]
+    },
+    {
+      "id": "ping",
+      "time": 2.5,
+      "frame": 75,
+      "label": "Result ping",
+      "layers": [
+        {
+          "slot": "ping",
+          "gainDb": -15,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "wipe-3",
+      "time": 2.6,
+      "frame": 78,
+      "label": "Band wipe",
+      "layers": [
+        {
+          "slot": "swish",
+          "gainDb": -11,
+          "pan": -0.3
+        }
+      ]
+    },
+    {
+      "id": "ride",
+      "time": 2.8,
+      "frame": 84,
+      "label": "Road band, RIDE",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "offset": -3,
+          "gainDb": -11,
+          "pan": -0.5
+        },
+        {
+          "slot": "word_hit",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "car",
+      "time": 2.8333,
+      "frame": 85,
+      "label": "Car drives",
+      "layers": [
+        {
+          "slot": "car_pass",
+          "gainDb": -13,
+          "pan": -0.5
+        }
+      ]
+    },
+    {
+      "id": "tick-4",
+      "time": 3.0,
+      "frame": 90,
+      "label": "Ticker",
+      "layers": [
+        {
+          "slot": "paper_flick",
+          "gainDb": -13,
+          "pan": 0.4,
+          "var": 4
+        }
+      ]
+    },
+    {
+      "id": "pin",
+      "time": 3.0333,
+      "frame": 91,
+      "label": "Pin lands",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "gainDb": -10,
+          "pan": 0.4
+        },
+        {
+          "slot": "map_boop",
+          "gainDb": -12,
+          "pan": 0.4
+        }
+      ]
+    },
+    {
+      "id": "pay",
+      "time": 3.6,
+      "frame": 108,
+      "label": "Terminal lands, PAY",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "gainDb": -11
+        },
+        {
+          "slot": "word_hit",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "card",
+      "time": 3.6333,
+      "frame": 109,
+      "label": "Card swings in",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -12,
+          "pan": 0.5
+        }
+      ]
+    },
+    {
+      "id": "tick-5",
+      "time": 3.8,
+      "frame": 114,
+      "label": "Ticker",
+      "layers": [
+        {
+          "slot": "paper_flick",
+          "gainDb": -13,
+          "pan": -0.4,
+          "var": 1
+        }
+      ]
+    },
+    {
+      "id": "tap",
+      "time": 3.9333,
+      "frame": 118,
+      "label": "Card taps",
+      "layers": [
+        {
+          "slot": "card_tap",
+          "offset": -1,
+          "gainDb": -8
+        },
+        {
+          "slot": "nfc_chime",
+          "gainDb": -10
+        },
+        {
+          "slot": "nfc_chime",
+          "offset": 3,
+          "gainDb": -12,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "tick",
+      "time": 4.0,
+      "frame": 120,
+      "label": "Tick pops",
+      "layers": [
+        {
+          "slot": "positive_chime",
+          "gainDb": -13,
+          "pan": 0.2,
+          "semis": 12
+        },
+        {
+          "slot": "pop",
+          "gainDb": -12
+        }
+      ]
+    },
+    {
+      "id": "wipe-4",
+      "time": 4.1333,
+      "frame": 124,
+      "label": "Ring wipe",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "receipt",
+      "time": 4.4,
+      "frame": 132,
+      "label": "Receipt feeds down",
+      "layers": [
+        {
+          "slot": "paper_swoosh",
+          "gainDb": -10,
+          "pan": -0.3
+        }
+      ]
+    },
+    {
+      "id": "print-1",
+      "time": 4.6,
+      "frame": 138,
+      "label": "Line prints",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": -0.3,
+          "var": 1
+        },
+        {
+          "slot": "paper_flick",
+          "offset": 1,
+          "gainDb": -17,
+          "pan": -0.3,
+          "var": 1
+        }
+      ]
+    },
+    {
+      "id": "print-2",
+      "time": 4.8,
+      "frame": 144,
+      "label": "Line prints",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": -0.3,
+          "var": 2
+        },
+        {
+          "slot": "paper_flick",
+          "offset": 1,
+          "gainDb": -17,
+          "pan": -0.3,
+          "var": 2
+        }
+      ]
+    },
+    {
+      "id": "print-3",
+      "time": 5.0,
+      "frame": 150,
+      "label": "Line prints",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": -0.3,
+          "var": 3
+        },
+        {
+          "slot": "paper_flick",
+          "offset": 1,
+          "gainDb": -17,
+          "pan": -0.3,
+          "var": 3
+        }
+      ]
+    },
+    {
+      "id": "print-4",
+      "time": 5.2,
+      "frame": 156,
+      "label": "Line prints",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": -0.3,
+          "var": 4
+        },
+        {
+          "slot": "paper_flick",
+          "offset": 1,
+          "gainDb": -17,
+          "pan": -0.3,
+          "var": 4
+        }
+      ]
+    },
+    {
+      "id": "print-5",
+      "time": 5.4,
+      "frame": 162,
+      "label": "Line prints",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -14,
+          "pan": -0.3,
+          "var": 1
+        },
+        {
+          "slot": "paper_flick",
+          "offset": 1,
+          "gainDb": -17,
+          "pan": -0.3,
+          "var": 1
+        }
+      ]
+    },
+    {
+      "id": "question",
+      "time": 5.6,
+      "frame": 168,
+      "label": "HOW MANY DO YOU OWN?",
+      "layers": [
+        {
+          "slot": "word_hit",
+          "gainDb": -11,
+          "pan": 0.3
+        }
+      ]
+    },
+    {
+      "id": "total",
+      "time": 5.9333,
+      "frame": 178,
+      "label": "Total line + ?",
+      "layers": [
+        {
+          "slot": "key_tick",
+          "gainDb": -13,
+          "pan": -0.3,
+          "var": 2
+        },
+        {
+          "slot": "ping",
+          "offset": 2,
+          "gainDb": -18,
+          "semis": -5
+        }
+      ]
+    },
+    {
+      "id": "pre-zero",
+      "time": 6.7,
+      "frame": 201,
+      "label": "Reverse swell into the 0",
+      "layers": [
+        {
+          "slot": "reverse_swell",
+          "gainDb": -12
+        }
+      ]
+    },
+    {
+      "id": "zero",
+      "time": 7.2,
+      "frame": 216,
+      "label": "THE 0 SLAMS",
+      "layers": [
+        {
+          "slot": "sub_drop",
+          "gainDb": -4
+        },
+        {
+          "slot": "cardboard_slam",
+          "gainDb": -6
+        },
+        {
+          "slot": "paper_debris",
+          "offset": 2,
+          "gainDb": -14
+        },
+        {
+          "slot": "tonal_hit",
+          "gainDb": -12,
+          "semis": -12
+        }
+      ],
+      "duck": {
+        "depthDb": -6,
+        "attack": 1,
+        "release": 14
+      }
+    },
+    {
+      "id": "into-zero",
+      "time": 8.1333,
+      "frame": 244,
+      "label": "Push into the 0",
+      "layers": [
+        {
+          "slot": "whoosh_long",
+          "gainDb": -10
+        }
+      ]
+    },
+    {
+      "id": "lock-drop",
+      "time": 8.4,
+      "frame": 252,
+      "label": "Padlock drops in",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "offset": 6,
+          "gainDb": -9
+        },
+        {
+          "slot": "metal_clack",
+          "offset": 6,
+          "gainDb": -12
+        },
+        {
+          "slot": "swish",
+          "gainDb": -13
+        }
+      ]
+    },
+    {
+      "id": "rattle",
+      "time": 8.8667,
+      "frame": 266,
+      "label": "Lock rattles",
+      "layers": [
+        {
+          "slot": "key_jingle",
+          "gainDb": -12
+        },
+        {
+          "slot": "metal_clack",
+          "offset": 4,
+          "gainDb": -15
+        }
+      ]
+    },
+    {
+      "id": "key-turn",
+      "time": 9.6,
+      "frame": 288,
+      "label": "Colour flip, key turns",
+      "layers": [
+        {
+          "slot": "lock_mechanism",
+          "gainDb": -6
+        },
+        {
+          "slot": "tonal_hit",
+          "gainDb": -14,
+          "semis": 7
+        },
+        {
+          "slot": "word_hit",
+          "gainDb": -10
+        }
+      ],
+      "duck": {
+        "depthDb": -4,
+        "attack": 1,
+        "release": 10
+      }
+    },
+    {
+      "id": "latch",
+      "time": 9.8,
+      "frame": 294,
+      "label": "Shackle springs open",
+      "layers": [
+        {
+          "slot": "latch_clunk",
+          "gainDb": -7
+        },
+        {
+          "slot": "pop",
+          "offset": 2,
+          "gainDb": -14
+        }
+      ]
+    },
+    {
+      "id": "fall",
+      "time": 10.2,
+      "frame": 306,
+      "label": "Lock tumbles out",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11,
+          "pan": 0.4
+        }
+      ]
+    },
+    {
+      "id": "door",
+      "time": 11.2,
+      "frame": 336,
+      "label": "Door frame lands, WE OPENED THE DOOR",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "gainDb": -10
+        },
+        {
+          "slot": "word_hit",
+          "offset": 2,
+          "gainDb": -12
+        }
+      ]
+    },
+    {
+      "id": "door-swing",
+      "time": 11.4,
+      "frame": 342,
+      "label": "Door swings, light",
+      "layers": [
+        {
+          "slot": "door_swing",
+          "gainDb": -8,
+          "pan": -0.2
+        },
+        {
+          "slot": "shimmer",
+          "offset": 4,
+          "gainDb": -14,
+          "semis": 12
+        }
+      ]
+    },
+    {
+      "id": "into-light",
+      "time": 12.5333,
+      "frame": 376,
+      "label": "Push through the doorway",
+      "layers": [
+        {
+          "slot": "whoosh_long",
+          "gainDb": -9
+        }
+      ]
+    },
+    {
+      "id": "riser",
+      "time": 12.8,
+      "frame": 384,
+      "label": "Tunnel builds",
+      "layers": [
+        {
+          "slot": "air_riser",
+          "gainDb": -14
+        }
+      ]
+    },
+    {
+      "id": "flutter-1",
+      "time": 13.6,
+      "frame": 408,
+      "label": "Rings rush past",
+      "layers": [
+        {
+          "slot": "paper_flutter",
+          "gainDb": -15,
+          "pan": -0.4
+        }
+      ]
+    },
+    {
+      "id": "flutter-2",
+      "time": 14.4,
+      "frame": 432,
+      "label": "Rings rush past",
+      "layers": [
+        {
+          "slot": "paper_flutter",
+          "gainDb": -13,
+          "pan": 0.4
+        }
+      ]
+    },
+    {
+      "id": "flutter-3",
+      "time": 14.8,
+      "frame": 444,
+      "label": "Rings rush past",
+      "layers": [
+        {
+          "slot": "paper_flutter",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "suck",
+      "time": 14.9,
+      "frame": 447,
+      "label": "Reverse cymbal into the vacuum",
+      "layers": [
+        {
+          "slot": "reverse_cymbal",
+          "gainDb": -10
+        }
+      ]
+    },
+    {
+      "id": "drop",
+      "time": 16.0,
+      "frame": 480,
+      "label": "DROP: the photocopy world rips open, sun slams, US STOCKS",
+      "layers": [
+        {
+          "slot": "sub_boom",
+          "gainDb": -3
+        },
+        {
+          "slot": "paper_rip",
+          "gainDb": -6
+        },
+        {
+          "slot": "cardboard_slam",
+          "gainDb": -6
+        },
+        {
+          "slot": "crash",
+          "gainDb": -11
+        },
+        {
+          "slot": "paint_splash",
+          "offset": 1,
+          "gainDb": -12,
+          "pan": 0.3
+        }
+      ],
+      "duck": {
+        "depthDb": -3,
+        "attack": 0,
+        "release": 12
+      }
+    },
+    {
+      "id": "stocks",
+      "time": 16.0667,
+      "frame": 482,
+      "label": "STOCKS slides",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11,
+          "pan": 0.6
+        }
+      ]
+    },
+    {
+      "id": "accents",
+      "time": 16.3333,
+      "frame": 490,
+      "label": "Accents pop",
+      "layers": [
+        {
+          "slot": "pop",
+          "gainDb": -15,
+          "pan": -0.4
+        },
+        {
+          "slot": "pop",
+          "offset": 2,
+          "gainDb": -16,
+          "pan": 0.4,
+          "semis": 4
+        },
+        {
+          "slot": "pop",
+          "offset": 4,
+          "gainDb": -17,
+          "pan": 0.2,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "now-on-maps",
+      "time": 16.8,
+      "frame": 504,
+      "label": "NOW ON MAPS",
+      "layers": [
+        {
+          "slot": "word_hit",
+          "gainDb": -11
+        },
+        {
+          "slot": "sparkle",
+          "offset": 2,
+          "gainDb": -16,
+          "semis": 12
+        }
+      ]
+    },
+    {
+      "id": "wipe-5",
+      "time": 18.2,
+      "frame": 546,
+      "label": "Band wipe",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11,
+          "pan": 0.5
+        }
+      ]
+    },
+    {
+      "id": "phone",
+      "time": 18.4,
+      "frame": 552,
+      "label": "Phone lands, swipe",
+      "layers": [
+        {
+          "slot": "card_thump",
+          "gainDb": -11
+        },
+        {
+          "slot": "card_slide",
+          "gainDb": -12,
+          "pan": 0.3
+        }
+      ]
+    },
+    {
+      "id": "swipe-2",
+      "time": 18.8,
+      "frame": 564,
+      "label": "Swipe",
+      "layers": [
+        {
+          "slot": "card_slide",
+          "gainDb": -12,
+          "pan": 0.4
+        }
+      ]
+    },
+    {
+      "id": "pick",
+      "time": 19.2,
+      "frame": 576,
+      "label": "Pick",
+      "layers": [
+        {
+          "slot": "soft_tap",
+          "gainDb": -10
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -14,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "buy",
+      "time": 19.6,
+      "frame": 588,
+      "label": "BUY pressed, BUY FROM INDIA",
+      "layers": [
+        {
+          "slot": "button_thunk",
+          "gainDb": -8
+        },
+        {
+          "slot": "positive_chime",
+          "offset": 1,
+          "gainDb": -11
+        },
+        {
+          "slot": "word_hit",
+          "gainDb": -12
+        }
+      ]
+    },
+    {
+      "id": "card-land",
+      "time": 19.7333,
+      "frame": 592,
+      "label": "Cut to the desk",
+      "layers": [
+        {
+          "slot": "swish",
+          "gainDb": -12
+        }
+      ]
+    },
+    {
+      "id": "flick-1",
+      "time": 20.0,
+      "frame": 600,
+      "label": "Certificate lands",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "gainDb": -9,
+          "pan": -0.4,
+          "var": 1
+        },
+        {
+          "slot": "card_slap",
+          "gainDb": -15,
+          "pan": -0.4
+        }
+      ]
+    },
+    {
+      "id": "flick-2",
+      "time": 20.4,
+      "frame": 612,
+      "label": "Certificate lands",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "gainDb": -9,
+          "pan": 0.3,
+          "semis": 2,
+          "var": 2
+        },
+        {
+          "slot": "card_slap",
+          "gainDb": -15,
+          "pan": 0.3
+        }
+      ]
+    },
+    {
+      "id": "flick-3",
+      "time": 20.8,
+      "frame": 624,
+      "label": "Certificate lands",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "gainDb": -9,
+          "pan": -0.2,
+          "semis": 4,
+          "var": 3
+        },
+        {
+          "slot": "card_slap",
+          "gainDb": -15,
+          "pan": -0.2
+        }
+      ]
+    },
+    {
+      "id": "flick-4",
+      "time": 21.2,
+      "frame": 636,
+      "label": "Certificate lands",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "gainDb": -9,
+          "pan": 0.2,
+          "semis": 5,
+          "var": 4
+        },
+        {
+          "slot": "card_slap",
+          "gainDb": -15,
+          "pan": 0.2
+        }
+      ]
+    },
+    {
+      "id": "stack-sparkle",
+      "time": 21.3333,
+      "frame": 640,
+      "label": "Accents",
+      "layers": [
+        {
+          "slot": "sparkle",
+          "gainDb": -17,
+          "semis": 12
+        }
+      ]
+    },
+    {
+      "id": "proof",
+      "time": 21.6,
+      "frame": 648,
+      "label": "Top certificate lifts",
+      "layers": [
+        {
+          "slot": "paper_lift",
+          "gainDb": -11
+        },
+        {
+          "slot": "ping",
+          "offset": 8,
+          "gainDb": -17,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "wipe-6",
+      "time": 22.9333,
+      "frame": 688,
+      "label": "Ring wipe",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -11
+        }
+      ]
+    },
+    {
+      "id": "customer",
+      "time": 23.2,
+      "frame": 696,
+      "label": "Customer by habit.",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -12,
+          "pan": -0.5
+        },
+        {
+          "slot": "word_hit",
+          "offset": 2,
+          "gainDb": -10
+        }
+      ]
+    },
+    {
+      "id": "habit-1",
+      "time": 23.6,
+      "frame": 708,
+      "label": "Habit sticker 1 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.6
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 0
+        }
+      ]
+    },
+    {
+      "id": "habit-2",
+      "time": 24.0,
+      "frame": 720,
+      "label": "Habit sticker 2 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.35
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 2
+        }
+      ]
+    },
+    {
+      "id": "habit-3",
+      "time": 24.4,
+      "frame": 732,
+      "label": "Habit sticker 3 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": -0.1
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 4
+        }
+      ]
+    },
+    {
+      "id": "habit-4",
+      "time": 24.8,
+      "frame": 744,
+      "label": "Habit sticker 4 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": 0.15
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 7
+        }
+      ]
+    },
+    {
+      "id": "habit-5",
+      "time": 25.2,
+      "frame": 756,
+      "label": "Habit sticker 5 lands",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -13,
+          "pan": 0.4
+        },
+        {
+          "slot": "ui_pluck",
+          "gainDb": -18,
+          "semis": 9
+        }
+      ]
+    },
+    {
+      "id": "band",
+      "time": 25.5333,
+      "frame": 766,
+      "label": "Band slams in",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -10,
+          "pan": -0.5
+        }
+      ]
+    },
+    {
+      "id": "shareholder",
+      "time": 25.6,
+      "frame": 768,
+      "label": "Shareholder by choice. stamp",
+      "layers": [
+        {
+          "slot": "rubber_stamp",
+          "gainDb": -5
+        },
+        {
+          "slot": "paper_crunch",
+          "offset": 1,
+          "gainDb": -13
+        },
+        {
+          "slot": "tonal_hit",
+          "gainDb": -12
+        }
+      ],
+      "duck": {
+        "depthDb": -3,
+        "attack": 0,
+        "release": 10
+      }
+    },
+    {
+      "id": "slices",
+      "time": 25.6667,
+      "frame": 770,
+      "label": "Habits flip into slice tokens and land on the band",
+      "layers": [
+        {
+          "slot": "card_flick",
+          "var": 1,
+          "offset": 0,
+          "gainDb": -14,
+          "pan": 0.2
+        },
+        {
+          "slot": "card_flick",
+          "var": 2,
+          "offset": 2,
+          "gainDb": -14,
+          "pan": 0.35
+        },
+        {
+          "slot": "card_flick",
+          "var": 3,
+          "offset": 4,
+          "gainDb": -14,
+          "pan": 0.5
+        },
+        {
+          "slot": "card_flick",
+          "var": 4,
+          "offset": 6,
+          "gainDb": -14,
+          "pan": 0.65
+        },
+        {
+          "slot": "card_flick",
+          "var": 1,
+          "offset": 8,
+          "gainDb": -14,
+          "pan": 0.8
+        }
+      ]
+    },
+    {
+      "id": "accents-2",
+      "time": 25.7,
+      "frame": 771,
+      "label": "Accents",
+      "layers": [
+        {
+          "slot": "pop",
+          "gainDb": -16,
+          "pan": 0.4
+        },
+        {
+          "slot": "pop",
+          "offset": 2,
+          "gainDb": -17,
+          "pan": -0.4,
+          "semis": 5
+        }
+      ]
+    },
+    {
+      "id": "underline",
+      "time": 25.7333,
+      "frame": 772,
+      "label": "Orange underline",
+      "layers": [
+        {
+          "slot": "brush_stroke",
+          "gainDb": -12,
+          "pan": -0.2
+        }
+      ]
+    },
+    {
+      "id": "slide-off",
+      "time": 28.2,
+      "frame": 846,
+      "label": "Slide off",
+      "layers": [
+        {
+          "slot": "whoosh_short",
+          "gainDb": -10,
+          "pan": 0.5
+        }
+      ]
+    },
+    {
+      "id": "logo",
+      "time": 28.4,
+      "frame": 852,
+      "label": "MAPS on the final hit",
+      "layers": [
+        {
+          "slot": "paper_swoosh",
+          "offset": -6,
+          "gainDb": -12
+        },
+        {
+          "slot": "logo_motif",
+          "gainDb": -8
+        },
+        {
+          "slot": "sub_drop",
+          "gainDb": -14
+        }
+      ]
+    },
+    {
+      "id": "loop",
+      "time": 29.4,
+      "frame": 882,
+      "label": "Sun peeks back (loop)",
+      "layers": [
+        {
+          "slot": "paper_swoosh",
+          "gainDb": -14,
+          "pan": 0.5
+        }
+      ]
+    },
+    {
+      "id": "loop-tap",
+      "time": 29.5,
+      "frame": 885,
+      "label": "Paper tap (loop point)",
+      "layers": [
+        {
+          "slot": "paper_tap",
+          "gainDb": -10
+        }
+      ]
+    }
+  ]
+}

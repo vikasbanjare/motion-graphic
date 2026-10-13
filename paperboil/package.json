@@ -1,0 +1,40 @@
+{
+  "name": "paperboil",
+  "version": "0.1.0",
+  "description": "Config-driven renderer for a 30-second painted-paper motion-graphics ad (MAPS Global Markets \u00b7 US Stocks).",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "bash scripts/render.sh",
+    "loudnorm": "bash scripts/loudnorm.sh",
+    "check": "tsx scripts/check-timing.ts",
+    "lint": "tsc && tsx scripts/check-timing.ts",
+    "music": "bash scripts/music-edit.sh",
+    "sfx-fallbacks": "tsx scripts/sfx-fallbacks.ts",
+    "mix": "tsx scripts/mix.ts",
+    "cutdown": "tsx scripts/cutdown.ts",
+    "audio": "bash scripts/music-edit.sh && tsx scripts/sfx-fallbacks.ts && tsx scripts/mix.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.535",
+    "@remotion/effects": "4.0.535",
+    "@remotion/fonts": "4.0.535",
+    "@remotion/layout-utils": "4.0.535",
+    "@remotion/media": "4.0.535",
+    "flubber": "0.4.2",
+    "p5.brush": "2.2.3",
+    "perfect-freehand": "1.2.3",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.535",
+    "roughjs": "4.6.6"
+  },
+  "devDependencies": {
+    "@fontsource/open-sans": "5.1.0",
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.7",
+    "tsx": "4.19.2",
+    "typescript": "5.9.3"
+  }
+}
