@@ -7,9 +7,9 @@ const db = (d: number) => Math.pow(10, d / 20);
 const exists = (name: string) => getStaticFiles().some((f) => f.name === name);
 
 /**
- * Music bed + SFX cues + optional VO. The music is hard-gated to silence for
- * the vacuum (15.5–16.0) — a gate, not a fade — and ducked under the VO when
- * a VO file is configured.
+ * Music bed + SFX cues + optional VO. Music and SFX are hard-gated to silence
+ * for the vacuum (15.5–16.0) — a gate, not a fade — and the music is ducked
+ * under the VO when a VO file is configured.
  */
 export const Soundtrack: React.FC = () => {
   const { music, musicGainDb, vo, voDuckDb } = storyboard.audio;
@@ -30,7 +30,8 @@ export const Soundtrack: React.FC = () => {
       {cues.cues.map((c) =>
         exists(c.file) ? (
           <Sequence key={c.id} from={c.frame} name={`sfx:${c.id}`} layout="none">
-            <Html5Audio src={staticFile(c.file)} volume={db(c.gainDb)} />
+            {/* SFX tails are gated too, so nothing rings into the vacuum. */}
+            <Html5Audio src={staticFile(c.file)} volume={(f) => (c.frame + f >= gateFrom && c.frame + f < gateTo ? 0 : db(c.gainDb))} />
           </Sequence>
         ) : null,
       )}
