@@ -804,7 +804,7 @@
     {
       "id": "footer",
       "shot": "S14",
-      "text": "Investments in the securities market are subject to market risks. Read all related documents carefully before investing. Overseas investments are subject to RBI LRS limits, foreign-exchange risk and applicable taxes.",
+      "text": "[MAPS legal entity] · SEBI Reg. No. [to be confirmed]. Investments in the securities market are subject to market risks.\nRead all related documents carefully before investing. Overseas investments are subject to RBI LRS limits, foreign-exchange risk and applicable taxes.",
       "start": 21.6,
       "end": 30.0,
       "kind": "legal",
@@ -814,7 +814,7 @@
       "position": "footer",
       "size": 0.02,
       "chip": true,
-      "note": "Standard wording — MAPS compliance to confirm."
+      "note": "SEBI Common Advertisement Code (8 Oct 2026): company name + registration number + standard risk warning on every ad. MAPS compliance to fill the brackets and confirm wording."
     }
   ],
   "captions": [

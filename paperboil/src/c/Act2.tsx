@@ -104,11 +104,15 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
       {swing > 0.2
         ? Array.from({ length: 7 }, (_, i) => {
             const a = -0.9 + i * 0.3;
-            return <div key={i} style={{ position: "absolute", left: DX + 230, top: 900, width: 1100 * swing, height: 46, background: i % 2 ? P.cream : P.orangePale, transform: `rotate(${a * 57 + 90}deg)`, transformOrigin: "0 50%", opacity: 0.22 * swing }} />;
+            return <div key={i} style={{ position: "absolute", left: DX + 230, top: 900, width: 1100 * swing, height: 46, background: i % 2 ? P.cream : P.orangePale, transform: `rotate(${a * 57 + 90}deg)`, transformOrigin: "0 50%", opacity: 0.22 * swing * (0.8 + 0.2 * Math.sin(f / 2.5 + i)) }} />;
           })
         : null}
       <Cut x={DX} y={DY + (1 - frame) * 1000} w={470} h={820} color={P.cream} radius="235px 235px 0 0">
         <div style={{ position: "absolute", left: 36, top: 36, right: 36, bottom: 0, borderRadius: "199px 199px 0 0", background: `radial-gradient(ellipse at 50% 70%, #ffffff 0%, ${P.orangePale} 50%, ${P.cream} 100%)`, opacity: swing }} />
+        {/* A glimpse of the colour world through the doorway: the sun rising. */}
+        <div style={{ position: "absolute", left: 36, top: 36, right: 36, bottom: 0, borderRadius: "199px 199px 0 0", overflow: "hidden", opacity: swing }}>
+          <div style={{ position: "absolute", left: 70, top: 560 - swing * 120 - f * 1.2, width: 300, height: 300, borderRadius: "50%", background: P.orange }} />
+        </div>
       </Cut>
       <div style={{ position: "absolute", left: DX + 36, top: DY + 36 + (1 - frame) * 1000, width: 398, height: 784, perspective: 1400 }}>
         <div style={{ position: "absolute", inset: 0, transform: `rotateY(${-swing * 105}deg)`, transformOrigin: "0% 50%", background: P.orange, borderRadius: "199px 199px 0 0", overflow: "hidden" }}>
@@ -118,6 +122,16 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
           <div style={{ position: "absolute", left: 50, top: 410, right: 140, height: 310, border: `10px solid ${P.orangeDeep}`, borderRadius: 8 }} />
         </div>
       </div>
+      {/* Dust motes drifting out of the doorway into the dark: the hold keeps moving. */}
+      {swing > 0.4
+        ? Array.from({ length: 16 }, (_, i) => {
+            const life = ((f * (0.9 + (i % 5) * 0.12) + i * 23) % 60) / 60;
+            const x = DX + 120 + ((i * 53) % 260) - life * (220 + (i % 4) * 90);
+            const y = DY + 560 - ((i * 37) % 300) - life * (140 + (i % 3) * 60) + Math.sin(life * 6 + i) * 18;
+            const r = 5 + (i % 4) * 3;
+            return <div key={`m${i}`} style={{ position: "absolute", left: x, top: y, width: r, height: r, borderRadius: "50%", background: P.cream, opacity: Math.sin(life * Math.PI) * 0.7 * swing }} />;
+          })
+        : null}
       <RevealType text={t.text} x={100} y={320} size={140} color={t.color} lineHeight={0.96} f={f} at={t.at + 2} stagger={2} spring={settle} />
     </Stage>
   );

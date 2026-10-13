@@ -1,5 +1,5 @@
 import { color, type PaletteToken } from "../palette";
-import { easeIn, easeOut } from "../motion";
+import { easeOut } from "../motion";
 import type { TransitionCtx, TransitionImpl } from "./types";
 
 /**
@@ -18,7 +18,8 @@ const Band: React.FC<{ p: number; ctx: TransitionCtx; phase: "exit" | "enter" }>
   const span = W + sk * 2;
   // Edge positions in [0, 1] along the sweep.
   const lead = phase === "exit" ? easeOut(Math.min(1, p * 1.25)) : 1;
-  const trail = phase === "exit" ? 0 : easeIn(p) ** 0.85;
+  // Uncover fast: the next shot must read almost at once (short shots).
+  const trail = phase === "exit" ? 0 : easeOut(Math.min(1, p * 1.5));
   const lx = -sk + lead * span;
   const tx = -sk + trail * span;
   const poly = (a: number, b: number) => `polygon(${a}px ${-10}px, ${b + sk}px ${-10}px, ${b}px ${H + 10}px, ${a - sk}px ${H + 10}px)`;

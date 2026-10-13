@@ -322,12 +322,12 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
             </div>
           )}
         </div>
-        <div style={{ position: "absolute", left: -800 - (1 - band) * 3400, top: 590, width: 3600, height: 340, background: P.navy, transform: "rotate(-5deg)", transformOrigin: "50% 50%", filter: SHADOW }}>
+        <div style={{ position: "absolute", left: -800 - (1 - band) * 3400, top: 565, width: 3600, height: 340, background: P.navy, transform: "rotate(-5deg)", transformOrigin: "50% 50%", filter: SHADOW }}>
           <div style={{ position: "absolute", inset: 0, ...halftone(P.ink, 12, 0.28), opacity: 0.45 }} />
         </div>
         <HabitsToSlices f={f} stamp={s.at} />
-        {f >= s.at ? <Type text={s.text} x={110} y={690} size={150} color={s.color} lineHeight={0.92} rotate={-5} transform={`scale(${stamp})`} origin="20% 50%" /> : null}
-        <div style={{ position: "absolute", left: 120, top: 958, width: 760 * under, height: 28, background: P.orange, transform: "rotate(-5deg)", transformOrigin: "0 50%", filter: SHADOW }} />
+        {f >= s.at ? <Type text={s.text} x={110} y={665} size={150} color={s.color} lineHeight={0.92} rotate={-5} transform={`scale(${stamp})`} origin="20% 50%" /> : null}
+        <div style={{ position: "absolute", left: 120, top: 932, width: 760 * under, height: 28, background: P.orange, transform: "rotate(-5deg)", transformOrigin: "0 50%", filter: SHADOW }} />
         <Accents
           f={f}
           pop={pop}
@@ -358,7 +358,7 @@ const HabitsToSlices: React.FC<{ f: number; stamp: number }> = ({ f, stamp }) =>
       const x0 = 110 + i * 200;
       const y0 = 610;
       const x1 = 1090 + i * 150;
-      const y1 = 785 - 0.0875 * (x1 + 68 - 1000) - 68;
+      const y1 = 760 - 0.0875 * (x1 + 68 - 1000) - 68;
       const [x, y] = arc([x0, y0], [x1, y1], go, 0.25);
       const flip = Math.abs(Math.cos(fl * Math.PI));
       const token = fl > 0.5;

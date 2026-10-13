@@ -58,9 +58,12 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
 
   // Hero words: ≥12% of frame height, shrunk only if they'd break the safe area.
   const target = ev.size * l.height;
-  const fitted = fitText({ text: ev.text, withinWidth: box.w * (ev.chip ? 0.86 : 1), fontFamily: FONT_FAMILY, fontWeight: ev.weight, letterSpacing }).fontSize;
+  // Multi-line text (the legal footer) fits on its longest line.
+  const longest = ev.text.split("\n").reduce((a, b) => (b.length > a.length ? b : a), "");
+  const lines = ev.text.split("\n").length;
+  const fitted = fitText({ text: longest, withinWidth: box.w * (ev.chip ? 0.86 : 1), fontFamily: FONT_FAMILY, fontWeight: ev.weight, letterSpacing }).fontSize;
   const fontSize = Math.min(target, fitted);
-  const measured = measureText({ text: ev.text, fontFamily: FONT_FAMILY, fontWeight: ev.weight, fontSize, letterSpacing });
+  const measured = measureText({ text: longest, fontFamily: FONT_FAMILY, fontWeight: ev.weight, fontSize, letterSpacing });
 
   let scale = 1;
   let opacity = 1;
@@ -116,8 +119,8 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
         position: "absolute",
         left: box.x,
         width: box.w,
-        top: box.cy - fontSize * 0.7 + dy + shiftY,
-        height: fontSize * 1.4,
+        top: box.cy - fontSize * 0.7 * lines - (lines - 1) * fontSize * 0.5 + dy + shiftY,
+        height: fontSize * 1.4 * lines,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -132,8 +135,9 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
           fontWeight: ev.weight,
           fontSize,
           letterSpacing,
-          lineHeight: 1,
-          whiteSpace: "nowrap",
+          lineHeight: lines > 1 ? 1.3 : 1,
+          whiteSpace: lines > 1 ? "pre" : "nowrap",
+          textAlign: "center",
           color: color(ev.color),
           textShadow: ev.shadow ? `${fontSize * 0.05}px ${fontSize * 0.06}px 0 ${color(ev.shadow)}` : undefined,
           padding: ev.chip ? `${fontSize * 0.22}px ${fontSize * 0.45}px` : undefined,
