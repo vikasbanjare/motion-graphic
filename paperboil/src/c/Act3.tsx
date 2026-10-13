@@ -210,11 +210,11 @@ const Certificate: React.FC<{ i: number; x: number; y: number; rotate: number; s
 };
 /** Where each certificate comes to rest: a loose fan across the frame. */
 const REST: Array<[number, number, number]> = [
-  [360, 360, -9],
-  [920, 300, 6],
-  [640, 400, -3],
-  [780, 330, 2],
-  [700, 350, -1],
+  [230, 380, -9],
+  [1060, 300, 6],
+  [640, 440, -3],
+  [880, 360, 2],
+  [640, 325, -1],
 ];
 const Stack: React.FC<{ f: number; frames: number[] }> = ({ f, frames }) => (
   <>
@@ -225,7 +225,7 @@ const Stack: React.FC<{ f: number; frames: number[] }> = ({ f, frames }) => (
       const [px, py] = arc([x + 1100, y - 900], [x, y], Math.min(1, t), 0.15);
       return (
         <div key={i} style={{ position: "absolute", inset: 0, transform: impact(f, f0, 0.05, 5) }}>
-          <Certificate i={i} x={px} y={py} rotate={r + (1 - t) * 35} />
+          <Certificate i={i} x={px} y={py} rotate={r + (1 - t) * 35} scale={1.28} />
         </div>
       );
     })}
@@ -246,22 +246,32 @@ export const C13Stack: React.FC<ShotProps> = ({ shot }) => {
   );
 };
 
-// ── S14 · THE PROOF LINE — the top certificate lifts to camera.
+// ── S14 · THE PROOF LINE — the top certificate lifts to camera until it *is*
+// the frame; the line is set big on it and a slice sticker fills as the full stop.
 export const C14Proof: React.FC<ShotProps> = ({ shot }) => {
   const f = useCurrentFrame();
   const t = textOf("proof");
-  const lift = sp(f, markFrame(shot, "lift"), "land");
-  const tIn = sp(f, t.at + 6, "settle");
+  const lift = sp(f, markFrame(shot, "lift"), "settle");
+  const slice = f < t.at + 22 ? 0 : sp(f, t.at + 22, "snap");
   return (
-    <Stage dur={shotDuration(shot)} push={[1.0, 1.05]} seed={14}>
+    <Stage dur={shotDuration(shot)} push={[1.0, 1.04]} seed={14}>
       <Ground color={P.navy} tone={P.ink} />
       <div style={{ position: "absolute", inset: 0, opacity: 1 - lift * 0.55, filter: `blur(${lift * 2}px)` }}>
         <Stack f={f} frames={[-40, -40, -40, -40]} />
       </div>
-      <Certificate i={4} x={640} y={325 - lift * 20} rotate={1.5 * (1 - lift) + wander(f, 2, 0.5)} scale={1 + lift * 0.62}>
-        <div style={{ position: "absolute", left: 70, right: 70, top: 118, textAlign: "center", fontFamily: "Open Sans", fontWeight: 800, fontSize: 48, lineHeight: 1.12, color: t.color, opacity: f < t.at + 6 ? 0 : 1, transform: `translateY(${(1 - tIn) * 26}px)` }}>{t.text}</div>
-        <div style={{ position: "absolute", left: 230, top: 300, width: 180 * tIn, height: 12, background: P.orange, borderRadius: 6 }} />
+      <Certificate i={4} x={640} y={325} rotate={1.5 * (1 - lift) + wander(f, 2, 0.3) * (1 - lift)} scale={1.28 + lift * 1.67}>
+        <div />
       </Certificate>
+      <RevealType text={"Own a slice\nof the brands you\nuse every day."} x={170} y={300} size={152} color={t.color} lineHeight={0.98} f={f} at={t.at + 4} stagger={2} spring={settle} />
+      {slice > 0 ? (
+        <div style={{ position: "absolute", left: 1500, top: 500, width: 340, height: 340, transform: `scale(${popIn(f, t.at + 22, "snap", 0.3)}) rotate(${-12 + wander(f, 4, 2)}deg)`, filter: SHADOW }}>
+          <svg width={340} height={340} viewBox="-50 -50 100 100">
+            <circle r={46} fill="#fffdf8" />
+            <circle r={40} fill="none" stroke={P.navy} strokeWidth={7} />
+            <path d={wedge(0.04 + 0.13 * slice)} fill={P.orange} />
+          </svg>
+        </div>
+      ) : null}
     </Stage>
   );
 };
