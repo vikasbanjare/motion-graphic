@@ -6,7 +6,8 @@ import { color, palette } from "../palette";
 import { Sprite } from "../paint/Sprite";
 import { underline } from "../paint/sprites";
 import { storyboard, type TextEvent } from "../storyboard";
-import { clamp01, expoOut, popIn, sec } from "../timing";
+import { popIn, sp } from "../motion";
+import { clamp01, expoOut, sec } from "../timing";
 
 const underlineCache = new Map<string, ReturnType<typeof underline>>();
 const underlineFor = (token: string, w: number) => {
@@ -64,28 +65,34 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
   let scale = 1;
   let opacity = 1;
   let dy = 0;
+  let rot = 0;
   switch (ev.kind) {
     case "kinetic":
+      // Word-hit: pops with overshoot and a twist that settles (follow-through).
+      scale = popIn(f, 0, "pop", 0.3);
+      rot = (1 - sp(f, 0, "loose")) * (ev.id.length % 2 ? 8 : -8);
+      break;
     case "super":
-      scale = popIn(f);
+      scale = popIn(f, 0, "snap", 0.5);
       break;
     case "hero":
-      // Slam: big → settle, exponential.
-      scale = interpolate(f, [0, 6], [1.45, 1], { easing: expoOut, extrapolateRight: "clamp" });
-      opacity = interpolate(f, [0, 2], [0, 1], { extrapolateRight: "clamp" });
+      // Slam: in big, snap down, impact squash.
+      scale = f < 0 ? 0 : 1 + 0.5 * (1 - sp(f, 0, "snap"));
+      opacity = interpolate(f, [0, 1], [0, 1], { extrapolateRight: "clamp" });
       break;
     case "card":
       if (ev.stamp) {
-        scale = interpolate(f, [0, 5], [1.3, 1], { easing: expoOut, extrapolateRight: "clamp" });
-        opacity = interpolate(f, [0, 2], [0, 1], { extrapolateRight: "clamp" });
+        scale = f < 0 ? 0 : 1 + 0.35 * (1 - sp(f, 0, "snap"));
+        opacity = interpolate(f, [0, 1], [0, 1], { extrapolateRight: "clamp" });
       } else {
-        opacity = interpolate(f, [0, 8], [0, 1], { extrapolateRight: "clamp" });
-        dy = interpolate(f, [0, 8], [fontSize * 0.3, 0], { easing: expoOut, extrapolateRight: "clamp" });
+        opacity = interpolate(f, [0, 6], [0, 1], { extrapolateRight: "clamp" });
+        dy = (1 - sp(f, 0, "settle")) * fontSize * 0.4;
       }
       break;
     case "endline":
     case "legal":
-      opacity = interpolate(f, [0, 8], [0, 1], { extrapolateRight: "clamp" });
+      opacity = interpolate(f, [0, 6], [0, 1], { extrapolateRight: "clamp" });
+      dy = (1 - sp(f, 0, "settle")) * fontSize * 0.3;
       break;
   }
   // Supers that carry across a cut fade over their last 5 frames.
@@ -115,7 +122,7 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
         alignItems: "center",
         justifyContent: "center",
         opacity,
-        transform: `scale(${scale * shiftScale})`,
+        transform: `scale(${scale * shiftScale}) rotate(${rot}deg)`,
       }}
     >
       <div

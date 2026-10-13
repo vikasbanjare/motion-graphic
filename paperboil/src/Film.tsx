@@ -1,4 +1,4 @@
-import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Freeze, Sequence, useCurrentFrame } from "remotion";
 import { Backdrop } from "./components/Backdrop";
 import { Captions } from "./components/Captions";
 import { Grain } from "./components/Grain";
@@ -7,6 +7,7 @@ import { TextLayer } from "./components/KineticWord";
 import { PaperTexture } from "./components/PaperTexture";
 import { Soundtrack } from "./components/Soundtrack";
 import { useLayout } from "./layout";
+import { drawnFrame } from "./motion";
 import { SHOT_COMPONENTS } from "./shots";
 import { shotDuration, shotFrom, storyboard, type Shot } from "./storyboard";
 import { TRANSITIONS, type TransitionCtx } from "./transitions";
@@ -71,12 +72,16 @@ export const Film: React.FC<FilmProps> = ({ captions, grain, paperTexture }) => 
   const current = storyboard.shots.find((s) => frame >= sec(s.start) && frame < sec(s.end)) ?? storyboard.shots[0];
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      {storyboard.shots.map((shot, i) => (
-        <Sequence key={shot.id} from={shotFrom(shot)} durationInFrames={shotDuration(shot)} name={`${shot.id} · ${shot.name}`}>
-          <ShotFrame index={i} />
-        </Sequence>
-      ))}
-      <TextLayer />
+      {/* Picture is animated on twos (12 drawings/s, 2-3-2-3 holds), like the
+          reference. Audio, grain and captions stay on ones. */}
+      <Freeze frame={drawnFrame(frame)}>
+        {storyboard.shots.map((shot, i) => (
+          <Sequence key={shot.id} from={shotFrom(shot)} durationInFrames={shotDuration(shot)} name={`${shot.id} · ${shot.name}`}>
+            <ShotFrame index={i} />
+          </Sequence>
+        ))}
+        <TextLayer />
+      </Freeze>
       {captions ? <Captions /> : null}
       {paperTexture ? <PaperTexture amount={current.light ? 0.32 : 0.18} /> : null}
       <Grain light={current.light} enabled={grain} />

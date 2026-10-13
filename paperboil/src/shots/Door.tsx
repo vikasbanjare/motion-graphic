@@ -1,242 +1,276 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { Shadow } from "../components/Decor";
 import { PaintedLayer } from "../components/PaintedLayer";
+import { arc, clamp, easeIn, easeIO, impact, sp, stretch, wander } from "../motion";
+import { Morph } from "../motion/Morph";
+import { archPath, ellipsePath } from "../motion/shapes";
 import { palette } from "../palette";
 import { Sprite } from "../paint/Sprite";
 import * as S from "../paint/sprites";
-import { markFrame, markFrames, shotDuration, type Shot } from "../storyboard";
-import { clamp01, easeInOut, expoOut } from "../timing";
+import { markFrame, type Shot } from "../storyboard";
 
 type ShotProps = { shot: Shot };
 
-// S6 · THE ZERO ─ stickers hang in a ring; the VO asks, the picture answers.
+// ── S6 · THE ZERO ────────────────────────────────────────────────────────────
+// Stickers fly in on staggered arcs and hang in a slowly orbiting ring. They
+// start to tremble just before the bass drops out; the giant 0 slams in on the
+// hole in the music, shoves the ring outward and drains its colour. Then the
+// 0 morphs into the arched door in 8 frames.
 const STICKERS = [S.stickerPhone, S.stickerTv, S.stickerPill, S.stickerCab, S.stickerTick];
 const DOOR_X = 270;
 const DOOR_Y = 150;
 
 export const S6Zero: React.FC<ShotProps> = ({ shot }) => {
-  const frame = useCurrentFrame();
+  const f = useCurrentFrame();
   const zero = markFrame(shot, "zero");
   const morph = markFrame(shot, "morph");
-  const end = shotDuration(shot);
-  const desat = clamp01((frame - zero) / 4);
-  const m = easeInOut(clamp01((frame - morph) / (end - morph)));
-  const slam = interpolate(frame - zero, [0, 6], [1.7, 1], { easing: expoOut, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const shake = frame >= zero && frame < zero + 6 ? Math.sin((frame - zero) * 2.6) * 10 : 0;
-
+  const slam = f >= zero ? 1 + 0.9 * (1 - sp(f, zero, "snap")) : 0;
+  const shake = f >= zero && f < zero + 7 ? Math.sin((f - zero) * 2.4) * (7 - (f - zero)) * 2.2 : 0;
+  const push = sp(f, zero, "loose");
+  const drain = clamp((f - zero) / 4);
+  const tremble = f > zero - 24 && f < zero ? ((f - (zero - 24)) / 24) * 3 : 0;
+  const m = easeIO(clamp((f - morph) / 8));
+  const doorIn = clamp((f - morph - 6) / 4);
   return (
-    <PaintedLayer shot={shot}>
-      {STICKERS.map((draw, i) => {
-        const a = (i / STICKERS.length) * Math.PI * 2 - Math.PI / 2;
-        const bob = Math.sin(frame / 12 + i) * 8;
-        const s = interpolate(frame - i * 2, [0, 6], [0.3, 1], { easing: expoOut, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        return (
+    <PaintedLayer shot={shot} push={[1.0, 1.1]}>
+      <div style={{ position: "absolute", inset: 0, transform: `translate(${shake}px, ${shake * 0.6}px)` }}>
+        {STICKERS.map((draw, i) => {
+          const at = i * 3;
+          const t = sp(f, at, "land");
+          const a = (i / STICKERS.length) * Math.PI * 2 - Math.PI / 2 + f * 0.004;
+          const r = 380 + push * 70 + m * 400;
+          const home: [number, number] = [500 + Math.cos(a) * r, 500 + Math.sin(a) * r];
+          const [x, y] = arc([-200, 1150], home, t, 0.3);
+          const bob = wander(f, i * 2, 8) + Math.sin(f * 2.1 + i) * tremble;
+          return (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                left: x - 100,
+                top: y - 100 + bob,
+                width: 200,
+                height: 200,
+                transform: `scale(${0.4 + t * 0.6}) rotate(${(i - 2) * 7 + (1 - t) * 90 + wander(f, i, 3)}deg)`,
+                filter: `grayscale(${drain}) brightness(${1 - drain * 0.35}) sepia(${drain * 0.25}) hue-rotate(${drain * 170}deg)`,
+                opacity: 1 - m,
+              }}
+            >
+              <Sprite id={`s6-sticker-${i}`} w={200} h={200} draw={draw} />
+            </div>
+          );
+        })}
+        {f >= zero && m < 0.5 ? (
           <div
-            key={i}
             style={{
               position: "absolute",
-              left: 500 + Math.cos(a) * 380 - 100,
-              top: 500 + Math.sin(a) * 380 - 100 + bob,
-              width: 200,
-              height: 200,
-              transform: `scale(${s * 1.05}) rotate(${(i - 2) * 7}deg)`,
-              filter: `grayscale(${desat}) brightness(${1 - desat * 0.35}) sepia(${desat * 0.25}) hue-rotate(${desat * 170}deg)`,
-              opacity: 1 - m,
+              left: 500 - S.ZERO_W / 2,
+              top: 500 - S.ZERO_H / 2,
+              width: S.ZERO_W,
+              height: S.ZERO_H,
+              transform: `scale(${slam * (1 + clamp((f - zero) / 30) * 0.04)}) ${impact(f, zero + 3, 0.12, 6)}`,
             }}
           >
-            <Sprite id={`s6-sticker-${i}`} w={200} h={200} draw={draw} />
+            <Sprite id="s6-zero" w={S.ZERO_W} h={S.ZERO_H} draw={S.zero} />
           </div>
-        );
-      })}
-      {frame >= zero ? (
-        <div
-          style={{
-            position: "absolute",
-            left: 500 - S.ZERO_W / 2 + shake,
-            top: 500 - S.ZERO_H / 2,
-            width: S.ZERO_W,
-            height: S.ZERO_H,
-            // Morph: the 0 squashes into the door's arch proportions as it fades.
-            transform: `scale(${slam * (1 - m * 0.18)}, ${slam * (1 + m * 0.05)})`,
-            opacity: 1 - m,
-          }}
-        >
-          <Sprite id="s6-zero" w={S.ZERO_W} h={S.ZERO_H} draw={S.zero} />
-        </div>
-      ) : null}
-      {m > 0 ? <Sprite id="s7-door" w={S.DOOR_W} h={S.DOOR_H} draw={S.door} x={DOOR_X} y={DOOR_Y} style={{ opacity: m }} /> : null}
+        ) : null}
+        {m > 0 && m < 1 ? <Morph from={ellipsePath(500, 500, 250, 350)} to={archPath(DOOR_X, DOOR_Y, S.DOOR_W, S.DOOR_H)} p={m} fillFrom={palette.orange} fillTo={palette.slate} /> : null}
+        {doorIn > 0 ? <Sprite id="s7-door" w={S.DOOR_W} h={S.DOOR_H} draw={S.door} x={DOOR_X} y={DOOR_Y} style={{ opacity: doorIn }} /> : null}
+      </div>
     </PaintedLayer>
   );
 };
 
-// S7–S9 · one door world, three beats.
-type DoorState = {
-  pulses?: number[];
-  rattle?: number;
-  keyLand?: number;
-  keyTurn?: number;
-  latch?: number;
-  slit?: number;
-  swing?: number;
-  flood?: number;
-  vacuum?: number;
-  ghost?: number;
-};
-
+// ── S7–S8 · THE DOOR ─────────────────────────────────────────────────────────
+// One world, two beats. S7: the key is thrown in on an arc, spinning, and
+// lands in the lock. S8: on the bass return it turns (snap + squash), the
+// latch jolts, and the door swings open on a heavy spring with a little
+// overshoot, light pouring out. Short: 2.8 s total (was 8 s).
 const [KX, KY] = [DOOR_X + S.KEYHOLE[0], DOOR_Y + S.KEYHOLE[1]];
+const TIP: [number, number] = [318, 65];
+
+type DoorState = { keyLaunch?: number; keyLand?: number; keyTurn?: number; latch?: number; swing?: number; keyDone?: boolean };
 
 const DoorWorld: React.FC<{ shot: Shot; st: DoorState }> = ({ shot, st }) => {
-  const frame = useCurrentFrame();
-  const vacuum = st.vacuum !== undefined && frame >= st.vacuum;
+  const f = useCurrentFrame();
+  // Keyhole glow pulses on every beat (12 f) and blazes once the key turns.
+  let glow = 0.3 + Math.max(0, 1 - (f % 12) / 10) * 0.5;
+  if (st.keyTurn !== undefined && f >= st.keyTurn) glow = 1;
 
-  // Keyhole glow pulses on each bar downbeat.
-  let glow = 0.35;
-  for (const p of st.pulses ?? []) if (frame >= p) glow = Math.max(glow, 1 - (frame - p) / 30);
-  if (st.keyTurn !== undefined && frame >= st.keyTurn) glow = 1;
-
-  const rattle = st.rattle !== undefined && frame >= st.rattle && frame < st.rattle + 6 ? Math.sin((frame - st.rattle) * 3) * 4 : 0;
-  const latch = st.latch !== undefined && frame >= st.latch && frame < st.latch + 3 ? 3 : 0;
-
-  // Key: falls from the top, lands at keyLand, turns at keyTurn.
-  let keyY = -400;
+  // Key flight: arc from top-right, spinning, stretched along its velocity.
+  let keyX = 0;
+  let keyY = 0;
   let keyRot = 90;
-  if (st.keyLand !== undefined && st.keyLand <= 0) {
-    // Key already home and turned (S9 continues from S8).
-    keyY = 0;
-    keyRot = 0;
-  } else if (st.keyLand !== undefined) {
-    keyY = interpolate(frame, [0, st.keyLand], [-500, 0], { easing: (t) => t * t, extrapolateRight: "clamp" });
-    if (st.keyTurn !== undefined) keyRot = interpolate(frame, [st.keyTurn, st.keyTurn + 6], [90, 0], { easing: expoOut, extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  let keyStretch = "";
+  let keyVisible = Boolean(st.keyDone);
+  if (st.keyLaunch !== undefined && st.keyLand !== undefined) {
+    const span = st.keyLand - st.keyLaunch;
+    const tt = (x: number) => easeIn(clamp((x - st.keyLaunch!) / span)) ** 0.8;
+    const pos = (x: number) => arc([700, -700], [0, 0], tt(x), -0.25);
+    const [x0, y0] = pos(f - 1);
+    [keyX, keyY] = pos(f);
+    keyRot = 90 + (1 - tt(f)) * 540;
+    keyStretch = f < st.keyLand ? stretch(keyX - x0, keyY - y0, 0.006, 0.35) : impact(f, st.keyLand, 0.2, 6);
+    keyVisible = f >= st.keyLaunch;
   }
-  const showKey = st.keyLand !== undefined || st.swing !== undefined;
+  if (st.keyTurn !== undefined) {
+    keyRot = f < st.keyTurn ? 90 : 90 - 90 * sp(f, st.keyTurn, "snap");
+    keyStretch = impact(f, st.keyTurn, 0.15, 5);
+  } else if (st.keyDone) keyRot = 0;
 
-  // Door swing + light flood (S9).
-  const swing = st.swing !== undefined ? easeInOut(clamp01((frame - st.swing) / 14)) : 0;
-  const flood = st.flood !== undefined ? clamp01((frame - st.flood) / 30) : 0;
-  const slit = st.slit !== undefined ? clamp01((frame - st.slit) / 6) : 0;
-  const tFrozen = st.vacuum !== undefined && st.flood !== undefined ? Math.min(frame, st.vacuum) - st.flood : 0;
+  const landJolt = st.keyLand !== undefined && f >= st.keyLand && f < st.keyLand + 4 ? 3 : 0;
+  const latchJolt = st.latch !== undefined && f >= st.latch && f < st.latch + 3 ? -5 : 0;
+  const swing = st.swing !== undefined ? (f < st.swing ? 0 : sp(f, st.swing, "land")) : 0;
+  const slit = st.latch !== undefined ? clamp((f - st.latch) / 5) : 0;
+  const light = Math.max(slit * 0.55, swing);
 
   return (
-    <>
-      <PaintedLayer shot={shot} origin={[KX / 1000, KY / 1000]}>
-        {/* Light behind the doorway. */}
+    <PaintedLayer shot={shot} push={[1.0, 1.08]} origin={[KX / 1000, KY / 1000]}>
+      <Shadow x={500} y={955} w={560} opacity={0.5} />
+      {/* Light behind the doorway. */}
+      <div
+        style={{
+          position: "absolute",
+          left: DOOR_X,
+          top: DOOR_Y,
+          width: S.DOOR_W,
+          height: S.DOOR_H,
+          borderRadius: `${S.DOOR_W / 2}px ${S.DOOR_W / 2}px 0 0`,
+          background: `radial-gradient(circle at 50% 62%, #ffffff, ${palette.orangeLight} 45%, ${palette.orange})`,
+          opacity: light,
+        }}
+      />
+      {/* Light spilling onto the floor. */}
+      <div style={{ position: "absolute", left: 180, top: 900, width: 640, height: 160, borderRadius: "50%", background: `radial-gradient(closest-side, ${palette.orangeLight}, transparent)`, opacity: swing * 0.9 }} />
+      <div style={{ position: "absolute", left: DOOR_X, top: DOOR_Y, width: S.DOOR_W, height: S.DOOR_H, perspective: 1400 }}>
         <div
           style={{
             position: "absolute",
-            left: DOOR_X,
-            top: DOOR_Y,
-            width: S.DOOR_W,
-            height: S.DOOR_H,
-            borderRadius: `${S.DOOR_W / 2}px ${S.DOOR_W / 2}px 0 0`,
-            background: `radial-gradient(circle at 50% 60%, #ffffff, ${palette.orangeLight} 45%, ${palette.orange})`,
-            opacity: Math.max(slit * 0.6, swing),
+            inset: 0,
+            transform: `translate(${landJolt}px, ${latchJolt}px) rotateY(${-swing * 100}deg)`,
+            transformOrigin: "0% 50%",
           }}
-        />
-        <div style={{ position: "absolute", left: DOOR_X, top: DOOR_Y, width: S.DOOR_W, height: S.DOOR_H, perspective: 1600 }}>
+        >
+          {slit > 0 && swing < 0.05 ? <div style={{ position: "absolute", right: -6, top: 30, width: 14, bottom: 0, background: palette.orangeLight, opacity: slit, filter: "blur(5px)" }} /> : null}
+          <Sprite id="s7-door" w={S.DOOR_W} h={S.DOOR_H} draw={S.door} />
           <div
             style={{
               position: "absolute",
-              inset: 0,
-              transform: `translateX(${rattle}px) translateY(${latch}px) rotateY(${-swing * 78}deg)`,
-              transformOrigin: "0% 50%",
+              left: S.KEYHOLE[0] - 80,
+              top: S.KEYHOLE[1] - 80,
+              width: 160,
+              height: 160,
+              borderRadius: "50%",
+              background: `radial-gradient(closest-side, ${palette.orangeBright}, ${palette.orange}88 45%, transparent)`,
+              opacity: glow,
+              mixBlendMode: "screen",
             }}
-          >
-            {slit > 0 && swing === 0 ? <div style={{ position: "absolute", left: -6, top: 30, width: 12, bottom: 0, background: palette.orangeLight, opacity: slit, filter: "blur(4px)" }} /> : null}
-            <Sprite id="s7-door" w={S.DOOR_W} h={S.DOOR_H} draw={S.door} />
+          />
+          {keyVisible ? (
             <div
               style={{
                 position: "absolute",
-                left: S.KEYHOLE[0] - 70,
-                top: S.KEYHOLE[1] - 70,
-                width: 140,
-                height: 140,
-                borderRadius: "50%",
-                background: `radial-gradient(closest-side, ${palette.orangeBright}, ${palette.orange}88 45%, transparent)`,
-                opacity: glow,
-                mixBlendMode: "screen",
+                left: S.KEYHOLE[0] - TIP[0] + keyX,
+                top: S.KEYHOLE[1] - TIP[1] + keyY,
+                width: S.KEY_W,
+                height: S.KEY_H,
+                transform: `rotate(${keyRot}deg) ${keyStretch}`,
+                transformOrigin: `${TIP[0]}px ${TIP[1]}px`,
               }}
-            />
-            {showKey ? (
-              <div
-                style={{
-                  position: "absolute",
-                  // Pivot on the key tip, which sits in the keyhole: 90° = hanging bow-up, 0° = turned.
-                  left: S.KEYHOLE[0] - 318,
-                  top: S.KEYHOLE[1] - S.KEY_H / 2 + keyY,
-                  width: S.KEY_W,
-                  height: S.KEY_H,
-                  transform: `rotate(${keyRot}deg)`,
-                  transformOrigin: "318px 50%",
-                }}
-              >
-                <Sprite id="s8-key" w={S.KEY_W} h={S.KEY_H} draw={S.key} />
-              </div>
-            ) : null}
-          </div>
+            >
+              <Sprite id="s8-key" w={S.KEY_W} h={S.KEY_H} draw={S.key} />
+            </div>
+          ) : null}
         </div>
-        <Sprite id="s7-arch" w={600} h={940} draw={S.archFrame} x={200} y={40} />
-        <Sprite id="s7-silhouette" w={90} h={200} draw={S.silhouette} x={455} y={790} />
-        {/* Ticker tape and confetti hang in the light. */}
-        {st.flood !== undefined
-          ? Array.from({ length: 14 }, (_, i) => {
-              const a = (i / 14) * Math.PI * 2;
-              const t = Math.max(0, tFrozen) / 30;
-              const r = 120 + t * (220 + (i % 4) * 60);
-              const draw = i % 4 === 0 ? S.tapeOrange : i % 4 === 1 ? S.confettiBlue : i % 4 === 2 ? S.tapeBlue : S.confettiOrange;
-              const isTape = i % 2 === 0;
-              return (
-                <Sprite
-                  key={i}
-                  id={`s9-bit-${i % 4}`}
-                  w={isTape ? 44 : 40}
-                  h={isTape ? 200 : 40}
-                  draw={draw}
-                  freeze={vacuum}
-                  x={500 + Math.cos(a) * r}
-                  y={520 + Math.sin(a) * r * 0.9}
-                  style={{ opacity: flood, transform: `rotate(${i * 37 + t * 20}deg)` }}
-                />
-              );
-            })
-          : null}
-      </PaintedLayer>
-      {/* The light floods the whole frame, then at 15.5 everything snaps to cream. */}
-      {st.flood !== undefined ? (
-        <AbsoluteFill style={{ background: `radial-gradient(circle at 50% 55%, #ffffff ${flood * 40}%, ${palette.orangeLight}cc ${flood * 70}%, transparent ${20 + flood * 90}%)`, opacity: flood * 0.9 }} />
+      </div>
+      <Sprite id="s7-arch" w={600} h={940} draw={S.archFrame} x={200} y={40} />
+      <div style={{ position: "absolute", left: 455, top: 790, width: 90, height: 200, transform: `translateY(${wander(f, 3, 2)}px)`, filter: light > 0 ? `drop-shadow(0 0 ${light * 18}px ${palette.orangeLight})` : undefined }}>
+        <Sprite id="s7-silhouette" w={90} h={200} draw={S.silhouette} />
+      </div>
+    </PaintedLayer>
+  );
+};
+
+export const S7Door: React.FC<ShotProps> = ({ shot }) => (
+  <DoorWorld shot={shot} st={{ keyLaunch: markFrame(shot, "keyLaunch"), keyLand: markFrame(shot, "keyLand") }} />
+);
+
+export const S8Key: React.FC<ShotProps> = ({ shot }) => (
+  <DoorWorld shot={shot} st={{ keyDone: true, keyTurn: markFrame(shot, "keyTurn"), latch: markFrame(shot, "latch"), swing: markFrame(shot, "swing") }} />
+);
+
+// ── S9–S10 · THROUGH THE DOOR, THE LIGHT TUNNEL, THE VACUUM ──────────────────
+// The camera flies through the doorway into light: ticker tape and confetti
+// stream past (perspective fly-through, every frame moves) and speed up with
+// the build. At 15.2 s everything freezes and pulls back for the half-bar
+// vacuum; a ghost of the burst flickers in just before the drop.
+const BITS = [S.tapeOrange, S.confettiBlue, S.tapeBlue, S.confettiOrange];
+
+const Tunnel: React.FC<{ travel: number; frozen: boolean; streaks: number }> = ({ travel, frozen, streaks }) => {
+  const items = Array.from({ length: 26 }, (_, i) => {
+    const a = i * 2.39996;
+    const z = (((i * 0.137) % 1) + travel) % 1;
+    const d = z * z;
+    const r = 60 + d * 900;
+    return { i, x: 500 + Math.cos(a) * r, y: 500 + Math.sin(a) * r * 0.85, s: 0.3 + d * 3.2, rot: i * 47 + travel * 400 * (i % 2 ? 1 : -1), o: Math.min(1, z * 4) * (1 - Math.max(0, (z - 0.85) / 0.15)) };
+  });
+  return (
+    <>
+      <div style={{ position: "absolute", left: 200, top: 200, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(closest-side, #ffffff, #ffffffaa 40%, transparent)" }} />
+      {streaks > 0 ? (
+        <svg width={1000} height={1000} style={{ position: "absolute", inset: 0, opacity: streaks }}>
+          {Array.from({ length: 30 }, (_, k) => {
+            const a = (k / 30) * Math.PI * 2;
+            const r0 = 120 + ((k * 53 + travel * 900) % 260);
+            return <line key={k} x1={500 + Math.cos(a) * r0} y1={500 + Math.sin(a) * r0} x2={500 + Math.cos(a) * (r0 + 380)} y2={500 + Math.sin(a) * (r0 + 380)} stroke={k % 2 ? palette.orange : palette.blueBright} strokeWidth={9} strokeLinecap="round" />;
+          })}
+        </svg>
       ) : null}
-      {vacuum ? <AbsoluteFill style={{ background: palette.cream }} /> : null}
-      {vacuum && st.ghost !== undefined && frame >= st.ghost ? (
+      {items.map(({ i, x, y, s, rot, o }) => {
+        const tape = i % 2 === 0;
+        const w = tape ? 44 : 40;
+        const h = tape ? 200 : 40;
+        return <Sprite key={i} id={`s9-bit-${i % 4}`} w={w} h={h} draw={BITS[i % 4]} freeze={frozen} x={x - w / 2} y={y - h / 2} style={{ opacity: o, transform: `scale(${s}) rotate(${rot}deg)` }} />;
+      })}
+    </>
+  );
+};
+
+export const S9Through: React.FC<ShotProps> = ({ shot }) => {
+  const f = useCurrentFrame();
+  return (
+    <PaintedLayer shot={shot} push={[1.15, 1.0]}>
+      <Tunnel travel={f * 0.012} frozen={false} streaks={0} />
+    </PaintedLayer>
+  );
+};
+
+export const S10Tunnel: React.FC<ShotProps> = ({ shot }) => {
+  const f = useCurrentFrame();
+  const rush = markFrame(shot, "rush");
+  const vacuum = markFrame(shot, "vacuum");
+  const ghost = markFrame(shot, "ghost");
+  const live = Math.min(f, vacuum);
+  // Travel speeds up with the build and again on the rush.
+  const travel = 48 * 0.012 + live * 0.016 + Math.max(0, live - rush) * 0.02;
+  const inVacuum = f >= vacuum;
+  const pull = inVacuum ? easeIO(clamp((f - vacuum) / 10)) : 0;
+  const streaks = inVacuum ? 0 : clamp((f - rush) / 8);
+  return (
+    <>
+      <PaintedLayer shot={shot} push={[1.0, 1.0]}>
+        <div style={{ position: "absolute", inset: 0, transform: `scale(${1 + clamp(live / vacuum) * 0.12 - pull * 0.05})`, filter: inVacuum ? `saturate(${1 - pull * 0.5})` : undefined }}>
+          <Tunnel travel={travel} frozen={inVacuum} streaks={streaks} />
+        </div>
+      </PaintedLayer>
+      {inVacuum ? <AbsoluteFill style={{ background: palette.cream, opacity: 0.35 + pull * 0.35 }} /> : null}
+      {f >= ghost ? (
         <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: S.BURST, height: S.BURST, transform: "scale(0.55)", opacity: 0.25 }}>
-            <Sprite id="s10-burst" w={S.BURST} h={S.BURST} draw={S.burst} />
+          <div style={{ width: S.BACKDROP, height: S.BACKDROP, transform: `scale(${0.6 + (f - ghost) * 0.06})`, opacity: 0.25 }}>
+            <Sprite id="jagged-burst" w={S.BACKDROP} h={S.BACKDROP} draw={S.jaggedBurst} />
           </div>
         </AbsoluteFill>
       ) : null}
     </>
   );
 };
-
-export const S7Door: React.FC<ShotProps> = ({ shot }) => (
-  <DoorWorld shot={shot} st={{ pulses: markFrames(shot, "pulses"), rattle: markFrame(shot, "rattle") }} />
-);
-
-export const S8Key: React.FC<ShotProps> = ({ shot }) => (
-  <DoorWorld
-    shot={shot}
-    st={{ pulses: [0], keyLand: markFrame(shot, "keyLand"), keyTurn: markFrame(shot, "keyTurn"), latch: markFrame(shot, "latch"), slit: markFrame(shot, "slit") }}
-  />
-);
-
-export const S9Light: React.FC<ShotProps> = ({ shot }) => (
-  <DoorWorld
-    shot={shot}
-    st={{
-      keyLand: -1,
-      keyTurn: -1,
-      slit: -10,
-      swing: markFrame(shot, "swing"),
-      flood: markFrame(shot, "flood"),
-      vacuum: markFrame(shot, "vacuum"),
-      ghost: markFrame(shot, "ghost"),
-    }}
-  />
-);

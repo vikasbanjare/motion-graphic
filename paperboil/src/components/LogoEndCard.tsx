@@ -1,7 +1,8 @@
 import { AbsoluteFill, Img, getStaticFiles, staticFile, useCurrentFrame } from "remotion";
 import { useLayout } from "../layout";
 import { storyboard } from "../storyboard";
-import { clamp01, popIn } from "../timing";
+import { popIn } from "../motion";
+import { clamp01 } from "../timing";
 import { MapsLogo, type MapsLogoVariant } from "./MapsLogo";
 
 const LOGO_FILES = ["maps-logo.svg", "maps-logo.png", "maps-logo.webp", "maps-logo.jpg"];
@@ -14,7 +15,7 @@ const LOGO_FILES = ["maps-logo.svg", "maps-logo.png", "maps-logo.webp", "maps-lo
 export const LogoEndCard: React.FC<{ popFrame: number }> = ({ popFrame }) => {
   const frame = useCurrentFrame();
   const { width, height, portrait } = useLayout();
-  const s = popIn(frame - popFrame, 1.1, 10);
+  const s = popIn(frame, popFrame, "pop", 0.5);
   const barReveal = clamp01((frame - popFrame - 6) / 8);
   const file = LOGO_FILES.find((n) => getStaticFiles().some((f) => f.name === n));
   const logoW = portrait ? width * 0.7 : width * 0.34;

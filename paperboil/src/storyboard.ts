@@ -12,7 +12,13 @@ export type TransitionName =
   | "speed-whip"
   | "shrink-to-point"
   | "card-flick-stack"
-  | "hard-cut-on-beat";
+  | "hard-cut-on-beat"
+  | "push-into"
+  | "fast-morph"
+  | "scatter"
+  | "echo-burst"
+  | "card-land"
+  | "slide-off";
 
 export type TransitionSpec = {
   name: TransitionName;
@@ -76,7 +82,7 @@ export type Storyboard = {
   text: TextEvent[];
   captions: Caption[];
   logo: { brand: string; variant: "bar-navy" | "bar-orange" | "text-navy" | "text-black"; variants: string[] };
-  audio: { music: string; musicGainDb: number; vo: string | null; voDuckDb: number };
+  audio: { mix: string; music: string; musicGainDb: number; vo: string | null; voDuckDb: number };
 };
 
 export const storyboard = raw as unknown as Storyboard;

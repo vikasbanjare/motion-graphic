@@ -1,17 +1,19 @@
-// 120 BPM, 4/4, 30 fps: one beat = 15 frames, one bar = 60 frames.
-export const BPM = 120;
+// The music (V1) is 150 BPM, 4/4, half-time feel: one beat = 12 frames,
+// one bar = 48 frames at 30 fps. Film 0.0 s is a bar downbeat; the drop is
+// bar 11 (16.0 s, frame 480).
+export const BPM = 150;
 export const FPS = 30;
-export const BEAT_FRAMES = (60 / BPM) * FPS; // 15
-export const BAR_FRAMES = BEAT_FRAMES * 4; // 60
+export const BEAT_FRAMES = (60 / BPM) * FPS; // 12
+export const BAR_FRAMES = BEAT_FRAMES * 4; // 48
 
 /** Seconds → frame (rounded to the nearest frame). */
 export const sec = (s: number): number => Math.round(s * FPS);
 /** 1-based beat number → frame of its downbeat. beat(1) = 0. */
 export const beat = (n: number): number => (n - 1) * BEAT_FRAMES;
-/** 1-based bar number → frame of its downbeat. bar(9) = 480. */
+/** 1-based bar number → frame of its downbeat. bar(11) = 480. */
 export const bar = (n: number): number => (n - 1) * BAR_FRAMES;
 
-/** Hold a value for `every` frames — used for 10 fps boil (every = 3). */
+/** Hold a value for `every` frames. */
 export const stepped = (frame: number, every: number): number => Math.floor(frame / every) * every;
 
 /** Easing curves from the animation spec (§6). */

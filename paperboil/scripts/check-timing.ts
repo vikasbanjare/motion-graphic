@@ -41,10 +41,10 @@ const check = (name: string, ok: boolean, detail = "") => (ok ? passes : failure
 {
   const drop = cues.cues.find((c) => c.id === "drop");
   check("2. drop cue at frame 480", drop?.frame === 480 && sec(storyboard.meta.dropSeconds) === 480, `drop=${drop?.frame}`);
-  const s10 = storyboard.shots.find((s) => s.id === "S10");
-  check("2b. S10 (the drop) starts on frame 480", s10 !== undefined && sec(s10.start) === 480);
+  const dropShot = storyboard.shots.find((s) => sec(s.start) === 480);
+  check("2b. a shot (the drop) starts on frame 480", dropShot !== undefined, dropShot?.id ?? "none");
   const v = storyboard.meta.vacuum;
-  check("2c. vacuum gate is 15.5–16.0 s", sec(v.start) === 465 && sec(v.end) === 480);
+  check("2c. vacuum ends on the drop (frame 480)", sec(v.end) === 480 && sec(v.start) < 480, `${v.start}–${v.end} s`);
   const bad = cues.cues.filter((c) => Math.round(c.time * FPS) !== c.frame);
   check("2d. every cue frame = time × 30", bad.length === 0, bad.map((c) => c.id).join(", "));
 }
@@ -113,11 +113,19 @@ const check = (name: string, ok: boolean, detail = "") => (ok ? passes : failure
   }
 }
 
-// Extra ─ referenced files exist
+// Extra ─ audio assets exist (npm run audio)
 {
-  const missing = cues.cues.filter((c) => !existsSync(join(ROOT, "assets", c.file))).map((c) => c.file);
-  if (!existsSync(join(ROOT, "assets", storyboard.audio.music))) missing.push(storyboard.audio.music);
-  check("x. cue + music files exist (npm run stub-audio)", missing.length === 0, [...new Set(missing)].join(", "));
+  const missing: string[] = [];
+  for (const f of ["audio/music.wav", storyboard.audio.mix]) if (!existsSync(join(ROOT, "assets", f))) missing.push(f);
+  for (const [slot, meta] of Object.entries(cues.slots)) {
+    const vars = meta.variations > 1 ? Array.from({ length: meta.variations }, (_, i) => `${slot}_${i + 1}`) : [slot];
+    for (const v of vars) {
+      const lib = ["wav", "mp3", "aif", "aiff", "flac", "ogg", "m4a"].some((e) => existsSync(join(ROOT, "assets", "audio", "sfx-library", `${v}.${e}`)) || existsSync(join(ROOT, "assets", "audio", "sfx-library", `${slot}.${e}`)));
+      if (!lib && !existsSync(join(ROOT, "assets", "audio", "sfx-fallback", `${v}.wav`))) missing.push(`sfx:${v}`);
+    }
+  }
+  const unknown = cues.cues.flatMap((c) => c.layers.map((l) => l.slot)).filter((s) => !(s in cues.slots));
+  check("x. music, mix and every SFX slot resolvable (npm run audio)", missing.length === 0 && unknown.length === 0, [...missing, ...unknown.map((u) => `unknown slot ${u}`)].join(", "));
 }
 
 for (const p of passes) console.log(`  ✓ ${p}`);

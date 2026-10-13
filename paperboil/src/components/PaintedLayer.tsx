@@ -1,7 +1,7 @@
-import { AbsoluteFill, Img, getStaticFiles, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, getStaticFiles, staticFile, useCurrentFrame } from "remotion";
 import { ART, useLayout } from "../layout";
 import { shotDuration, type Shot } from "../storyboard";
-import { easeInOut } from "../timing";
+import { camera } from "../motion";
 import { Boil } from "./Boil";
 
 const ASSET_EXTS = ["png", "webp", "jpg"];
@@ -36,16 +36,13 @@ export const PaintedLayer: React.FC<PaintedLayerProps> = ({ shot, children, push
   const frame = useCurrentFrame();
   const layout = useLayout();
   const box = layout.artBox(shot.layout);
-  const [from, to] = push ?? shot.push ?? [1, 1];
-  const scale = interpolate(frame, [0, shotDuration(shot)], [from, to], {
-    easing: easeInOut,
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const [from, to] = push ?? shot.push ?? [1, 1.05];
+  // Moving hold: every shot pushes and drifts (the reference camera is never still).
+  const cam = camera(frame, shotDuration(shot), { from, to, drift: 5, rot: 0.5, seed: Number(shot.id.slice(1)) });
   const asset = findPaintedAsset(shot.asset);
 
   return (
-    <AbsoluteFill style={{ transform: `scale(${scale})`, transformOrigin: `${box.x + box.size * origin[0]}px ${box.y + box.size * origin[1]}px` }}>
+    <AbsoluteFill style={{ transform: cam, transformOrigin: `${box.x + box.size * origin[0]}px ${box.y + box.size * origin[1]}px` }}>
       {asset ? (
         <Boil scale={boilScale}>
           <Img src={staticFile(asset)} style={{ position: "absolute", left: box.x, top: box.y, width: box.size, height: box.size, objectFit: "contain" }} />

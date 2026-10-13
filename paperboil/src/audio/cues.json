@@ -1,40 +1,1327 @@
 {
-  "note": "From the storyboard cue sheet (§5). time is seconds, frame = time × 30. file is relative to assets/. gainDb is relative to the SFX bus (3–6 dB under VO).",
-  "cues": [
-    { "id": "paper-tap-open", "time": 0.0, "frame": 0, "file": "audio/sfx/paper-tap.wav", "gainDb": -6, "label": "Paper-tap (soft)" },
-    { "id": "tile-pop-1", "time": 0.5, "frame": 15, "file": "audio/sfx/bloop-0.wav", "gainDb": -9, "label": "Tile pop 1, VO starts" },
-    { "id": "groove-scroll", "time": 1.0, "frame": 30, "file": "audio/sfx/bloop-1.wav", "gainDb": -9, "label": "Groove enters, SCROLL hit" },
-    { "id": "tile-pop-3", "time": 1.5, "frame": 45, "file": "audio/sfx/bloop-2.wav", "gainDb": -9, "label": "Tile pop 3" },
-    { "id": "sparkle-1", "time": 1.5, "frame": 45, "file": "audio/sfx/sparkle.wav", "gainDb": -10, "label": "Sparkle chime" },
-    { "id": "tv-whoomp", "time": 2.0, "frame": 60, "file": "audio/sfx/whoomp.wav", "gainDb": -6, "label": "TV whoomp, STREAM hit" },
-    { "id": "keys", "time": 3.0, "frame": 90, "file": "audio/sfx/keys.wav", "gainDb": -8, "label": "Keyboard-tick burst, SEARCH hit" },
-    { "id": "pin-pop", "time": 4.0, "frame": 120, "file": "audio/sfx/pop.wav", "gainDb": -6, "label": "Pin pop, engine put, RIDE hit" },
-    { "id": "tap", "time": 5.0, "frame": 150, "file": "audio/sfx/tap.wav", "gainDb": -6, "label": "Tap tk, success chime, PAY hit" },
-    { "id": "success", "time": 5.0, "frame": 150, "file": "audio/sfx/chime.wav", "gainDb": -9, "label": "Success chime" },
-    { "id": "zero-sub", "time": 7.0, "frame": 210, "file": "audio/sfx/sub-hit.wav", "gainDb": -4, "label": "Soft sub hit as the 0 slams" },
-    { "id": "morph-whoosh", "time": 7.5, "frame": 225, "file": "audio/sfx/whoosh.wav", "gainDb": -8, "label": "Morph whoosh" },
-    { "id": "drone", "time": 8.0, "frame": 240, "file": "audio/sfx/drone.wav", "gainDb": -10, "label": "Drone + wood creak" },
-    { "id": "rattle", "time": 10.0, "frame": 300, "file": "audio/sfx/rattle.wav", "gainDb": -7, "label": "Brass lock rattle" },
-    { "id": "riser", "time": 11.0, "frame": 330, "file": "audio/sfx/riser.wav", "gainDb": -9, "label": "Riser starts" },
-    { "id": "key-whoosh", "time": 12.0, "frame": 360, "file": "audio/sfx/whoosh.wav", "gainDb": -7, "label": "Key whoosh, NOT ANYMORE hit" },
-    { "id": "key-insert", "time": 12.5, "frame": 375, "file": "audio/sfx/tap.wav", "gainDb": -5, "label": "Key insert tnk" },
-    { "id": "key-turn", "time": 13.0, "frame": 390, "file": "audio/sfx/click.wav", "gainDb": -5, "label": "Key turn click" },
-    { "id": "latch", "time": 13.5, "frame": 405, "file": "audio/sfx/clunk.wav", "gainDb": -4, "label": "Latch clunk" },
-    { "id": "door-swing", "time": 14.0, "frame": 420, "file": "audio/sfx/whoosh.wav", "gainDb": -6, "label": "Door-swing whoosh" },
-    { "id": "light-swell", "time": 15.0, "frame": 450, "file": "audio/sfx/swell.wav", "gainDb": -9, "label": "Light swell" },
-    { "id": "drop", "time": 16.0, "frame": 480, "file": "audio/sfx/impact.wav", "gainDb": -2, "label": "DROP: boom + paint-splash; US STOCKS slam" },
-    { "id": "glints", "time": 17.0, "frame": 510, "file": "audio/sfx/sparkle.wav", "gainDb": -9, "label": "Sparkle glints, phone pop-in" },
-    { "id": "pick-tap", "time": 19.0, "frame": 570, "file": "audio/sfx/tap.wav", "gainDb": -6, "label": "Tap" },
-    { "id": "buy-stamp", "time": 19.5, "frame": 585, "file": "audio/sfx/stamp.wav", "gainDb": -4, "label": "Stamp thunk, BUY FROM INDIA hit" },
-    { "id": "flick-1", "time": 20.0, "frame": 600, "file": "audio/sfx/flick-0.wav", "gainDb": -7, "label": "Card flick +0" },
-    { "id": "flick-2", "time": 20.5, "frame": 615, "file": "audio/sfx/flick-2.wav", "gainDb": -7, "label": "Card flick +2" },
-    { "id": "flick-3", "time": 21.0, "frame": 630, "file": "audio/sfx/flick-4.wav", "gainDb": -7, "label": "Card flick +4" },
-    { "id": "flick-4", "time": 21.5, "frame": 645, "file": "audio/sfx/flick-5.wav", "gainDb": -7, "label": "Card flick +5" },
-    { "id": "flick-sparkle", "time": 21.5, "frame": 645, "file": "audio/sfx/sparkle.wav", "gainDb": -10, "label": "Sparkle on the last card" },
-    { "id": "proof-tick", "time": 22.0, "frame": 660, "file": "audio/sfx/click.wav", "gainDb": -9, "label": "UI tick on the proof text" },
-    { "id": "card-whoosh", "time": 24.0, "frame": 720, "file": "audio/sfx/whoosh.wav", "gainDb": -8, "label": "Card whoosh, Customer by habit." },
-    { "id": "shareholder-stamp", "time": 26.0, "frame": 780, "file": "audio/sfx/stamp.wav", "gainDb": -4, "label": "Stamp thunk on Shareholder by choice." },
-    { "id": "logo-chime", "time": 28.0, "frame": 840, "file": "audio/sfx/chime.wav", "gainDb": -7, "label": "Final music hit, logo pop chime" },
-    { "id": "paper-tap-loop", "time": 29.5, "frame": 885, "file": "audio/sfx/paper-tap.wav", "gainDb": -6, "label": "Paper-tap (loop point)" }
-  ]
+ "note": "Layered SFX cue sheet on the 150 BPM grid (beat = 12 frames). Each layer names a slot from slots; offset is frames relative to the cue, semis is pitch relative to the slot's root (tonal slots are tuned to the song key, B major), pan is -1..1. scripts/mix.ts renders it.",
+ "key": "B major",
+ "rootHz": 246.94,
+ "vacuumSilence": {
+  "start": 15.5,
+  "end": 15.97
+ },
+ "musicGainDb": -2,
+ "slots": {
+  "paper_tap": {
+   "description": "Soft fingertip tap on thick paper/card. Very short, dry.",
+   "search": "paper tap, card tap, foley tap",
+   "tonal": false,
+   "variations": 1
+  },
+  "ui_pluck": {
+   "description": "Soft marimba/kalimba pluck, single note. Root B (tuned per cue).",
+   "search": "marimba hit, kalimba pluck, mallet note B",
+   "tonal": true,
+   "variations": 1
+  },
+  "soft_tap": {
+   "description": "Finger tap on glass/phone screen.",
+   "search": "phone tap, glass tap, touchscreen",
+   "tonal": false,
+   "variations": 1
+  },
+  "word_hit": {
+   "description": "Soft round 'thock' (felt mallet on wood/cardboard).",
+   "search": "felt thump, soft wood knock, cardboard thock",
+   "tonal": false,
+   "variations": 1
+  },
+  "whoosh_short": {
+   "description": "Short air whoosh (~0.3 s), no tone.",
+   "search": "whoosh short, swish air, fast pass",
+   "tonal": false,
+   "variations": 1
+  },
+  "whoosh_long": {
+   "description": "Longer whoosh into a cut (~0.6 s).",
+   "search": "whoosh transition, swoosh long",
+   "tonal": false,
+   "variations": 1
+  },
+  "tv_thunk": {
+   "description": "Old TV/CRT switching on: thunk + static tick.",
+   "search": "tv on, crt power on, static click",
+   "tonal": false,
+   "variations": 1
+  },
+  "hum": {
+   "description": "Low warm electrical hum bed (loopable, 1 s).",
+   "search": "tv hum, room tone hum",
+   "tonal": false,
+   "variations": 1
+  },
+  "card_thump": {
+   "description": "Cardboard/paper block landing on a table.",
+   "search": "cardboard thud, paper drop, card land",
+   "tonal": false,
+   "variations": 1
+  },
+  "key_tick": {
+   "description": "Single soft keyboard/pencil tap (4 variations: _1.._4).",
+   "search": "soft keyboard tap, laptop key, pencil tap",
+   "tonal": false,
+   "variations": 4
+  },
+  "ping": {
+   "description": "Small bright UI ping (tonal, tuned).",
+   "search": "ui ping, glass ping, notification soft",
+   "tonal": true,
+   "variations": 1
+  },
+  "swish": {
+   "description": "Paper swish / page flick air.",
+   "search": "paper swish, page whoosh",
+   "tonal": false,
+   "variations": 1
+  },
+  "map_boop": {
+   "description": "Low soft tonal 'boop' (tuned).",
+   "search": "soft boop, bubble pop low, ui confirm low",
+   "tonal": true,
+   "variations": 1
+  },
+  "car_pass": {
+   "description": "Small car passing by (cartoon-light), ~0.6 s.",
+   "search": "car pass by, small car whoosh",
+   "tonal": false,
+   "variations": 1
+  },
+  "nfc_chime": {
+   "description": "Contactless payment chime (2-note). Tuned.",
+   "search": "nfc payment chime, tap to pay, success chime",
+   "tonal": true,
+   "variations": 1
+  },
+  "card_tap": {
+   "description": "Plastic card tap on a terminal.",
+   "search": "card tap, plastic tap",
+   "tonal": false,
+   "variations": 1
+  },
+  "paper_flick": {
+   "description": "Paper sticker/card flicked (4 variations).",
+   "search": "paper flick, sticker peel, card flick",
+   "tonal": false,
+   "variations": 4
+  },
+  "reverse_swell": {
+   "description": "Reverse swell/suck into a hit (~0.5 s).",
+   "search": "reverse swell, reverse cymbal short, suck in",
+   "tonal": false,
+   "variations": 1
+  },
+  "sub_drop": {
+   "description": "Sub drop / sub boom 40–60 Hz, 0.5 s.",
+   "search": "sub drop, sub boom, 808 hit low",
+   "tonal": false,
+   "variations": 1
+  },
+  "cardboard_slam": {
+   "description": "Heavy book/cardboard slam (mid crack).",
+   "search": "book slam, box slam, cardboard impact",
+   "tonal": false,
+   "variations": 1
+  },
+  "paper_debris": {
+   "description": "Paper scraps settling after an impact.",
+   "search": "paper debris, paper rustle settle",
+   "tonal": false,
+   "variations": 1
+  },
+  "wood_creak": {
+   "description": "Old wooden door creak (short).",
+   "search": "door creak, wood creak",
+   "tonal": false,
+   "variations": 1
+  },
+  "key_jingle": {
+   "description": "Key ring jingle in motion.",
+   "search": "keys jingle, key ring",
+   "tonal": false,
+   "variations": 1
+  },
+  "metal_clack": {
+   "description": "Key sliding into a lock: metallic clack.",
+   "search": "key insert lock, lock clack",
+   "tonal": false,
+   "variations": 1
+  },
+  "lock_mechanism": {
+   "description": "Lock turning: two-part mechanical click.",
+   "search": "lock turn, deadbolt, key turn click",
+   "tonal": false,
+   "variations": 1
+  },
+  "latch_clunk": {
+   "description": "Door latch releasing: clunk.",
+   "search": "door latch, latch release, door unlock clunk",
+   "tonal": false,
+   "variations": 1
+  },
+  "door_swing": {
+   "description": "Heavy door swinging open (whoosh + low wood).",
+   "search": "door open whoosh, heavy door swing",
+   "tonal": false,
+   "variations": 1
+  },
+  "shimmer": {
+   "description": "Bright shimmer/chime bloom (light).",
+   "search": "magic shimmer, chime sparkle swell, glass shimmer",
+   "tonal": true,
+   "variations": 1
+  },
+  "air_riser": {
+   "description": "Airy riser, 2–3 s, in key or noise-based.",
+   "search": "riser air, noise riser, build up",
+   "tonal": false,
+   "variations": 1
+  },
+  "paper_flutter": {
+   "description": "Confetti/paper flutter passing by.",
+   "search": "paper flutter, confetti whoosh",
+   "tonal": false,
+   "variations": 1
+  },
+  "reverse_cymbal": {
+   "description": "Reverse cymbal ~0.6 s into the drop.",
+   "search": "reverse cymbal, reverse crash",
+   "tonal": false,
+   "variations": 1
+  },
+  "paint_splash": {
+   "description": "Wet paint/brush splash, stereo.",
+   "search": "paint splash, liquid splash, wet splat",
+   "tonal": false,
+   "variations": 1
+  },
+  "sub_boom": {
+   "description": "Big cinematic sub boom for the drop.",
+   "search": "cinematic boom, sub impact, trailer hit low",
+   "tonal": false,
+   "variations": 1
+  },
+  "crash": {
+   "description": "Crash/sizzle sweetener on the drop.",
+   "search": "crash cymbal hit, impact sweetener",
+   "tonal": false,
+   "variations": 1
+  },
+  "pop": {
+   "description": "Bubbly UI pop.",
+   "search": "pop ui, bubble pop",
+   "tonal": false,
+   "variations": 1
+  },
+  "sparkle": {
+   "description": "Sparkle twinkle (tonal, tuned).",
+   "search": "sparkle, twinkle, glitter chime",
+   "tonal": true,
+   "variations": 1
+  },
+  "card_slide": {
+   "description": "Card sliding on glass/table.",
+   "search": "card slide, swipe",
+   "tonal": false,
+   "variations": 1
+  },
+  "button_thunk": {
+   "description": "Soft button press thunk.",
+   "search": "button press soft, ui press",
+   "tonal": false,
+   "variations": 1
+  },
+  "positive_chime": {
+   "description": "Positive confirmation chime (tuned).",
+   "search": "success chime, confirm ding",
+   "tonal": true,
+   "variations": 1
+  },
+  "paper_flip": {
+   "description": "Card/paper flip over.",
+   "search": "paper flip, card flip",
+   "tonal": false,
+   "variations": 1
+  },
+  "card_flick": {
+   "description": "Playing card flick onto a pile (4 variations).",
+   "search": "card flick, playing card deal",
+   "tonal": false,
+   "variations": 4
+  },
+  "paper_lift": {
+   "description": "Paper lifted off a stack.",
+   "search": "paper lift, page lift",
+   "tonal": false,
+   "variations": 1
+  },
+  "card_slap": {
+   "description": "Thick card slapped down on a stack.",
+   "search": "card slap, paper slap",
+   "tonal": false,
+   "variations": 1
+  },
+  "brush_stroke": {
+   "description": "Dry brush/marker stroke on paper.",
+   "search": "brush stroke paper, marker scribble",
+   "tonal": false,
+   "variations": 1
+  },
+  "rubber_stamp": {
+   "description": "Rubber stamp thunk on paper.",
+   "search": "rubber stamp, stamp paper",
+   "tonal": false,
+   "variations": 1
+  },
+  "paper_crunch": {
+   "description": "Short paper crunch/crinkle.",
+   "search": "paper crunch, paper crinkle",
+   "tonal": false,
+   "variations": 1
+  },
+  "tonal_hit": {
+   "description": "Low tonal hit / piano low note (tuned).",
+   "search": "low piano hit, tonal impact, bass note hit",
+   "tonal": true,
+   "variations": 1
+  },
+  "logo_motif": {
+   "description": "Sonic logo: 3-note motif (B–D#–F#) on marimba/celesta. Supply your own mnemonic if you have one.",
+   "search": "logo sting, mnemonic marimba, celesta motif",
+   "tonal": true,
+   "variations": 1
+  },
+  "paper_swoosh": {
+   "description": "Paper swoosh-in.",
+   "search": "paper swoosh, paper whoosh in",
+   "tonal": false,
+   "variations": 1
+  }
+ },
+ "cues": [
+  {
+   "id": "open",
+   "time": 0.0,
+   "frame": 0,
+   "label": "Paper tap + phone rise",
+   "layers": [
+    {
+     "slot": "paper_tap",
+     "gainDb": -8
+    },
+    {
+     "slot": "whoosh_short",
+     "gainDb": -14,
+     "pan": -0.2
+    }
+   ]
+  },
+  {
+   "id": "tiles-1",
+   "time": 0.0,
+   "frame": 0,
+   "label": "Tile row pops (1-3-5-8 of B major)",
+   "layers": [
+    {
+     "slot": "ui_pluck",
+     "gainDb": -12,
+     "pan": -0.3
+    },
+    {
+     "slot": "soft_tap",
+     "offset": -1,
+     "gainDb": -16
+    }
+   ]
+  },
+  {
+   "id": "tiles-2",
+   "time": 0.2,
+   "frame": 6,
+   "label": "Tile row pops (1-3-5-8 of B major)",
+   "layers": [
+    {
+     "slot": "ui_pluck",
+     "gainDb": -12,
+     "pan": -0.09999999999999998,
+     "semis": 4
+    },
+    {
+     "slot": "soft_tap",
+     "offset": -1,
+     "gainDb": -16
+    }
+   ]
+  },
+  {
+   "id": "tiles-3",
+   "time": 0.4,
+   "frame": 12,
+   "label": "Tile row pops (1-3-5-8 of B major)",
+   "layers": [
+    {
+     "slot": "ui_pluck",
+     "gainDb": -12,
+     "pan": 0.10000000000000003,
+     "semis": 7
+    },
+    {
+     "slot": "soft_tap",
+     "offset": -1,
+     "gainDb": -16
+    }
+   ]
+  },
+  {
+   "id": "tiles-4",
+   "time": 0.6,
+   "frame": 18,
+   "label": "Tile row pops (1-3-5-8 of B major)",
+   "layers": [
+    {
+     "slot": "ui_pluck",
+     "gainDb": -12,
+     "pan": 0.3000000000000001,
+     "semis": 12
+    },
+    {
+     "slot": "soft_tap",
+     "offset": -1,
+     "gainDb": -16
+    }
+   ]
+  },
+  {
+   "id": "scroll",
+   "time": 0.4,
+   "frame": 12,
+   "label": "SCROLL word-hit",
+   "layers": [
+    {
+     "slot": "word_hit",
+     "gainDb": -10
+    }
+   ]
+  },
+  {
+   "id": "push-tv",
+   "time": 1.0,
+   "frame": 30,
+   "label": "Push into the tile",
+   "layers": [
+    {
+     "slot": "whoosh_long",
+     "offset": -2,
+     "gainDb": -10,
+     "pan": 0.1
+    }
+   ]
+  },
+  {
+   "id": "tv-on",
+   "time": 1.2,
+   "frame": 36,
+   "label": "TV on, STREAM",
+   "layers": [
+    {
+     "slot": "tv_thunk",
+     "gainDb": -8
+    },
+    {
+     "slot": "hum",
+     "gainDb": -22
+    },
+    {
+     "slot": "word_hit",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "morph-pill",
+   "time": 1.8667,
+   "frame": 56,
+   "label": "TV morphs to search pill",
+   "layers": [
+    {
+     "slot": "swish",
+     "offset": -2,
+     "gainDb": -12,
+     "pan": -0.1
+    }
+   ]
+  },
+  {
+   "id": "search",
+   "time": 2.0,
+   "frame": 60,
+   "label": "Pill lands, SEARCH",
+   "layers": [
+    {
+     "slot": "card_thump",
+     "gainDb": -9
+    },
+    {
+     "slot": "word_hit",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "key-1",
+   "time": 2.0667,
+   "frame": 62,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -16,
+     "pan": -0.15,
+     "var": 1
+    }
+   ]
+  },
+  {
+   "id": "key-2",
+   "time": 2.1333,
+   "frame": 64,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -15,
+     "var": 2
+    }
+   ]
+  },
+  {
+   "id": "key-3",
+   "time": 2.2,
+   "frame": 66,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": 0.15,
+     "var": 3
+    }
+   ]
+  },
+  {
+   "id": "key-4",
+   "time": 2.2667,
+   "frame": 68,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -16,
+     "pan": -0.15,
+     "var": 4
+    }
+   ]
+  },
+  {
+   "id": "key-5",
+   "time": 2.3333,
+   "frame": 70,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -15,
+     "var": 1
+    }
+   ]
+  },
+  {
+   "id": "key-6",
+   "time": 2.4,
+   "frame": 72,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": 0.15,
+     "var": 2
+    }
+   ]
+  },
+  {
+   "id": "key-7",
+   "time": 2.4667,
+   "frame": 74,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -16,
+     "pan": -0.15,
+     "var": 3
+    }
+   ]
+  },
+  {
+   "id": "key-8",
+   "time": 2.5333,
+   "frame": 76,
+   "label": "Typing",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -15,
+     "var": 4
+    }
+   ]
+  },
+  {
+   "id": "search-ping",
+   "time": 2.5333,
+   "frame": 76,
+   "label": "Result ping",
+   "layers": [
+    {
+     "slot": "ping",
+     "gainDb": -14,
+     "semis": 7
+    }
+   ]
+  },
+  {
+   "id": "morph-pin",
+   "time": 2.6667,
+   "frame": 80,
+   "label": "Magnifier morphs to pin",
+   "layers": [
+    {
+     "slot": "swish",
+     "offset": -2,
+     "gainDb": -12,
+     "pan": 0.2
+    }
+   ]
+  },
+  {
+   "id": "pin",
+   "time": 2.8,
+   "frame": 84,
+   "label": "Pin lands, RIDE",
+   "layers": [
+    {
+     "slot": "card_thump",
+     "gainDb": -10
+    },
+    {
+     "slot": "map_boop",
+     "gainDb": -12,
+     "pan": 0.2
+    },
+    {
+     "slot": "word_hit",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "cab",
+   "time": 2.9,
+   "frame": 87,
+   "label": "Cab drives the route",
+   "layers": [
+    {
+     "slot": "car_pass",
+     "gainDb": -14,
+     "pan": -0.5
+    }
+   ]
+  },
+  {
+   "id": "pay",
+   "time": 3.6,
+   "frame": 108,
+   "label": "PAY",
+   "layers": [
+    {
+     "slot": "word_hit",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "tap",
+   "time": 3.9333,
+   "frame": 118,
+   "label": "Phone taps the terminal",
+   "layers": [
+    {
+     "slot": "card_tap",
+     "offset": -1,
+     "gainDb": -9
+    },
+    {
+     "slot": "nfc_chime",
+     "gainDb": -10
+    },
+    {
+     "slot": "nfc_chime",
+     "offset": 3,
+     "gainDb": -12,
+     "semis": 7
+    },
+    {
+     "slot": "shimmer",
+     "offset": 2,
+     "gainDb": -20,
+     "semis": 12
+    }
+   ]
+  },
+  {
+   "id": "scatter",
+   "time": 4.2,
+   "frame": 126,
+   "label": "Scene scatters into stickers",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -11,
+     "pan": -0.4
+    },
+    {
+     "slot": "swish",
+     "offset": 3,
+     "gainDb": -13,
+     "pan": 0.3
+    }
+   ]
+  },
+  {
+   "id": "sticker-1",
+   "time": 4.4,
+   "frame": 132,
+   "label": "Sticker lands",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -12,
+     "pan": -0.6,
+     "var": 1
+    }
+   ]
+  },
+  {
+   "id": "sticker-2",
+   "time": 4.5,
+   "frame": 135,
+   "label": "Sticker lands",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -12,
+     "pan": 0.6,
+     "var": 2
+    }
+   ]
+  },
+  {
+   "id": "sticker-3",
+   "time": 4.6,
+   "frame": 138,
+   "label": "Sticker lands",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -12,
+     "pan": -0.2,
+     "var": 3
+    }
+   ]
+  },
+  {
+   "id": "sticker-4",
+   "time": 4.7,
+   "frame": 141,
+   "label": "Sticker lands",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -12,
+     "pan": 0.3,
+     "var": 4
+    }
+   ]
+  },
+  {
+   "id": "sticker-5",
+   "time": 4.8,
+   "frame": 144,
+   "label": "Sticker lands",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -12,
+     "var": 1
+    }
+   ]
+  },
+  {
+   "id": "pre-zero",
+   "time": 6.7,
+   "frame": 201,
+   "label": "Reverse swell into the 0",
+   "layers": [
+    {
+     "slot": "reverse_swell",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "zero",
+   "time": 7.2,
+   "frame": 216,
+   "label": "THE 0 SLAMS (bass drops out)",
+   "layers": [
+    {
+     "slot": "sub_drop",
+     "gainDb": -4
+    },
+    {
+     "slot": "cardboard_slam",
+     "gainDb": -6
+    },
+    {
+     "slot": "paper_debris",
+     "offset": 2,
+     "gainDb": -14
+    },
+    {
+     "slot": "tonal_hit",
+     "gainDb": -12,
+     "semis": -12
+    }
+   ],
+   "duck": {
+    "depthDb": -6,
+    "attack": 1,
+    "release": 14
+   }
+  },
+  {
+   "id": "morph-door",
+   "time": 8.0,
+   "frame": 240,
+   "label": "0 morphs into the door",
+   "layers": [
+    {
+     "slot": "wood_creak",
+     "gainDb": -13
+    },
+    {
+     "slot": "swish",
+     "gainDb": -14
+    }
+   ]
+  },
+  {
+   "id": "key-throw",
+   "time": 8.6,
+   "frame": 258,
+   "label": "Key thrown in",
+   "layers": [
+    {
+     "slot": "key_jingle",
+     "gainDb": -12,
+     "pan": 0.5
+    },
+    {
+     "slot": "whoosh_short",
+     "offset": 4,
+     "gainDb": -12,
+     "pan": 0.3
+    }
+   ]
+  },
+  {
+   "id": "key-land",
+   "time": 9.2,
+   "frame": 276,
+   "label": "Key lands in the lock",
+   "layers": [
+    {
+     "slot": "metal_clack",
+     "gainDb": -7
+    },
+    {
+     "slot": "tonal_hit",
+     "gainDb": -18,
+     "semis": 12
+    }
+   ]
+  },
+  {
+   "id": "key-turn",
+   "time": 9.6,
+   "frame": 288,
+   "label": "Key turns (bass returns)",
+   "layers": [
+    {
+     "slot": "lock_mechanism",
+     "gainDb": -6
+    },
+    {
+     "slot": "tonal_hit",
+     "gainDb": -16,
+     "semis": 7
+    }
+   ],
+   "duck": {
+    "depthDb": -4,
+    "attack": 1,
+    "release": 10
+   }
+  },
+  {
+   "id": "latch",
+   "time": 9.8,
+   "frame": 294,
+   "label": "Latch releases",
+   "layers": [
+    {
+     "slot": "latch_clunk",
+     "gainDb": -7
+    }
+   ]
+  },
+  {
+   "id": "door-swing",
+   "time": 10.0,
+   "frame": 300,
+   "label": "Door swings open, light",
+   "layers": [
+    {
+     "slot": "door_swing",
+     "gainDb": -8,
+     "pan": -0.2
+    },
+    {
+     "slot": "wood_creak",
+     "gainDb": -14
+    },
+    {
+     "slot": "shimmer",
+     "offset": 6,
+     "gainDb": -14,
+     "semis": 12
+    }
+   ]
+  },
+  {
+   "id": "into-light",
+   "time": 11.0,
+   "frame": 330,
+   "label": "Push through the doorway",
+   "layers": [
+    {
+     "slot": "whoosh_long",
+     "gainDb": -9
+    }
+   ]
+  },
+  {
+   "id": "flutter-1",
+   "time": 11.2,
+   "frame": 336,
+   "label": "Confetti streams past",
+   "layers": [
+    {
+     "slot": "paper_flutter",
+     "gainDb": -14,
+     "pan": -0.4
+    }
+   ]
+  },
+  {
+   "id": "flutter-2",
+   "time": 12.8,
+   "frame": 384,
+   "label": "Confetti streams past",
+   "layers": [
+    {
+     "slot": "paper_flutter",
+     "gainDb": -12,
+     "pan": 0.4
+    }
+   ]
+  },
+  {
+   "id": "flutter-3",
+   "time": 14.4,
+   "frame": 432,
+   "label": "Confetti streams past",
+   "layers": [
+    {
+     "slot": "paper_flutter",
+     "gainDb": -10
+    }
+   ]
+  },
+  {
+   "id": "riser",
+   "time": 12.8,
+   "frame": 384,
+   "label": "Airy riser with the build",
+   "layers": [
+    {
+     "slot": "air_riser",
+     "gainDb": -14
+    }
+   ]
+  },
+  {
+   "id": "suck",
+   "time": 14.9,
+   "frame": 447,
+   "label": "Reverse cymbal into the vacuum",
+   "layers": [
+    {
+     "slot": "reverse_cymbal",
+     "gainDb": -10
+    }
+   ]
+  },
+  {
+   "id": "drop",
+   "time": 16.0,
+   "frame": 480,
+   "label": "DROP: burst + US STOCKS",
+   "layers": [
+    {
+     "slot": "sub_boom",
+     "gainDb": -3
+    },
+    {
+     "slot": "paint_splash",
+     "gainDb": -7,
+     "pan": -0.3
+    },
+    {
+     "slot": "paint_splash",
+     "offset": 1,
+     "gainDb": -9,
+     "pan": 0.3
+    },
+    {
+     "slot": "crash",
+     "gainDb": -11
+    }
+   ],
+   "duck": {
+    "depthDb": -3,
+    "attack": 0,
+    "release": 12
+   }
+  },
+  {
+   "id": "phone-pop",
+   "time": 17.2,
+   "frame": 516,
+   "label": "Phone springs up",
+   "layers": [
+    {
+     "slot": "pop",
+     "gainDb": -10
+    },
+    {
+     "slot": "sparkle",
+     "offset": 4,
+     "gainDb": -16,
+     "semis": 12
+    }
+   ]
+  },
+  {
+   "id": "swipe-1",
+   "time": 18.4,
+   "frame": 552,
+   "label": "Swipe",
+   "layers": [
+    {
+     "slot": "card_slide",
+     "gainDb": -12,
+     "pan": 0.3
+    }
+   ]
+  },
+  {
+   "id": "swipe-2",
+   "time": 18.8,
+   "frame": 564,
+   "label": "Swipe",
+   "layers": [
+    {
+     "slot": "card_slide",
+     "gainDb": -12,
+     "pan": 0.4
+    }
+   ]
+  },
+  {
+   "id": "pick",
+   "time": 19.2,
+   "frame": 576,
+   "label": "Pick tap",
+   "layers": [
+    {
+     "slot": "soft_tap",
+     "gainDb": -10
+    },
+    {
+     "slot": "ui_pluck",
+     "gainDb": -14,
+     "semis": 7
+    }
+   ]
+  },
+  {
+   "id": "buy",
+   "time": 19.6,
+   "frame": 588,
+   "label": "Buy pressed, BUY FROM INDIA",
+   "layers": [
+    {
+     "slot": "button_thunk",
+     "gainDb": -8
+    },
+    {
+     "slot": "positive_chime",
+     "offset": 1,
+     "gainDb": -11
+    },
+    {
+     "slot": "paper_flip",
+     "offset": 2,
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "flick-1",
+   "time": 20.0,
+   "frame": 600,
+   "label": "Certificate lands on the stack",
+   "layers": [
+    {
+     "slot": "card_flick",
+     "gainDb": -9,
+     "pan": -0.4,
+     "var": 1
+    },
+    {
+     "slot": "swish",
+     "offset": -4,
+     "gainDb": -16,
+     "pan": -0.4
+    }
+   ]
+  },
+  {
+   "id": "flick-2",
+   "time": 20.4,
+   "frame": 612,
+   "label": "Certificate lands on the stack",
+   "layers": [
+    {
+     "slot": "card_flick",
+     "gainDb": -9,
+     "pan": 0.3,
+     "semis": 2,
+     "var": 2
+    },
+    {
+     "slot": "swish",
+     "offset": -4,
+     "gainDb": -16,
+     "pan": 0.3
+    }
+   ]
+  },
+  {
+   "id": "flick-3",
+   "time": 20.8,
+   "frame": 624,
+   "label": "Certificate lands on the stack",
+   "layers": [
+    {
+     "slot": "card_flick",
+     "gainDb": -9,
+     "pan": -0.2,
+     "semis": 4,
+     "var": 3
+    },
+    {
+     "slot": "swish",
+     "offset": -4,
+     "gainDb": -16,
+     "pan": -0.2
+    }
+   ]
+  },
+  {
+   "id": "flick-4",
+   "time": 21.2,
+   "frame": 636,
+   "label": "Certificate lands on the stack",
+   "layers": [
+    {
+     "slot": "card_flick",
+     "gainDb": -9,
+     "pan": 0.2,
+     "semis": 5,
+     "var": 4
+    },
+    {
+     "slot": "swish",
+     "offset": -4,
+     "gainDb": -16,
+     "pan": 0.2
+    }
+   ]
+  },
+  {
+   "id": "stack-sparkle",
+   "time": 21.2,
+   "frame": 636,
+   "label": "Sparkle on the last card",
+   "layers": [
+    {
+     "slot": "sparkle",
+     "offset": 3,
+     "gainDb": -16,
+     "semis": 12
+    }
+   ]
+  },
+  {
+   "id": "proof",
+   "time": 21.6,
+   "frame": 648,
+   "label": "Top card lifts, proof line",
+   "layers": [
+    {
+     "slot": "paper_lift",
+     "gainDb": -11
+    },
+    {
+     "slot": "ping",
+     "offset": 2,
+     "gainDb": -18,
+     "semis": 7
+    }
+   ]
+  },
+  {
+   "id": "frame-land",
+   "time": 23.2,
+   "frame": 696,
+   "label": "Engraved card lands",
+   "layers": [
+    {
+     "slot": "card_slap",
+     "gainDb": -8
+    },
+    {
+     "slot": "paper_crunch",
+     "offset": 1,
+     "gainDb": -14
+    }
+   ]
+  },
+  {
+   "id": "shareholder",
+   "time": 25.6,
+   "frame": 768,
+   "label": "Shareholder by choice. stamp (after the break)",
+   "layers": [
+    {
+     "slot": "rubber_stamp",
+     "gainDb": -5
+    },
+    {
+     "slot": "paper_crunch",
+     "offset": 1,
+     "gainDb": -13
+    },
+    {
+     "slot": "tonal_hit",
+     "gainDb": -12
+    },
+    {
+     "slot": "brush_stroke",
+     "offset": 4,
+     "gainDb": -12,
+     "pan": 0.2
+    }
+   ],
+   "duck": {
+    "depthDb": -3,
+    "attack": 0,
+    "release": 10
+   }
+  },
+  {
+   "id": "slide-off",
+   "time": 28.0,
+   "frame": 840,
+   "label": "Stack slides off",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "offset": -2,
+     "gainDb": -10,
+     "pan": 0.5
+    }
+   ]
+  },
+  {
+   "id": "logo",
+   "time": 28.4,
+   "frame": 852,
+   "label": "Logo on the song's final hit",
+   "layers": [
+    {
+     "slot": "paper_swoosh",
+     "offset": -6,
+     "gainDb": -12
+    },
+    {
+     "slot": "logo_motif",
+     "gainDb": -8
+    },
+    {
+     "slot": "sub_drop",
+     "gainDb": -14
+    }
+   ]
+  },
+  {
+   "id": "loop-tap",
+   "time": 29.4,
+   "frame": 882,
+   "label": "Paper tap (loop point)",
+   "layers": [
+    {
+     "slot": "paper_tap",
+     "gainDb": -10
+    }
+   ]
+  }
+ ]
 }

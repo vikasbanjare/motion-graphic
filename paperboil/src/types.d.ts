@@ -26,3 +26,7 @@ declare module "p5.brush/standalone" {
   export function circle(x: number, y: number, radius: number, irregular?: boolean | number): void;
   export function rect(x: number, y: number, w: number, h: number, mode?: "corner" | "center"): void;
 }
+
+declare module "flubber" {
+  export function interpolate(from: string, to: string, options?: { maxSegmentLength?: number; string?: boolean }): (t: number) => string;
+}
