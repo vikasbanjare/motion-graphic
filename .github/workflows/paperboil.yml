@@ -1,0 +1,25 @@
+name: paperboil checks
+
+on:
+  push:
+    paths: ["paperboil/**", ".github/workflows/paperboil.yml"]
+  pull_request:
+    paths: ["paperboil/**", ".github/workflows/paperboil.yml"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: paperboil
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: paperboil/package-lock.json
+      - run: npm ci
+      - run: npm run stub-audio
+      - run: npx tsc
+      - run: npm run check

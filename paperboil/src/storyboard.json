@@ -1,0 +1,844 @@
+{
+ "meta": {
+  "title": "MAPS Global Markets · US Stocks launch · 30s",
+  "fps": 30,
+  "bpm": 120,
+  "durationInFrames": 900,
+  "dropSeconds": 16.0,
+  "vacuum": {
+   "start": 15.5,
+   "end": 16.0
+  },
+  "fontFamily": "Open Sans",
+  "notes": "Transition anchors are fractions of the shot's 1000×1000 art box."
+ },
+ "shots": [
+  {
+   "id": "S1",
+   "name": "Hook · The phone",
+   "start": 0.0,
+   "end": 2.0,
+   "asset": "A1",
+   "ground": [
+    "pale",
+    "cream"
+   ],
+   "light": true,
+   "layout": "split",
+   "push": [
+    1.0,
+    1.04
+   ],
+   "marks": {
+    "rowPops": [
+     0.5,
+     1.0,
+     1.5
+    ],
+    "sparkle": 1.5
+   },
+   "transitionOut": {
+    "name": "morph-match",
+    "frames": 8,
+    "params": {
+     "anchor": [
+      0.39,
+      0.23
+     ],
+     "shape": "rect"
+    }
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "tint",
+     "sky"
+    ],
+    "rays": {
+     "colors": [
+      "pale",
+      "tint"
+     ],
+     "opacity": 120,
+     "spin": 0.12
+    }
+   }
+  },
+  {
+   "id": "S2",
+   "name": "The TV night",
+   "start": 2.0,
+   "end": 3.0,
+   "asset": "A2",
+   "ground": [
+    "ink",
+    "blueMid"
+   ],
+   "light": false,
+   "layout": "split",
+   "push": [
+    1.02,
+    1.0
+   ],
+   "marks": {},
+   "transitionOut": {
+    "name": "morph-match",
+    "frames": 6,
+    "params": {
+     "anchor": [
+      0.5,
+      0.39
+     ],
+     "shape": "pill"
+    }
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "blueMid",
+     "ink"
+    ],
+    "rays": {
+     "colors": [
+      "blueBright",
+      "ink"
+     ],
+     "opacity": 70,
+     "spin": 0.08
+    }
+   }
+  },
+  {
+   "id": "S3",
+   "name": "The search",
+   "start": 3.0,
+   "end": 4.0,
+   "asset": "A3",
+   "ground": [
+    "orange"
+   ],
+   "light": true,
+   "layout": "split",
+   "marks": {
+    "typeStart": 3.05,
+    "typeEnd": 3.75
+   },
+   "transitionOut": {
+    "name": "morph-match",
+    "frames": 6,
+    "params": {
+     "anchor": [
+      0.15,
+      0.5
+     ],
+     "shape": "circle"
+    }
+   },
+   "backdrop": {
+    "kind": "field",
+    "colors": [
+     "orange"
+    ],
+    "specks": "orangePale",
+    "checker": [
+     "navy",
+     "cream"
+    ]
+   }
+  },
+  {
+   "id": "S4",
+   "name": "The ride",
+   "start": 4.0,
+   "end": 5.0,
+   "asset": "A4",
+   "ground": [
+    "pale"
+   ],
+   "light": true,
+   "layout": "split",
+   "marks": {
+    "pinLand": 4.0,
+    "cabStart": 4.15,
+    "cabEnd": 4.85
+   },
+   "transitionOut": {
+    "name": "carry-through",
+    "frames": 6,
+    "params": {
+     "anchor": [
+      0.61,
+      0.24
+     ],
+     "to": [
+      0.67,
+      0.5
+     ],
+     "color": "orangeBright"
+    }
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "tint",
+     "pale"
+    ]
+   }
+  },
+  {
+   "id": "S5",
+   "name": "The tap",
+   "start": 5.0,
+   "end": 6.0,
+   "asset": "A5",
+   "ground": [
+    "tint"
+   ],
+   "light": true,
+   "layout": "split",
+   "marks": {
+    "tap": 5.2,
+    "tick": 5.3
+   },
+   "transitionOut": {
+    "name": "shrink-to-point",
+    "frames": 6,
+    "params": {
+     "anchor": [
+      0.67,
+      0.5
+     ]
+    }
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "tint",
+     "pale"
+    ],
+    "rays": {
+     "colors": [
+      "orangeLight",
+      "sky"
+     ],
+     "opacity": 130,
+     "spin": 0.4,
+     "from": 9
+    }
+   }
+  },
+  {
+   "id": "S6",
+   "name": "The zero",
+   "start": 6.0,
+   "end": 8.0,
+   "asset": "A6",
+   "ground": [
+    "ink"
+   ],
+   "light": false,
+   "layout": "center",
+   "marks": {
+    "zero": 7.0,
+    "morph": 7.5
+   },
+   "transitionOut": {
+    "name": "morph-match",
+    "frames": 4,
+    "params": {
+     "anchor": [
+      0.5,
+      0.5
+     ],
+     "shape": "arch"
+    }
+   },
+   "backdrop": {
+    "kind": "field",
+    "colors": [
+     "ink"
+    ],
+    "specks": "sky"
+   }
+  },
+  {
+   "id": "S7",
+   "name": "The locked door",
+   "start": 8.0,
+   "end": 12.0,
+   "asset": "A7",
+   "ground": [
+    "ink",
+    "navy"
+   ],
+   "light": false,
+   "layout": "center",
+   "push": [
+    1.0,
+    1.1
+   ],
+   "marks": {
+    "pulses": [
+     8.0,
+     10.0
+    ],
+    "rattle": 10.0
+   },
+   "transitionOut": {
+    "name": "hard-cut-on-beat",
+    "frames": 0,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "navy",
+     "ink"
+    ]
+   }
+  },
+  {
+   "id": "S8",
+   "name": "The key",
+   "start": 12.0,
+   "end": 14.0,
+   "asset": "A8",
+   "ground": [
+    "ink",
+    "navy"
+   ],
+   "light": false,
+   "layout": "center",
+   "push": [
+    1.1,
+    1.1
+   ],
+   "marks": {
+    "keyLand": 12.5,
+    "keyTurn": 13.0,
+    "latch": 13.5,
+    "slit": 13.6
+   },
+   "transitionOut": {
+    "name": "hard-cut-on-beat",
+    "frames": 0,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "navy",
+     "ink"
+    ],
+    "rays": {
+     "colors": [
+      "navy",
+      "ink"
+     ],
+     "opacity": 120,
+     "spin": 0.05
+    }
+   }
+  },
+  {
+   "id": "S9",
+   "name": "The light and the vacuum",
+   "start": 14.0,
+   "end": 16.0,
+   "asset": "A9",
+   "ground": [
+    "ink",
+    "navy"
+   ],
+   "light": false,
+   "layout": "center",
+   "push": [
+    1.1,
+    1.18
+   ],
+   "marks": {
+    "swing": 14.0,
+    "flood": 14.5,
+    "vacuum": 15.5,
+    "ghost": 15.9
+   },
+   "transitionOut": {
+    "name": "paint-burst",
+    "frames": 10,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "navy",
+     "ink"
+    ],
+    "rays": {
+     "colors": [
+      "orangeLight",
+      "orangePale"
+     ],
+     "opacity": 150,
+     "spin": 0.3,
+     "from": 15
+    }
+   }
+  },
+  {
+   "id": "S10",
+   "name": "The drop · US STOCKS",
+   "start": 16.0,
+   "end": 18.0,
+   "asset": "A10",
+   "ground": [
+    "orangePale"
+   ],
+   "light": true,
+   "layout": "center",
+   "marks": {
+    "burst": 16.0,
+    "phonePop": 17.0,
+    "glints": 17.0
+   },
+   "transitionOut": {
+    "name": "speed-whip",
+    "frames": 6,
+    "params": {
+     "anchor": [
+      0.5,
+      0.7
+     ]
+    }
+   },
+   "backdrop": {
+    "kind": "field",
+    "colors": [
+     "orangePale"
+    ],
+    "burst": true
+   }
+  },
+  {
+   "id": "S11",
+   "name": "The pick",
+   "start": 18.0,
+   "end": 20.0,
+   "asset": "A11",
+   "ground": [
+    "cream"
+   ],
+   "light": true,
+   "layout": "center",
+   "marks": {
+    "swipes": [
+     18.0,
+     18.5
+    ],
+    "pick": 19.0,
+    "buy": 19.5
+   },
+   "transitionOut": {
+    "name": "card-flick-stack",
+    "frames": 8,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "cream",
+     "orangePale"
+    ],
+    "rays": {
+     "colors": [
+      "orangePale",
+      "cream"
+     ],
+     "opacity": 110,
+     "spin": 0.1
+    }
+   }
+  },
+  {
+   "id": "S12",
+   "name": "The stack",
+   "start": 20.0,
+   "end": 22.0,
+   "asset": "A12",
+   "ground": [
+    "slate"
+   ],
+   "light": false,
+   "layout": "center",
+   "marks": {
+    "flicks": [
+     20.0,
+     20.5,
+     21.0,
+     21.5
+    ]
+   },
+   "transitionOut": {
+    "name": "hard-cut-on-beat",
+    "frames": 0,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "desk",
+    "colors": [
+     "slate",
+     "navy"
+    ]
+   }
+  },
+  {
+   "id": "S13",
+   "name": "The proof line",
+   "start": 22.0,
+   "end": 24.0,
+   "asset": "A12",
+   "ground": [
+    "slate"
+   ],
+   "light": false,
+   "layout": "center",
+   "push": [
+    1.0,
+    1.06
+   ],
+   "marks": {},
+   "transitionOut": {
+    "name": "ring-wipe",
+    "frames": 10,
+    "params": {
+     "colors": [
+      "orange",
+      "blueBright"
+     ]
+    }
+   },
+   "backdrop": {
+    "kind": "desk",
+    "colors": [
+     "slate",
+     "navy"
+    ]
+   }
+  },
+  {
+   "id": "S14",
+   "name": "The last dab",
+   "start": 24.0,
+   "end": 28.0,
+   "asset": "A13",
+   "ground": [
+    "slate"
+   ],
+   "light": false,
+   "layout": "center",
+   "marks": {
+    "line1": 24.0,
+    "line2": 26.0
+   },
+   "transitionOut": {
+    "name": "ribbon-wipe",
+    "frames": 10,
+    "params": {
+     "color": "orange"
+    }
+   },
+   "backdrop": {
+    "kind": "desk",
+    "colors": [
+     "slate",
+     "navy"
+    ]
+   }
+  },
+  {
+   "id": "S15",
+   "name": "End card · logo · loop",
+   "start": 28.0,
+   "end": 30.0,
+   "asset": "A14",
+   "ground": [
+    "cream"
+   ],
+   "light": true,
+   "layout": "center",
+   "marks": {
+    "logo": 28.0,
+    "loopGhost": 29.5
+   },
+   "transitionOut": {
+    "name": "hard-cut-on-beat",
+    "frames": 0,
+    "params": {}
+   },
+   "backdrop": {
+    "kind": "glow",
+    "colors": [
+     "cream",
+     "orangePale"
+    ]
+   }
+  }
+ ],
+ "text": [
+  {
+   "id": "scroll",
+   "shot": "S1",
+   "text": "SCROLL",
+   "start": 1.0,
+   "end": 2.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "split",
+   "size": 0.16,
+   "underline": "orange"
+  },
+  {
+   "id": "stream",
+   "shot": "S2",
+   "text": "STREAM",
+   "start": 2.0,
+   "end": 3.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "orangeBright",
+   "ground": "ink",
+   "position": "split",
+   "size": 0.16
+  },
+  {
+   "id": "search",
+   "shot": "S3",
+   "text": "SEARCH",
+   "start": 3.0,
+   "end": 4.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "ink",
+   "ground": "orange",
+   "position": "split",
+   "size": 0.16,
+   "underline": "cream"
+  },
+  {
+   "id": "ride",
+   "shot": "S4",
+   "text": "RIDE",
+   "start": 4.0,
+   "end": 5.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "pale",
+   "position": "split",
+   "size": 0.16,
+   "underline": "orange"
+  },
+  {
+   "id": "pay",
+   "shot": "S5",
+   "text": "PAY",
+   "start": 5.0,
+   "end": 6.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "tint",
+   "position": "split",
+   "size": 0.16,
+   "underline": "orange"
+  },
+  {
+   "id": "not-anymore",
+   "shot": "S8",
+   "text": "NOT ANYMORE.",
+   "start": 12.0,
+   "end": 14.0,
+   "kind": "hero",
+   "weight": 800,
+   "color": "orangeBright",
+   "ground": "ink",
+   "position": "top",
+   "size": 0.13
+  },
+  {
+   "id": "us-stocks",
+   "shot": "S10",
+   "text": "US STOCKS",
+   "start": 16.0,
+   "end": 18.0,
+   "kind": "hero",
+   "weight": 800,
+   "color": "navy",
+   "ground": "orangePale",
+   "position": "center",
+   "size": 0.22,
+   "shadow": "orange",
+   "shiftAt": 17.0,
+   "shiftTo": "upper"
+  },
+  {
+   "id": "buy-from-india",
+   "shot": "S11",
+   "text": "BUY FROM INDIA",
+   "start": 19.5,
+   "end": 21.0,
+   "kind": "super",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "chip": true,
+   "position": "top",
+   "size": 0.09,
+   "note": "Carried 1.0 s into S12 so it holds 45 frames (decision: user, 2026-10-13)."
+  },
+  {
+   "id": "proof",
+   "shot": "S13",
+   "text": "[PROOF LINE — one true fact, ≤ 6 words]",
+   "start": 22.0,
+   "end": 24.0,
+   "kind": "super",
+   "weight": 600,
+   "color": "navy",
+   "ground": "cream",
+   "position": "card",
+   "size": 0.06,
+   "placeholder": true
+  },
+  {
+   "id": "customer",
+   "shot": "S14",
+   "text": "Customer by habit.",
+   "start": 24.0,
+   "end": 28.0,
+   "kind": "card",
+   "weight": 600,
+   "color": "navy",
+   "ground": "cream",
+   "position": "card-1",
+   "size": 0.09
+  },
+  {
+   "id": "shareholder",
+   "shot": "S14",
+   "text": "Shareholder by choice.",
+   "start": 26.0,
+   "end": 28.0,
+   "kind": "card",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "card-2",
+   "size": 0.1,
+   "underline": "orange",
+   "stamp": true
+  },
+  {
+   "id": "now-open",
+   "shot": "S15",
+   "text": "US STOCKS · NOW OPEN",
+   "start": 28.0,
+   "end": 30.0,
+   "kind": "endline",
+   "weight": 600,
+   "color": "navy",
+   "ground": "cream",
+   "position": "below-logo",
+   "size": 0.045,
+   "tracking": 0.18,
+   "underline": "orange"
+  },
+  {
+   "id": "footer",
+   "shot": "S13",
+   "text": "[COMPLIANCE FOOTER — wording from MAPS compliance]",
+   "start": 22.0,
+   "end": 30.0,
+   "kind": "legal",
+   "weight": 400,
+   "color": "navy",
+   "ground": "cream",
+   "chip": true,
+   "position": "footer",
+   "size": 0.022,
+   "placeholder": true
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.5,
+   "end": 3.4,
+   "text": "Your whole day runs on American companies."
+  },
+  {
+   "start": 5.6,
+   "end": 7.0,
+   "text": "How many do you own?"
+  },
+  {
+   "start": 8.2,
+   "end": 11.6,
+   "text": "Owning a piece of them always felt like somebody else's game."
+  },
+  {
+   "start": 12.0,
+   "end": 14.0,
+   "text": "Not anymore. We opened the door."
+  },
+  {
+   "start": 16.0,
+   "end": 17.5,
+   "text": "US stocks. Now on MAPS."
+  },
+  {
+   "start": 17.7,
+   "end": 19.3,
+   "text": "Pick a name you know."
+  },
+  {
+   "start": 19.4,
+   "end": 21.0,
+   "text": "Buy it from India."
+  },
+  {
+   "start": 22.0,
+   "end": 24.0,
+   "text": "[PROOF LINE]",
+   "burn": false
+  },
+  {
+   "start": 24.0,
+   "end": 25.4,
+   "text": "Customer by habit.",
+   "burn": false
+  },
+  {
+   "start": 26.0,
+   "end": 27.6,
+   "text": "Shareholder by choice.",
+   "burn": false
+  }
+ ],
+ "logo": {
+  "brand": "MAPS Global Markets",
+  "variant": "bar-navy",
+  "variants": [
+   "bar-navy",
+   "bar-orange",
+   "text-navy",
+   "text-black"
+  ]
+ },
+ "audio": {
+  "music": "audio/music.wav",
+  "musicGainDb": 0,
+  "vo": null,
+  "voDuckDb": -7
+ }
+}
