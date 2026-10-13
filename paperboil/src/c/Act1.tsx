@@ -2,7 +2,7 @@ import { useCurrentFrame } from "remotion";
 import { antic, clamp, easeIn, easeIO, impact, popIn, sp, wander } from "../motion";
 import { palette as P } from "../palette";
 import { markFrame, shotDuration, type Shot } from "../storyboard";
-import { Accents, Cut, Ground, halftone, Label, SHADOW, Stage, Type } from "./kit";
+import { Accents, Cut, Ground, halftone, Label, Misreg, RevealType, SHADOW, Stage } from "./kit";
 import { textOf } from "./text";
 
 type ShotProps = { shot: Shot };
@@ -29,7 +29,6 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
   const word = textOf("scroll");
   const sun = sp(f, -2, "land");
   const rise = antic(f, 3, 3, 0.08, "pop");
-  const wordIn = sp(f, word.at - 6, "snap");
   return (
     <Stage dur={shotDuration(shot)} push={[1.02, 1.1]} seed={1}>
       <Ground color={P.cream} />
@@ -50,8 +49,8 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
         </div>
         <div style={{ position: "absolute", left: 125, top: 22, width: 80, height: 18, borderRadius: 9, background: P.ink }} />
       </Cut>
-      <Type text={word.text} x={-60 - (1 - wordIn) * 900} y={690} size={330} color={word.color} />
-      <div style={{ position: "absolute", left: -40 - (1 - wordIn) * 900, top: 990, width: 900 * wordIn, height: 26, background: P.orange, filter: SHADOW }} />
+      <RevealType text={word.text} x={-60} y={700} size={330} color={word.color} f={f} at={word.at} spring={(f, at) => sp(f, at, "settle")} />
+      <div style={{ position: "absolute", left: -40, top: 990, width: 900 * sp(f, word.at + 6, "settle"), height: 26, background: P.orange, filter: SHADOW }} />
       <Ticker id="tick-scroll" f={f} x={620} y={60} />
       <Accents f={f} pop={pop} items={[{ x: 560, y: 610, s: 70, c: P.blueBright, kind: "sq", r: 12, at: 6 }, { x: 990, y: 860, s: 60, c: P.sky, kind: "dot", at: 9 }, { x: 80, y: 120, s: 90, c: P.navy, kind: "bar", r: -20, at: 11 }]} />
     </Stage>
@@ -65,7 +64,6 @@ export const C2Stream: React.FC<ShotProps> = ({ shot }) => {
   const tv = sp(f, -2, "land");
   const play = popIn(f, 3, "snap", 0.1);
   const pulse = 1 + Math.sin(f / 2.2) * 0.03;
-  const wordIn = sp(f, word.at + 2, "snap");
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.08]} seed={2}>
       <Ground color={P.navy} tone={P.ink} />
@@ -78,7 +76,7 @@ export const C2Stream: React.FC<ShotProps> = ({ shot }) => {
         </div>
       </Cut>
       <Cut x={460} y={610} w={180} h={60} color={P.cream} clip="polygon(15% 0, 85% 0, 100% 100%, 0 100%)" />
-      <Type text={word.text} x={1180 - wordIn * 1150} y={700} size={300} color={word.color} />
+      <RevealType text={word.text} x={30} y={710} size={300} color={word.color} f={f} at={word.at} spring={(f, at) => sp(f, at, "settle")} />
       <Ticker id="tick-stream" f={f} x={-20} y={40} dark />
     </Stage>
   );
@@ -92,7 +90,6 @@ export const C3Search: React.FC<ShotProps> = ({ shot }) => {
   const pill = sp(f, -2, "land");
   const typed = Math.max(0, Math.min(6, Math.floor((f - t0) / 2)));
   const swing = sp(f, 2, "loose");
-  const wordIn = sp(f, word.at - 4, "snap");
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.08]} seed={3}>
       <Ground color={P.orange} tone={P.orangeDeep} />
@@ -107,7 +104,7 @@ export const C3Search: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", left: 0, top: 0, width: 210, height: 210, borderRadius: "50%", border: `38px solid ${P.navy}`, boxSizing: "border-box", background: `${P.cream}55` }} />
         <div style={{ position: "absolute", left: 175, top: 170, width: 150, height: 46, background: P.navy, borderRadius: 23, transform: "rotate(45deg)", transformOrigin: "0 50%" }} />
       </div>
-      <Type text={word.text} x={-40 - (1 - wordIn) * 1000} y={640} size={320} color={word.color} />
+      <RevealType text={word.text} x={-40} y={650} size={320} color={word.color} f={f} at={word.at - 4} spring={(f, at) => sp(f, at, "settle")} />
       <Ticker id="tick-search" f={f} x={620} y={540} />
     </Stage>
   );
@@ -144,7 +141,7 @@ export const C4Ride: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", inset: 0, background: P.orange, clipPath: "path('M75 210 C55 160 0 120 0 72 A75 75 0 1 1 150 72 C150 120 95 160 75 210 Z')" }} />
         <div style={{ position: "absolute", left: 45, top: 42, width: 60, height: 60, borderRadius: "50%", background: P.cream }} />
       </div>
-      <Type text={word.text} x={30} y={40} size={340} color={word.color} transform={`translateY(${(1 - sp(f, word.at - 4, "snap")) * -420}px)`} />
+      <RevealType text={word.text} x={30} y={40} size={340} color={word.color} f={f} at={word.at - 4} spring={(f, at) => sp(f, at, "settle")} />
       <Ticker id="tick-ride" f={f} x={600} y={880} />
     </Stage>
   );
@@ -184,7 +181,7 @@ export const C5Pay: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", left: 36, top: 60, width: 72, height: 56, borderRadius: 10, background: P.orangeLight }} />
         <div style={{ position: "absolute", left: 36, top: 160, width: 230, height: 18, borderRadius: 9, background: P.cream, opacity: 0.85 }} />
       </Cut>
-      <Type text={word.text} x={40} y={50} size={360} color={word.color} transform={`translateX(${(1 - sp(f, word.at - 4, "snap")) * -600}px)`} />
+      <RevealType text={word.text} x={40} y={50} size={360} color={word.color} f={f} at={word.at - 4} spring={(f, at) => sp(f, at, "settle")} />
       <Ticker id="tick-pay" f={f} x={40} y={900} />
     </Stage>
   );
@@ -209,7 +206,6 @@ export const C6Receipt: React.FC<ShotProps> = ({ shot }) => {
   const slam = f >= zero ? 1 + 0.7 * (1 - sp(f, zero, "snap")) : 0;
   const shake = f >= zero && f < zero + 8 ? Math.sin((f - zero) * 2.5) * (8 - (f - zero)) * 2.6 : 0;
   const dim = f >= zero ? 0.35 : 0;
-  const qIn = sp(f, q.at, "pop");
   const dur = shotDuration(shot);
   const exit = easeIn(clamp((f - (dur - 10)) / 10));
   return (
@@ -236,9 +232,11 @@ export const C6Receipt: React.FC<ShotProps> = ({ shot }) => {
             <div style={{ position: "absolute", left: 60, right: 60, top: 860, height: 70, background: `repeating-linear-gradient(90deg, ${P.navy} 0 4px, transparent 4px 9px, ${P.navy} 9px 11px, transparent 11px 16px)` }} />
           </div>
         </Cut>
-        <Type text={q.text} x={690 + (1 - qIn) * 600} y={140} size={92} color={q.color} lineHeight={0.95} opacity={f >= zero ? 1 - clamp((f - zero) / 4) * 0.7 : 1} />
+        <RevealType text={q.text} x={690} y={140} size={92} color={q.color} lineHeight={0.98} f={f} at={q.at} stagger={2} spring={(f, at) => sp(f, at, "settle")} opacity={f >= zero ? 1 - clamp((f - zero) / 4) * 0.7 : 1} />
         {f >= zero ? (
+          <Misreg f={f} at={zero}>
           <div style={{ position: "absolute", left: -500, width: 2080, top: 560 - 1100 * 0.62, height: 1100 * 1.2, textAlign: "center", fontFamily: "Open Sans", fontWeight: 800, fontSize: 1100, lineHeight: 1.2, color: P.orange, filter: SHADOW, transform: `scale(${slam * (1 + exit * 0.15)})`, transformOrigin: "50% 52%" }}>0</div>
+          </Misreg>
         ) : null}
       </div>
     </Stage>

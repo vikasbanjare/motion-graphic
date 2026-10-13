@@ -10,26 +10,40 @@ import { FPS } from "../timing";
 // ── Cadence ──────────────────────────────────────────────────────────────────
 /** Drawings per second. The reference is 24 fps on twos → 12 drawings/s (2-3-2-3 holds at 30 fps). */
 export const DRAWINGS_PER_SECOND = 12;
-const STEP = FPS / DRAWINGS_PER_SECOND; // 2.5 frames
 
 /**
- * The frame whose drawing is shown at display frame `f`. Samples the *next*
- * drawing so visual hits lead the audio by 0–2 frames (what editors do on purpose).
+ * Beat-locked twos. 12 drawings/s doesn't divide a 150 BPM beat (12 frames),
+ * so a free-running step clock only lines up with the beat every 2 s. Instead
+ * the step clock re-phases on every beat: drawings start at beat-relative
+ * frames 0, 2, 5, 7, 10 (holds 2-3-2-3-2), so the beat frame itself is always
+ * a new drawing and impact poses land exactly on the hit.
  */
-export const drawnFrame = (f: number): number => Math.ceil((Math.floor(f / STEP) + 1) * STEP) - 1;
+const BEAT = 12;
+const STEPS = [0, 2, 5, 7, 10];
+export const drawnFrame = (f: number): number => {
+  const b = Math.floor(f / BEAT) * BEAT;
+  const k = f - b;
+  let s = 0;
+  for (const st of STEPS) if (st <= k) s = st;
+  return b + s;
+};
 
 // ── Springs ──────────────────────────────────────────────────────────────────
 export const SPRINGS = {
-  /** Entrances: ~12% overshoot, settles in ~10 f. */
-  pop: { stiffness: 210, damping: 13, mass: 1 },
-  /** Heavy objects landing: slower, one soft bounce. */
-  land: { stiffness: 120, damping: 13, mass: 1.6 },
-  /** UI-like settle, no overshoot. */
-  settle: { stiffness: 140, damping: 200, mass: 1 },
-  /** Snaps (stamps, slams). */
-  snap: { stiffness: 320, damping: 17, mass: 0.8 },
-  /** Loose secondary parts (follow-through). */
-  loose: { stiffness: 140, damping: 8, mass: 1 },
+  /**
+   * Restraint (pro launch films ban "bouncy" easing): entrances settle with
+   * ≤ ~3% overshoot; only impact objects (snap) are allowed a visible kick.
+   */
+  /** Entrances: ~3% overshoot, settles in ~10 f. */
+  pop: { stiffness: 190, damping: 22, mass: 1 },
+  /** Heavy objects landing: one small settle. */
+  land: { stiffness: 130, damping: 20, mass: 1.5 },
+  /** Type, camera, wipes: critically damped, no overshoot. */
+  settle: { stiffness: 160, damping: 200, mass: 1 },
+  /** Impacts only (stamps, slams, the drop): ~8% kick. */
+  snap: { stiffness: 320, damping: 21, mass: 0.8 },
+  /** Loose secondary parts (follow-through): a little wobble. */
+  loose: { stiffness: 140, damping: 12, mass: 1 },
   /** Drifts. */
   float: { stiffness: 45, damping: 14, mass: 1 },
 } satisfies Record<string, Partial<SpringConfig>>;

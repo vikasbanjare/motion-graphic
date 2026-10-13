@@ -3,7 +3,7 @@ import { MapsLogo } from "../components/MapsLogo";
 import { arc, clamp, easeIO, impact, popIn, sp, wander } from "../motion";
 import { palette as P } from "../palette";
 import { markFrame, markFrames, shotDuration, type Shot } from "../storyboard";
-import { Accents, Cut, Ground, halftone, Label, SHADOW, Stage, Type } from "./kit";
+import { Accents, Cut, Ground, halftone, Label, Misreg, RevealType, SHADOW, Stage, Type } from "./kit";
 import { textOf } from "./text";
 
 type ShotProps = { shot: Shot };
@@ -17,8 +17,9 @@ export const C11Drop: React.FC<ShotProps> = ({ shot }) => {
   const maps = textOf("now-on-maps");
   const sun = f < 0 ? 0 : 1 + 0.18 * (1 - sp(f, 0, "snap")) - 0.18 * (f < 2 ? 1 : 0);
   const band = sp(f, 2, "snap");
-  const u = sp(f, us.at, "snap");
-  const st = sp(f, stocks.at + 2, "snap");
+  // Pre-advanced so the poster already reads on the downbeat frame itself.
+  const u = sp(f + 4, us.at, "snap");
+  const st = sp(f + 3, stocks.at, "snap");
   const mp = sp(f, maps.at, "pop");
   const breathe = 1 + Math.sin(f / 10) * 0.012;
   return (
@@ -28,7 +29,9 @@ export const C11Drop: React.FC<ShotProps> = ({ shot }) => {
       <div style={{ position: "absolute", left: -900 - (1 - band) * 2400, top: 610, width: 3200, height: 230, background: P.navy, transform: "rotate(-14deg)", transformOrigin: "50% 50%", filter: SHADOW }}>
         <div style={{ position: "absolute", inset: 0, ...halftone(P.ink, 12, 0.28), opacity: 0.45 }} />
       </div>
-      <Type text={us.text} x={20} y={-30 + (1 - u) * -700} size={520} color={us.color} />
+      <Misreg f={f} at={0} len={5}>
+        <Type text={us.text} x={20} y={-30 + (1 - u) * -700} size={520} color={us.color} />
+      </Misreg>
       <Type text={stocks.text} x={10 + (1 - st) * 1400} y={520} size={290} color={P.cream} outline={P.navy} />
       <div style={{ position: "absolute", left: 790, top: 845, transform: `translateY(${(1 - mp) * 300}px)`, opacity: f < maps.at ? 0 : 1 }}>
         <Label text="NOW ON" x={0} y={0} size={34} color={maps.color} tracking={0.4} weight={800} />
@@ -193,7 +196,6 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
   const c = textOf("customer");
   const s = textOf("shareholder");
   const breakIn = markFrame(shot, "breakIn");
-  const cIn = sp(f, c.at + 2, "snap");
   const lean = easeIO(clamp((f - breakIn) / (s.at - breakIn)));
   const band = f < s.at - 2 ? 0 : sp(f, s.at - 2, "snap");
   const stamp = f < s.at ? 0 : 1 + 0.35 * (1 - sp(f, s.at, "snap"));
@@ -204,7 +206,7 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
       <div style={{ position: "absolute", inset: 0, transform: `translate(${shake}px, ${shake * 0.5}px) scale(${1 + lean * 0.05 - (f >= s.at ? sp(f, s.at, "snap") * 0.05 : 0)})`, transformOrigin: "540px 600px" }}>
         <Ground color={P.cream} />
         <Cut x={520} y={-260} w={820} h={820} color={P.orange} radius="50%" scale={sp(f, -2, "land")} tone={{ side: "bottom", opacity: 0.4 }} />
-        <Type text={c.text} x={40 - (1 - cIn) * 1000} y={90} size={170} color={c.color} lineHeight={0.92} opacity={f >= s.at ? 1 - clamp((f - s.at) / 6) * 0.55 : 1} />
+        <RevealType text={c.text} x={40} y={90} size={170} color={c.color} lineHeight={0.95} f={f} at={c.at + 2} stagger={2} spring={(f, at) => sp(f, at, "settle")} opacity={f >= s.at ? 1 - clamp((f - s.at) / 6) * 0.55 : 1} />
         <div style={{ position: "absolute", left: -900 - (1 - band) * 2600, top: 600, width: 3000, height: 330, background: P.navy, transform: "rotate(-6deg)", transformOrigin: "50% 50%", filter: SHADOW }}>
           <div style={{ position: "absolute", inset: 0, ...halftone(P.ink, 12, 0.28), opacity: 0.45 }} />
         </div>
@@ -239,7 +241,9 @@ export const C16End: React.FC<ShotProps> = ({ shot }) => {
       <Ground color={P.cream} />
       <Cut x={1080 - peek * 260} y={-160} w={880} h={880} color={P.orange} radius="50%" tone={{ side: "bottom", opacity: 0.45 }} />
       <div style={{ position: "absolute", left: 540 - 300, top: 260, width: 600, transform: `scale(${s})`, transformOrigin: "50% 60%" }}>
-        <MapsLogo width={600} variant="bar-navy" barReveal={bar} />
+        <Misreg f={f} at={logo} len={5}>
+          <MapsLogo width={600} variant="bar-navy" barReveal={bar} />
+        </Misreg>
       </div>
       <Label text={t.text} x={0} y={680} width={1080} align="center" size={40} color={t.color} weight={800} tracking={0.3} opacity={clamp((f - t.at - 4) / 6)} />
       <div style={{ position: "absolute", left: 540 - 260, top: 742, width: 520 * under, height: 14, borderRadius: 7, background: P.orange }} />

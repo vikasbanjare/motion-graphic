@@ -240,3 +240,80 @@ export const Accents: React.FC<{ items: Array<{ x: number; y: number; s: number;
     })}
   </>
 );
+
+/**
+ * Mask-line type reveal: each line is its own clip band; glyphs rise through
+ * it one by one (stagger = a 16th note, 3 frames at 150 BPM) on a critically
+ * damped spring. Lines can bleed off frame cleanly. `out` lowers them away.
+ */
+export const RevealType: React.FC<{
+  text: string;
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+  f: number;
+  at: number;
+  stagger?: number;
+  lineStagger?: number;
+  out?: number;
+  outline?: string;
+  lineHeight?: number;
+  tracking?: number;
+  weight?: 400 | 600 | 800;
+  opacity?: number;
+  rotate?: number;
+  spring: (f: number, at: number) => number;
+}> = ({ text, x, y, size, color, f, at, stagger = 3, lineStagger = 4, out, outline, lineHeight = 0.9, tracking = -0.035, weight = 800, opacity = 1, rotate = 0, spring }) => {
+  const lines = text.split("\n");
+  let n = 0;
+  return (
+    <div style={{ position: "absolute", left: x, top: y, filter: SHADOW, opacity, transform: `rotate(${rotate}deg)`, transformOrigin: "0 50%" }}>
+      {lines.map((line, li) => (
+        <div key={li} style={{ overflow: "hidden", height: size * lineHeight, paddingRight: size * 0.1, whiteSpace: "pre" }}>
+          {[...line].map((ch, ci) => {
+            const start = at + li * lineStagger + ci * (stagger / 2) + (n++ * 0);
+            const s = spring(f, start);
+            const o = out !== undefined ? spring(f, out + ci) : 0;
+            return (
+              <span
+                key={ci}
+                style={{
+                  display: "inline-block",
+                  fontFamily: FONT_FAMILY,
+                  fontWeight: weight,
+                  fontSize: size,
+                  lineHeight,
+                  letterSpacing: `${tracking}em`,
+                  color,
+                  WebkitTextStroke: outline ? `${Math.max(3, size * 0.016)}px ${outline}` : undefined,
+                  transform: `translateY(${(1 - s + o) * 105}%)`,
+                }}
+              >
+                {ch === " " ? " " : ch}
+              </span>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/**
+ * Print misregistration on impact frames only: orange + navy ghosts offset by
+ * a few px for `len` frames after `at`, fading out.
+ */
+export const Misreg: React.FC<{ f: number; at: number; len?: number; children: React.ReactNode }> = ({ f, at, len = 4, children }) => {
+  const k = f - at;
+  if (k < 0 || k >= len) return <>{children}</>;
+  const a = 0.45 * (1 - k / len);
+  const d = 4 * (1 - k / len) + 1.5;
+  return (
+    <>
+      <div style={{ position: "absolute", inset: 0, transform: `translate(${-d}px, ${d * 0.6}px)`, opacity: a, filter: "sepia(1) saturate(6) hue-rotate(-20deg)", mixBlendMode: "multiply" }}>{children}</div>
+      <div style={{ position: "absolute", inset: 0, transform: `translate(${d}px, ${-d * 0.6}px)`, opacity: a, filter: "grayscale(1) brightness(0.4) sepia(1) hue-rotate(180deg) saturate(4)", mixBlendMode: "multiply" }}>{children}</div>
+      <div style={{ position: "absolute", inset: 0 }}>{children}</div>
+    </>
+  );
+};

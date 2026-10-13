@@ -2,7 +2,7 @@ import { useCurrentFrame } from "remotion";
 import { clamp, easeIn, easeIO, impact, popIn, sp, wander } from "../motion";
 import { palette as P } from "../palette";
 import { markFrame, shotDuration, type Shot } from "../storyboard";
-import { Accents, Cut, Ground, halftone, SHADOW, Stage, STAGE, Type } from "./kit";
+import { Accents, Cut, Ground, halftone, RevealType, SHADOW, Stage, STAGE, Type } from "./kit";
 import { textOf } from "./text";
 
 type ShotProps = { shot: Shot };
@@ -40,13 +40,12 @@ export const C7Locked: React.FC<ShotProps> = ({ shot }) => {
   const line = textOf("somebody");
   const drop = sp(f, -2, "land");
   const rattle = f > 14 && f < 26 ? Math.sin(f * 2.2) * 5 : wander(f, 1, 1);
-  const tIn = sp(f, line.at + 2, "snap");
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.1]} seed={7} origin={[540, 640]}>
       <Ground color={P.orange} tone={P.orangeDeep} />
       <div style={{ position: "absolute", left: 140, top: 150, width: 800, height: 800, borderRadius: "50%", border: `90px solid ${P.orangeDeep}`, boxSizing: "border-box", opacity: 0.35 }} />
       <Padlock x={340} y={300 + (1 - drop) * -900} body={P.navy} hole={P.orange} jiggle={rattle} />
-      <Type text={line.text} x={40 - (1 - tIn) * 1100} y={40} size={118} color={line.color} lineHeight={0.92} />
+      <RevealType text={line.text} x={40} y={40} size={118} color={line.color} lineHeight={0.95} f={f} at={line.at} stagger={2} spring={(f, at) => sp(f, at, "settle")} />
     </Stage>
   );
 };
@@ -88,7 +87,6 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
   const t = textOf("door");
   const frame = sp(f, -3, "land");
   const swing = f < 6 ? 0 : sp(f, 6, "land");
-  const tIn = sp(f, t.at + 2, "pop");
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.12]} seed={9} origin={[560, 600]}>
       <Ground color={P.navy} tone={P.ink} />
@@ -109,7 +107,7 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
             return <div key={i} style={{ position: "absolute", left: 660, top: 680, width: 900 * swing, height: 40, background: i % 2 ? P.orangeLight : P.orangePale, transform: `rotate(${a * 57 + 90}deg)`, transformOrigin: "0 50%", opacity: 0.25 * swing }} />;
           })
         : null}
-      <Type text={t.text} x={40} y={40 - (1 - tIn) * 500} size={96} color={t.color} lineHeight={0.95} />
+      <RevealType text={t.text} x={40} y={40} size={96} color={t.color} lineHeight={0.98} f={f} at={t.at + 2} stagger={2} spring={(f, at) => sp(f, at, "settle")} />
     </Stage>
   );
 };
