@@ -1,6 +1,6 @@
 # MAPS Global Markets · US Stocks · 30 s — Storyboard
 
-Style: **Editorial cut-paper collage** (see `STYLE_DECISION.md`): torn paper edges, paper fibre, soft paper shadows, halftone, letterpress type, one orange disc carried through every scene. Picture animated on twos (12 drawings/s); camera always moving; music V1 (150 BPM, B major) cut to 30 s with the drop at 16.0 s.
+Style: **Editorial cut-paper collage** (see `STYLE_DECISION.md`): torn paper edges, paper fibre, soft paper shadows, halftone, letterpress type, one orange disc carried through every scene. Two worlds (see `RESEARCH_2026.md`): **customer world** 0–16 s is printed as a photocopy, with toner on newsprint, orange as the only live colour, and motion on threes. At the drop the sheet **rips open** to reveal the **owner world**: the full palette, on twos (12 drawings/s), springs, and variable type pulsing on the kicks; camera always moving; music V1 (150 BPM, B major) cut to 30 s with the drop at 16.0 s.
 
 Every panel below is a frame from the rendered film (`docs/storyboard/board-*.jpg`).
 
