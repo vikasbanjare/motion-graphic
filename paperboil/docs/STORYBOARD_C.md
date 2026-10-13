@@ -1,8 +1,8 @@
-# MAPS Global Markets · US Stocks · 30 s — Storyboard (Style C, final)
+# MAPS Global Markets · US Stocks · 30 s — Storyboard
 
-Style: **Bold Cut-Paper Graphic** (flat cut paper, hard offset shadows, halftone, oversized type bleeding off frame). Picture animated on twos (12 drawings/s); camera always moving; music V1 (150 BPM, B major) cut to 30 s with the drop at 16.0 s.
+Style: **Editorial cut-paper collage** (see `STYLE_DECISION.md`): torn paper edges, paper fibre, soft paper shadows, halftone, letterpress type, one orange disc carried through every scene. Picture animated on twos (12 drawings/s); camera always moving; music V1 (150 BPM, B major) cut to 30 s with the drop at 16.0 s.
 
-Every panel below is a frame from the rendered film (`docs/storyboard/board-*.png`).
+Every panel below is a frame from the rendered film (`docs/storyboard/board-*.jpg`).
 
 | # | Time | Shot | Action | On screen | Sound |
 |---|---|---|---|---|---|
