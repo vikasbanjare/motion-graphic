@@ -116,7 +116,10 @@ const check = (name: string, ok: boolean, detail = "") => (ok ? passes : failure
 // Extra ─ audio assets exist (npm run audio)
 {
   const missing: string[] = [];
-  for (const f of ["audio/music.wav", storyboard.audio.mix]) if (!existsSync(join(ROOT, "assets", f))) missing.push(f);
+  // The licensed music source is not in git (e.g. CI), so music/mix are only required when it is present.
+  const hasSource = existsSync(join(ROOT, "assets", "audio", "source", "V1.mp3"));
+  if (hasSource) for (const f of ["audio/music.wav", storyboard.audio.mix]) if (!existsSync(join(ROOT, "assets", f))) missing.push(f);
+  if (!hasSource) passes.push("x0. music/mix check — SKIPPED (assets/audio/source/V1.mp3 not present)");
   for (const [slot, meta] of Object.entries(cues.slots)) {
     const vars = meta.variations > 1 ? Array.from({ length: meta.variations }, (_, i) => `${slot}_${i + 1}`) : [slot];
     for (const v of vars) {
