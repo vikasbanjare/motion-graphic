@@ -6,7 +6,7 @@ import { StyleAEnd, StyleAHero, StyleAHook } from "./styleframes/StyleA";
 import { StyleCHero } from "./styleframes/StyleC";
 
 const { fps, durationInFrames } = storyboard.meta;
-const defaults: FilmProps = { captions: true, grain: true, paperTexture: true };
+const defaults: FilmProps = { captions: false, grain: true, paperTexture: true };
 
 export const RemotionRoot: React.FC = () => (
   <>

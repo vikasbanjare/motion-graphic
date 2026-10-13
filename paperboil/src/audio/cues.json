@@ -308,151 +308,150 @@
    "id": "open",
    "time": 0.0,
    "frame": 0,
-   "label": "Paper tap + phone rise",
+   "label": "Sun lands, SCROLL slides in",
    "layers": [
     {
      "slot": "paper_tap",
      "gainDb": -8
     },
     {
+     "slot": "word_hit",
+     "gainDb": -10
+    },
+    {
      "slot": "whoosh_short",
+     "offset": -3,
+     "gainDb": -13,
+     "pan": -0.4
+    }
+   ]
+  },
+  {
+   "id": "phone-rise",
+   "time": 0.1,
+   "frame": 3,
+   "label": "Phone rises",
+   "layers": [
+    {
+     "slot": "card_slide",
+     "gainDb": -13,
+     "pan": -0.3
+    },
+    {
+     "slot": "ui_pluck",
+     "offset": 4,
      "gainDb": -14,
      "pan": -0.2
     }
    ]
   },
   {
-   "id": "tiles-1",
-   "time": 0.0,
-   "frame": 0,
-   "label": "Tile row pops (1-3-5-8 of B major)",
+   "id": "feed",
+   "time": 0.2667,
+   "frame": 8,
+   "label": "Feed scrolling",
    "layers": [
     {
-     "slot": "ui_pluck",
-     "gainDb": -12,
-     "pan": -0.3
-    },
-    {
-     "slot": "soft_tap",
-     "offset": -1,
-     "gainDb": -16
+     "slot": "card_slide",
+     "gainDb": -17,
+     "pan": -0.2
     }
    ]
   },
   {
-   "id": "tiles-2",
-   "time": 0.2,
-   "frame": 6,
-   "label": "Tile row pops (1-3-5-8 of B major)",
+   "id": "tick-1",
+   "time": 0.4,
+   "frame": 12,
+   "label": "Receipt ticker",
    "layers": [
     {
-     "slot": "ui_pluck",
+     "slot": "paper_flick",
      "gainDb": -12,
-     "pan": -0.09999999999999998,
+     "pan": 0.4,
+     "var": 1
+    },
+    {
+     "slot": "ui_pluck",
+     "gainDb": -16,
+     "pan": 0.3,
      "semis": 4
-    },
-    {
-     "slot": "soft_tap",
-     "offset": -1,
-     "gainDb": -16
     }
    ]
   },
   {
-   "id": "tiles-3",
-   "time": 0.4,
-   "frame": 12,
-   "label": "Tile row pops (1-3-5-8 of B major)",
-   "layers": [
-    {
-     "slot": "ui_pluck",
-     "gainDb": -12,
-     "pan": 0.10000000000000003,
-     "semis": 7
-    },
-    {
-     "slot": "soft_tap",
-     "offset": -1,
-     "gainDb": -16
-    }
-   ]
-  },
-  {
-   "id": "tiles-4",
-   "time": 0.6,
-   "frame": 18,
-   "label": "Tile row pops (1-3-5-8 of B major)",
-   "layers": [
-    {
-     "slot": "ui_pluck",
-     "gainDb": -12,
-     "pan": 0.3000000000000001,
-     "semis": 12
-    },
-    {
-     "slot": "soft_tap",
-     "offset": -1,
-     "gainDb": -16
-    }
-   ]
-  },
-  {
-   "id": "scroll",
-   "time": 0.4,
-   "frame": 12,
-   "label": "SCROLL word-hit",
-   "layers": [
-    {
-     "slot": "word_hit",
-     "gainDb": -10
-    }
-   ]
-  },
-  {
-   "id": "push-tv",
+   "id": "wipe-1",
    "time": 1.0,
    "frame": 30,
-   "label": "Push into the tile",
+   "label": "Band wipe",
    "layers": [
     {
-     "slot": "whoosh_long",
-     "offset": -2,
-     "gainDb": -10,
-     "pan": 0.1
+     "slot": "whoosh_short",
+     "gainDb": -11,
+     "pan": 0.5
     }
    ]
   },
   {
-   "id": "tv-on",
+   "id": "stream",
    "time": 1.2,
    "frame": 36,
-   "label": "TV on, STREAM",
+   "label": "TV lands, STREAM",
    "layers": [
     {
      "slot": "tv_thunk",
      "gainDb": -8
     },
     {
-     "slot": "hum",
-     "gainDb": -22
+     "slot": "word_hit",
+     "offset": 2,
+     "gainDb": -11
     },
     {
-     "slot": "word_hit",
-     "gainDb": -12
+     "slot": "hum",
+     "gainDb": -22
     }
    ]
   },
   {
-   "id": "morph-pill",
-   "time": 1.8667,
-   "frame": 56,
-   "label": "TV morphs to search pill",
+   "id": "play",
+   "time": 1.3,
+   "frame": 39,
+   "label": "Play pops",
    "layers": [
     {
-     "slot": "swish",
-     "offset": -2,
+     "slot": "pop",
+     "gainDb": -11
+    },
+    {
+     "slot": "ui_pluck",
+     "gainDb": -15,
+     "semis": 7
+    }
+   ]
+  },
+  {
+   "id": "tick-2",
+   "time": 1.4,
+   "frame": 42,
+   "label": "Ticker",
+   "layers": [
+    {
+     "slot": "paper_flick",
      "gainDb": -12,
-     "pan": -0.1
+     "pan": -0.4,
+     "var": 2
+    }
+   ]
+  },
+  {
+   "id": "wipe-2",
+   "time": 1.7333,
+   "frame": 52,
+   "label": "Ring wipe",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -11
     }
    ]
   },
@@ -468,14 +467,21 @@
     },
     {
      "slot": "word_hit",
-     "gainDb": -12
+     "offset": -4,
+     "gainDb": -11
+    },
+    {
+     "slot": "swish",
+     "offset": 2,
+     "gainDb": -13,
+     "pan": 0.3
     }
    ]
   },
   {
    "id": "key-1",
-   "time": 2.0667,
-   "frame": 62,
+   "time": 2.1,
+   "frame": 63,
    "label": "Typing",
    "layers": [
     {
@@ -488,8 +494,8 @@
   },
   {
    "id": "key-2",
-   "time": 2.1333,
-   "frame": 64,
+   "time": 2.1667,
+   "frame": 65,
    "label": "Typing",
    "layers": [
     {
@@ -500,9 +506,23 @@
    ]
   },
   {
-   "id": "key-3",
+   "id": "tick-3",
    "time": 2.2,
    "frame": 66,
+   "label": "Ticker",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -13,
+     "pan": 0.3,
+     "var": 3
+    }
+   ]
+  },
+  {
+   "id": "key-3",
+   "time": 2.2333,
+   "frame": 67,
    "label": "Typing",
    "layers": [
     {
@@ -515,8 +535,8 @@
   },
   {
    "id": "key-4",
-   "time": 2.2667,
-   "frame": 68,
+   "time": 2.3,
+   "frame": 69,
    "label": "Typing",
    "layers": [
     {
@@ -529,8 +549,8 @@
   },
   {
    "id": "key-5",
-   "time": 2.3333,
-   "frame": 70,
+   "time": 2.3667,
+   "frame": 71,
    "label": "Typing",
    "layers": [
     {
@@ -542,8 +562,8 @@
   },
   {
    "id": "key-6",
-   "time": 2.4,
-   "frame": 72,
+   "time": 2.4333,
+   "frame": 73,
    "label": "Typing",
    "layers": [
     {
@@ -555,90 +575,91 @@
    ]
   },
   {
-   "id": "key-7",
-   "time": 2.4667,
-   "frame": 74,
-   "label": "Typing",
-   "layers": [
-    {
-     "slot": "key_tick",
-     "gainDb": -16,
-     "pan": -0.15,
-     "var": 3
-    }
-   ]
-  },
-  {
-   "id": "key-8",
-   "time": 2.5333,
-   "frame": 76,
-   "label": "Typing",
-   "layers": [
-    {
-     "slot": "key_tick",
-     "gainDb": -15,
-     "var": 4
-    }
-   ]
-  },
-  {
-   "id": "search-ping",
-   "time": 2.5333,
-   "frame": 76,
+   "id": "ping",
+   "time": 2.5,
+   "frame": 75,
    "label": "Result ping",
    "layers": [
     {
      "slot": "ping",
-     "gainDb": -14,
+     "gainDb": -15,
      "semis": 7
     }
    ]
   },
   {
-   "id": "morph-pin",
-   "time": 2.6667,
-   "frame": 80,
-   "label": "Magnifier morphs to pin",
+   "id": "wipe-3",
+   "time": 2.6,
+   "frame": 78,
+   "label": "Band wipe",
    "layers": [
     {
      "slot": "swish",
-     "offset": -2,
-     "gainDb": -12,
-     "pan": 0.2
+     "gainDb": -11,
+     "pan": -0.3
+    }
+   ]
+  },
+  {
+   "id": "ride",
+   "time": 2.8,
+   "frame": 84,
+   "label": "Road band, RIDE",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "offset": -3,
+     "gainDb": -11,
+     "pan": -0.5
+    },
+    {
+     "slot": "word_hit",
+     "gainDb": -11
+    }
+   ]
+  },
+  {
+   "id": "car",
+   "time": 2.8333,
+   "frame": 85,
+   "label": "Car drives",
+   "layers": [
+    {
+     "slot": "car_pass",
+     "gainDb": -13,
+     "pan": -0.5
+    }
+   ]
+  },
+  {
+   "id": "tick-4",
+   "time": 3.0,
+   "frame": 90,
+   "label": "Ticker",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -13,
+     "pan": 0.4,
+     "var": 4
     }
    ]
   },
   {
    "id": "pin",
-   "time": 2.8,
-   "frame": 84,
-   "label": "Pin lands, RIDE",
+   "time": 3.0333,
+   "frame": 91,
+   "label": "Pin lands",
    "layers": [
     {
      "slot": "card_thump",
-     "gainDb": -10
+     "gainDb": -10,
+     "pan": 0.4
     },
     {
      "slot": "map_boop",
      "gainDb": -12,
-     "pan": 0.2
-    },
-    {
-     "slot": "word_hit",
-     "gainDb": -12
-    }
-   ]
-  },
-  {
-   "id": "cab",
-   "time": 2.9,
-   "frame": 87,
-   "label": "Cab drives the route",
-   "layers": [
-    {
-     "slot": "car_pass",
-     "gainDb": -14,
-     "pan": -0.5
+     "pan": 0.4
     }
    ]
   },
@@ -646,11 +667,42 @@
    "id": "pay",
    "time": 3.6,
    "frame": 108,
-   "label": "PAY",
+   "label": "Terminal lands, PAY",
    "layers": [
     {
+     "slot": "card_thump",
+     "gainDb": -11
+    },
+    {
      "slot": "word_hit",
-     "gainDb": -12
+     "gainDb": -11
+    }
+   ]
+  },
+  {
+   "id": "card",
+   "time": 3.6333,
+   "frame": 109,
+   "label": "Card swings in",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -12,
+     "pan": 0.5
+    }
+   ]
+  },
+  {
+   "id": "tick-5",
+   "time": 3.8,
+   "frame": 114,
+   "label": "Ticker",
+   "layers": [
+    {
+     "slot": "paper_flick",
+     "gainDb": -13,
+     "pan": -0.4,
+     "var": 1
     }
    ]
   },
@@ -658,12 +710,12 @@
    "id": "tap",
    "time": 3.9333,
    "frame": 118,
-   "label": "Phone taps the terminal",
+   "label": "Card taps",
    "layers": [
     {
      "slot": "card_tap",
      "offset": -1,
-     "gainDb": -9
+     "gainDb": -8
     },
     {
      "slot": "nfc_chime",
@@ -674,100 +726,187 @@
      "offset": 3,
      "gainDb": -12,
      "semis": 7
-    },
-    {
-     "slot": "shimmer",
-     "offset": 2,
-     "gainDb": -20,
-     "semis": 12
     }
    ]
   },
   {
-   "id": "scatter",
-   "time": 4.2,
-   "frame": 126,
-   "label": "Scene scatters into stickers",
+   "id": "tick",
+   "time": 4.0,
+   "frame": 120,
+   "label": "Tick pops",
+   "layers": [
+    {
+     "slot": "positive_chime",
+     "gainDb": -13,
+     "pan": 0.2,
+     "semis": 12
+    },
+    {
+     "slot": "pop",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "wipe-4",
+   "time": 4.1333,
+   "frame": 124,
+   "label": "Ring wipe",
    "layers": [
     {
      "slot": "whoosh_short",
-     "gainDb": -11,
-     "pan": -0.4
-    },
-    {
-     "slot": "swish",
-     "offset": 3,
-     "gainDb": -13,
-     "pan": 0.3
+     "gainDb": -11
     }
    ]
   },
   {
-   "id": "sticker-1",
+   "id": "receipt",
    "time": 4.4,
    "frame": 132,
-   "label": "Sticker lands",
+   "label": "Receipt feeds down",
    "layers": [
     {
+     "slot": "paper_swoosh",
+     "gainDb": -10,
+     "pan": -0.3
+    }
+   ]
+  },
+  {
+   "id": "print-1",
+   "time": 4.6,
+   "frame": 138,
+   "label": "Line prints",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": -0.3,
+     "var": 1
+    },
+    {
      "slot": "paper_flick",
-     "gainDb": -12,
-     "pan": -0.6,
+     "offset": 1,
+     "gainDb": -17,
+     "pan": -0.3,
      "var": 1
     }
    ]
   },
   {
-   "id": "sticker-2",
-   "time": 4.5,
-   "frame": 135,
-   "label": "Sticker lands",
+   "id": "print-2",
+   "time": 4.8,
+   "frame": 144,
+   "label": "Line prints",
    "layers": [
     {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": -0.3,
+     "var": 2
+    },
+    {
      "slot": "paper_flick",
-     "gainDb": -12,
-     "pan": 0.6,
+     "offset": 1,
+     "gainDb": -17,
+     "pan": -0.3,
      "var": 2
     }
    ]
   },
   {
-   "id": "sticker-3",
-   "time": 4.6,
-   "frame": 138,
-   "label": "Sticker lands",
+   "id": "print-3",
+   "time": 5.0,
+   "frame": 150,
+   "label": "Line prints",
    "layers": [
     {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": -0.3,
+     "var": 3
+    },
+    {
      "slot": "paper_flick",
-     "gainDb": -12,
-     "pan": -0.2,
+     "offset": 1,
+     "gainDb": -17,
+     "pan": -0.3,
      "var": 3
     }
    ]
   },
   {
-   "id": "sticker-4",
-   "time": 4.7,
-   "frame": 141,
-   "label": "Sticker lands",
+   "id": "print-4",
+   "time": 5.2,
+   "frame": 156,
+   "label": "Line prints",
    "layers": [
     {
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": -0.3,
+     "var": 4
+    },
+    {
      "slot": "paper_flick",
-     "gainDb": -12,
-     "pan": 0.3,
+     "offset": 1,
+     "gainDb": -17,
+     "pan": -0.3,
      "var": 4
     }
    ]
   },
   {
-   "id": "sticker-5",
-   "time": 4.8,
-   "frame": 144,
-   "label": "Sticker lands",
+   "id": "print-5",
+   "time": 5.4,
+   "frame": 162,
+   "label": "Line prints",
    "layers": [
     {
-     "slot": "paper_flick",
-     "gainDb": -12,
+     "slot": "key_tick",
+     "gainDb": -14,
+     "pan": -0.3,
      "var": 1
+    },
+    {
+     "slot": "paper_flick",
+     "offset": 1,
+     "gainDb": -17,
+     "pan": -0.3,
+     "var": 1
+    }
+   ]
+  },
+  {
+   "id": "question",
+   "time": 5.6,
+   "frame": 168,
+   "label": "HOW MANY DO YOU OWN?",
+   "layers": [
+    {
+     "slot": "word_hit",
+     "gainDb": -11,
+     "pan": 0.3
+    }
+   ]
+  },
+  {
+   "id": "total",
+   "time": 5.9333,
+   "frame": 178,
+   "label": "Total line + ?",
+   "layers": [
+    {
+     "slot": "key_tick",
+     "gainDb": -13,
+     "pan": -0.3,
+     "var": 2
+    },
+    {
+     "slot": "ping",
+     "offset": 2,
+     "gainDb": -18,
+     "semis": -5
     }
    ]
   },
@@ -787,7 +926,7 @@
    "id": "zero",
    "time": 7.2,
    "frame": 216,
-   "label": "THE 0 SLAMS (bass drops out)",
+   "label": "THE 0 SLAMS",
    "layers": [
     {
      "slot": "sub_drop",
@@ -815,54 +954,53 @@
    }
   },
   {
-   "id": "morph-door",
-   "time": 8.0,
-   "frame": 240,
-   "label": "0 morphs into the door",
+   "id": "into-zero",
+   "time": 8.1333,
+   "frame": 244,
+   "label": "Push into the 0",
    "layers": [
     {
-     "slot": "wood_creak",
-     "gainDb": -13
+     "slot": "whoosh_long",
+     "gainDb": -10
+    }
+   ]
+  },
+  {
+   "id": "lock-drop",
+   "time": 8.4,
+   "frame": 252,
+   "label": "Padlock drops in",
+   "layers": [
+    {
+     "slot": "card_thump",
+     "offset": 6,
+     "gainDb": -9
+    },
+    {
+     "slot": "metal_clack",
+     "offset": 6,
+     "gainDb": -12
     },
     {
      "slot": "swish",
-     "gainDb": -14
+     "gainDb": -13
     }
    ]
   },
   {
-   "id": "key-throw",
-   "time": 8.6,
-   "frame": 258,
-   "label": "Key thrown in",
+   "id": "rattle",
+   "time": 8.8667,
+   "frame": 266,
+   "label": "Lock rattles",
    "layers": [
     {
      "slot": "key_jingle",
-     "gainDb": -12,
-     "pan": 0.5
+     "gainDb": -12
     },
-    {
-     "slot": "whoosh_short",
-     "offset": 4,
-     "gainDb": -12,
-     "pan": 0.3
-    }
-   ]
-  },
-  {
-   "id": "key-land",
-   "time": 9.2,
-   "frame": 276,
-   "label": "Key lands in the lock",
-   "layers": [
     {
      "slot": "metal_clack",
-     "gainDb": -7
-    },
-    {
-     "slot": "tonal_hit",
-     "gainDb": -18,
-     "semis": 12
+     "offset": 4,
+     "gainDb": -15
     }
    ]
   },
@@ -870,7 +1008,7 @@
    "id": "key-turn",
    "time": 9.6,
    "frame": 288,
-   "label": "Key turns (bass returns)",
+   "label": "Colour flip, key turns",
    "layers": [
     {
      "slot": "lock_mechanism",
@@ -878,8 +1016,12 @@
     },
     {
      "slot": "tonal_hit",
-     "gainDb": -16,
+     "gainDb": -14,
      "semis": 7
+    },
+    {
+     "slot": "word_hit",
+     "gainDb": -10
     }
    ],
    "duck": {
@@ -892,19 +1034,54 @@
    "id": "latch",
    "time": 9.8,
    "frame": 294,
-   "label": "Latch releases",
+   "label": "Shackle springs open",
    "layers": [
     {
      "slot": "latch_clunk",
      "gainDb": -7
+    },
+    {
+     "slot": "pop",
+     "offset": 2,
+     "gainDb": -14
+    }
+   ]
+  },
+  {
+   "id": "fall",
+   "time": 10.2,
+   "frame": 306,
+   "label": "Lock tumbles out",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -11,
+     "pan": 0.4
+    }
+   ]
+  },
+  {
+   "id": "door",
+   "time": 11.2,
+   "frame": 336,
+   "label": "Door frame lands, WE OPENED THE DOOR",
+   "layers": [
+    {
+     "slot": "card_thump",
+     "gainDb": -10
+    },
+    {
+     "slot": "word_hit",
+     "offset": 2,
+     "gainDb": -12
     }
    ]
   },
   {
    "id": "door-swing",
-   "time": 10.0,
-   "frame": 300,
-   "label": "Door swings open, light",
+   "time": 11.4,
+   "frame": 342,
+   "label": "Door swings, light",
    "layers": [
     {
      "slot": "door_swing",
@@ -912,12 +1089,8 @@
      "pan": -0.2
     },
     {
-     "slot": "wood_creak",
-     "gainDb": -14
-    },
-    {
      "slot": "shimmer",
-     "offset": 6,
+     "offset": 4,
      "gainDb": -14,
      "semis": 12
     }
@@ -925,8 +1098,8 @@
   },
   {
    "id": "into-light",
-   "time": 11.0,
-   "frame": 330,
+   "time": 12.5333,
+   "frame": 376,
    "label": "Push through the doorway",
    "layers": [
     {
@@ -936,52 +1109,52 @@
    ]
   },
   {
+   "id": "riser",
+   "time": 12.8,
+   "frame": 384,
+   "label": "Tunnel builds",
+   "layers": [
+    {
+     "slot": "air_riser",
+     "gainDb": -14
+    }
+   ]
+  },
+  {
    "id": "flutter-1",
-   "time": 11.2,
-   "frame": 336,
-   "label": "Confetti streams past",
+   "time": 13.6,
+   "frame": 408,
+   "label": "Rings rush past",
    "layers": [
     {
      "slot": "paper_flutter",
-     "gainDb": -14,
+     "gainDb": -15,
      "pan": -0.4
     }
    ]
   },
   {
    "id": "flutter-2",
-   "time": 12.8,
-   "frame": 384,
-   "label": "Confetti streams past",
+   "time": 14.4,
+   "frame": 432,
+   "label": "Rings rush past",
    "layers": [
     {
      "slot": "paper_flutter",
-     "gainDb": -12,
+     "gainDb": -13,
      "pan": 0.4
     }
    ]
   },
   {
    "id": "flutter-3",
-   "time": 14.4,
-   "frame": 432,
-   "label": "Confetti streams past",
+   "time": 14.8,
+   "frame": 444,
+   "label": "Rings rush past",
    "layers": [
     {
      "slot": "paper_flutter",
-     "gainDb": -10
-    }
-   ]
-  },
-  {
-   "id": "riser",
-   "time": 12.8,
-   "frame": 384,
-   "label": "Airy riser with the build",
-   "layers": [
-    {
-     "slot": "air_riser",
-     "gainDb": -14
+     "gainDb": -11
     }
    ]
   },
@@ -1001,26 +1174,25 @@
    "id": "drop",
    "time": 16.0,
    "frame": 480,
-   "label": "DROP: burst + US STOCKS",
+   "label": "DROP: sun slams, US STOCKS",
    "layers": [
     {
      "slot": "sub_boom",
      "gainDb": -3
     },
     {
-     "slot": "paint_splash",
-     "gainDb": -7,
-     "pan": -0.3
-    },
-    {
-     "slot": "paint_splash",
-     "offset": 1,
-     "gainDb": -9,
-     "pan": 0.3
+     "slot": "cardboard_slam",
+     "gainDb": -6
     },
     {
      "slot": "crash",
      "gainDb": -11
+    },
+    {
+     "slot": "paint_splash",
+     "offset": 1,
+     "gainDb": -12,
+     "pan": 0.3
     }
    ],
    "duck": {
@@ -1030,29 +1202,86 @@
    }
   },
   {
-   "id": "phone-pop",
-   "time": 17.2,
-   "frame": 516,
-   "label": "Phone springs up",
+   "id": "stocks",
+   "time": 16.0667,
+   "frame": 482,
+   "label": "STOCKS slides",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -11,
+     "pan": 0.6
+    }
+   ]
+  },
+  {
+   "id": "accents",
+   "time": 16.3333,
+   "frame": 490,
+   "label": "Accents pop",
    "layers": [
     {
      "slot": "pop",
-     "gainDb": -10
+     "gainDb": -15,
+     "pan": -0.4
+    },
+    {
+     "slot": "pop",
+     "offset": 2,
+     "gainDb": -16,
+     "pan": 0.4,
+     "semis": 4
+    },
+    {
+     "slot": "pop",
+     "offset": 4,
+     "gainDb": -17,
+     "pan": 0.2,
+     "semis": 7
+    }
+   ]
+  },
+  {
+   "id": "now-on-maps",
+   "time": 16.8,
+   "frame": 504,
+   "label": "NOW ON MAPS",
+   "layers": [
+    {
+     "slot": "word_hit",
+     "gainDb": -11
     },
     {
      "slot": "sparkle",
-     "offset": 4,
+     "offset": 2,
      "gainDb": -16,
      "semis": 12
     }
    ]
   },
   {
-   "id": "swipe-1",
+   "id": "wipe-5",
+   "time": 18.2,
+   "frame": 546,
+   "label": "Band wipe",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -11,
+     "pan": 0.5
+    }
+   ]
+  },
+  {
+   "id": "phone",
    "time": 18.4,
    "frame": 552,
-   "label": "Swipe",
+   "label": "Phone lands, swipe",
    "layers": [
+    {
+     "slot": "card_thump",
+     "gainDb": -11
+    },
     {
      "slot": "card_slide",
      "gainDb": -12,
@@ -1077,7 +1306,7 @@
    "id": "pick",
    "time": 19.2,
    "frame": 576,
-   "label": "Pick tap",
+   "label": "Pick",
    "layers": [
     {
      "slot": "soft_tap",
@@ -1094,7 +1323,7 @@
    "id": "buy",
    "time": 19.6,
    "frame": 588,
-   "label": "Buy pressed, BUY FROM INDIA",
+   "label": "BUY pressed, BUY FROM INDIA",
    "layers": [
     {
      "slot": "button_thunk",
@@ -1106,8 +1335,19 @@
      "gainDb": -11
     },
     {
-     "slot": "paper_flip",
-     "offset": 2,
+     "slot": "word_hit",
+     "gainDb": -12
+    }
+   ]
+  },
+  {
+   "id": "card-land",
+   "time": 19.7333,
+   "frame": 592,
+   "label": "Cut to the desk",
+   "layers": [
+    {
+     "slot": "swish",
      "gainDb": -12
     }
    ]
@@ -1116,7 +1356,7 @@
    "id": "flick-1",
    "time": 20.0,
    "frame": 600,
-   "label": "Certificate lands on the stack",
+   "label": "Certificate lands",
    "layers": [
     {
      "slot": "card_flick",
@@ -1125,9 +1365,8 @@
      "var": 1
     },
     {
-     "slot": "swish",
-     "offset": -4,
-     "gainDb": -16,
+     "slot": "card_slap",
+     "gainDb": -15,
      "pan": -0.4
     }
    ]
@@ -1136,7 +1375,7 @@
    "id": "flick-2",
    "time": 20.4,
    "frame": 612,
-   "label": "Certificate lands on the stack",
+   "label": "Certificate lands",
    "layers": [
     {
      "slot": "card_flick",
@@ -1146,9 +1385,8 @@
      "var": 2
     },
     {
-     "slot": "swish",
-     "offset": -4,
-     "gainDb": -16,
+     "slot": "card_slap",
+     "gainDb": -15,
      "pan": 0.3
     }
    ]
@@ -1157,7 +1395,7 @@
    "id": "flick-3",
    "time": 20.8,
    "frame": 624,
-   "label": "Certificate lands on the stack",
+   "label": "Certificate lands",
    "layers": [
     {
      "slot": "card_flick",
@@ -1167,9 +1405,8 @@
      "var": 3
     },
     {
-     "slot": "swish",
-     "offset": -4,
-     "gainDb": -16,
+     "slot": "card_slap",
+     "gainDb": -15,
      "pan": -0.2
     }
    ]
@@ -1178,7 +1415,7 @@
    "id": "flick-4",
    "time": 21.2,
    "frame": 636,
-   "label": "Certificate lands on the stack",
+   "label": "Certificate lands",
    "layers": [
     {
      "slot": "card_flick",
@@ -1188,23 +1425,21 @@
      "var": 4
     },
     {
-     "slot": "swish",
-     "offset": -4,
-     "gainDb": -16,
+     "slot": "card_slap",
+     "gainDb": -15,
      "pan": 0.2
     }
    ]
   },
   {
    "id": "stack-sparkle",
-   "time": 21.2,
-   "frame": 636,
-   "label": "Sparkle on the last card",
+   "time": 21.3333,
+   "frame": 640,
+   "label": "Accents",
    "layers": [
     {
      "slot": "sparkle",
-     "offset": 3,
-     "gainDb": -16,
+     "gainDb": -17,
      "semis": 12
     }
    ]
@@ -1213,7 +1448,7 @@
    "id": "proof",
    "time": 21.6,
    "frame": 648,
-   "label": "Top card lifts, proof line",
+   "label": "Top certificate lifts",
    "layers": [
     {
      "slot": "paper_lift",
@@ -1221,26 +1456,52 @@
     },
     {
      "slot": "ping",
-     "offset": 2,
-     "gainDb": -18,
+     "offset": 8,
+     "gainDb": -17,
      "semis": 7
     }
    ]
   },
   {
-   "id": "frame-land",
-   "time": 23.2,
-   "frame": 696,
-   "label": "Engraved card lands",
+   "id": "wipe-6",
+   "time": 22.9333,
+   "frame": 688,
+   "label": "Ring wipe",
    "layers": [
     {
-     "slot": "card_slap",
-     "gainDb": -8
+     "slot": "whoosh_short",
+     "gainDb": -11
+    }
+   ]
+  },
+  {
+   "id": "customer",
+   "time": 23.2,
+   "frame": 696,
+   "label": "Customer by habit.",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -12,
+     "pan": -0.5
     },
     {
-     "slot": "paper_crunch",
-     "offset": 1,
-     "gainDb": -14
+     "slot": "word_hit",
+     "offset": 2,
+     "gainDb": -10
+    }
+   ]
+  },
+  {
+   "id": "band",
+   "time": 25.5333,
+   "frame": 766,
+   "label": "Band slams in",
+   "layers": [
+    {
+     "slot": "whoosh_short",
+     "gainDb": -10,
+     "pan": -0.5
     }
    ]
   },
@@ -1248,7 +1509,7 @@
    "id": "shareholder",
    "time": 25.6,
    "frame": 768,
-   "label": "Shareholder by choice. stamp (after the break)",
+   "label": "Shareholder by choice. stamp",
    "layers": [
     {
      "slot": "rubber_stamp",
@@ -1262,12 +1523,6 @@
     {
      "slot": "tonal_hit",
      "gainDb": -12
-    },
-    {
-     "slot": "brush_stroke",
-     "offset": 4,
-     "gainDb": -12,
-     "pan": 0.2
     }
    ],
    "duck": {
@@ -1277,14 +1532,46 @@
    }
   },
   {
+   "id": "accents-2",
+   "time": 25.7,
+   "frame": 771,
+   "label": "Accents",
+   "layers": [
+    {
+     "slot": "pop",
+     "gainDb": -16,
+     "pan": 0.4
+    },
+    {
+     "slot": "pop",
+     "offset": 2,
+     "gainDb": -17,
+     "pan": -0.4,
+     "semis": 5
+    }
+   ]
+  },
+  {
+   "id": "underline",
+   "time": 25.7333,
+   "frame": 772,
+   "label": "Orange underline",
+   "layers": [
+    {
+     "slot": "brush_stroke",
+     "gainDb": -12,
+     "pan": -0.2
+    }
+   ]
+  },
+  {
    "id": "slide-off",
-   "time": 28.0,
-   "frame": 840,
-   "label": "Stack slides off",
+   "time": 28.2,
+   "frame": 846,
+   "label": "Slide off",
    "layers": [
     {
      "slot": "whoosh_short",
-     "offset": -2,
      "gainDb": -10,
      "pan": 0.5
     }
@@ -1294,7 +1581,7 @@
    "id": "logo",
    "time": 28.4,
    "frame": 852,
-   "label": "Logo on the song's final hit",
+   "label": "MAPS on the final hit",
    "layers": [
     {
      "slot": "paper_swoosh",
@@ -1312,9 +1599,22 @@
    ]
   },
   {
-   "id": "loop-tap",
+   "id": "loop",
    "time": 29.4,
    "frame": 882,
+   "label": "Sun peeks back (loop)",
+   "layers": [
+    {
+     "slot": "paper_swoosh",
+     "gainDb": -14,
+     "pan": 0.5
+    }
+   ]
+  },
+  {
+   "id": "loop-tap",
+   "time": 29.5,
+   "frame": 885,
    "label": "Paper tap (loop point)",
    "layers": [
     {

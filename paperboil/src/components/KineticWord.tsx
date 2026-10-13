@@ -156,7 +156,7 @@ const Word: React.FC<{ ev: TextEvent }> = ({ ev }) => {
 /** All typeset text, timed from storyboard.json and rendered above the shots. */
 export const TextLayer: React.FC = () => {
   const frame = useCurrentFrame();
-  const active = storyboard.text.filter((ev) => frame >= sec(ev.start) && frame < sec(ev.end));
+  const active = storyboard.text.filter((ev) => !ev.inShot && frame >= sec(ev.start) && frame < sec(ev.end));
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       {active.map((ev) => (

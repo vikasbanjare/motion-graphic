@@ -1,0 +1,269 @@
+{
+ "style": "C · Bold Cut-Paper Graphic",
+ "panels": [
+  {
+   "frame": 4,
+   "shot": "S1",
+   "title": "SCROLL",
+   "action": "Orange sun drops in and lands; navy phone rises from below with its feed already scrolling (anticipation dip, overshoot).",
+   "copy": "SCROLL",
+   "sound": "Paper tap, felt word-hit, short whoosh"
+  },
+  {
+   "frame": 26,
+   "shot": "S1",
+   "title": "SCROLL",
+   "action": "SCROLL bleeds off the left edge; orange underline slides under it; receipt ticker flips in top-right; accents pop on the 8ths.",
+   "copy": "SCROLL · 07:12 · 48 MIN",
+   "sound": "Ticker paper flick + marimba pluck (B)"
+  },
+  {
+   "frame": 46,
+   "shot": "S2",
+   "title": "STREAM",
+   "action": "Navy band wipe → navy ground. Cream TV lands inside a pulsing blue sun; play triangle snaps in; progress bar runs.",
+   "copy": "STREAM · 22:10 · 2 HRS",
+   "sound": "CRT thunk, play pop, hum bed"
+  },
+  {
+   "frame": 72,
+   "shot": "S3",
+   "title": "SEARCH",
+   "action": "Ring wipe → orange. Search pill lands with impact squash; query types on 2-frame keystrokes; magnifier swings in on a loose spring.",
+   "copy": "SEARCH · 13:30 · 31 TIMES",
+   "sound": "Card thump, 6 soft key ticks, result ping"
+  },
+  {
+   "frame": 96,
+   "shot": "S4",
+   "title": "RIDE",
+   "action": "Cream band wipe. Navy road slams across on a diagonal, dashes rushing; orange car drives the road with squash & stretch; pin drops and lands.",
+   "copy": "RIDE · 18:05 · 2 TRIPS",
+   "sound": "Whoosh, small car pass (panned L→R), pin thump + boop"
+  },
+  {
+   "frame": 122,
+   "shot": "S5",
+   "title": "PAY",
+   "action": "Hard cut to sky blue. Orange card winds back then swings in on an arc and taps the terminal; cream ripples; orange tick pops.",
+   "copy": "PAY · 20:41 · 6 TAPS",
+   "sound": "Card tap, NFC two-note chime (B, F#), positive chime"
+  },
+  {
+   "frame": 150,
+   "shot": "S6",
+   "title": "The receipt",
+   "action": "Ring wipe to navy. The whole day prints out as one long receipt, a line every half-beat.",
+   "copy": "YOUR DAY · MADE IN THE USA · SPENT IN INDIA",
+   "sound": "Paper swoosh, printer ticks per line"
+  },
+  {
+   "frame": 200,
+   "shot": "S6",
+   "title": "The receipt",
+   "action": "Total line prints with a blinking orange ‘?’; the question slides in beside the receipt.",
+   "copy": "HOW MANY DO YOU OWN?",
+   "sound": "Word hit, low ping"
+  },
+  {
+   "frame": 222,
+   "shot": "S6",
+   "title": "The 0",
+   "action": "On the hole in the music a giant orange 0 slams over everything (160%→100%, paper shake); receipt and question dim.",
+   "copy": "0",
+   "sound": "Reverse swell → sub drop + cardboard slam + paper debris; music ducks 6 dB"
+  },
+  {
+   "frame": 246,
+   "shot": "S6",
+   "title": "The 0",
+   "action": "Camera pushes into the 0's counter; frame floods orange.",
+   "copy": "—",
+   "sound": "Long whoosh"
+  },
+  {
+   "frame": 262,
+   "shot": "S7",
+   "title": "Locked",
+   "action": "Inside the 0: a navy padlock drops in and lands; the question type slides in from the left.",
+   "copy": "SOMEBODY ELSE'S GAME?",
+   "sound": "Thump + metallic clack"
+  },
+  {
+   "frame": 282,
+   "shot": "S7",
+   "title": "Locked",
+   "action": "Padlock rattles in its shackle — ‘it isn't for you’.",
+   "copy": "SOMEBODY ELSE'S GAME?",
+   "sound": "Key jingle, clack"
+  },
+  {
+   "frame": 292,
+   "shot": "S8",
+   "title": "Not anymore",
+   "action": "On the bass return the colours flip (orange lock on navy); the cream key snaps a quarter-turn; NOT slams, ANYMORE. follows 3 frames later.",
+   "copy": "NOT ANYMORE.",
+   "sound": "Lock mechanism + tonal hit; music ducks"
+  },
+  {
+   "frame": 312,
+   "shot": "S8",
+   "title": "Not anymore",
+   "action": "Shackle springs open; the lock tumbles out of frame.",
+   "copy": "NOT ANYMORE.",
+   "sound": "Latch clunk, pop, whoosh"
+  },
+  {
+   "frame": 346,
+   "shot": "S9",
+   "title": "The door",
+   "action": "Cut-paper door frame rises; the orange door swings open on a heavy spring; light pours out across the floor.",
+   "copy": "WE OPENED THE DOOR.",
+   "sound": "Card thump, door swing, shimmer (in key)"
+  },
+  {
+   "frame": 370,
+   "shot": "S9",
+   "title": "The door",
+   "action": "Camera pushes through the doorway into the light.",
+   "copy": "WE OPENED THE DOOR.",
+   "sound": "Long whoosh"
+  },
+  {
+   "frame": 400,
+   "shot": "S10",
+   "title": "Tunnel",
+   "action": "Concentric cut-paper rings rush outward and rotate; the build starts.",
+   "copy": "—",
+   "sound": "Airy riser"
+  },
+  {
+   "frame": 440,
+   "shot": "S10",
+   "title": "Tunnel",
+   "action": "Rush: rings accelerate, cream speed streaks fly past.",
+   "copy": "—",
+   "sound": "Paper flutters panned L/R, reverse cymbal"
+  },
+  {
+   "frame": 470,
+   "shot": "S10",
+   "title": "Vacuum",
+   "action": "15.2 s: everything freezes, pulls back 6% and drains colour; a ghost of the orange sun flickers in at 15.8.",
+   "copy": "—",
+   "sound": "Half a second of true silence"
+  },
+  {
+   "frame": 482,
+   "shot": "S11",
+   "title": "THE DROP",
+   "action": "On the downbeat the orange sun slams in with overshoot, the navy band sweeps across, US drops, STOCKS slides in.",
+   "copy": "US STOCKS",
+   "sound": "Sub boom + cardboard slam + crash; music ducks 3 dB"
+  },
+  {
+   "frame": 500,
+   "shot": "S11",
+   "title": "THE DROP",
+   "action": "Accents pop on the 8ths; NOW ON MAPS rises bottom-right.",
+   "copy": "US STOCKS · NOW ON MAPS",
+   "sound": "Pops, word hit, sparkle"
+  },
+  {
+   "frame": 530,
+   "shot": "S11",
+   "title": "THE DROP",
+   "action": "Hold: the poster breathes (sun scale), camera drifts back.",
+   "copy": "US STOCKS · NOW ON MAPS",
+   "sound": "—"
+  },
+  {
+   "frame": 560,
+   "shot": "S12",
+   "title": "Pick",
+   "action": "Orange band wipe. Phone lands in a blue sun; thumb swipes the brand-safe stock cards twice (snap springs).",
+   "copy": "—",
+   "sound": "Card slides"
+  },
+  {
+   "frame": 580,
+   "shot": "S12",
+   "title": "Pick",
+   "action": "Thumb picks the third card: it grows and gets an orange outline.",
+   "copy": "—",
+   "sound": "Soft tap + pluck"
+  },
+  {
+   "frame": 594,
+   "shot": "S12",
+   "title": "Buy",
+   "action": "Thumb presses BUY (squash), the chip slams in at the top.",
+   "copy": "BUY FROM INDIA",
+   "sound": "Button thunk, positive chime, word hit"
+  },
+  {
+   "frame": 606,
+   "shot": "S13",
+   "title": "The stack",
+   "action": "Card-land cut to the slate desk; certificates land one per beat on tilted arcs (Nº 000 001 → 004).",
+   "copy": "BUY FROM INDIA (carry-over)",
+   "sound": "Card flicks pitched +0/+2/+4/+5"
+  },
+  {
+   "frame": 642,
+   "shot": "S13",
+   "title": "The stack",
+   "action": "Messy stack settles; accents pop.",
+   "copy": "—",
+   "sound": "Sparkle"
+  },
+  {
+   "frame": 680,
+   "shot": "S14",
+   "title": "Proof line",
+   "action": "The top certificate lifts to camera; proof line sets in with an orange rule; risk footer appears.",
+   "copy": "Own a slice of the brands you use every day.",
+   "sound": "Paper lift, ping"
+  },
+  {
+   "frame": 720,
+   "shot": "S15",
+   "title": "The last dab",
+   "action": "Ring wipe to cream. Sun lands; ‘Customer by habit.’ snaps in from the left.",
+   "copy": "Customer by habit.",
+   "sound": "Whoosh + word hit"
+  },
+  {
+   "frame": 760,
+   "shot": "S15",
+   "title": "The last dab",
+   "action": "The song's break: camera leans in (anticipation).",
+   "copy": "Customer by habit.",
+   "sound": "Music breaks"
+  },
+  {
+   "frame": 790,
+   "shot": "S15",
+   "title": "The last dab",
+   "action": "Downbeat: navy band slams in, ‘Shareholder by choice.’ stamps (shake), orange underline draws, ‘Customer’ dims.",
+   "copy": "Shareholder by choice.",
+   "sound": "Rubber stamp + paper crunch + tonal hit; brush stroke"
+  },
+  {
+   "frame": 860,
+   "shot": "S16",
+   "title": "End card",
+   "action": "Slide-off to cream. MAPS Global Markets pops on the song's final hit; the bar reveals; line + underline draw on.",
+   "copy": "US STOCKS · NOW OPEN + risk disclaimer",
+   "sound": "Logo motif (B–D#–F#), sub, paper swoosh"
+  },
+  {
+   "frame": 895,
+   "shot": "S16",
+   "title": "End card",
+   "action": "The orange sun peeks back in from the right → loops into the opening shot.",
+   "copy": "US STOCKS · NOW OPEN",
+   "sound": "Paper swoosh, paper tap (loop point)"
+  }
+ ]
+}

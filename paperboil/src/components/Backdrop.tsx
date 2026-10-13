@@ -7,7 +7,7 @@ import { expoOut } from "../timing";
 
 export type BackdropSpec = {
   /** glow: radial vignette glow · field: flat saturated field · desk: calm payoff desk */
-  kind: "glow" | "field" | "desk";
+  kind: "glow" | "field" | "desk" | "none";
   /** [centre, edge] tokens for glow; [field] for field/desk. */
   colors: PaletteToken[];
   /** Painted sunburst behind the subject. */
@@ -33,6 +33,11 @@ const raysFor = (tokens: PaletteToken[], opacity: number) => {
 
 /** Full-bleed painted ground for a shot: glow/field + rays/burst + specks + checker + vignette. */
 export const Backdrop: React.FC<{ spec: BackdropSpec }> = ({ spec }) => {
+  if (spec.kind === "none") return null;
+  return <BackdropInner spec={spec} />;
+};
+
+const BackdropInner: React.FC<{ spec: BackdropSpec }> = ({ spec }) => {
   const frame = useCurrentFrame();
   const { width, height } = useLayout();
   const [c0, c1 = c0] = spec.colors.map(color);

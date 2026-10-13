@@ -18,7 +18,8 @@ export type TransitionName =
   | "scatter"
   | "echo-burst"
   | "card-land"
-  | "slide-off";
+  | "slide-off"
+  | "band-wipe";
 
 export type TransitionSpec = {
   name: TransitionName;
@@ -64,6 +65,8 @@ export type TextEvent = {
   shiftTo?: "upper";
   placeholder?: boolean;
   note?: string;
+  /** Designed into the shot itself (Style C) rather than the global text layer. */
+  inShot?: boolean;
 };
 
 export type Caption = { start: number; end: number; text: string; burn?: boolean };

@@ -18,99 +18,62 @@
  "shots": [
   {
    "id": "S1",
-   "name": "Hook · the phone",
+   "name": "Scroll",
    "start": 0.0,
    "end": 1.2,
    "asset": "A1",
    "ground": [
-    "tint",
-    "sky"
+    "cream"
    ],
    "light": true,
-   "layout": "split",
+   "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "tint",
-     "sky"
-    ],
-    "rays": {
-     "colors": [
-      "pale",
-      "tint"
-     ],
-     "opacity": 120,
-     "spin": 0.25
-    }
-   },
-   "marks": {
-    "tilePops": [
-     0.0,
-     0.2,
-     0.4,
-     0.6
-    ],
-    "swaps": [
-     0.8,
-     0.9,
-     1.0
+     "cream"
     ]
    },
+   "marks": {},
    "transitionOut": {
-    "name": "push-into",
+    "name": "band-wipe",
     "frames": 6,
     "params": {
-     "anchor": [
-      0.4,
-      0.25
-     ],
-     "fill": "blueMid"
+     "color": "navy"
     }
    }
   },
   {
    "id": "S2",
-   "name": "The TV night",
+   "name": "Stream",
    "start": 1.2,
    "end": 2.0,
    "asset": "A2",
    "ground": [
-    "ink",
-    "blueMid"
+    "navy"
    ],
    "light": false,
-   "layout": "split",
+   "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "blueMid",
-     "ink"
-    ],
-    "rays": {
-     "colors": [
-      "blueBright",
-      "ink"
-     ],
-     "opacity": 70,
-     "spin": 0.3
-    }
+     "cream"
+    ]
    },
    "marks": {},
    "transitionOut": {
-    "name": "fast-morph",
-    "frames": 4,
+    "name": "ring-wipe",
+    "frames": 8,
     "params": {
-     "anchor": [
-      0.5,
-      0.39
-     ],
-     "shape": "tv-to-pill"
+     "colors": [
+      "orange",
+      "orangeDeep"
+     ]
     }
    }
   },
   {
    "id": "S3",
-   "name": "The search",
+   "name": "Search",
    "start": 2.0,
    "end": 2.8,
    "asset": "A3",
@@ -118,137 +81,45 @@
     "orange"
    ],
    "light": true,
-   "layout": "split",
+   "layout": "center",
    "backdrop": {
-    "kind": "field",
+    "kind": "none",
     "colors": [
-     "orange"
-    ],
-    "specks": "orangePale",
-    "checker": [
-     "navy",
      "cream"
     ]
    },
    "marks": {
-    "typeStart": 2.05,
-    "typeEnd": 2.55
+    "typeStart": 2.1
    },
    "transitionOut": {
-    "name": "fast-morph",
-    "frames": 4,
+    "name": "band-wipe",
+    "frames": 6,
     "params": {
-     "anchor": [
-      0.2,
-      0.5
-     ],
-     "shape": "magnifier-to-pin"
+     "color": "cream"
     }
    }
   },
   {
    "id": "S4",
-   "name": "The ride",
+   "name": "Ride",
    "start": 2.8,
    "end": 3.6,
    "asset": "A4",
    "ground": [
-    "pale"
+    "cream"
    ],
    "light": true,
-   "layout": "split",
+   "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "tint",
-     "pale"
+     "cream"
     ]
    },
    "marks": {
     "pinLand": 2.8,
-    "cabStart": 2.9,
+    "cabStart": 2.84,
     "cabEnd": 3.5
-   },
-   "transitionOut": {
-    "name": "carry-through",
-    "frames": 4,
-    "params": {
-     "anchor": [
-      0.61,
-      0.24
-     ],
-     "to": [
-      0.67,
-      0.5
-     ],
-     "color": "orangeBright"
-    }
-   }
-  },
-  {
-   "id": "S5",
-   "name": "The tap",
-   "start": 3.6,
-   "end": 4.4,
-   "asset": "A5",
-   "ground": [
-    "tint"
-   ],
-   "light": true,
-   "layout": "split",
-   "backdrop": {
-    "kind": "glow",
-    "colors": [
-     "tint",
-     "pale"
-    ],
-    "rays": {
-     "colors": [
-      "orangeLight",
-      "sky"
-     ],
-     "opacity": 130,
-     "spin": 0.6,
-     "from": 8
-    }
-   },
-   "marks": {
-    "tap": 3.92,
-    "tick": 4.0
-   },
-   "transitionOut": {
-    "name": "scatter",
-    "frames": 6,
-    "params": {
-     "anchor": [
-      0.67,
-      0.5
-     ]
-    }
-   }
-  },
-  {
-   "id": "S6",
-   "name": "The zero",
-   "start": 4.4,
-   "end": 8.4,
-   "asset": "A6",
-   "ground": [
-    "ink"
-   ],
-   "light": false,
-   "layout": "center",
-   "backdrop": {
-    "kind": "field",
-    "colors": [
-     "ink"
-    ],
-    "specks": "sky"
-   },
-   "marks": {
-    "stickers": 4.4,
-    "zero": 7.2,
-    "morph": 8.0
    },
    "transitionOut": {
     "name": "hard-cut-on-beat",
@@ -257,28 +128,87 @@
    }
   },
   {
-   "id": "S7",
-   "name": "The locked door",
-   "start": 8.4,
-   "end": 9.6,
-   "asset": "A7",
+   "id": "S5",
+   "name": "Pay",
+   "start": 3.6,
+   "end": 4.4,
+   "asset": "A5",
    "ground": [
-    "ink",
+    "sky"
+   ],
+   "light": true,
+   "layout": "center",
+   "backdrop": {
+    "kind": "none",
+    "colors": [
+     "cream"
+    ]
+   },
+   "marks": {
+    "tap": 3.92,
+    "tick": 4.0
+   },
+   "transitionOut": {
+    "name": "ring-wipe",
+    "frames": 8,
+    "params": {
+     "colors": [
+      "navy",
+      "blueBright"
+     ]
+    }
+   }
+  },
+  {
+   "id": "S6",
+   "name": "The receipt · 0",
+   "start": 4.4,
+   "end": 8.4,
+   "asset": "A6",
+   "ground": [
     "navy"
    ],
    "light": false,
    "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "navy",
-     "ink"
+     "cream"
     ]
    },
    "marks": {
-    "keyLaunch": 8.6,
-    "keyLand": 9.2
+    "zero": 7.2
    },
+   "transitionOut": {
+    "name": "push-into",
+    "frames": 8,
+    "params": {
+     "anchor": [
+      0.5,
+      0.52
+     ],
+     "fill": "orange"
+    }
+   }
+  },
+  {
+   "id": "S7",
+   "name": "Locked",
+   "start": 8.4,
+   "end": 9.6,
+   "asset": "A7",
+   "ground": [
+    "orange"
+   ],
+   "light": true,
+   "layout": "center",
+   "backdrop": {
+    "kind": "none",
+    "colors": [
+     "cream"
+    ]
+   },
+   "marks": {},
    "transitionOut": {
     "name": "hard-cut-on-beat",
     "frames": 0,
@@ -287,30 +217,20 @@
   },
   {
    "id": "S8",
-   "name": "The key turns",
+   "name": "Not anymore",
    "start": 9.6,
    "end": 11.2,
    "asset": "A8",
    "ground": [
-    "ink",
     "navy"
    ],
    "light": false,
    "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "navy",
-     "ink"
-    ],
-    "rays": {
-     "colors": [
-      "navy",
-      "ink"
-     ],
-     "opacity": 120,
-     "spin": 0.1
-    }
+     "cream"
+    ]
    },
    "marks": {
     "keyTurn": 9.6,
@@ -318,83 +238,66 @@
     "swing": 10.0
    },
    "transitionOut": {
-    "name": "push-into",
-    "frames": 8,
-    "params": {
-     "anchor": [
-      0.5,
-      0.55
-     ],
-     "fill": "orangePale"
-    }
-   }
-  },
-  {
-   "id": "S9",
-   "name": "Through the door",
-   "start": 11.2,
-   "end": 12.8,
-   "asset": "A9",
-   "ground": [
-    "orangePale"
-   ],
-   "light": true,
-   "layout": "center",
-   "backdrop": {
-    "kind": "field",
-    "colors": [
-     "orangePale"
-    ],
-    "rays": {
-     "colors": [
-      "orangeLight",
-      "orangePale"
-     ],
-     "opacity": 170,
-     "spin": 0.6
-    }
-   },
-   "marks": {},
-   "transitionOut": {
     "name": "hard-cut-on-beat",
     "frames": 0,
     "params": {}
    }
   },
   {
+   "id": "S9",
+   "name": "The door",
+   "start": 11.2,
+   "end": 12.8,
+   "asset": "A9",
+   "ground": [
+    "navy"
+   ],
+   "light": false,
+   "layout": "center",
+   "backdrop": {
+    "kind": "none",
+    "colors": [
+     "cream"
+    ]
+   },
+   "marks": {},
+   "transitionOut": {
+    "name": "push-into",
+    "frames": 8,
+    "params": {
+     "anchor": [
+      0.52,
+      0.6
+     ],
+     "fill": "cream"
+    }
+   }
+  },
+  {
    "id": "S10",
-   "name": "Light tunnel + vacuum",
+   "name": "Tunnel + vacuum",
    "start": 12.8,
    "end": 16.0,
    "asset": "A9",
    "ground": [
-    "orangePale"
+    "cream"
    ],
    "light": true,
    "layout": "center",
    "backdrop": {
-    "kind": "field",
+    "kind": "none",
     "colors": [
-     "orangePale"
-    ],
-    "rays": {
-     "colors": [
-      "orangeLight",
-      "cream"
-     ],
-     "opacity": 170,
-     "spin": 1.2
-    }
+     "cream"
+    ]
    },
    "marks": {
-    "build": 12.8,
     "rush": 14.4,
     "vacuum": 15.2,
     "ghost": 15.8
    },
    "transitionOut": {
-    "name": "echo-burst",
-    "frames": 8,
+    "name": "hard-cut-on-beat",
+    "frames": 0,
     "params": {}
    }
   },
@@ -405,36 +308,28 @@
    "end": 18.4,
    "asset": "A10",
    "ground": [
-    "orangePale"
+    "cream"
    ],
    "light": true,
    "layout": "center",
    "backdrop": {
-    "kind": "field",
+    "kind": "none",
     "colors": [
-     "orangePale"
-    ],
-    "burst": true
+     "cream"
+    ]
    },
-   "marks": {
-    "burst": 16.0,
-    "phonePop": 17.2
-   },
+   "marks": {},
    "transitionOut": {
-    "name": "push-into",
+    "name": "band-wipe",
     "frames": 6,
     "params": {
-     "anchor": [
-      0.5,
-      0.7
-     ],
-     "fill": "cream"
+     "color": "orange"
     }
    }
   },
   {
    "id": "S12",
-   "name": "The pick",
+   "name": "Pick & buy",
    "start": 18.4,
    "end": 20.0,
    "asset": "A11",
@@ -444,19 +339,10 @@
    "light": true,
    "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "cream",
-     "orangePale"
-    ],
-    "rays": {
-     "colors": [
-      "orangePale",
-      "cream"
-     ],
-     "opacity": 110,
-     "spin": 0.2
-    }
+     "cream"
+    ]
    },
    "marks": {
     "swipes": [
@@ -484,10 +370,9 @@
    "light": false,
    "layout": "center",
    "backdrop": {
-    "kind": "desk",
+    "kind": "none",
     "colors": [
-     "slate",
-     "navy"
+     "cream"
     ]
    },
    "marks": {
@@ -516,19 +401,23 @@
    "light": false,
    "layout": "center",
    "backdrop": {
-    "kind": "desk",
+    "kind": "none",
     "colors": [
-     "slate",
-     "navy"
+     "cream"
     ]
    },
    "marks": {
     "lift": 21.6
    },
    "transitionOut": {
-    "name": "card-land",
+    "name": "ring-wipe",
     "frames": 8,
-    "params": {}
+    "params": {
+     "colors": [
+      "orange",
+      "cream"
+     ]
+    }
    }
   },
   {
@@ -538,21 +427,18 @@
    "end": 28.4,
    "asset": "A13",
    "ground": [
-    "slate"
+    "cream"
    ],
-   "light": false,
+   "light": true,
    "layout": "center",
    "backdrop": {
-    "kind": "desk",
+    "kind": "none",
     "colors": [
-     "slate",
-     "navy"
+     "cream"
     ]
    },
    "marks": {
-    "line1": 23.2,
-    "breakIn": 24.8,
-    "line2": 25.6
+    "breakIn": 24.8
    },
    "transitionOut": {
     "name": "slide-off",
@@ -562,7 +448,7 @@
   },
   {
    "id": "S16",
-   "name": "End card · logo · loop",
+   "name": "End card",
    "start": 28.4,
    "end": 30.0,
    "asset": "A14",
@@ -572,10 +458,9 @@
    "light": true,
    "layout": "center",
    "backdrop": {
-    "kind": "glow",
+    "kind": "none",
     "colors": [
-     "cream",
-     "orangePale"
+     "cream"
     ]
    },
    "marks": {
@@ -594,15 +479,29 @@
    "id": "scroll",
    "shot": "S1",
    "text": "SCROLL",
+   "start": 0.0,
+   "end": 1.2,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "tick-scroll",
+   "shot": "S1",
+   "text": "07:12 · 48 MIN",
    "start": 0.4,
    "end": 1.2,
    "kind": "kinetic",
    "weight": 800,
    "color": "navy",
-   "ground": "tint",
-   "position": "split",
-   "size": 0.16,
-   "underline": "orange"
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "stream",
@@ -613,9 +512,24 @@
    "kind": "kinetic",
    "weight": 800,
    "color": "orangeBright",
+   "ground": "navy",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "tick-stream",
+   "shot": "S2",
+   "text": "22:10 · 2 HRS",
+   "start": 1.4,
+   "end": 2.0,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "cream",
    "ground": "ink",
-   "position": "split",
-   "size": 0.16
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "search",
@@ -625,11 +539,25 @@
    "end": 2.8,
    "kind": "kinetic",
    "weight": 800,
-   "color": "ink",
+   "color": "navy",
    "ground": "orange",
-   "position": "split",
-   "size": 0.16,
-   "underline": "cream"
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "tick-search",
+   "shot": "S3",
+   "text": "13:30 · 31 TIMES",
+   "start": 2.2,
+   "end": 2.8,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "ride",
@@ -640,10 +568,24 @@
    "kind": "kinetic",
    "weight": 800,
    "color": "navy",
-   "ground": "pale",
-   "position": "split",
-   "size": 0.16,
-   "underline": "orange"
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "tick-ride",
+   "shot": "S4",
+   "text": "18:05 · 2 TRIPS",
+   "start": 3.0,
+   "end": 3.6,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "pay",
@@ -654,10 +596,52 @@
    "kind": "kinetic",
    "weight": 800,
    "color": "navy",
-   "ground": "tint",
-   "position": "split",
-   "size": 0.16,
-   "underline": "orange"
+   "ground": "sky",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "tick-pay",
+   "shot": "S5",
+   "text": "20:41 · 6 TAPS",
+   "start": 3.8,
+   "end": 4.4,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "question",
+   "shot": "S6",
+   "text": "HOW\nMANY\nDO YOU\nOWN?",
+   "start": 5.6,
+   "end": 8.4,
+   "kind": "hero",
+   "weight": 800,
+   "color": "cream",
+   "ground": "navy",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "somebody",
+   "shot": "S7",
+   "text": "SOMEBODY\nELSE'S\nGAME?",
+   "start": 8.4,
+   "end": 9.6,
+   "kind": "kinetic",
+   "weight": 800,
+   "color": "navy",
+   "ground": "orange",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "not-anymore",
@@ -668,25 +652,67 @@
    "kind": "hero",
    "weight": 800,
    "color": "orangeBright",
-   "ground": "ink",
-   "position": "top",
-   "size": 0.13
+   "ground": "navy",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
-   "id": "us-stocks",
+   "id": "door",
+   "shot": "S9",
+   "text": "WE OPENED\nTHE DOOR.",
+   "start": 11.2,
+   "end": 12.8,
+   "kind": "hero",
+   "weight": 800,
+   "color": "cream",
+   "ground": "navy",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "us",
    "shot": "S11",
-   "text": "US STOCKS",
+   "text": "US",
    "start": 16.0,
    "end": 18.4,
    "kind": "hero",
    "weight": 800,
    "color": "navy",
-   "ground": "orangePale",
+   "ground": "cream",
    "position": "center",
-   "size": 0.22,
-   "shadow": "orange",
-   "shiftAt": 17.2,
-   "shiftTo": "upper"
+   "size": 0.1,
+   "inShot": true
+  },
+  {
+   "id": "stocks",
+   "shot": "S11",
+   "text": "STOCKS",
+   "start": 16.0,
+   "end": 18.4,
+   "kind": "hero",
+   "weight": 800,
+   "color": "navy",
+   "ground": "cream",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true,
+   "note": "Cream fill with navy outline."
+  },
+  {
+   "id": "now-on-maps",
+   "shot": "S11",
+   "text": "NOW ON MAPS",
+   "start": 16.8,
+   "end": 18.4,
+   "kind": "hero",
+   "weight": 800,
+   "color": "navy",
+   "ground": "orange",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "buy-from-india",
@@ -701,49 +727,50 @@
    "position": "top",
    "size": 0.09,
    "chip": true,
-   "note": "Carried into S13 so it holds 48 frames."
+   "note": "Global text layer: carries into S13."
   },
   {
    "id": "proof",
    "shot": "S14",
-   "text": "[PROOF LINE — one true fact, ≤ 6 words]",
+   "text": "Own a slice of the brands you use every day.",
    "start": 21.6,
    "end": 23.2,
    "kind": "super",
-   "weight": 600,
+   "weight": 800,
    "color": "navy",
    "ground": "cream",
-   "position": "card",
-   "size": 0.06,
-   "placeholder": true
+   "position": "center",
+   "size": 0.1,
+   "inShot": true,
+   "note": "Proof line — needs MAPS compliance OK."
   },
   {
    "id": "customer",
    "shot": "S15",
-   "text": "Customer by habit.",
+   "text": "Customer\nby habit.",
    "start": 23.2,
-   "end": 28.4,
-   "kind": "card",
-   "weight": 600,
-   "color": "navy",
-   "ground": "cream",
-   "position": "card-1",
-   "size": 0.09
-  },
-  {
-   "id": "shareholder",
-   "shot": "S15",
-   "text": "Shareholder by choice.",
-   "start": 25.6,
    "end": 28.4,
    "kind": "card",
    "weight": 800,
    "color": "navy",
    "ground": "cream",
-   "position": "card-2",
+   "position": "center",
    "size": 0.1,
-   "underline": "orange",
-   "stamp": true
+   "inShot": true
+  },
+  {
+   "id": "shareholder",
+   "shot": "S15",
+   "text": "Shareholder\nby choice.",
+   "start": 25.6,
+   "end": 28.4,
+   "kind": "card",
+   "weight": 800,
+   "color": "cream",
+   "ground": "navy",
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "now-open",
@@ -752,18 +779,17 @@
    "start": 28.4,
    "end": 30.0,
    "kind": "endline",
-   "weight": 600,
+   "weight": 800,
    "color": "navy",
    "ground": "cream",
-   "position": "below-logo",
-   "size": 0.045,
-   "tracking": 0.18,
-   "underline": "orange"
+   "position": "center",
+   "size": 0.1,
+   "inShot": true
   },
   {
    "id": "footer",
    "shot": "S14",
-   "text": "[COMPLIANCE FOOTER — wording from MAPS compliance]",
+   "text": "Investments in the securities market are subject to market risks. Read all related documents carefully before investing. Overseas investments are subject to RBI LRS limits, foreign-exchange risk and applicable taxes.",
    "start": 21.6,
    "end": 30.0,
    "kind": "legal",
@@ -771,9 +797,9 @@
    "color": "navy",
    "ground": "cream",
    "position": "footer",
-   "size": 0.022,
+   "size": 0.02,
    "chip": true,
-   "placeholder": true
+   "note": "Standard wording — MAPS compliance to confirm."
   }
  ],
  "captions": [

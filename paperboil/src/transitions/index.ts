@@ -8,6 +8,7 @@ import { ribbonWipe } from "./ribbon-wipe";
 import { ringWipe } from "./ring-wipe";
 import { shrinkToPoint } from "./shrink-to-point";
 import { speedWhip } from "./speed-whip";
+import { bandWipe } from "./band-wipe";
 import { cardLand } from "./card-land";
 import { echoBurst } from "./echo-burst";
 import { fastMorph } from "./fast-morph";
@@ -32,6 +33,7 @@ export const TRANSITIONS: Record<TransitionName, TransitionImpl> = {
   "echo-burst": echoBurst,
   "card-land": cardLand,
   "slide-off": slideOff,
+  "band-wipe": bandWipe,
 };
 
 export type { TransitionCtx, TransitionImpl } from "./types";
