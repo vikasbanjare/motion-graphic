@@ -43,7 +43,7 @@ export const C11Drop: React.FC<ShotProps> = ({ shot }) => {
         f={f}
         pop={pop}
         items={[
-          { x: 120, y: 90, s: 80, c: P.blueBright, kind: "sq", r: 12, at: 10 },
+          { x: 120, y: 90, s: 80, c: P.sky, kind: "sq", r: 12, at: 10 },
           { x: 1010, y: 760, s: 90, c: P.sky, kind: "dot", at: 12 },
           { x: 980, y: 140, s: 70, c: P.navy, kind: "tri", r: -12, at: 14 },
           { x: 70, y: 1000, s: 120, c: P.orange, kind: "bar", r: -14, at: 16 },
@@ -56,7 +56,7 @@ export const C11Drop: React.FC<ShotProps> = ({ shot }) => {
 // ── S12 · PICK & BUY — swipe the cards, pick one, press Buy. ────────────────
 const CARD_MARKS: Array<{ c: string; shape: "dot" | "tri" | "sq" | "ring" }> = [
   { c: P.orange, shape: "dot" },
-  { c: P.blueBright, shape: "tri" },
+  { c: P.sky, shape: "tri" },
   { c: P.navy, shape: "sq" },
   { c: P.sky, shape: "ring" },
   { c: P.orangeDeep, shape: "tri" },
@@ -68,7 +68,7 @@ const StockCard: React.FC<{ i: number; x: number; picked?: number }> = ({ i, x, 
       <div style={{ position: "absolute", left: 70, top: 40, width: 110, height: 110, background: m.shape === "ring" ? "transparent" : m.c, border: m.shape === "ring" ? `24px solid ${m.c}` : undefined, boxSizing: "border-box", borderRadius: m.shape === "dot" || m.shape === "ring" ? "50%" : m.shape === "sq" ? 18 : 0, clipPath: m.shape === "tri" ? "polygon(50% 0, 100% 100%, 0 100%)" : undefined }} />
       <div style={{ position: "absolute", left: 40, top: 190, width: 170, height: 22, borderRadius: 11, background: P.navy }} />
       <svg width={170} height={70} style={{ position: "absolute", left: 40, top: 236 }}>
-        <polyline points={Array.from({ length: 9 }, (_, k) => `${k * 21},${40 - Math.sin(k * 1.3 + i) * 18 - k * 2}`).join(" ")} fill="none" stroke={P.blueBright} strokeWidth={7} strokeLinejoin="round" strokeLinecap="round" />
+        <polyline points={Array.from({ length: 9 }, (_, k) => `${k * 21},${40 - Math.sin(k * 1.3 + i) * 18 - k * 2}`).join(" ")} fill="none" stroke={P.sky} strokeWidth={7} strokeLinejoin="round" strokeLinecap="round" />
       </svg>
     </div>
   );
@@ -88,7 +88,7 @@ export const C12Pick: React.FC<ShotProps> = ({ shot }) => {
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.06]} seed={12}>
       <Ground color={P.cream} />
-      <Cut x={140} y={300} w={800} h={800} color={P.blueBright} radius="50%" tone={{ side: "bottom", opacity: 0.4 }} />
+      <Cut x={140} y={300} w={800} h={800} color={P.sky} radius="50%" tone={{ side: "bottom", opacity: 0.4 }} />
       <Cut x={320} y={40 + (1 - phone) * 900} w={440} h={880} color={P.navy} radius={60} scale={impact(f, buy, 0.03, 5) || 1}>
         <div style={{ position: "absolute", left: 20, top: 70, right: 20, bottom: 60, background: P.cream, borderRadius: 30, overflow: "hidden" }}>
           <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 96, background: P.navy }} />
@@ -101,7 +101,7 @@ export const C12Pick: React.FC<ShotProps> = ({ shot }) => {
           </div>
         </div>
       </Cut>
-      <div style={{ position: "absolute", left: thumbX, top: thumbY, width: 130, height: 330, background: P.orangeLight, borderRadius: "65px 65px 30px 30px", transform: `rotate(-18deg) translateY(${press ? 14 : 0}px)`, filter: SHADOW }}>
+      <div style={{ position: "absolute", left: thumbX, top: thumbY, width: 130, height: 330, background: P.cream, borderRadius: "65px 65px 30px 30px", transform: `rotate(-18deg) translateY(${press ? 14 : 0}px)`, filter: SHADOW }}>
         <div style={{ position: "absolute", left: 22, top: 18, width: 86, height: 74, background: P.orangePale, borderRadius: "40px 40px 20px 20px" }} />
       </div>
       <Accents f={f} pop={pop} items={[{ x: 120, y: 160, s: 90, c: P.orange, kind: "sq", r: 10, at: 4 }, { x: 960, y: 220, s: 70, c: P.navy, kind: "dot", at: 7 }, { x: 980, y: 900, s: 100, c: P.sky, kind: "tri", r: 20, at: 10 }]} />
@@ -110,7 +110,7 @@ export const C12Pick: React.FC<ShotProps> = ({ shot }) => {
 };
 
 // ── Certificates (S13–S15) ───────────────────────────────────────────────────
-const CERT_BANDS = [P.navy, P.blueBright, P.orange, P.slate];
+const CERT_BANDS = [P.navy, P.sky, P.orange, P.sky];
 const Certificate: React.FC<{ i: number; x: number; y: number; rotate: number; scale?: number; children?: React.ReactNode }> = ({ i, x, y, rotate, scale = 1, children }) => {
   const band = CERT_BANDS[i % CERT_BANDS.length];
   return (
@@ -160,7 +160,7 @@ export const C13Stack: React.FC<ShotProps> = ({ shot }) => {
   const f = useCurrentFrame();
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.06]} seed={13}>
-      <Ground color={P.slate} tone={P.navy} />
+      <Ground color={P.navy} tone={P.ink} />
       <Stack f={f} frames={markFrames(shot, "flicks")} />
       <Accents f={f} pop={pop} items={[{ x: 120, y: 140, s: 80, c: P.orange, kind: "dot", at: 36 }, { x: 960, y: 900, s: 90, c: P.cream, kind: "sq", r: 14, at: 38 }]} />
     </Stage>
@@ -175,7 +175,7 @@ export const C14Proof: React.FC<ShotProps> = ({ shot }) => {
   const tIn = sp(f, t.at + 6, "pop");
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.04]} seed={14}>
-      <Ground color={P.slate} tone={P.navy} />
+      <Ground color={P.navy} tone={P.ink} />
       <div style={{ position: "absolute", inset: 0, opacity: 1 - lift * 0.5 }}>
         <Stack f={f} frames={[-40, -40, -40]} />
       </div>
@@ -216,7 +216,7 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
           f={f}
           pop={pop}
           items={[
-            { x: 980, y: 560, s: 90, c: P.blueBright, kind: "sq", r: 18, at: s.at + 3 },
+            { x: 980, y: 560, s: 90, c: P.sky, kind: "sq", r: 18, at: s.at + 3 },
             { x: 100, y: 540, s: 60, c: P.sky, kind: "dot", at: s.at + 5 },
             { x: 900, y: 1000, s: 90, c: P.orange, kind: "tri", r: -10, at: s.at + 7 },
           ]}

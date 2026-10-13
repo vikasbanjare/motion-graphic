@@ -76,7 +76,7 @@ export const C8NotAnymore: React.FC<ShotProps> = ({ shot }) => {
       </div>
       <Type text={"NOT"} x={50} y={60} size={250} color={t.color} transform={`scale(${f < t.at ? 0 : 1 + 0.4 * (1 - s1)})`} origin="0% 50%" />
       <Type text={"ANYMORE."} x={50} y={270} size={200} color={P.cream} transform={`scale(${f < t.at + 3 ? 0 : 1 + 0.4 * (1 - s2)})`} origin="0% 50%" />
-      <Accents f={f} pop={pop} items={[{ x: 930, y: 150, s: 80, c: P.orange, kind: "tri", r: 15, at: 8 }, { x: 860, y: 330, s: 46, c: P.sky, kind: "dot", at: 11 }, { x: 140, y: 960, s: 110, c: P.blueBright, kind: "bar", r: 8, at: 14 }]} />
+      <Accents f={f} pop={pop} items={[{ x: 930, y: 150, s: 80, c: P.orange, kind: "tri", r: 15, at: 8 }, { x: 860, y: 330, s: 46, c: P.sky, kind: "dot", at: 11 }, { x: 140, y: 960, s: 110, c: P.sky, kind: "bar", r: 8, at: 14 }]} />
     </Stage>
   );
 };
@@ -91,7 +91,7 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
     <Stage dur={shotDuration(shot)} push={[1.0, 1.12]} seed={9} origin={[560, 600]}>
       <Ground color={P.navy} tone={P.ink} />
       <Cut x={430} y={240 + (1 - frame) * 900} w={460} h={800} color={P.cream} radius="230px 230px 0 0">
-        <div style={{ position: "absolute", left: 36, top: 36, right: 36, bottom: 0, borderRadius: "194px 194px 0 0", background: `radial-gradient(ellipse at 50% 70%, #ffffff 0%, ${P.orangePale} 45%, ${P.orangeLight} 100%)`, opacity: swing }} />
+        <div style={{ position: "absolute", left: 36, top: 36, right: 36, bottom: 0, borderRadius: "194px 194px 0 0", background: `radial-gradient(ellipse at 50% 70%, #ffffff 0%, ${P.orangePale} 45%, ${P.cream} 100%)`, opacity: swing }} />
       </Cut>
       <div style={{ position: "absolute", left: 466, top: 276 + (1 - frame) * 900, width: 388, height: 764, perspective: 1400 }}>
         <div style={{ position: "absolute", inset: 0, transform: `rotateY(${-swing * 105}deg)`, transformOrigin: "0% 50%", background: P.orange, borderRadius: "194px 194px 0 0", overflow: "hidden" }}>
@@ -104,7 +104,7 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
       {swing > 0.2
         ? Array.from({ length: 7 }, (_, i) => {
             const a = -0.9 + i * 0.3;
-            return <div key={i} style={{ position: "absolute", left: 660, top: 680, width: 900 * swing, height: 40, background: i % 2 ? P.orangeLight : P.orangePale, transform: `rotate(${a * 57 + 90}deg)`, transformOrigin: "0 50%", opacity: 0.25 * swing }} />;
+            return <div key={i} style={{ position: "absolute", left: 660, top: 680, width: 900 * swing, height: 40, background: i % 2 ? P.cream : P.orangePale, transform: `rotate(${a * 57 + 90}deg)`, transformOrigin: "0 50%", opacity: 0.25 * swing }} />;
           })
         : null}
       <RevealType text={t.text} x={40} y={40} size={96} color={t.color} lineHeight={0.98} f={f} at={t.at + 2} stagger={2} spring={(f, at) => sp(f, at, "settle")} />
@@ -114,7 +114,7 @@ export const C9Door: React.FC<ShotProps> = ({ shot }) => {
 
 // ── S10 · THE TUNNEL — rings rush past and accelerate; at 15.2 s everything
 // freezes and pulls back (the vacuum); a ghost of the drop's sun flickers in.
-const RING_COLORS = [P.orange, P.navy, P.cream, P.blueBright, P.orangeLight, P.sky];
+const RING_COLORS = [P.orange, P.navy, P.cream, P.sky, P.cream, P.sky];
 export const C10Tunnel: React.FC<ShotProps> = ({ shot }) => {
   const f = useCurrentFrame();
   const rush = markFrame(shot, "rush");

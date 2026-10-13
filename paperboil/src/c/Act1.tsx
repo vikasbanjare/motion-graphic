@@ -23,7 +23,7 @@ const Ticker: React.FC<{ id: string; f: number; x?: number; y?: number; dark?: b
 // ── S1 · SCROLL ─────────────────────────────────────────────────────────────
 // Orange sun lands, the phone rises into it with its feed already scrolling,
 // SCROLL slides in and bleeds off the left edge.
-const FEED = [P.orange, P.blueBright, P.sky, P.orangeLight, P.navy, P.blueMid];
+const FEED = [P.orange, P.sky, P.sky, P.cream, P.navy, P.navy];
 export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
   const f = useCurrentFrame();
   const word = textOf("scroll");
@@ -42,7 +42,7 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
                 <div style={{ position: "absolute", left: 12, top: 12, width: 126, height: 126, borderRadius: 12, background: FEED[(i + 2) % FEED.length] }} />
                 <div style={{ position: "absolute", left: 152, top: 30, width: 110, height: 16, borderRadius: 8, background: P.navy }} />
                 <div style={{ position: "absolute", left: 152, top: 62, width: 80, height: 12, borderRadius: 6, background: P.sky }} />
-                <div style={{ position: "absolute", left: 152, top: 92, width: 96, height: 12, borderRadius: 6, background: P.pale }} />
+                <div style={{ position: "absolute", left: 152, top: 92, width: 96, height: 12, borderRadius: 6, background: P.sky }} />
               </div>
             );
           })}
@@ -52,7 +52,7 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
       <RevealType text={word.text} x={-60} y={700} size={330} color={word.color} f={f} at={word.at} spring={(f, at) => sp(f, at, "settle")} />
       <div style={{ position: "absolute", left: -40, top: 990, width: 900 * sp(f, word.at + 6, "settle"), height: 26, background: P.orange, filter: SHADOW }} />
       <Ticker id="tick-scroll" f={f} x={620} y={60} />
-      <Accents f={f} pop={pop} items={[{ x: 560, y: 610, s: 70, c: P.blueBright, kind: "sq", r: 12, at: 6 }, { x: 990, y: 860, s: 60, c: P.sky, kind: "dot", at: 9 }, { x: 80, y: 120, s: 90, c: P.navy, kind: "bar", r: -20, at: 11 }]} />
+      <Accents f={f} pop={pop} items={[{ x: 560, y: 610, s: 70, c: P.sky, kind: "sq", r: 12, at: 6 }, { x: 990, y: 860, s: 60, c: P.sky, kind: "dot", at: 9 }, { x: 80, y: 120, s: 90, c: P.navy, kind: "bar", r: -20, at: 11 }]} />
     </Stage>
   );
 };
@@ -67,12 +67,12 @@ export const C2Stream: React.FC<ShotProps> = ({ shot }) => {
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.08]} seed={2}>
       <Ground color={P.navy} tone={P.ink} />
-      <Cut x={190} y={60} w={720} h={720} color={P.blueBright} radius="50%" scale={tv * pulse} tone={{ side: "right", opacity: 0.4 }} />
+      <Cut x={190} y={60} w={720} h={720} color={P.sky} radius="50%" scale={tv * pulse} tone={{ side: "right", opacity: 0.4 }} />
       <Cut x={200} y={150 + (1 - tv) * -500} w={700} h={460} color={P.cream} radius={30} rotate={3 * (1 - tv)}>
         <div style={{ position: "absolute", left: 28, top: 28, right: 28, bottom: 28, background: P.ink, borderRadius: 14, overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, ...halftone(P.blueMid, 12, 0.28), opacity: 0.6 }} />
-          <div style={{ position: "absolute", left: 230, top: 120, width: 190, height: 170, background: P.orangeBright, clipPath: "polygon(0 0, 100% 50%, 0 100%)", transform: `scale(${play})`, filter: SHADOW }} />
-          <div style={{ position: "absolute", left: 30, bottom: 26, height: 10, width: `${clamp(f / 24) * 90}%`, background: P.orangeBright, borderRadius: 5 }} />
+          <div style={{ position: "absolute", inset: 0, ...halftone(P.navy, 12, 0.28), opacity: 0.6 }} />
+          <div style={{ position: "absolute", left: 230, top: 120, width: 190, height: 170, background: P.orange, clipPath: "polygon(0 0, 100% 50%, 0 100%)", transform: `scale(${play})`, filter: SHADOW }} />
+          <div style={{ position: "absolute", left: 30, bottom: 26, height: 10, width: `${clamp(f / 24) * 90}%`, background: P.orange, borderRadius: 5 }} />
         </div>
       </Cut>
       <Cut x={460} y={610} w={180} h={60} color={P.cream} clip="polygon(15% 0, 85% 0, 100% 100%, 0 100%)" />
@@ -130,7 +130,7 @@ export const C4Ride: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", left: 0, right: 0, top: 125, height: 20, background: `repeating-linear-gradient(90deg, ${P.cream} 0 70px, transparent 70px 130px)`, backgroundPosition: `${-f * 26}px 0` }} />
       </div>
       <div style={{ position: "absolute", left: carX, top: carY, width: 300, height: 150, transform: `rotate(-12deg) scale(${1 + v * 3}, ${1 - v * 2})`, filter: SHADOW }}>
-        <div style={{ position: "absolute", left: 60, top: 0, width: 160, height: 70, background: P.orangeLight, borderRadius: "40px 50px 0 0" }} />
+        <div style={{ position: "absolute", left: 60, top: 0, width: 160, height: 70, background: P.cream, borderRadius: "40px 50px 0 0" }} />
         <div style={{ position: "absolute", left: 0, top: 54, width: 300, height: 74, background: P.orange, borderRadius: 30 }} />
         <div style={{ position: "absolute", left: 120, top: 8, width: 70, height: 46, background: P.sky, borderRadius: "16px 22px 0 0" }} />
         {[48, 210].map((x) => (
@@ -160,11 +160,11 @@ export const C5Pay: React.FC<ShotProps> = ({ shot }) => {
   const cardY = 120 + k * 280 - Math.sin(k * Math.PI) * 120;
   return (
     <Stage dur={shotDuration(shot)} push={[1.0, 1.07]} seed={5}>
-      <Ground color={P.sky} tone={P.blueMid} />
+      <Ground color={P.sky} tone={P.navy} />
       <Cut x={540} y={240 + (1 - term) * 700} w={340} h={560} color={P.navy} radius={40} scale={impact(f, tap, 0.05, 5) || 1} origin="50% 100%">
         <div style={{ position: "absolute", left: 36, top: 44, right: 36, height: 190, background: P.cream, borderRadius: 16 }} />
         {Array.from({ length: 9 }, (_, i) => (
-          <div key={i} style={{ position: "absolute", left: 50 + (i % 3) * 86, top: 280 + Math.floor(i / 3) * 80, width: 62, height: 52, borderRadius: 14, background: P.blueMid }} />
+          <div key={i} style={{ position: "absolute", left: 50 + (i % 3) * 86, top: 280 + Math.floor(i / 3) * 80, width: 62, height: 52, borderRadius: 14, background: P.navy }} />
         ))}
       </Cut>
       {f >= tap
@@ -178,7 +178,7 @@ export const C5Pay: React.FC<ShotProps> = ({ shot }) => {
         <div style={{ position: "absolute", left: 40, top: 46, width: 80, height: 44, borderLeft: `16px solid ${P.cream}`, borderBottom: `16px solid ${P.cream}`, transform: "rotate(-45deg)" }} />
       </div>
       <Cut x={cardX} y={cardY} w={400} h={250} color={P.orange} radius={24} rotate={-24 + k * 14} tone={{ side: "bottom", opacity: 0.35 }} style={{ zIndex: 2 }}>
-        <div style={{ position: "absolute", left: 36, top: 60, width: 72, height: 56, borderRadius: 10, background: P.orangeLight }} />
+        <div style={{ position: "absolute", left: 36, top: 60, width: 72, height: 56, borderRadius: 10, background: P.cream }} />
         <div style={{ position: "absolute", left: 36, top: 160, width: 230, height: 18, borderRadius: 9, background: P.cream, opacity: 0.85 }} />
       </Cut>
       <RevealType text={word.text} x={40} y={50} size={360} color={word.color} f={f} at={word.at - 4} spring={(f, at) => sp(f, at, "settle")} />
