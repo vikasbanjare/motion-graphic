@@ -184,6 +184,19 @@ type TypeProps = {
   lineHeight?: number;
   italic?: boolean;
   clip?: string;
+  /** Variable-font axes (overrides weight). */
+  vary?: { wght: number; wdth: number };
+};
+
+/**
+ * Kick pulse for variable type: on every beat after `at` the word slams to
+ * full weight/width and relaxes before the next kick (12-frame beat).
+ */
+export const kickPulse = (f: number, at = 0, beat = 12) => {
+  if (f < at) return { wght: 800, wdth: 100 };
+  const t = (f - at) % beat;
+  const k = Math.exp(-t / 3.2);
+  return { wght: 620 + 180 * k, wdth: 80 + 20 * k };
 };
 
 /** Poster type, positioned by its top-left (or by width + align). */
@@ -206,6 +219,7 @@ export const Type: React.FC<TypeProps> = ({
   lineHeight = 0.86,
   italic,
   clip,
+  vary,
 }) => {
   const edges = useEdges();
   return (
@@ -217,7 +231,8 @@ export const Type: React.FC<TypeProps> = ({
       width,
       textAlign: align,
       fontFamily: FONT_FAMILY,
-      fontWeight: weight,
+      fontWeight: vary ? undefined : weight,
+      fontVariationSettings: vary ? `"wght" ${vary.wght.toFixed(0)}, "wdth" ${vary.wdth.toFixed(1)}` : undefined,
       fontSize: size,
       lineHeight,
       letterSpacing: `${tracking}em`,

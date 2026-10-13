@@ -20,11 +20,14 @@ export const DRAWINGS_PER_SECOND = 12;
  */
 const BEAT = 12;
 const STEPS = [0, 2, 5, 7, 10];
+/** Customer world (before the drop) is stiffer: on threes, 10 drawings/s. */
+const STEPS_CUSTOMER = [0, 3, 6, 9];
+const DROP = 480;
 export const drawnFrame = (f: number): number => {
   const b = Math.floor(f / BEAT) * BEAT;
   const k = f - b;
   let s = 0;
-  for (const st of STEPS) if (st <= k) s = st;
+  for (const st of f < DROP ? STEPS_CUSTOMER : STEPS) if (st <= k) s = st;
   return b + s;
 };
 

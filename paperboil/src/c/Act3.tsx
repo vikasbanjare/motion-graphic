@@ -3,14 +3,14 @@ import { MapsLogo } from "../components/MapsLogo";
 import { arc, clamp, easeIO, impact, popIn, sp, wander } from "../motion";
 import { palette as P } from "../palette";
 import { markFrame, markFrames, shotDuration, type Shot } from "../storyboard";
-import { Accents, Cut, Drift, Ground, halftone, Label, Misreg, RevealType, SHADOW, Stage, Type } from "./kit";
+import { Accents, Cut, Drift, Ground, halftone, kickPulse, Label, Misreg, RevealType, SHADOW, Stage, Type } from "./kit";
 import { textOf } from "./text";
 
 type ShotProps = { shot: Shot };
 const pop = (f: number, at: number) => popIn(f, at, "pop", 0.2);
 const settle = (f: number, at: number) => sp(f, at, "settle");
 
-/** Brand-safe stock tile: an abstract mark + a little chart (no real logos). */
+/** Brand-safe stock tile: an abstract mark + a slice wedge (no real logos). */
 const MARKS: Array<{ c: string; shape: "dot" | "tri" | "sq" | "ring" }> = [
   { c: P.orange, shape: "dot" },
   { c: P.sky, shape: "tri" },
@@ -19,6 +19,13 @@ const MARKS: Array<{ c: string; shape: "dot" | "tri" | "sq" | "ring" }> = [
   { c: P.orangeDeep, shape: "tri" },
   { c: P.navy, shape: "dot" },
 ];
+/** Pie wedge path from 12 o'clock, `t` of a full turn (radius 34). */
+const wedge = (t: number) => {
+  const a = Math.min(0.999, Math.max(0.001, t)) * Math.PI * 2;
+  const x = Math.sin(a) * 34;
+  const y = -Math.cos(a) * 34;
+  return `M0 0 L0 -34 A34 34 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)} Z`;
+};
 const StockTile: React.FC<{ i: number; w?: number; h?: number; picked?: number; chart?: number }> = ({ i, w = 250, h = 340, picked = 0, chart = 1 }) => {
   const m = MARKS[i % MARKS.length];
   const k = w / 250;
@@ -39,19 +46,14 @@ const StockTile: React.FC<{ i: number; w?: number; h?: number; picked?: number; 
         }}
       />
       <div style={{ position: "absolute", left: 40 * k, top: 190 * k, width: 170 * k, height: 22 * k, borderRadius: 11 * k, background: P.navy }} />
-      <svg width={170 * k} height={70 * k} viewBox="0 0 170 70" style={{ position: "absolute", left: 40 * k, top: 236 * k }}>
-        <polyline
-          points={Array.from({ length: 9 }, (_, j) => `${j * 21},${44 - Math.sin(j * 1.3 + i) * 14 - j * 3}`).join(" ")}
-          fill="none"
-          stroke={P.orange}
-          strokeWidth={7}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1 - chart}
-        />
+      {/* "A slice": a fractional-ownership wedge, not a price chart (SEBI ad code:
+          no performance or "number goes up" graphics). */}
+      <svg width={84 * k} height={84 * k} viewBox="-50 -50 100 100" style={{ position: "absolute", left: 40 * k, top: 232 * k }}>
+        <circle r={42} fill="none" stroke={P.navy} strokeWidth={8} />
+        <path d={wedge(0.08 + 0.17 * chart)} fill={P.orange} />
       </svg>
+      <div style={{ position: "absolute", left: 140 * k, top: 254 * k, width: 70 * k, height: 14 * k, borderRadius: 7 * k, background: P.sky }} />
+      <div style={{ position: "absolute", left: 140 * k, top: 282 * k, width: 46 * k, height: 14 * k, borderRadius: 7 * k, background: P.sky, opacity: 0.6 }} />
     </div>
   );
 };
@@ -88,10 +90,10 @@ export const C11Drop: React.FC<ShotProps> = ({ shot }) => {
           : null}
       </div>
       <Misreg f={f} at={0} len={5}>
-        <Type text={us.text} x={90} y={-40 + (1 - u) * -760} size={600} color={us.color} />
+        <Type text={us.text} x={90} y={-40 + (1 - u) * -760} size={600} color={us.color} vary={kickPulse(f, 12)} />
       </Misreg>
-      <Type text={stocks.text} x={70 + (1 - st) * 2000} y={440} size={340} color={P.cream} outline={P.navy} />
-      <div style={{ position: "absolute", left: 1460, top: 330, transform: `translateY(${(1 - mp) * 320}px)`, opacity: f < maps.at ? 0 : 1 }}>
+      <Type text={stocks.text} x={70 + (1 - st) * 2000} y={440} size={340} color={P.cream} outline={P.navy} vary={kickPulse(f, 18)} />
+      <div style={{ position: "absolute", left: 1460, top: 330, transform: `scale(${mp}) rotate(${(1 - mp) * -14}deg)`, transformOrigin: "20% 60%", opacity: f < maps.at ? 0 : 1 }}>
         <Label text="NOW ON" x={0} y={0} size={38} color={maps.color} tracking={0.4} weight={800} />
         <div style={{ position: "absolute", left: -8, top: 44, width: 320 }}>
           <Type text="MAPS" x={0} y={0} size={150} color={maps.color} italic />
@@ -156,11 +158,31 @@ export const C12Pick: React.FC<ShotProps> = ({ shot }) => {
           ) : null}
         </div>
       ) : null}
+      {big > 0 ? <Label text="ILLUSTRATIVE · NOT A RECOMMENDATION" x={1210} y={930} size={20} weight={800} tracking={0.18} color={P.navy} opacity={big} /> : null}
+      <Burst f={f} at={buy} x={800} y={778} />
       <div style={{ position: "absolute", left: thumbX, top: thumbY, width: 136, height: 340, background: P.cream, borderRadius: "68px 68px 30px 30px", transform: `rotate(-18deg) translateY(${press ? 14 : 0}px)`, filter: SHADOW, boxShadow: `inset 0 0 0 6px ${P.navy}` }}>
         <div style={{ position: "absolute", left: 24, top: 20, width: 88, height: 74, background: P.orangePale, borderRadius: "40px 40px 20px 20px" }} />
       </div>
       <Accents f={f} pop={pop} items={[{ x: 300, y: 180, s: 90, c: P.orange, kind: "sq", r: 10, at: 4 }, { x: 1800, y: 900, s: 74, c: P.navy, kind: "dot", at: 7 }, { x: 260, y: 900, s: 100, c: P.sky, kind: "tri", r: 20, at: 10 }]} />
     </Stage>
+  );
+};
+
+/** Impact frame: one cream flash ring + navy speed lines, ~5 frames. */
+const Burst: React.FC<{ f: number; at: number; x: number; y: number }> = ({ f, at, x, y }) => {
+  const t = f - at;
+  if (t < 0 || t > 6) return null;
+  const k = t / 6;
+  return (
+    <div style={{ position: "absolute", left: x, top: y, width: 0, height: 0 }}>
+      {t < 2 ? <div style={{ position: "absolute", left: -260, top: -260, width: 520, height: 520, borderRadius: "50%", border: `36px solid ${P.cream}`, boxSizing: "border-box", transform: `scale(${0.5 + t * 0.4})` }} /> : null}
+      {Array.from({ length: 12 }, (_, i) => {
+        const a = (i / 12) * 360 + (i % 2) * 9;
+        const r0 = 170 + k * 160;
+        const len = (1 - k) * (i % 3 === 0 ? 150 : 90);
+        return <div key={i} style={{ position: "absolute", left: 0, top: -7, width: len, height: 14, borderRadius: 7, background: i % 4 === 0 ? P.orange : P.navy, transform: `rotate(${a}deg) translateX(${r0}px)`, transformOrigin: "0 50%" }} />;
+      })}
+    </div>
   );
 };
 
@@ -313,6 +335,7 @@ export const C15LastDab: React.FC<ShotProps> = ({ shot }) => {
 export const C16End: React.FC<ShotProps> = ({ shot }) => {
   const f = useCurrentFrame();
   const t = textOf("now-open");
+  const cta = textOf("cta");
   const logo = markFrame(shot, "logo");
   const ghost = markFrame(shot, "loopGhost");
   const s = popIn(f, logo, "pop", 0.4);
@@ -331,6 +354,10 @@ export const C16End: React.FC<ShotProps> = ({ shot }) => {
       </div>
       <Label text={t.text} x={0} y={700} width={1920} align="center" size={44} color={t.color} weight={800} tracking={track} opacity={clamp((f - t.at - 4) / 6)} />
       <div style={{ position: "absolute", left: 960 - 300, top: 768, width: 600 * under, height: 16, borderRadius: 8, background: P.orange }} />
+      {/* CTA: one clear action; presses on every downbeat so the loop keeps asking. */}
+      <div style={{ position: "absolute", left: 960 - 250, top: 812, width: 500, height: 96, borderRadius: 48, background: P.navy, filter: SHADOW, transform: `scale(${popIn(f, cta.at + 8, "pop", 0.3) * (1 - 0.05 * Math.exp(-((Math.max(0, f - cta.at - 8)) % 12) / 2.5))})`, transformOrigin: "50% 50%" }}>
+        <Label text={cta.text} x={0} y={26} width={500} align="center" size={38} color={cta.color} weight={800} tracking={0.12} />
+      </div>
       <Drift f={f} seed={61} amp={6}>
         <Accents f={f} pop={pop} items={[{ x: 240, y: 230, s: 70, c: P.sky, kind: "sq", r: 14, at: 10 }, { x: 330, y: 860, s: 56, c: P.navy, kind: "dot", at: 14 }]} />
       </Drift>

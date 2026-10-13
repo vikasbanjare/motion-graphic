@@ -14,8 +14,6 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 panels = json.load(open(os.path.join(root, "docs", "STORYBOARD_C.json")))["panels"]
 font = subprocess.run(["fc-match", "-f", "%{file}", "Open Sans:bold"], capture_output=True, text=True).stdout or "DejaVuSans-Bold.ttf"
 font_r = subprocess.run(["fc-match", "-f", "%{file}", "Open Sans"], capture_output=True, text=True).stdout or "DejaVuSans.ttf"
-for fp in [os.path.join(root, "assets", "fonts", "OpenSans-800.woff2")]:
-    pass
 
 def esc(s):
     return s.replace("\\", "\\\\").replace(":", "\\:").replace("'", "’").replace("%", "\\%").replace(",", "\\,")

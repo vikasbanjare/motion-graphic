@@ -38,7 +38,7 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
         <Cut x={900} y={0} w={940} h={940} color={P.orange} radius="50%" scale={sun} tone={{ side: "bottom", opacity: 0.4 }} />
       </Drift>
       <Drift f={f} seed={2} amp={6} rot={1}>
-        <Cut x={1190} y={170 + (1 - rise) * 760} w={360} h={690} color={P.navy} radius={58} rotate={-5 + (1 - rise) * 12}>
+        <Cut x={1330} y={170 + (1 - rise) * 760} w={360} h={690} color={P.navy} radius={58} rotate={-5 + (1 - rise) * 12}>
           <div style={{ position: "absolute", left: 20, top: 70, right: 20, bottom: 60, background: P.cream, borderRadius: 28, overflow: "hidden" }}>
             {Array.from({ length: 10 }, (_, i) => {
               const y = i * 180 - ((f * 15) % 180) - 40;
@@ -55,7 +55,7 @@ export const C1Scroll: React.FC<ShotProps> = ({ shot }) => {
           <div style={{ position: "absolute", left: 140, top: 24, width: 80, height: 18, borderRadius: 9, background: P.ink }} />
         </Cut>
       </Drift>
-      <RevealType text={word.text} x={90} y={560} size={400} color={word.color} f={f} at={word.at} spring={settle} />
+      <RevealType text={word.text} x={90} y={600} size={330} color={word.color} f={f} at={word.at - 6} spring={settle} />
       <div style={{ position: "absolute", left: 110, top: 925, width: 860 * sp(f, word.at + 8, "settle"), height: 28, background: P.orange, filter: SHADOW }} />
       <Ticker id="tick-scroll" f={f} x={120} y={430} />
       <Accents f={f} pop={pop} items={[{ x: 930, y: 250, s: 70, c: P.sky, kind: "sq", r: 12, at: 6 }, { x: 1830, y: 880, s: 64, c: P.navy, kind: "dot", at: 9 }, { x: 1700, y: 90, s: 110, c: P.navy, kind: "bar", r: -20, at: 11 }]} />

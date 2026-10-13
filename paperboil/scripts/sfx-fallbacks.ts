@@ -202,6 +202,7 @@ const DESIGNS: Record<string, (v: number) => Float32Array> = {
   door_swing: () => mixInto([sweepNoise(0.7, 200, 900, 0.8, 1), 1], [DESIGNS.wood_creak(1), 0.4, 0.05]),
   shimmer: () => { let out = buf(1.2); [12, 16, 19, 24].forEach((s, k) => { out = mixInto([out, 1], [fmBell(note(s), 2.0, 0.6, 0.6, 1.0), 0.35, k * 0.04]); }); return room(out, 0.4, 1, 1.0); },
   air_riser: () => { const d = 2.4; return noiseBurst(d, (t) => Math.pow(t / d, 2.2), filt("bp", (i) => 300 + 5000 * Math.pow(i / (d * SR), 2), 1.2)); },
+  paper_rip: () => { const d = 0.38; const x = noiseBurst(d, (t) => env(t, 0.004, 0.11) * (0.55 + 0.45 * Math.abs(Math.sin(2 * Math.PI * 47 * t + 7 * t * t))), filt("bp", (i) => 900 + 3200 * (i / (d * SR)), 0.8)); return mixInto([x, 1], [crackle(0.32, 260, 3200), 0.7, 0.0]); },
   paper_flutter: () => { const d = 0.7; return noiseBurst(d, (t) => bell(t, d) * (0.5 + 0.5 * Math.sin(2 * Math.PI * 19 * t)), filt("bp", 2600, 1)); },
   reverse_cymbal: () => reverse(noiseBurst(0.65, (t) => env(t, 0.001, 0.18), filt("hp", 4500))),
   paint_splash: () => { const d = 0.38; const x = noiseBurst(d, (t) => env(t, 0.002, 0.08) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 31 * t)), filt("lp", 2800), filt("hp", 250)); return mixInto([x, 1], [crackle(0.3, 90, 1800), 0.4, 0.03]); },
