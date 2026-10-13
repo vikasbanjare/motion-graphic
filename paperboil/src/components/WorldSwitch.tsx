@@ -44,6 +44,19 @@ const scanJitter = (drawn: number) => {
   return `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${r.toFixed(3)}deg)`;
 };
 
+/** Copier artefacts: lid shadow on the sheet edges and one faint drum streak. */
+const CopierMarks: React.FC<{ drawn: number }> = ({ drawn }) => (
+  <AbsoluteFill style={{ pointerEvents: "none", mixBlendMode: "multiply" }}>
+    <AbsoluteFill
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(20,20,24,0.32) 0, rgba(20,20,24,0) 70px), linear-gradient(270deg, rgba(20,20,24,0.22) 0, rgba(20,20,24,0) 50px), linear-gradient(180deg, rgba(20,20,24,0.18) 0, rgba(20,20,24,0) 36px)",
+      }}
+    />
+    <div style={{ position: "absolute", left: 1532 + (random(`streak${drawn}`) - 0.5) * 2, top: 0, width: 3, height: 1080, background: "rgba(20,20,24,0.10)" }} />
+  </AbsoluteFill>
+);
+
 const RIP_FRAMES = 9;
 const RIP_X = 980;
 
@@ -99,6 +112,7 @@ export const WorldSwitch: React.FC<{ frame: number; drawn: number; render: (draw
     <AbsoluteFill>
       <Defs />
       <AbsoluteFill style={customer ? { filter: `url(#${FILTER_ID})`, transform: scanJitter(drawn) } : undefined}>{render(drawn)}</AbsoluteFill>
+      {customer ? <CopierMarks drawn={drawn} /> : null}
       <Rip frame={frame} render={render} />
     </AbsoluteFill>
   );

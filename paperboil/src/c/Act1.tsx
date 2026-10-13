@@ -221,11 +221,13 @@ export const C6Receipt: React.FC<ShotProps> = ({ shot }) => {
   const dim = f >= zero ? 0.35 : 0;
   const dur = shotDuration(shot);
   const exit = easeIn(clamp((f - (dur - 10)) / 10));
+  // The receipt prints centre-frame, then steps aside for the question.
+  const aside = f < q.at - 6 ? 0 : sp(f, q.at - 6, "settle");
   return (
     <Stage dur={dur} push={[1.0, 1.07]} seed={6} origin={[960, 560]}>
       <Ground color={P.navy} tone={P.ink} />
       <div style={{ position: "absolute", inset: 0, transform: `translate(${shake}px, ${shake * 0.5}px)` }}>
-        <Cut x={330} y={-40 - (1 - feed) * 1000} w={540} h={1040} color={P.cream} radius={4} rotate={-4 + wander(f, 6, 1.2)} origin="50% 0%" clip="polygon(0 0, 100% 0, 100% 97%, 95% 100%, 90% 97%, 85% 100%, 80% 97%, 75% 100%, 70% 97%, 65% 100%, 60% 97%, 55% 100%, 50% 97%, 45% 100%, 40% 97%, 35% 100%, 30% 97%, 25% 100%, 20% 97%, 15% 100%, 10% 97%, 5% 100%, 0 97%)">
+        <Cut x={690 - 360 * aside} y={-40 - (1 - feed) * 1000} w={540} h={1040} color={P.cream} radius={4} rotate={-1 - 3 * aside + wander(f, 6, 1.2)} origin="50% 0%" clip="polygon(0 0, 100% 0, 100% 97%, 95% 100%, 90% 97%, 85% 100%, 80% 97%, 75% 100%, 70% 97%, 65% 100%, 60% 97%, 55% 100%, 50% 97%, 45% 100%, 40% 97%, 35% 100%, 30% 97%, 25% 100%, 20% 97%, 15% 100%, 10% 97%, 5% 100%, 0 97%)">
           <div style={{ position: "absolute", inset: 0, opacity: 1 - dim }}>
             <Label text="YOUR DAY" x={0} y={110} width={540} align="center" size={48} weight={800} tracking={0.3} />
             <Label text="MADE IN THE USA · SPENT IN INDIA" x={0} y={174} width={540} align="center" size={18} tracking={0.22} />
