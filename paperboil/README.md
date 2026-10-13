@@ -5,19 +5,22 @@ Remotion + [p5.brush](https://github.com/acamposuribe/p5.brush) (standalone buil
 
 One file drives everything: [`src/storyboard.json`](src/storyboard.json). It holds the shots, text, captions, logo and audio settings. Edit the data, not the components.
 
-| Composition | Size | Frames |
+| Output | Size | Frames |
 |---|---|---|
-| `Master16x9` | 1920×1080 | 900 @ 30 fps |
-| `Cut9x16` | 1080×1920 | 900 @ 30 fps |
+| `Master16x9` (composition) | 1920×1080 | 900 @ 30 fps (30 s) |
+| `Cut15x16x9` (cut from the master, `npm run cutdown`) | 1920×1080 | 432 @ 30 fps (14.4 s, 9 bars) |
+
+The direction (customer world → owner world, the paper rip on the drop) and the research behind it are in [`docs/RESEARCH_2026.md`](docs/RESEARCH_2026.md).
 
 ## Quick start
 
 ```bash
 npm install
-npm run stub-audio        # writes placeholder music + SFX to assets/audio/
+npm run audio             # music edit + SFX fallbacks + mix → assets/audio/mix.wav
 npm run dev               # Remotion Studio
 npm run check             # acceptance tests (timing, contrast, font, loudness)
-npm run render            # out/Master16x9.mp4 + out/Cut9x16.mp4
+npm run render            # out/Master16x9.mp4
+npm run cutdown           # out/Cut15x16x9.mp4, cut from the master (src/cuts.ts)
 npm run loudnorm          # out/*.norm.mp4 at −14 LUFS / ≤ −1 dBTP
 npm run check -- --require-loudness
 ```

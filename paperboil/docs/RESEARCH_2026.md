@@ -64,7 +64,7 @@ Other changes the research led to:
 ## Not done yet (worth doing next)
 
 - **3–4 different opening variants for Meta testing:** a ticker card, a question, the real app screen, a ₹-to-$ claim.
-- **Cutdowns:** 15 s and 6 s, plus 9:16 and 4:5 crops, once the 16:9 is signed off.
+- **More cutdowns:** the 15 s 16:9 is done (`npm run cutdown`). Still to do: a 6 s bumper, and 9:16 and 4:5 crops once the 16:9 is signed off.
 - **Real app screens** in place of the abstract phone UI. Needs MAPS assets.
 - **Compliance wording:** MAPS compliance to confirm the CTA, the proof line, and the SEBI registration number plus the exact risk-disclaimer wording now required.
 - **A `@remotion/effects` pass:**
