@@ -12,7 +12,6 @@ export const RemotionRoot: React.FC = () => (
   <>
   <Folder name="MAPS-US-Stocks">
     <Composition id="Master16x9" component={Film} width={1920} height={1080} fps={fps} durationInFrames={durationInFrames} defaultProps={defaults} />
-    <Composition id="Cut9x16" component={Film} width={1080} height={1920} fps={fps} durationInFrames={durationInFrames} defaultProps={defaults} />
   </Folder>
   <StyleframesRoot />
   </>

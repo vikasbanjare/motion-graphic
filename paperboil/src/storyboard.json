@@ -266,7 +266,7 @@
     "frames": 8,
     "params": {
      "anchor": [
-      0.52,
+      0.88,
       0.6
      ],
      "fill": "cream"
@@ -275,7 +275,7 @@
   },
   {
    "id": "S10",
-   "name": "Tunnel + vacuum",
+   "name": "The build + vacuum",
    "start": 12.8,
    "end": 16.0,
    "asset": "A9",

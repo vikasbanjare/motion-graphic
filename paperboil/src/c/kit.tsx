@@ -5,13 +5,15 @@ import { camera } from "../motion";
 import { palette as P } from "../palette";
 
 /**
- * Style C — "Bold Cut-Paper Graphic" kit.
+ * Editorial cut-paper collage kit.
  *
- * Everything is authored on a 1080×1080 STAGE (stage units), centred in the
- * frame and scaled to min(width, height). Landscape gets 420 units of bleed
- * left/right, portrait gets it top/bottom, so backgrounds are drawn oversized
- * and type is allowed to run off the stage edge.
+ * Landscape only: every shot is composed for the full 1920×1080 frame
+ * (stage units = output pixels at 1080p). Backgrounds are drawn oversized so
+ * camera moves never reveal an edge, and type may run off the frame.
  */
+export const STAGE_W = 1920;
+export const STAGE_H = 1080;
+/** @deprecated square-stage width, kept for old shared helpers */
 export const STAGE = 1080;
 
 /** Real paper lifts off the page: short, slightly soft shadow. */
@@ -30,7 +32,7 @@ const useEdges = () => useContext(EdgeCtx);
 const EdgeDefs: React.FC<{ paper: string; ink: string; seed: number }> = ({ paper, ink, seed }) => (
   <svg width={0} height={0} style={{ position: "absolute" }}>
     <defs>
-      <filter id={paper} x="-3%" y="-3%" width="106%" height="106%">
+      <filter id={paper} x="-12%" y="-12%" width="124%" height="124%">
         <feTurbulence type="fractalNoise" baseFrequency={0.032} numOctaves={2} seed={seed} result="warp" />
         <feDisplacementMap in="SourceGraphic" in2="warp" scale={5} xChannelSelector="R" yChannelSelector="G" result="rough" />
         <feTurbulence type="fractalNoise" baseFrequency={0.85} numOctaves={2} seed={7} result="grain" />
@@ -41,7 +43,7 @@ const EdgeDefs: React.FC<{ paper: string; ink: string; seed: number }> = ({ pape
           <feMergeNode in="fibre" />
         </feMerge>
       </filter>
-      <filter id={ink} x="-2%" y="-2%" width="104%" height="104%">
+      <filter id={ink} x="-12%" y="-25%" width="124%" height="150%">
         <feTurbulence type="fractalNoise" baseFrequency={0.06} numOctaves={1} seed={seed + 11} result="warp" />
         <feDisplacementMap in="SourceGraphic" in2="warp" scale={2.2} xChannelSelector="R" yChannelSelector="G" />
       </filter>
@@ -59,7 +61,7 @@ export const Stage: React.FC<{ children: React.ReactNode; push?: [number, number
   push = [1, 1.05],
   dur,
   seed = 0,
-  origin = [540, 540],
+  origin = [960, 540],
 }) => {
   const f = useCurrentFrame();
   const { width, height } = useVideoConfig();
@@ -67,8 +69,7 @@ export const Stage: React.FC<{ children: React.ReactNode; push?: [number, number
   const edges = { paper: `paper-${uid}`, ink: `ink-${uid}` };
   // Edges boil: re-seeded per drawing (the picture is already stepped on twos).
   const edgeSeed = (Math.floor(f / 2) % 4) + 1;
-  // Portrait: pull the stage in a little so bleed type still reads edge to edge.
-  const s = (Math.min(width, height) / STAGE) * (height > width ? 0.88 : 1);
+  const s = width / STAGE_W;
   return (
     <AbsoluteFill style={{ overflow: "hidden" }}>
       <EdgeDefs paper={edges.paper} ink={edges.ink} seed={edgeSeed} />
@@ -76,10 +77,10 @@ export const Stage: React.FC<{ children: React.ReactNode; push?: [number, number
       <div
         style={{
           position: "absolute",
-          left: (width - STAGE * s) / 2,
-          top: (height - STAGE * s) / 2,
-          width: STAGE,
-          height: STAGE,
+          left: 0,
+          top: (height - STAGE_H * s) / 2,
+          width: STAGE_W,
+          height: STAGE_H,
           transform: `scale(${s})`,
           transformOrigin: "0 0",
         }}
@@ -270,7 +271,7 @@ export const Label: React.FC<{ text: string; x: number; y: number; size?: number
 
 /** Full-bleed flat ground for a shot (drawn way past the stage). */
 export const Ground: React.FC<{ color: string; tone?: string }> = ({ color, tone }) => (
-  <div style={{ position: "absolute", left: -1200, top: -1200, width: STAGE + 2400, height: STAGE + 2400, background: color }}>
+  <div style={{ position: "absolute", left: -1000, top: -1000, width: STAGE_W + 2000, height: STAGE_H + 2000, background: color }}>
     {tone ? <div style={{ position: "absolute", inset: 0, ...halftone(tone, 16, 0.18), opacity: 0.35 }} /> : null}
   </div>
 );
@@ -365,4 +366,13 @@ export const Misreg: React.FC<{ f: number; at: number; len?: number; children: R
       <div style={{ position: "absolute", inset: 0 }}>{children}</div>
     </>
   );
+};
+
+/**
+ * Moving hold: a group that keeps breathing after it lands — slow drift and a
+ * hair of rotation, each group on its own seed so layers never move in lockstep.
+ */
+export const Drift: React.FC<{ f: number; seed: number; amp?: number; rot?: number; children: React.ReactNode; style?: React.CSSProperties }> = ({ f, seed, amp = 10, rot = 0.6, children, style }) => {
+  const w = (s: number) => Math.sin(f / 23 + s * 1.7) * 0.6 + Math.sin(f / 37 + s * 3.1) * 0.4;
+  return <div style={{ position: "absolute", inset: 0, transform: `translate(${w(seed) * amp}px, ${w(seed + 4) * amp * 0.6}px) rotate(${w(seed + 8) * rot}deg)`, ...style }}>{children}</div>;
 };
