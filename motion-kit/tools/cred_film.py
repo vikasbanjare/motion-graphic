@@ -120,14 +120,14 @@ def main():
     }
     json.dump({"copy": copy, "score": score}, open(os.path.join(out, "props.json"), "w"), ensure_ascii=False, indent=1)
     rel = os.path.relpath(out, ROOT)
-    keys = "100 230 272 340 440 528 600 626 690"
+    keys = "140 200 326 368 436 536 624 696 722 786"  # v6.5: the opening is 96 frames longer
     print(f"ok: {slug} fits the film. props: {rel}/props.json")
     print("\n1) stills (send to the user before rendering):")
     print(f"   npx remotion bundle --out-dir=/tmp/cred-film-bundle && for f in {keys}; do npx remotion still /tmp/cred-film-bundle CredFilm out/{slug}-$f.png --frame=$f --props={rel}/props.json --gl=swangle; done")
-    print("2) render (chunks are safer; ranges are inclusive, the film is 720 frames):")
+    print("2) render (chunks are safer; ranges are inclusive, the film is 816 frames):")
     print(f"   npx remotion render CredFilm out/{slug}.mp4 --props={rel}/props.json --gl=swangle --concurrency=3")
     print("3) check the export:")
-    print(f"   python3 -I tools/motion_qa.py out/{slug}.mp4 --frames 100,272,528,626 --sheet out/{slug}.qa.jpg")
+    print(f"   python3 -I tools/motion_qa.py out/{slug}.mp4 --frames 200,368,624,722 --sheet out/{slug}.qa.jpg")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 ---
 name: cred-film
-description: Make a CRED-style launch film from any product script. The film is the approved CRED v6.4 build used as a template (engraved 3D worlds, the world turning into the card, foil strip close-up and split, the globe-to-floor match, the shell dive, the white-set outro with lasers and the card dropping into a phone, the lockup, the original score). Claude maps the script's real claims onto the film's slots, tools/cred_film.py checks every slot fits, then stills to the user, render, motion QA, delivery. Use whenever someone gives a script, ad brief or feature list and wants "a video like the CRED one", a CRED-style card or product film, or this film for another brand.
+description: Make a CRED-style launch film from any product script. The film is the CRED v6.5 build (34 s) used as a template (engraved 3D worlds, the world turning into the card, foil strip close-up and split, the globe-to-floor match, the shell dive, the white-set outro with lasers and the card dropping into a phone, the lockup, the original score). Claude maps the script's real claims onto the film's slots, tools/cred_film.py checks every slot fits, then stills to the user, render, motion QA, delivery. Use whenever someone gives a script, ad brief or feature list and wants "a video like the CRED one", a CRED-style card or product film, or this film for another brand.
 ---
 
-# CRED film: a new script in the CRED v6.4 film
+# CRED film: a new script in the CRED v6.5 film
 
-The look, worlds, camera moves, transitions, timing and score are the approved CRED v6.4 film and do not
+The look, worlds, camera moves, transitions, timing and score are the CRED v6.5 film and do not
 change. Your job is to direct the new script into the film's slots so every shot says something true and fits.
 
 - Worked example: `specs/cred-film/lumen.json` (a fictional brand), rendered to `out/lumen-cred.mp4`.
@@ -27,14 +27,14 @@ change. Your job is to direct the new script into the film's slots so every shot
 
 | Time | Shot | Slot | Best for | Fits |
 |---|---|---|---|---|
-| 0–6 s | Lines race in, the garden grows, the fox walks | `claim1` head / sub | the lead benefit: rewards, cashback, growth | head ≤ 26 chars |
-| 6–8 s | The garden becomes the card's print; the logo is on the card | `card` head / sub | the product's full name | head ≤ 30 |
-| 8–11 s | The push into the foil strip; one phrase lands whole | `strip[0]` (+ `strip[1]` scrolling past) | the sharpest short claim, in CAPITALS | `strip[0]` ≤ 18 |
-| 11–16 s | The strip splits open onto the travel world (hotel, lantern, flights over a globe) | `claim2` | travel, redeem, worldwide, reach | head ≤ 30 |
-| 16–20 s | The globe becomes the floor of a colonnade; products drop onto plinths | `claim3` head / sub | choice, catalogue, store, partners | head ≤ 26 |
-| 20–23 s | Fish and an iridescent shell; a big number rises like a pearl | `hero` label / value | the one number: a fee, a rate, a limit ("₹0", "0%", "5X") | value ≤ 5 chars |
-| 23–27 s | White set, lasers, the card drops into a phone, the claims tick on | `card_print`, `outro.title`, `outro.rows` (2–4), `outro.left` / `outro.right` | the full claim list and the product name either side of the phone | rows ≤ 64, left/right ≤ 26 |
-| 27–30 s | Logo lockup on black | `logo` file, `lockup` line | the product line | ≤ 40 |
+| 0–10 s | Blank paper; pen strokes drawn one by one; the field closes into a white disc; an engraved bough sweeps in and flowers; the fox runs along it and stops to look around | `claim1` head / sub | the lead benefit: rewards, cashback, growth | head ≤ 26 chars |
+| 10–12 s | The garden becomes the card's print; the logo is on the card | `card` head / sub | the product's full name | head ≤ 30 |
+| 12–15 s | The push into the foil strip; one phrase lands whole | `strip[0]` (+ `strip[1]` scrolling past) | the sharpest short claim, in CAPITALS | `strip[0]` ≤ 18 |
+| 15–20 s | The strip splits open onto the travel world (hotel, lantern, flights over a globe) | `claim2` | travel, redeem, worldwide, reach | head ≤ 30 |
+| 20–24 s | The globe becomes the floor of a colonnade; products drop onto plinths | `claim3` head / sub | choice, catalogue, store, partners | head ≤ 26 |
+| 24–27 s | Fish and an iridescent shell; a big number rises like a pearl | `hero` label / value | the one number: a fee, a rate, a limit ("₹0", "0%", "5X") | value ≤ 5 chars |
+| 27–31 s | White set, lasers, the card drops into a phone, the claims tick on | `card_print`, `outro.title`, `outro.rows` (2–4), `outro.left` / `outro.right` | the full claim list and the product name either side of the phone | rows ≤ 64, left/right ≤ 26 |
+| 31–34 s | Logo lockup on black | `logo` file, `lockup` line | the product line | ≤ 40 |
 
 If the script has fewer than four strong claims, reuse the strongest one in two slots: as `strip[0]` and as
 `hero`, for example. Never pad with invented claims.
