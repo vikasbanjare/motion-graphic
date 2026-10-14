@@ -412,6 +412,44 @@ const Column: React.FC<{ pos: [number, number, number]; seed: number }> = ({ pos
   );
 };
 
+/** A guilloche rosette (banknote line work) for the temple wall and the glass panels: thin ink on cream. */
+const rosetteTex = (ink: string, paper: string, n = 72) => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 1024;
+  const x = c.getContext("2d")!;
+  x.fillStyle = paper;
+  x.fillRect(0, 0, 1024, 1024);
+  x.strokeStyle = ink;
+  x.lineWidth = 1.6;
+  x.translate(512, 512);
+  for (let k = 0; k < n; k++) {
+    x.globalAlpha = k % 6 ? 0.55 : 0.9;
+    x.beginPath();
+    for (let i = 0; i <= 720; i++) {
+      const a = (i / 720) * Math.PI * 2;
+      const r = 300 + 120 * Math.sin(a * 7 + (k / n) * Math.PI * 2) + 60 * Math.sin(a * 19 - (k / n) * Math.PI * 4);
+      if (i) x.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      else x.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+    }
+    x.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
+};
+const wallTex = rosetteTex("#b0705a", "#f3e2d4", 110);
+const panelTex = rosetteTex("#6a5a9a", "#f4ecf8", 48);
+const wallG = new THREE.PlaneGeometry(14, 8);
+const panelG = new THREE.PlaneGeometry(1.25, 1.7);
+const frameG = new THREE.BoxGeometry(1.42, 1.87, 0.06);
+/** The close shot's frontal set (the reference's temple): items in a row, each under a holographic glass panel. */
+const ROW: [string, number, number, Partial<{ foil: number }>][] = [
+  ["BoomBox.glb", -2.1, 0.95, {}],
+  ["WaterBottle.glb", -0.7, 1.1, {}],
+  ["MaterialsVariantsShoe.glb", 0.7, 1.05, { foil: 0.6 }],
+  ["Avocado.glb", 2.1, 0.8, {}],
+];
+
 export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const copy = useCopy();
@@ -424,8 +462,8 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const over: [number, number, number] = [0.01, 15, 0.4];
   // swing outward first, then down, so the crane never passes through the ring beam
   const hr = 0.4 + 8.8 * expoOut(Math.min(1, crane * 2.2));
-  const pos: [number, number, number] = cut === 0 ? [Math.sin(orbit) * hr, over[1] + (eye[1] - over[1]) * crane, Math.cos(orbit) * hr] : [1.6 + (F - 446) * 0.02, 2.3, 5.6 - (F - 446) * 0.01];
-  const target: [number, number, number] = cut === 0 ? [0, 2.2 * crane, 0] : [0.6, 2.0, 0];
+  const pos: [number, number, number] = cut === 0 ? [Math.sin(orbit) * hr, over[1] + (eye[1] - over[1]) * crane, Math.cos(orbit) * hr] : [0.25 - (F - 446) * 0.006, 2.05, 6.3 - (F - 446) * 0.012];
+  const target: [number, number, number] = cut === 0 ? [0, 2.2 * crane, 0] : [0.1 - (F - 446) * 0.004, 1.95, 0];
   const items: [string, number, number, number, number, Partial<{ foil: number }>][] = [
     ["BoomBox.glb", -2.2, 1.5, 0.9, 409, {}],
     ["WaterBottle.glb", -0.7, 1.7, -1.4, 421, {}],
@@ -440,30 +478,51 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
         <Mottle tint={[0.86, 0.66, 0.56]} seed={5} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
-          <Cam pos={pos} target={target} fov={cut === 0 ? 38 : 32} />
+          <Cam pos={pos} target={target} fov={cut === 0 ? 38 : 40} />
           <RefDepth.Provider value={7}>
             <Detail.Provider value={{ ...ENGRAVE_FINE, wash: 0.12, toneGamma: 1.3 }}>
               <EMesh g={floorG} m={{ palette: PAL.cream, seed: 59, map: floorTex, mapAmt: 0.85, angleDeg: 4 } as never} rot={[-Math.PI / 2, 0, 0]} />
-              {cols.map((a, i) => (
-                <Column key={i} pos={[Math.cos(a) * RING_R, 0, Math.sin(a) * RING_R]} seed={60 + i} />
-              ))}
-              <EMesh g={beamG} m={{ palette: PAL.terra, seed: 58, angleDeg: 6 }} pos={[0, COLUMN.h + 0.3, 0]} rot={[Math.PI / 2, 0, 0]} />
-              {items.map(([, x, , z], i) => (
-                <EMesh key={`p${i}`} g={plinthG} m={{ palette: PAL.cream, seed: 70 + i, angleDeg: 10 }} pos={[x, 0.55, z]} />
-              ))}
-              {items.map(([url, x, size, z, at, extra], i) => {
-                const p = F >= at ? pop(F, at) : 0;
-                return p > 0 ? (
-                  <Rig key={url} url={M + url} size={size} pos={[x, 1.1 + 2.5 * (1 - p), z]} rot={[0, 0.5 + t * 0.15 + i, 0]} m={{ palette: i % 2 ? PAL.terra : PAL.cream, seed: 80 + i, ...extra }} foilPhase={t * 0.2} />
-                ) : null;
-              })}
+              {cut === 0 ? (
+                <>
+                  {cols.map((a, i) => (
+                    <Column key={i} pos={[Math.cos(a) * RING_R, 0, Math.sin(a) * RING_R]} seed={60 + i} />
+                  ))}
+                  <EMesh g={beamG} m={{ palette: PAL.terra, seed: 58, angleDeg: 6 }} pos={[0, COLUMN.h + 0.3, 0]} rot={[Math.PI / 2, 0, 0]} />
+                  {items.map(([, x, , z], i) => (
+                    <EMesh key={`p${i}`} g={plinthG} m={{ palette: PAL.cream, seed: 70 + i, angleDeg: 10 }} pos={[x, 0.55, z]} />
+                  ))}
+                  {items.map(([url, x, size, z, at, extra], i) => {
+                    const p = F >= at ? pop(F, at) : 0;
+                    return p > 0 ? (
+                      <Rig key={url} url={M + url} size={size} pos={[x, 1.1 + 2.5 * (1 - p), z]} rot={[0, 0.5 + t * 0.15 + i, 0]} m={{ palette: i % 2 ? PAL.terra : PAL.cream, seed: 80 + i, ...extra }} foilPhase={t * 0.2} />
+                    ) : null;
+                  })}
+                </>
+              ) : (
+                <>
+                  {/* frontal temple: two big columns crop the frame, a rosette wall, a row of glass panels and plinths */}
+                  <EMesh g={wallG} m={{ palette: PAL.terra, seed: 57, map: wallTex, mapAmt: 0.55, angleDeg: 4, lift: 0.22 } as never} pos={[0, 3.2, -2.6]} />
+                  <group position={[-3.5, 0, 0.3]} scale={1.3}>
+                    <Column pos={[0, 0, 0]} seed={66} />
+                  </group>
+                  <group position={[3.5, 0, 0.3]} scale={1.3}>
+                    <Column pos={[0, 0, 0]} seed={67} />
+                  </group>
+                  {ROW.map(([url, x, size, extra], i) => (
+                    <React.Fragment key={url}>
+                      <EMesh g={frameG} m={{ palette: PAL.terra, seed: 95 + i, angleDeg: 30, lift: 0.1 }} pos={[x, 1.95, -1.3]} />
+                      <EMesh g={panelG} m={{ palette: PAL.lilac, seed: 90 + i, map: panelTex, mapAmt: 1, foil: 0.6, lift: 0.1 } as never} pos={[x, 1.95, -1.25]} live={{ foilPhase: t * 0.25 + i * 0.2 }} />
+                      <EMesh g={plinthG} m={{ palette: PAL.cream, seed: 70 + i, angleDeg: 10 }} pos={[x, 0.42, -0.4]} scale={[0.62, 0.76, 0.62]} />
+                      <Rig url={M + url} size={size} pos={[x, 0.84, -0.4]} rot={[0, 0.4 + t * 0.35 + i, 0]} m={{ palette: i % 2 ? PAL.terra : PAL.cream, seed: 80 + i, ...extra }} foilPhase={t * 0.2} />
+                    </React.Fragment>
+                  ))}
+                </>
+              )}
             </Detail.Provider>
           </RefDepth.Provider>
         </World>
         {F > T.products + 42 ? (
           <>
-            {/* a soft paper plate behind the headline so the columns never cut through the words */}
-            <AbsoluteFill style={{ background: "radial-gradient(ellipse 30% 15% at 50% 19%, rgba(241,217,198,0.96), rgba(241,217,198,0.85) 55%, rgba(241,217,198,0) 100%)", opacity: expoOut(ramp(F, T.products + 40, T.products + 52)) }} />
             <Headline text={copy.claim3.head} sub={copy.claim3.sub} grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} size={fit(copy.claim3.head, 92, 1500)} top={140} />
           </>
         ) : null}
