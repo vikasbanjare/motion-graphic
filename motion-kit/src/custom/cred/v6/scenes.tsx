@@ -135,6 +135,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
   const head = expoOut(ramp(F, T.reveal + 18, T.reveal + 32)) * (1 - ramp(F, T.macro - 16, T.macro - 4));
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
+      <Field f={F} pitch={12} lambda={150} amp={4} speed={1.6} width={1.4} color="#1f3329" opacity={1} />
       <AbsoluteFill style={{ perspective: 1800 }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "0 0", transform: `translate(${W / 2}px, ${H / 2 + p.ty}px) scale(${p.s}) rotateX(${p.rx}deg) rotateZ(${p.rz}deg) translate(${-p.fx}px, ${-p.fy}px)` }}>
           <CardFace F={F} holo={(F - T.reveal) / 70} copy={1 - ramp(F, OPEN - 2, OPEN + 6)} />
@@ -306,7 +307,7 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
         <AbsoluteFill style={{ transformOrigin: `${G.cx}px ${G.cy}px`, transform: `translate(${(W / 2 - G.cx) * d}px, ${(H / 2 - G.cy) * d}px) scale(${S})` }}>
           <Paper color="#d6d0ea" grain={0.35} />
           <Mottle tint={[0.66, 0.62, 0.84]} seed={4} />
-          <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
+          <Field f={F} pitch={11} lambda={180} amp={3} speed={1.4} width={1.35} color="#9c94c8" opacity={0.95} />
           <Globe cx={G.cx} cy={G.cy} r={G.R} lon={lon} lat={18} draw={expoOut(ramp(F, 236, 270))} land="#c3bce4" graticule={0.45} />
           <Flights F={F} cx={G.cx} cy={G.cy} R={G.R} lon={lon} />
           <World aa>
@@ -556,9 +557,9 @@ const ROCKS = Array.from({ length: 11 }, (_, i) => {
   const big = Math.abs(x) > 1.6 ? 1 : 0.55; // keep the middle low so the shell reads
   return { g: blob(1.2 + r(2) * 1.4 * big, (0.5 + r(3) * 0.9) * big, 0.9 + r(4) * 0.8, 0.16, i), pos: [x, -0.1, -0.6 - r(5) * 2.4 + (i % 2) * 1.2] as P3, rot: r(6) * 3 };
 });
-const KELP = Array.from({ length: 9 }, (_, i) => {
+const KELP = Array.from({ length: 16 }, (_, i) => {
   const r = (k: number) => rnd(i * 7 + k, 91);
-  const x = (i % 2 ? 1 : -1) * (2.0 + r(1) * 3.6), z = -2.6 + r(2) * 2.4, h = 2.4 + r(3) * 2.6;
+  const x = (i % 2 ? 1 : -1) * (1.7 + r(1) * 4.4), z = -3.4 + r(2) * 3.2, h = 3.0 + r(3) * 3.4;
   // a frond: a long ribbon leaf with a wavy margin, curling back at the tip
   return { g: leafGeo(h, 0.32 + r(5) * 0.2, 0.08, 0.07, 0.12, 40), pos: [x, -0.2, z] as P3, ph: r(4) * 6, yaw: r(6) * 3 };
 });
@@ -637,7 +638,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
         <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: "50% 74%" }}>
           <Paper color="#dfe4e0" grain={0.35} />
           <Mottle tint={[0.66, 0.72, 0.7]} seed={6} />
-          <Field f={F} pitch={12} lambda={160} amp={4} speed={2} width={1.1} color="#c3cbc8" opacity={0.9} />
+          <Field f={F} pitch={11} lambda={160} amp={4} speed={2} width={1.35} color="#a3adaa" opacity={0.95} />
           {/* the value sits under the 3D layer: two fish swim across in front of it (the reference's fish cross its words) */}
           <AbsoluteFill style={{ opacity: 1 - ramp(F, T.whip - 14, T.whip - 4) }}>
             <Pearl F={F} />

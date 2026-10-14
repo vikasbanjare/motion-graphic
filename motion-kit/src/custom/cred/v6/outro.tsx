@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Holo } from "./kit.tsx";
+import { Field } from "../../../ensemble/paint2d.tsx";
 import { T } from "../v5/looks.ts";
 import { fit, useCopy, type FilmCopy } from "./copy.tsx";
 
@@ -187,6 +188,30 @@ const Words: React.FC<{ text: string; F: number; at: number; align: "left" | "ri
   </div>
 );
 
+/** A faint guilloche rosette centred behind the phone: banknote line work on the white set. */
+const Rosette: React.FC = () => {
+  const d = useMemo(
+    () =>
+      Array.from({ length: 64 }, (_, k) => {
+        const pts: string[] = [];
+        for (let i = 0; i <= 360; i++) {
+          const a = (i / 360) * Math.PI * 2;
+          const r = 380 + 110 * Math.sin(a * 8 + (k / 64) * Math.PI * 2) + 50 * Math.sin(a * 21 - (k / 64) * Math.PI * 4);
+          pts.push(`${(960 + Math.cos(a) * r).toFixed(1)},${(540 + Math.sin(a) * r).toFixed(1)}`);
+        }
+        return "M" + pts.join("L") + "Z";
+      }),
+    [],
+  );
+  return (
+    <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
+      {d.map((p, i) => (
+        <path key={i} d={p} fill="none" stroke="#b9b9be" strokeWidth={0.9} opacity={i % 8 ? 0.45 : 0.8} />
+      ))}
+    </svg>
+  );
+};
+
 export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const copy = useCopy();
@@ -213,7 +238,9 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const z = (1 + 0.08 * ramp(F, 590, 640)) * (1 + 9 * push * push);
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 50% 45%, #ffffff, #ececea 70%, #e2e2df)" }}>
-      <AbsoluteFill style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.045) 1px, transparent 1px)", backgroundSize: "120px 120px", backgroundPosition: "center" }} />
+      {/* the white set is engraved too: a fine line field and a faint rosette behind the phone (no flat white) */}
+      <Field f={F} pitch={13} lambda={170} amp={4} speed={1.5} width={1.2} color="#cfcfd2" opacity={0.95} />
+      <Rosette />
       <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${W / 2}px ${phoneY + PH / 2}px` }}>
         {F >= 584 ? (
           <>
