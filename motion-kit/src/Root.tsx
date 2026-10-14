@@ -6,6 +6,7 @@ import { videoSchema, type VideoSpec } from "./engine/schema.ts";
 import { EXAMPLES } from "./examples.ts";
 import { SARVAM_VISION_FRAMES, SarvamVision } from "./custom/sarvam/SarvamVision.tsx";
 import { SARVAM_V4_FRAMES, SarvamVisionV4 } from "./custom/sarvam/SarvamVisionV4.tsx";
+import { MSTOCK_FRAMES, MStockUS } from "./custom/mstock/MStockUS.tsx";
 import { CRED_TEST_FRAMES, CredCardTest } from "./custom/cred/CredCardTest.tsx";
 import { CRED_V2_FRAMES, CredCardV2 } from "./custom/cred/CredCardV2.tsx";
 import { CRED_V2D_FRAMES, CredCardV2D } from "./custom/cred/CredCardV2D.tsx";
@@ -66,6 +67,7 @@ export const RemotionRoot: React.FC = () => (
     <Folder name="Custom">
       <Composition id="SarvamVision" component={SarvamVision} durationInFrames={SARVAM_VISION_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="SarvamVisionV4" component={SarvamVisionV4} durationInFrames={SARVAM_V4_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="MStockUS" component={MStockUS} defaultProps={{ score: undefined as string | undefined }} durationInFrames={MSTOCK_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="CredCardTest" component={CredCardTest} durationInFrames={CRED_TEST_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="CredCardV2" component={CredCardV2} durationInFrames={CRED_V2_FRAMES} fps={24} width={1920} height={1080} />
       <Composition id="CredCardV2D" component={CredCardV2D} durationInFrames={CRED_V2D_FRAMES} fps={24} width={1920} height={1080} />
