@@ -206,7 +206,7 @@ const Rosette: React.FC = () => {
   return (
     <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
       {d.map((p, i) => (
-        <path key={i} d={p} fill="none" stroke="#b9b9be" strokeWidth={0.9} opacity={i % 8 ? 0.45 : 0.8} />
+        <path key={i} d={p} fill="none" stroke="#a6a6ac" strokeWidth={1.1} opacity={i % 8 ? 0.6 : 0.95} />
       ))}
     </svg>
   );
@@ -239,7 +239,7 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 50% 45%, #ffffff, #ececea 70%, #e2e2df)" }}>
       {/* the white set is engraved too: a fine line field and a faint rosette behind the phone (no flat white) */}
-      <Field f={F} pitch={13} lambda={170} amp={4} speed={1.5} width={1.2} color="#cfcfd2" opacity={0.95} />
+      <Field f={F} pitch={12} lambda={170} amp={4} speed={1.5} width={1.3} color="#c0c0c5" opacity={0.95} />
       <Rosette />
       <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${W / 2}px ${phoneY + PH / 2}px` }}>
         {F >= 584 ? (

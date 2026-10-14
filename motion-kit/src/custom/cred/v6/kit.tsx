@@ -17,7 +17,7 @@ export const PAL = {
 /** Engraving defaults for v6: near-horizontal wavy screen like the reference's intaglio, fine pitch. */
 export const ENGRAVE = { periodFrac: 0.0052, angleDeg: 12, wobble: 0.55, toneGamma: 1.15, hatch: 0.5, hatchT: 0.38, stipple: 0.4, follow: 0.3, detail: 0.2, edge: 0.9 };
 /** v6.5: the reference's plates hold a fine, even line at every distance, over a pale tint of the ink (not white). */
-export const ENGRAVE_FINE = { periodFrac: 0.0043, angleDeg: 14, wobble: 0.3, toneGamma: 1.1, hatch: 0.55, hatchT: 0.36, stipple: 0.2, follow: 0.22, detail: 0.12, edge: 0.9, wash: 0.32 };
+export const ENGRAVE_FINE = { periodFrac: 0.0043, angleDeg: 14, wobble: 0.3, toneGamma: 1.1, hatch: 0.55, hatchT: 0.36, stipple: 0.2, follow: 0.22, detail: 0.12, edge: 0.9, wash: 0.2 };
 
 export const M = "custom/cred-v6/models/";
 

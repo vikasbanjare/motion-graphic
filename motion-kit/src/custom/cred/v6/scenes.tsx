@@ -84,7 +84,7 @@ const Strip: React.FC<{ w: number; h: number; phase: number; F: number; font: nu
 /** The card's print: the rewards world, greened like a note, with the official logo. */
 const Print: React.FC<{ F: number }> = ({ F }) => (
   <AbsoluteFill>
-    <RewardsWorld F={F} framing={2} fine={0.4} />
+    <RewardsWorld F={F} framing={2} fine={0.55} />
     <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 }} />
   </AbsoluteFill>
 );
@@ -111,7 +111,7 @@ const FOCUS = { x: 1520, y: 570 };
 const cardPose = (F: number) => {
   const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
   const t = (F - T.reveal) / 24;
-  const s0 = 1 - 0.36 * k + 0.035 * t; // the card fills the loupe, as the reference's note does
+  const s0 = 1 - 0.24 * k + 0.035 * t; // the card fills the loupe, as the reference's note does
   const rx0 = 38 * k + 4 * Math.sin(t * 1.3) * k;
   const rz0 = -9 * k + 3 * t * k;
   const ty0 = -30 * k + 8 * Math.sin(t * 0.9) * k;
@@ -135,7 +135,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
   const head = expoOut(ramp(F, T.reveal + 18, T.reveal + 32)) * (1 - ramp(F, T.macro - 16, T.macro - 4));
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
-      <Field f={F} pitch={12} lambda={150} amp={4} speed={1.6} width={1.4} color="#1f3329" opacity={1} />
+      <Field f={F} pitch={12} lambda={150} amp={4} speed={1.6} width={1.5} color="#2d4d3d" opacity={1} />
       <AbsoluteFill style={{ perspective: 1800 }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "0 0", transform: `translate(${W / 2}px, ${H / 2 + p.ty}px) scale(${p.s}) rotateX(${p.rx}deg) rotateZ(${p.rz}deg) translate(${-p.fx}px, ${-p.fy}px)` }}>
           <CardFace F={F} holo={(F - T.reveal) / 70} copy={1 - ramp(F, OPEN - 2, OPEN + 6)} />
