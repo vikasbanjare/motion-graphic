@@ -620,8 +620,8 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const dive = ramp(F, T.whip - 14, T.studio);
   const z = 1 + 9 * dive ** 2.4;
   const cam = cut === 0
-    ? { pos: [-0.3 + (F - T.card) * 0.014, 2.0, 6.8 - (F - T.card) * 0.016] as [number, number, number], target: [0, 1.4, 0] as [number, number, number], fov: 36 }
-    : { pos: [0.4 + (F - 520) * 0.012, 2.2, 5.6 - (F - 520) * 0.01] as [number, number, number], target: [0, 1.8, 0] as [number, number, number], fov: 30 };
+    ? { pos: [-0.3 + (F - T.card) * 0.01, 2.0, 7.4 - (F - T.card) * 0.016] as [number, number, number], target: [-0.05 + (F - T.card) * 0.006, 1.4, 0] as [number, number, number], fov: 36 }
+    : { pos: [0.3 + (F - 520) * 0.01, 2.3, 6.6 - (F - 520) * 0.012] as [number, number, number], target: [0, 1.3, 0] as [number, number, number], fov: 30 };
   const fish = useMemo(
     () => [
       ...Array.from({ length: 7 }, (_, i) => ({ x0: -7.5 + ((i * 2.3) % 5), v: 0.55 + 0.12 * ((i * 7) % 3), y: 0.35 + ((i * 5) % 3) * 0.28, z: -2.2 - (i % 3) * 0.9, ph: i * 1.7, s: 1.0 + 0.2 * (i % 2) })),
@@ -658,7 +658,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
                 })}
                 <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.6} pos={[-3.4, -0.6, 0.6]} rot={[0, 0.4, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.slate, follow: 0, wobble: 0.7, seed: 98 }} />
                 <Seabed t={t} />
-                <Rig url={M + "IridescenceAbalone.glb"} size={3.1} pos={[0.2, 0, 0.3]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
+                <Rig url={M + "IridescenceAbalone.glb"} size={2.5} pos={[-0.05, -0.1, 0.3]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
               </Detail.Provider>
             </RefDepth.Provider>
           </World>
