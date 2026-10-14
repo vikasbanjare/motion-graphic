@@ -33,3 +33,21 @@ frame difference at 240x135) and scene cuts detected the same way on both. No re
 
 The opening needs the reference's time to read like it, so v6.5 is 96 frames (4 s) longer: 816 frames, 34 s. The
 rest of the cut is unchanged and shifted; the score's cue sheet is retimed (`public/custom/cred-v6/cues.json`).
+
+## The improvement loop (v6.5 rounds)
+
+Each round: measure (`tools/ref_compare.py`, look metrics against the reference), compare real frames side by side,
+fix the largest gap, commit.
+
+| Round | Gap found against the reference | Change |
+| --- | --- | --- |
+| 1 | The opening barely moved (median motion 3.9 vs 12.8): the reference's line field flows and its illustration layer always drifts | Faster line flow, steady camera drift and push, more sway |
+| 1 | The card's loupe close-up magnified one blossom into blobs | The print gets its own framing (flowers under the strip, the fox along the bottom) and finer line work |
+| 1 | Travel: a box hotel, a lamp post through the headline | Lantern hero with a sweeping beam of light (the reference's lighthouse device on our subject), receding lanterns |
+| 1 | Shell: mostly empty grey | Seabed rocks and kelp fronds fill the frame |
+| 2 | Lines went coarse and zebra-like in close-ups; pure ink on white | Finer pitch held per framing, a pale tint under the lines (`ENGRAVE_FINE`) |
+| 2 | Low-poly fox facets | Smooth normals on skinned meshes |
+| 2 | The bough read as a smooth blade | Ridged bark, burls, a second limb crossing in an X |
+| 2 | The pixel-mosaic dissolve and mottled grounds were missing | Mosaic into the shell world in our palette; mottled paper |
+| 2 | Lanterns floated; an endless floor looked like a game | Cut-out rock islands, as the reference stands its lighthouse on a rock |
+| 3 | Products was a casual three-quarter view | A frontal temple: framing columns, guilloche rosette wall, holographic glass panels over plinths |
