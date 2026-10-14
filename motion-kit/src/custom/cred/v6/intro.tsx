@@ -42,10 +42,10 @@ const PaperFibre: React.FC<{ color: string; vignette: number }> = ({ color, vign
         <feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.49  0 0 0 0 0.45  0 0 0 -2.2 1.05" />
       </filter>
       <rect width="100%" height="100%" filter="url(#fib-grain)" />
-      <rect width="100%" height="100%" filter="url(#fib-fibre)" opacity={0.55} />
+      <rect width="100%" height="100%" filter="url(#fib-fibre)" opacity={0.16} />
       <radialGradient id="fib-vig" cx="50%" cy="48%" r="72%">
         <stop offset="45%" stopColor="#000" stopOpacity={0} />
-        <stop offset="100%" stopColor="#2c2c2a" stopOpacity={vignette} />
+        <stop offset="100%" stopColor="#3a3830" stopOpacity={vignette} />
       </radialGradient>
       <rect width="100%" height="100%" fill="url(#fib-vig)" />
     </svg>
@@ -108,7 +108,7 @@ export const Ground: React.FC<{ G: number }> = ({ G }) => {
   return (
     <LookCtx.Provider value={look("#ebebe7", "#3a3a3e")}>
       <AbsoluteFill>
-        <PaperFibre color="#ecece8" vignette={0.55 - 0.4 * ramp(G, 60, 110)} />
+        <PaperFibre color="#ecece8" vignette={0.28 - 0.18 * ramp(G, 60, 110)} />
         {G < FIELD_AT ? <Pen G={G} /> : null}
         {G >= FIELD_AT ? (
           <Field f={G} pitch={21} lambda={112} amp={6} speed={2.2} width={1.7} color="#7f817b" angle={-2} reveal={0.3 + 0.36 * expoOut(ramp(G, FIELD_AT, FIELD_AT + 40))} ragged={170} noiseAmp={0.3} clip={G >= 84 ? ring : undefined} />
@@ -124,6 +124,13 @@ export const Ground: React.FC<{ G: number }> = ({ G }) => {
             <AbsoluteFill style={{ background: "linear-gradient(115deg, #e9ecc4 0%, #dbe6b2 38%, #c4d99a 72%, #b3cf8c 100%)" }} />
             <Field f={G} pitch={14} lambda={160} amp={3} speed={1.2} width={1.1} color="#a7b884" opacity={0.55} />
             <AbsoluteFill style={{ background: "radial-gradient(ellipse 60% 70% at 70% 30%, rgba(255,250,215,0.55), rgba(255,250,215,0) 70%)" }} />
+            <svg width={W} height={H} style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", opacity: 0.5 }}>
+              <filter id="wash-mottle" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves={4} seed={3} />
+                <feColorMatrix values="0 0 0 0 0.62  0 0 0 0 0.68  0 0 0 0 0.46  0 0 0 -1.6 1.1" />
+              </filter>
+              <rect width="100%" height="100%" filter="url(#wash-mottle)" />
+            </svg>
           </AbsoluteFill>
         ) : null}
       </AbsoluteFill>
@@ -175,16 +182,32 @@ const leafGeo = (len: number, w: number, fold = 0.3, wave = 0.03, curl = 0.2, se
   return g;
 };
 
+/** A rounded petal along +y: a narrow claw at the base opening to a broad, ruffled, cupped blade. */
+const petalGeo = (len: number, w: number, cup = 0.12, ruffle = 0.012) => {
+  const g = new THREE.PlaneGeometry(w, len, 14, 16);
+  const p = g.getAttribute("position") as THREE.BufferAttribute;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), y = p.getY(i) + len / 2;
+    const t = y / len;
+    const half = (w / 2) * Math.sqrt(Math.max(0, 1 - ((t - 0.56) / 0.56) ** 2)) * Math.min(1, 0.35 + t * 2.2);
+    const u = x / (w / 2);
+    const edge = Math.abs(u) ** 2 * t;
+    p.setXYZ(i, u * half, y, cup * (u * half) ** 2 / Math.max(0.01, w) * 4 + ruffle * Math.sin(u * 7 + t * 9) * edge + 0.08 * t * t * len);
+  }
+  g.computeVertexNormals();
+  return g;
+};
+
 /** One five-petal blossom facing +z, centre at the origin; the eye is returned separately (a darker ink). */
 const blossom = (s: number) => {
   const petals: THREE.BufferGeometry[] = [];
   for (let k = 0; k < 5; k++) {
-    const p = leafGeo(0.17 * s, 0.17 * s, 0.06, 0.05, -0.12, 10);
-    p.rotateX(0.42);
+    const p = petalGeo(0.24 * s, 0.24 * s);
+    p.rotateX(0.32);
     p.rotateZ((k / 5) * Math.PI * 2);
     petals.push(p);
   }
-  const eye = new THREE.SphereGeometry(0.032 * s, 10, 8);
+  const eye = new THREE.SphereGeometry(0.04 * s, 12, 10);
   eye.translate(0, 0, 0.03 * s);
   return { petals: mergeGeometries(petals)!, eye };
 };
@@ -198,9 +221,11 @@ const cluster = (n: number, spread: number, seed: number, leaves: number) => {
     const s = 0.85 + 0.4 * r(1);
     const b = blossom(s);
     // face the camera (+z) with a scatter of tilts, so the cluster reads as a ball of flowers, not a decal
-    e.set((r(2) - 0.5) * 1.3, (r(3) - 0.5) * 1.3, r(4) * Math.PI * 2);
+    e.set((r(2) - 0.5) * 0.7, (r(3) - 0.5) * 0.7, r(4) * Math.PI * 2);
     q.setFromEuler(e);
-    m.compose(new THREE.Vector3((r(5) - 0.5) * spread * 2, (r(6) - 0.5) * spread * 1.4, (r(7) - 0.5) * spread), q, new THREE.Vector3(1, 1, 1));
+    // a loose spiral, so blossoms overlap at their edges but each one keeps its face
+    const a = i * 2.4, rr = spread * Math.sqrt((i + 0.5) / n);
+    m.compose(new THREE.Vector3(Math.cos(a) * rr * 1.3, Math.sin(a) * rr, (r(7) - 0.5) * spread * 0.6 + 0.02 * i), q, new THREE.Vector3(1, 1, 1));
     b.petals.applyMatrix4(m);
     b.eye.applyMatrix4(m);
     pet.push(b.petals);
@@ -224,7 +249,7 @@ const barkTex = (() => {
   c.width = 2048;
   c.height = 256;
   const x = c.getContext("2d")!;
-  x.fillStyle = "#d9dcc0";
+  x.fillStyle = "#c9cfa6";
   x.fillRect(0, 0, 2048, 256);
   for (let i = 0; i < 140; i++) {
     const y = rnd(i, 3) * 256, x0 = rnd(i, 4) * 2048, len = 120 + rnd(i, 5) * 600;
@@ -239,41 +264,54 @@ const barkTex = (() => {
     }
     x.stroke();
   }
-  for (let i = 0; i < 46; i++) {
-    x.fillStyle = i % 2 ? "#f2f3e2" : "#4c5a26";
-    x.globalAlpha = i % 2 ? 0.75 : 0.35;
-    x.beginPath();
-    x.ellipse(rnd(i, 8) * 2048, rnd(i, 9) * 256, 20 + rnd(i, 10) * 70, 8 + rnd(i, 11) * 26, rnd(i, 12) * 0.5, 0, Math.PI * 2);
-    x.fill();
+  for (let i = 0; i < 90; i++) {
+    // big blotches: dark moss and pale lichen, each a cluster of overlapping ellipses so the edges are ragged
+    const dark = i % 3 !== 0;
+    x.fillStyle = dark ? "#3d4c18" : "#f4f5e4";
+    const cx = rnd(i, 8) * 2048, cy = rnd(i, 9) * 256, R = 30 + rnd(i, 10) * 110;
+    for (let k = 0; k < 7; k++) {
+      x.globalAlpha = dark ? 0.32 : 0.6;
+      x.beginPath();
+      x.ellipse(cx + (rnd(i * 7 + k, 13) - 0.5) * R * 1.6, cy + (rnd(i * 7 + k, 14) - 0.5) * R * 0.5, R * (0.3 + 0.5 * rnd(i * 7 + k, 15)), R * (0.12 + 0.2 * rnd(i * 7 + k, 16)), 0, 0, Math.PI * 2);
+      x.fill();
+    }
   }
   x.globalAlpha = 1;
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.NoColorSpace;
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.repeat.set(3, 1);
+  t.repeat.set(2, 1);
   return t;
 })();
 
 /** The bough, entering bottom right and rising gently to the left; s runs right to left (arc length 0..1). */
-const BOUGH_R0 = 0.5, BOUGH_R1 = 0.2;
+const BOUGH_R0 = 0.8, BOUGH_R1 = 0.3;
 const BOUGH = tube([[5.4, -2.2, 1.3], [3.4, -0.85, 0.7], [1.6, -0.1, 0.25], [-0.4, 0.22, 0.0], [-2.4, 0.3, -0.3], [-4.9, 0.6, -0.9]], BOUGH_R0, BOUGH_R1, 220, 24, 0.18);
 const TWIGS: { path: P3[]; r: [number, number]; at: number }[] = [
   { path: [[0.9, 0.05, 0.1], [1.4, 0.8, -0.05], [2.0, 1.6, 0.05], [2.6, 2.45, 0.2]], r: [0.1, 0.03], at: 14 },
   { path: [[-1.5, 0.3, -0.1], [-1.95, 1.05, -0.3], [-2.6, 1.65, -0.4], [-3.15, 2.05, -0.3]], r: [0.09, 0.028], at: 18 },
   { path: [[2.5, -0.5, 0.55], [2.15, -0.95, 1.0], [1.65, -1.2, 1.45]], r: [0.08, 0.028], at: 22 },
-  { path: [[-0.2, 0.3, -0.15], [-0.45, 0.9, -0.45], [-0.35, 1.45, -0.65]], r: [0.06, 0.022], at: 24 },
+  { path: [[-0.2, 0.3, -0.15], [-0.6, 0.75, -0.45], [-1.0, 1.15, -0.65]], r: [0.06, 0.022], at: 24 },
 ];
-const TWIG_G = TWIGS.map((t) => tube(t.path, t.r[0], t.r[1], 60, 10).g);
+const kink = (path: P3[], seed: number): P3[] =>
+  path.flatMap((p, i) => {
+    if (i === path.length - 1) return [p];
+    const q = path[i + 1];
+    const m: P3 = [(p[0] + q[0]) / 2 + (rnd(i, seed) - 0.5) * 0.22, (p[1] + q[1]) / 2 + (rnd(i, seed + 1) - 0.5) * 0.16, (p[2] + q[2]) / 2];
+    return [p, m];
+  });
+const TWIG_G = TWIGS.map((t, i) => tube(kink(t.path, 70 + i), t.r[0] * 0.38, t.r[1] * 0.5, 80, 10).g);
 /** Flower clusters: position, blossom count, spread, pop-in frame (u), leaves. */
 const CLUSTERS: { at: P3; n: number; spread: number; u: number; leaves: number }[] = [
-  { at: [2.6, 2.45, 0.2], n: 11, spread: 0.42, u: 20, leaves: 6 },
-  { at: [2.05, 1.65, 0.05], n: 6, spread: 0.3, u: 24, leaves: 4 },
-  { at: [-3.15, 2.05, -0.3], n: 10, spread: 0.4, u: 24, leaves: 6 },
-  { at: [-2.5, 1.6, -0.4], n: 5, spread: 0.26, u: 28, leaves: 3 },
-  { at: [1.65, -1.2, 1.45], n: 9, spread: 0.36, u: 26, leaves: 6 },
-  { at: [-0.35, 1.45, -0.65], n: 7, spread: 0.3, u: 30, leaves: 4 },
-  { at: [-1.1, 0.55, 0.15], n: 5, spread: 0.24, u: 32, leaves: 5 },
-  { at: [3.3, -0.55, 0.95], n: 6, spread: 0.3, u: 18, leaves: 5 },
+  { at: [2.6, 2.45, 0.2], n: 16, spread: 0.5, u: 20, leaves: 5 },
+  { at: [2.05, 1.65, 0.05], n: 8, spread: 0.32, u: 24, leaves: 3 },
+  { at: [-3.15, 2.05, -0.3], n: 15, spread: 0.5, u: 24, leaves: 5 },
+  { at: [-2.5, 1.6, -0.4], n: 7, spread: 0.3, u: 28, leaves: 3 },
+  { at: [1.65, -1.2, 1.45], n: 14, spread: 0.45, u: 26, leaves: 5 },
+  { at: [-1.0, 1.15, -0.65], n: 7, spread: 0.3, u: 30, leaves: 3 },
+  { at: [-1.75, 0.85, 0.1], n: 10, spread: 0.36, u: 32, leaves: 4 },
+  { at: [3.4, -0.3, 1.2], n: 12, spread: 0.42, u: 18, leaves: 4 },
+  { at: [-2.9, 0.85, 0.0], n: 9, spread: 0.34, u: 34, leaves: 3 },
 ];
 const CLUSTER_G = CLUSTERS.map((c, i) => cluster(c.n, c.spread, 300 + i * 7, c.leaves));
 
@@ -314,7 +352,9 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
       })();
   const clip = u < STEP ? "Run" : u < 150 ? "Survey" : "Walk";
   const clipT = u < STEP ? t : u < 150 ? (u - STEP) / 24 : (u - 150) / 24;
-  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 0.85, follow: 0.75, angleDeg: 4 };
+  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1, follow: 0.12, angleDeg: 28, periodFrac: 0.0068, toneGamma: 1.35 };
+  // the reference's blossoms are pale lavender cut with violet line, not solid purple
+  const bloom = [["#3b2290", 0], ["#7f5fd6", 0.38], ["#c8b4f3", 0.74], ["#f1eafd", 1]] as typeof PAL.violet;
   return (
     <World aa>
       <Cam {...cam} />
@@ -330,7 +370,7 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
               return (
                 <group key={`t${i}`} position={[bx, by, bz]} rotation={[0, 0, sway]} scale={g}>
                   <group position={[-bx, -by, -bz]}>
-                    <EMesh g={TWIG_G[i]} m={{ ...green, seed: 40 + i } as never} />
+                    <EMesh g={TWIG_G[i]} m={{ palette: PAL.violet, seed: 40 + i, follow: 0.6 }} />
                   </group>
                 </group>
               );
@@ -342,8 +382,8 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
               return (
                 <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g}>
                   {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i, follow: 0.6, wobble: 0.6 }} double /> : null}
-                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: PAL.violet, seed: 80 + i, follow: 0.5, foil: i === 0 ? 0.25 : 0 }} double />
-                  <EMesh g={CLUSTER_G[i].eyes} m={{ palette: PAL.violet, seed: 90 + i, albedo: 0.25 }} />
+                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, follow: 0.15, angleDeg: 35, periodFrac: 0.0052, foil: i === 0 ? 0.2 : 0 }} double />
+                  <EMesh g={CLUSTER_G[i].eyes} m={{ palette: PAL.violet, seed: 90 + i, albedo: 0.2 }} />
                 </group>
               );
             })}
