@@ -72,3 +72,14 @@ export const Holo: React.FC<{ phase: number; style?: React.CSSProperties }> = ({
     }}
   />
 );
+
+/** Mottled paper: the reference's grounds carry a soft, cloudy tone under the line work (multiply, static). */
+export const Mottle: React.FC<{ tint: [number, number, number]; amount?: number; seed?: number }> = ({ tint, amount = 0.45, seed = 3 }) => (
+  <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", opacity: amount }}>
+    <filter id={`mottle${seed}`} x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.011 0.018" numOctaves={4} seed={seed} />
+      <feColorMatrix values={`0 0 0 0 ${tint[0]}  0 0 0 0 ${tint[1]}  0 0 0 0 ${tint[2]}  0 0 0 -1.6 1.1`} />
+    </filter>
+    <rect width="100%" height="100%" filter={`url(#mottle${seed})`} />
+  </svg>
+);

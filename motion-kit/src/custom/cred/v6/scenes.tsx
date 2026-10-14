@@ -9,7 +9,7 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { polyD, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE, Headline, Holo, Lens, M, PAL } from "./kit.tsx";
+import { ENGRAVE, Headline, Holo, Lens, M, Mottle, PAL } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
 import { RewardsWorld } from "./intro.tsx";
 import { blob, leafGeo, rnd, type P3 } from "./geo.ts";
@@ -297,6 +297,7 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
       <AbsoluteFill style={{ clipPath: b.o < 1 ? `inset(${b.top}px 0px ${H - b.bottom}px 0px)` : undefined }}>
         <AbsoluteFill style={{ transformOrigin: `${G.cx}px ${G.cy}px`, transform: `translate(${(W / 2 - G.cx) * d}px, ${(H / 2 - G.cy) * d}px) scale(${S})` }}>
           <Paper color="#d6d0ea" grain={0.35} />
+          <Mottle tint={[0.66, 0.62, 0.84]} seed={4} />
           <Field f={F} pitch={12} lambda={180} amp={3} speed={1} width={1.1} color="#b7b0d6" opacity={0.9} />
           <Globe cx={G.cx} cy={G.cy} r={G.R} lon={lon} lat={18} draw={expoOut(ramp(F, 236, 270))} land="#c3bce4" graticule={0.45} />
           <Flights F={F} cx={G.cx} cy={G.cy} R={G.R} lon={lon} />
@@ -426,6 +427,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
       <AbsoluteFill style={{ opacity: ramp(F, MATCH - 4, MATCH + 4), clipPath: `circle(${941 * (1 + 0.004 * Math.max(0, F - MATCH) / GLOBE_TO_FLOOR) + 1500 * Math.pow(ramp(F, MATCH + 2, MATCH + 20), 1.6)}px at 50% 50%)` }}>
         <Paper color="#f1d9c6" grain={0.35} />
+        <Mottle tint={[0.86, 0.66, 0.56]} seed={5} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
           <Cam pos={pos} target={target} fov={cut === 0 ? 38 : 32} />
@@ -459,6 +461,24 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
     </LookCtx.Provider>
   );
 };
+
+// ---- mosaic: the reference's pixel-block dissolve, in our palette ----------------------------------------------------
+const MC = 16, MR = 9, TW = W / MC, TH = H / MR;
+const TILE_AT = Array.from({ length: MC * MR }, (_, i) => 0.62 * rnd(i, 211) + 0.38 * ((i % MC) / (MC - 1)));
+/** Mask (data-URL SVG) showing the tiles whose time has come at progress p, and the tiles flashing in colour. */
+const mosaic = (p: number) => {
+  const rects = TILE_AT.map((at, i) => (p >= at ? `<rect x="${(i % MC) * TW}" y="${Math.floor(i / MC) * TH}" width="${TW + 0.5}" height="${TH + 0.5}"/>` : "")).join("");
+  const mask = `url("data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${rects}</svg>`)}")`;
+  const flash = TILE_AT.map((at, i) => ({ i, k: (p - at) / 0.14 })).filter((x) => x.k > 0 && x.k < 1);
+  return { mask, flash };
+};
+const Flash: React.FC<{ tiles: { i: number; k: number }[]; colors: string[] }> = ({ tiles, colors }) => (
+  <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
+    {tiles.map(({ i, k }) => (
+      <rect key={i} x={(i % MC) * TW} y={Math.floor(i / MC) * TH} width={TW + 0.5} height={TH + 0.5} fill={colors[i % colors.length]} opacity={0.8 * (1 - k)} />
+    ))}
+  </svg>
+);
 
 // ---- 5. the seabed: rocks and kelp that fill the frame, as the reference's deep is full to its edges ----------------
 const ROCKS = Array.from({ length: 11 }, (_, i) => {
@@ -524,7 +544,8 @@ const Pearl: React.FC<{ F: number }> = ({ F }) => {
 export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
-  const k = expoOut(ramp(F, T.card, T.card + 20));
+  const k = ramp(F, T.card, T.card + 20);
+  const mz = mosaic(k * 1.16);
   const cut = step(F, [520]);
   // the dive: the camera falls into the shell's iridescence, which becomes the card's foil stripe
   const dive = ramp(F, T.whip - 14, T.studio);
@@ -543,9 +564,10 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   );
   return (
     <LookCtx.Provider value={look("#dfe4e0", "#58636a")}>
-      <AbsoluteFill style={{ clipPath: `circle(${Math.max(1, 1600 * k)}px at 50% 60%)` }}>
+      <AbsoluteFill style={k < 1 ? { WebkitMaskImage: mz.mask, maskImage: mz.mask, WebkitMaskSize: "100% 100%", maskSize: "100% 100%" } : undefined}>
         <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: "50% 74%" }}>
           <Paper color="#dfe4e0" grain={0.35} />
+          <Mottle tint={[0.66, 0.72, 0.7]} seed={6} />
           <Field f={F} pitch={12} lambda={160} amp={4} speed={2} width={1.1} color="#c3cbc8" opacity={0.9} />
           {/* the value sits under the 3D layer: two fish swim across in front of it (the reference's fish cross its words) */}
           <AbsoluteFill style={{ opacity: 1 - ramp(F, T.whip - 14, T.whip - 4) }}>
@@ -577,6 +599,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
           <Holo phase={0.35 + 0.4 * Math.sin((F - T.card) / 14)} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
         </AbsoluteFill>
       </AbsoluteFill>
+      {k < 1 ? <Flash tiles={mz.flash} colors={["#c3cbc8", "#e3d7fb", "#9fb0b4", "#f0d9cb"]} /> : null}
     </LookCtx.Provider>
   );
 };
