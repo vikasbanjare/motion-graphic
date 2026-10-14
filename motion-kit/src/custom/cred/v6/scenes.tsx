@@ -9,7 +9,7 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { polyD, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE, Headline, Holo, Lens, M, Mottle, PAL } from "./kit.tsx";
+import { ENGRAVE_FINE, Headline, Holo, Lens, M, Mottle, PAL } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
 import { RewardsWorld } from "./intro.tsx";
 import { blob, leafGeo, rnd, type P3 } from "./geo.ts";
@@ -265,6 +265,14 @@ const Flights: React.FC<{ F: number; cx: number; cy: number; R: number; lon: num
 export const MATCH = 384;
 /** The lantern's lamp (world units) and a projection to screen px with a take's camera, so 2D light can sit on it. */
 const LAMP_AT: [number, number, number] = [-4.76, 2.84, -2.1]; // solved from the lamp's spot in a rendered frame
+/** Rock islands under the lanterns: the reference stands its heroes on cut-out ground, not an endless floor. */
+const MOUNDS: { at: [number, number, number]; s: [number, number, number]; seed: number }[] = [
+  { at: [-3.3, -0.75, -2.4], s: [3.6, 1.1, 2.6], seed: 51 },
+  { at: [-0.9, -0.6, -6.2], s: [2.4, 0.8, 1.8], seed: 52 },
+  { at: [1.1, -0.55, -10.5], s: [2.0, 0.7, 1.5], seed: 53 },
+];
+const MOUND_G = MOUNDS.map((m) => blob(m.s[0], m.s[1], m.s[2], 0.18, m.seed, 40));
+
 const toScreen = (p: [number, number, number], c: { pos: [number, number, number]; target: [number, number, number]; fov: number }): Pt => {
   const cam = new THREE.PerspectiveCamera(c.fov, W / H, 0.05, 800);
   cam.position.set(...c.pos);
@@ -303,14 +311,16 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
           <Flights F={F} cx={G.cx} cy={G.cy} R={G.R} lon={lon} />
           <World aa>
             <Cam {...cam} />
-            <RefDepth.Provider value={8}>
-              <Detail.Provider value={ENGRAVE}>
+            <RefDepth.Provider value={7}>
+              <Detail.Provider value={ENGRAVE_FINE}>
+                {MOUNDS.map((m, i) => (
+                  <EMesh key={`m${i}`} g={MOUND_G[i]} m={{ palette: PAL.indigo, seed: m.seed, follow: 0.25, angleDeg: 24, albedoNoise: 0.3, noiseScale: 6, atmos: 0.18 * i }} pos={m.at} />
+                ))}
                 <Rig url={M + "Lantern.glb"} size={4.2} pos={[-3.3, -0.3, -2.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
                 {/* a street of lanterns receding behind the hero: the way being lit */}
                 <Rig url={M + "Lantern.glb"} size={3.2} pos={[-0.9, -0.3, -6.2]} rot={[0, -2.2, 0]} m={{ palette: PAL.indigo, atmos: 0.35, seed: 42 }} />
                 <Rig url={M + "Lantern.glb"} size={2.8} pos={[1.1, -0.3, -10.5]} rot={[0, -2.0, 0]} m={{ palette: PAL.indigo, atmos: 0.55, seed: 43 }} />
-                <Rig url={M + "ToyCar.glb"} size={1.3} pos={[-7 + Math.min(F - T.swap, 70) * 0.075, 0, -1.0]} rot={[0, Math.PI / 2, 0]} keep={(n) => n !== "Glass"} m={{ palette: PAL.lilac, seed: 41 }} />
-                <Rig url={M + "Fox.glb"} size={1.8} pos={[2.4 - (F - T.swap) * 0.07, 0, -0.4]} rot={[0, -Math.PI / 2 + 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} />
+                {F >= T.swap ? <Rig url={M + "Fox.glb"} smooth size={1.5} pos={[-1.3 - (F - T.swap) * 0.06, -0.2, -2.0]} rot={[0, -Math.PI / 2 + 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} /> : null}
               </Detail.Provider>
             </RefDepth.Provider>
           </World>
@@ -431,8 +441,8 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
         <World aa>
           <Cam pos={pos} target={target} fov={cut === 0 ? 38 : 32} />
-          <RefDepth.Provider value={8}>
-            <Detail.Provider value={ENGRAVE}>
+          <RefDepth.Provider value={7}>
+            <Detail.Provider value={{ ...ENGRAVE_FINE, wash: 0.12, toneGamma: 1.3 }}>
               <EMesh g={floorG} m={{ palette: PAL.cream, seed: 59, map: floorTex, mapAmt: 0.85, angleDeg: 4 } as never} rot={[-Math.PI / 2, 0, 0]} />
               {cols.map((a, i) => (
                 <Column key={i} pos={[Math.cos(a) * RING_R, 0, Math.sin(a) * RING_R]} seed={60 + i} />
@@ -576,7 +586,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
           <World aa>
             <Cam {...cam} />
             <RefDepth.Provider value={7}>
-              <Detail.Provider value={ENGRAVE}>
+              <Detail.Provider value={ENGRAVE_FINE}>
                 {fish.map((p, i) => {
                   // each fish swims its own gentle curve, faces where it is going, and sways its body
                   const tt = (F - T.card) / 24 + p.ph;
