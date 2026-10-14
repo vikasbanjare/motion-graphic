@@ -21,7 +21,10 @@ export const tube = (path: P3[], r0: number, r1: number, segments = 160, radial 
       const v = new THREE.Vector3(pos.getX(k), pos.getY(k), pos.getZ(k)).sub(c);
       // bark is never round: a slight ridged cross-section
       const a = (j / radial) * Math.PI * 2;
-      v.normalize().multiplyScalar(r * (1 + 0.05 * Math.sin(a * 5 + t * 14)));
+      // ridged, lumpy bark (knots > 0): long ridges around the girth, swellings along the length
+      const ridge = knots > 0 ? 0.07 * Math.sin(a * 9 + t * 22 + Math.sin(t * 31) * 2) + 0.04 * Math.sin(a * 3 - t * 17) : 0.05 * Math.sin(a * 5 + t * 14);
+      const swell = knots > 0 ? 0.1 * Math.sin(t * 13.7 + 1.3) * Math.sin(t * 5.1) : 0;
+      v.normalize().multiplyScalar(r * (1 + ridge + swell));
       pos.setXYZ(k, c.x + v.x, c.y + v.y, c.z + v.z);
     }
   }

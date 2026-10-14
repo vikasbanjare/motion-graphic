@@ -9,9 +9,9 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { circle, trim, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE, Headline, M, PAL } from "./kit.tsx";
+import { ENGRAVE_FINE, Headline, M, PAL } from "./kit.tsx";
 import { fit, useCopy } from "./copy.tsx";
-import { leafGeo, rnd, tube, type P3 } from "./geo.ts";
+import { blob, leafGeo, rnd, tube, type P3 } from "./geo.ts";
 
 /**
  * v6.5 opening, rebuilt shot for shot against the reference's first 8 seconds (docs/research/cred-v65-reference-compare.md):
@@ -245,6 +245,15 @@ const barkTex = (() => {
 /** The bough, entering bottom right and rising gently to the left; s runs right to left (arc length 0..1). */
 const BOUGH_R0 = 0.8, BOUGH_R1 = 0.3;
 const BOUGH = tube([[5.4, -2.2, 1.3], [3.4, -0.85, 0.7], [1.6, -0.1, 0.25], [-0.4, 0.22, 0.0], [-2.4, 0.3, -0.3], [-4.9, 0.6, -0.9]], BOUGH_R0, BOUGH_R1, 220, 24, 0.18);
+/** A second limb crossing behind the first, from the top right (the reference's boughs cross in an X). */
+const LIMB = tube([[5.6, 3.9, -1.6], [3.6, 2.5, -1.1], [1.8, 1.25, -0.7], [0.3, 0.45, -0.35]], 0.42, 0.3, 160, 22, 0.2);
+/** Burls: knots swelling out of the bark. */
+const BURLS: { at: P3; s: number }[] = [
+  { at: [2.3, -0.42, 0.62], s: 0.32 },
+  { at: [-1.2, 0.36, 0.25], s: 0.24 },
+  { at: [3.0, 2.08, -0.72], s: 0.22 },
+];
+const BURL_G = blob(1, 0.8, 1, 0.22, 4, 28);
 const TWIGS: { path: P3[]; r: [number, number]; at: number }[] = [
   { path: [[0.9, 0.05, 0.1], [1.4, 0.8, -0.05], [2.0, 1.6, 0.05], [2.6, 2.45, 0.2]], r: [0.1, 0.03], at: 14 },
   { path: [[-1.5, 0.3, -0.1], [-1.95, 1.05, -0.3], [-2.6, 1.65, -0.4], [-3.15, 2.05, -0.3]], r: [0.09, 0.028], at: 18 },
@@ -314,16 +323,23 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
       })();
   const clip = u < STEP ? "Run" : u < 150 ? "Survey" : "Walk";
   const clipT = u < STEP ? t : u < 150 ? (u - STEP) / 24 : (u - 150) / 24;
-  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1, follow: 0.12, angleDeg: 28, periodFrac: 0.0068, toneGamma: 1.35 };
+  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1, follow: 0.1, angleDeg: 28, periodFrac: 0.0052, toneGamma: 1.3, wash: 0.25 };
   // the reference's blossoms are pale lavender cut with violet line, not solid purple
   const bloom = [["#3b2290", 0], ["#7f5fd6", 0.38], ["#c8b4f3", 0.74], ["#f1eafd", 1]] as typeof PAL.violet;
   return (
     <World aa>
       <Cam {...cam} />
-      <RefDepth.Provider value={6}>
-        <Detail.Provider value={{ ...ENGRAVE, periodScale: fine }}>
+      {/* depth scale per framing: the close shot keeps the wide shot's line pitch instead of magnifying it */}
+      <RefDepth.Provider value={cut === 0 ? 6.4 : cut === 1 ? 3.7 : 5.4}>
+        <Detail.Provider value={{ ...ENGRAVE_FINE, periodScale: fine }}>
           <group position={[3.8 * (1 - sweep), -2.6 * (1 - sweep), 0.4 * (1 - sweep)]} rotation={[0, 0, -0.12 * (1 - sweep)]}>
             <EMesh g={BOUGH.g} m={green as never} />
+            <group position={[1.2 * (1 - pop(u, 4, 26)), 1.6 * (1 - pop(u, 4, 26)), 0]}>
+              <EMesh g={LIMB.g} m={{ ...green, seed: 36, atmos: 0.12 } as never} />
+            </group>
+            {BURLS.map((b, i) => (
+              <EMesh key={`k${i}`} g={BURL_G} m={{ ...green, seed: 37 + i } as never} pos={b.at} scale={b.s} />
+            ))}
             {TWIGS.map((tw, i) => {
               const g = pop(u, tw.at, 18);
               if (g <= 0) return null;
@@ -344,7 +360,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
               return (
                 <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g}>
                   {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i, follow: 0.6, wobble: 0.6 }} double /> : null}
-                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, follow: 0.15, angleDeg: 35, periodFrac: 0.0052, foil: i === 0 ? 0.2 : 0 }} double />
+                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, follow: 0.12, angleDeg: 35, periodFrac: 0.0042, wash: 0.4, foil: i === 0 ? 0.2 : 0 }} double />
                   <EMesh g={CLUSTER_G[i].eyes} m={{ palette: PAL.violet, seed: 90 + i, albedo: 0.2 }} />
                 </group>
               );
@@ -353,7 +369,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
           {u >= 20 ? (
             <group position={fox.p} rotation={[0, fox.yaw, 0]}>
               <group rotation={[fox.pitch, 0, 0]}>
-                <Rig url={M + "Fox.glb"} size={FOX} clip={clip} time={clipT} m={{ palette: PAL.violet, foil: 0.35 }} foilPhase={t * 0.15} />
+                <Rig url={M + "Fox.glb"} size={FOX} clip={clip} time={clipT} smooth m={{ palette: PAL.violet, foil: 0.3, follow: 0.35, hatch: 0.7, wash: 0.3 }} foilPhase={t * 0.15} />
               </group>
             </group>
           ) : null}

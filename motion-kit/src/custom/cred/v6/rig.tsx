@@ -9,6 +9,23 @@ import { Detail, RefDepth } from "../v2/three.tsx";
 
 type V3 = [number, number, number];
 
+/** Average the facet normals of every corner that shares a position (skinned meshes keep all their attributes). */
+const smoothNormals = (g: THREE.BufferGeometry) => {
+  const p = g.getAttribute("position") as THREE.BufferAttribute, n = g.getAttribute("normal") as THREE.BufferAttribute;
+  const key = (i: number) => `${p.getX(i).toFixed(4)},${p.getY(i).toFixed(4)},${p.getZ(i).toFixed(4)}`;
+  const acc = new Map<string, [number, number, number]>();
+  for (let i = 0; i < p.count; i++) {
+    const k = key(i), a = acc.get(k) ?? [0, 0, 0];
+    a[0] += n.getX(i); a[1] += n.getY(i); a[2] += n.getZ(i);
+    acc.set(k, a);
+  }
+  for (let i = 0; i < p.count; i++) {
+    const [x, y, z] = acc.get(key(i))!, l = Math.hypot(x, y, z) || 1;
+    n.setXYZ(i, x / l, y / l, z / l);
+  }
+  n.needsUpdate = true;
+};
+
 /**
  * A licensed glTF subject (Khronos glTF sample assets, CC0 / CC-BY 4.0, see public/custom/cred-v6/models/CREDITS.md)
  * drawn through the engraving material. The model's base-colour texture becomes the tone under the line screen, which
@@ -31,7 +48,9 @@ export const Rig: React.FC<{
   time?: number; // seconds into the clip
   foilPhase?: number;
   opacity?: number;
-}> = ({ url, size, m, pos, rot, keep, per, clip, time = 0, foilPhase, opacity }) => {
+  /** weld vertices and compute smooth normals (low-poly models read as carved forms, not facets) */
+  smooth?: boolean;
+}> = ({ url, size, m, pos, rot, keep, per, clip, time = 0, foilPhase, opacity, smooth }) => {
   const { width, height } = useVideoConfig();
   const gltf = useLoader(GLTFLoader, staticFile(url));
   const rd = useContext(RefDepth);
@@ -49,9 +68,11 @@ export const Rig: React.FC<{
         return;
       }
       // some models ship without normals (the low-poly fox): give them flat facet normals so light can shape them
-      if (!mesh.geometry.attributes.normal) {
+      if (!mesh.geometry.attributes.normal || smooth) {
+        // smooth: weld shared corners first, so the line screen flows over the form instead of breaking per facet
         const g = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry;
         g.computeVertexNormals();
+        if (smooth) smoothNormals(g);
         mesh.geometry = g;
       }
       const map = src.map ?? null;
@@ -89,10 +110,10 @@ export const Rig: React.FC<{
     }
     return { obj: wrap, mats, mixer };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gltf, size, width, height, clip]);
+  }, [gltf, size, width, height, clip, smooth]);
   if (mixer) mixer.setTime(time);
   for (const x of mats) {
-    const u: Record<string, number> = {};
+    const u: Record<string, number> = { uRefDepth: rd };
     if (foilPhase !== undefined) u.uFoilPhase = foilPhase;
     if (opacity !== undefined) {
       u.uOpacity = opacity;
