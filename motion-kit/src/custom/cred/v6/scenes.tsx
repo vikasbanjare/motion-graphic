@@ -12,6 +12,7 @@ import { Rig } from "./rig.tsx";
 import { ENGRAVE, Headline, Holo, Lens, M, PAL } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
 import { RewardsWorld } from "./intro.tsx";
+import { blob, leafGeo, rnd, type P3 } from "./geo.ts";
 import { fit, useCopy } from "./copy.tsx";
 
 /**
@@ -83,7 +84,7 @@ const Strip: React.FC<{ w: number; h: number; phase: number; F: number; font: nu
 /** The card's print: the rewards world, greened like a note, with the official logo. */
 const Print: React.FC<{ F: number }> = ({ F }) => (
   <AbsoluteFill>
-    <RewardsWorld F={F} framing={1} />
+    <RewardsWorld F={F} framing={2} fine={0.4} />
     <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 }} />
   </AbsoluteFill>
 );
@@ -110,7 +111,7 @@ const FOCUS = { x: 1520, y: 570 };
 const cardPose = (F: number) => {
   const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
   const t = (F - T.reveal) / 24;
-  const s0 = 1 - 0.55 * k + 0.035 * t;
+  const s0 = 1 - 0.36 * k + 0.035 * t; // the card fills the loupe, as the reference's note does
   const rx0 = 38 * k + 4 * Math.sin(t * 1.3) * k;
   const rz0 = -9 * k + 3 * t * k;
   const ty0 = -30 * k + 8 * Math.sin(t * 0.9) * k;
@@ -170,47 +171,29 @@ export const FoilEdges: React.FC<{ F: number }> = ({ F }) => {
 };
 
 // ---- 3. travel: a hotel at dusk, flights arcing over the globe --------------------------------------------------
-/** Hotel facade texture: a grid of windows, a cornice band and an entrance arch (no lettering). */
-const hotelTex = (() => {
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 1024;
-  const x = c.getContext("2d")!;
-  x.fillStyle = "#ece8f4";
-  x.fillRect(0, 0, 512, 1024);
-  for (let r = 0; r < 14; r++)
-    for (let k = 0; k < 6; k++) {
-      x.fillStyle = (r * 7 + k * 3) % 5 === 0 ? "#cfc6e6" : "#2a2a52";
-      x.fillRect(40 + k * 74, 60 + r * 62, 42, 40);
-    }
-  x.fillStyle = "#3a3a66";
-  for (let r = 0; r < 15; r++) x.fillRect(0, 48 + r * 62, 512, 4);
-  x.fillRect(0, 930, 512, 94);
-  x.fillStyle = "#ece8f4";
-  x.beginPath();
-  x.arc(256, 1024, 70, Math.PI, 0);
-  x.fill();
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.NoColorSpace;
-  return t;
-})();
-const towerG = new THREE.BoxGeometry(2.4, 5.4, 1.8);
-const wingG = new THREE.BoxGeometry(1.5, 3.4, 1.5);
-const crownG = new THREE.BoxGeometry(1.5, 0.7, 1.2);
-const spireG = new THREE.CylinderGeometry(0.05, 0.22, 1.2, 12);
-const canopyG = new THREE.BoxGeometry(1.4, 0.1, 0.9);
-
-const Hotel: React.FC<{ pos: [number, number, number]; rise: number }> = ({ pos, rise }) => {
-  const m = { palette: PAL.indigo, seed: 44, angleDeg: 4, map: hotelTex, mapAmt: 0.9 } as never;
+/** The lantern's beam: a soft cone of light from the lamp that sweeps across the sky, "lighting the way" (the
+ * reference sweeps a lighthouse beam; this is the same device on our own subject). */
+const Beam: React.FC<{ F: number; x: number; y: number }> = ({ F, x, y }) => {
+  const on = expoOut(ramp(F, 300, 322));
+  if (on <= 0) return null;
+  const a = (-14 + 22 * Math.sin((F - 300) / 38)) * (Math.PI / 180);
+  const L = 2600, half = 0.2 * on;
+  const p1: Pt = [x + L * Math.cos(a - half), y + L * Math.sin(a - half)];
+  const p2: Pt = [x + L * Math.cos(a + half), y + L * Math.sin(a + half)];
   return (
-    <group position={pos} scale={[1, Math.max(0.001, rise), 1]}>
-      <EMesh g={towerG} m={m} pos={[0, 2.7, 0]} />
-      <EMesh g={wingG} m={m} pos={[-1.95, 1.7, 0.1]} />
-      <EMesh g={wingG} m={m} pos={[1.95, 1.7, 0.1]} />
-      <EMesh g={crownG} m={{ palette: PAL.indigo, seed: 45, angleDeg: 4 }} pos={[0, 5.75, 0]} />
-      <EMesh g={spireG} m={{ palette: PAL.indigo, seed: 46, foil: 0.6 }} pos={[0, 6.7, 0]} />
-      <EMesh g={canopyG} m={{ palette: PAL.lilac, seed: 47 }} pos={[0, 0.9, 1.1]} />
-    </group>
+    <svg width={W} height={H} style={{ position: "absolute", inset: 0, mixBlendMode: "screen", opacity: 0.85 * on }}>
+      <defs>
+        <radialGradient id="beam-g" gradientUnits="userSpaceOnUse" cx={x} cy={y} r={L}>
+          <stop offset="0" stopColor="#fffbe6" stopOpacity={0.95} />
+          <stop offset="0.45" stopColor="#e9e2ff" stopOpacity={0.45} />
+          <stop offset="1" stopColor="#d6d0ea" stopOpacity={0} />
+        </radialGradient>
+        <filter id="beam-soft"><feGaussianBlur stdDeviation={10} /></filter>
+      </defs>
+      <path d={`M${x},${y} L${p1[0]},${p1[1]} L${p2[0]},${p2[1]} Z`} fill="url(#beam-g)" filter="url(#beam-soft)" />
+      <circle cx={x} cy={y} r={95} fill="#fffbe6" opacity={0.9} filter="url(#beam-soft)" />
+      <circle cx={x} cy={y} r={34} fill="#ffffff" opacity={0.95} />
+    </svg>
   );
 };
 
@@ -280,6 +263,16 @@ const Flights: React.FC<{ F: number; cx: number; cy: number; R: number; lon: num
  */
 /** Frame where the centred globe matches the colonnade floor; floor radius seen from the overhead camera / globe radius. */
 export const MATCH = 384;
+/** The lantern's lamp (world units) and a projection to screen px with a take's camera, so 2D light can sit on it. */
+const LAMP_AT: [number, number, number] = [-4.76, 2.84, -2.1]; // solved from the lamp's spot in a rendered frame
+const toScreen = (p: [number, number, number], c: { pos: [number, number, number]; target: [number, number, number]; fov: number }): Pt => {
+  const cam = new THREE.PerspectiveCamera(c.fov, W / H, 0.05, 800);
+  cam.position.set(...c.pos);
+  cam.lookAt(new THREE.Vector3(...c.target));
+  cam.updateMatrixWorld();
+  const v = new THREE.Vector3(...p).project(cam);
+  return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H];
+};
 const GLOBE_TO_FLOOR = 941 / 340;
 
 export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
@@ -311,14 +304,22 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
             <Cam {...cam} />
             <RefDepth.Provider value={8}>
               <Detail.Provider value={ENGRAVE}>
-                <Hotel pos={[-3.6, 0, -3.2]} rise={expoOut(ramp(F, 296, 322))} />
-                <Rig url={M + "Lantern.glb"} size={3.6} pos={[-1.3, -0.2, -1.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
+                <Rig url={M + "Lantern.glb"} size={4.2} pos={[-3.3, -0.3, -2.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
+                {/* a street of lanterns receding behind the hero: the way being lit */}
+                <Rig url={M + "Lantern.glb"} size={3.2} pos={[-0.9, -0.3, -6.2]} rot={[0, -2.2, 0]} m={{ palette: PAL.indigo, atmos: 0.35, seed: 42 }} />
+                <Rig url={M + "Lantern.glb"} size={2.8} pos={[1.1, -0.3, -10.5]} rot={[0, -2.0, 0]} m={{ palette: PAL.indigo, atmos: 0.55, seed: 43 }} />
                 <Rig url={M + "ToyCar.glb"} size={1.3} pos={[-7 + Math.min(F - T.swap, 70) * 0.075, 0, -1.0]} rot={[0, Math.PI / 2, 0]} keep={(n) => n !== "Glass"} m={{ palette: PAL.lilac, seed: 41 }} />
-                <Rig url={M + "Fox.glb"} size={1.8} pos={[-5.2 + (F - T.swap) * 0.07, 0, -0.4]} rot={[0, Math.PI / 2 - 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} />
-                <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.2} pos={[-4.6, -0.8, 2.0]} rot={[0, 1, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.indigo, follow: 0, wobble: 0.7, seed: 48 }} />
+                <Rig url={M + "Fox.glb"} size={1.8} pos={[2.4 - (F - T.swap) * 0.07, 0, -0.4]} rot={[0, -Math.PI / 2 + 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} />
               </Detail.Provider>
             </RefDepth.Provider>
           </World>
+        </AbsoluteFill>
+        {/* the 3D layer is not under the globe's CSS zoom, so the beam sits beside it and leaves before the dive */}
+        <AbsoluteFill style={{ opacity: 1 - ramp(F, MATCH - 36, MATCH - 26) }}>
+          {(() => {
+            const p = toScreen(LAMP_AT, cam);
+            return <Beam F={F} x={p[0]} y={p[1]} />;
+          })()}
         </AbsoluteFill>
         {F > T.tilt ? (
           <AbsoluteFill style={{ opacity: 1 - ramp(F, MATCH - 30, MATCH - 18) }}>
@@ -459,6 +460,32 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   );
 };
 
+// ---- 5. the seabed: rocks and kelp that fill the frame, as the reference's deep is full to its edges ----------------
+const ROCKS = Array.from({ length: 11 }, (_, i) => {
+  const r = (k: number) => rnd(i * 11 + k, 77);
+  const x = -6.2 + i * 1.2 + (r(1) - 0.5) * 0.6;
+  const big = Math.abs(x) > 1.6 ? 1 : 0.55; // keep the middle low so the shell reads
+  return { g: blob(1.2 + r(2) * 1.4 * big, (0.5 + r(3) * 0.9) * big, 0.9 + r(4) * 0.8, 0.16, i), pos: [x, -0.1, -0.6 - r(5) * 2.4 + (i % 2) * 1.2] as P3, rot: r(6) * 3 };
+});
+const KELP = Array.from({ length: 9 }, (_, i) => {
+  const r = (k: number) => rnd(i * 7 + k, 91);
+  const x = (i % 2 ? 1 : -1) * (2.0 + r(1) * 3.6), z = -2.6 + r(2) * 2.4, h = 2.4 + r(3) * 2.6;
+  // a frond: a long ribbon leaf with a wavy margin, curling back at the tip
+  return { g: leafGeo(h, 0.32 + r(5) * 0.2, 0.08, 0.07, 0.12, 40), pos: [x, -0.2, z] as P3, ph: r(4) * 6, yaw: r(6) * 3 };
+});
+const Seabed: React.FC<{ t: number }> = ({ t }) => (
+  <>
+    {ROCKS.map((k, i) => (
+      <EMesh key={`r${i}`} g={k.g} m={{ palette: PAL.slate, seed: 120 + i, follow: 0.2, angleDeg: 30, albedoNoise: 0.25, noiseScale: 9 }} pos={k.pos} rot={[0, k.rot, 0]} />
+    ))}
+    {KELP.map((k, i) => (
+      <group key={`k${i}`} position={k.pos} rotation={[0.06 * Math.sin(t * 0.9 + k.ph), k.yaw, 0.1 * Math.sin(t * 0.7 + k.ph)]}>
+        <EMesh g={k.g} m={{ palette: PAL.slate, seed: 140 + i, follow: 0.4 }} double />
+      </group>
+    ))}
+  </>
+);
+
 // ---- 5. zero joining fee: ₹0 rises from an abalone like a pearl -------------------------------------------------
 const Pearl: React.FC<{ F: number }> = ({ F }) => {
   const copy = useCopy();
@@ -503,7 +530,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const dive = ramp(F, T.whip - 14, T.studio);
   const z = 1 + 9 * dive ** 2.4;
   const cam = cut === 0
-    ? { pos: [-0.3 + (F - T.card) * 0.012, 2.0, 7.6 - (F - T.card) * 0.012] as [number, number, number], target: [0, 1.5, 0] as [number, number, number], fov: 34 }
+    ? { pos: [-0.3 + (F - T.card) * 0.014, 2.0, 6.8 - (F - T.card) * 0.016] as [number, number, number], target: [0, 1.4, 0] as [number, number, number], fov: 36 }
     : { pos: [0.4 + (F - 520) * 0.012, 2.2, 5.6 - (F - 520) * 0.01] as [number, number, number], target: [0, 1.8, 0] as [number, number, number], fov: 30 };
   const fish = useMemo(
     () => [
@@ -539,7 +566,8 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
                   return <Rig key={i} url={M + "BarramundiFish.glb"} size={p.s} pos={[x, y, z]} rot={[0, Math.PI / 2 + yaw, 0.1 * Math.cos(tt * 0.9)]} m={{ palette: PAL.slate, atmos: 0.25 + 0.1 * (i % 2), seed: 90 + i }} />;
                 })}
                 <Rig url={M + "DiffuseTransmissionPlant.glb"} size={3.6} pos={[-3.4, -0.6, 0.6]} rot={[0, 0.4, 0]} keep={(n) => n === "leaves"} m={{ palette: PAL.slate, follow: 0, wobble: 0.7, seed: 98 }} />
-                <Rig url={M + "IridescenceAbalone.glb"} size={2.6} pos={[0.2, 0, 0]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
+                <Seabed t={t} />
+                <Rig url={M + "IridescenceAbalone.glb"} size={3.1} pos={[0.2, 0, 0.3]} rot={[-0.5 + 0.4 * k, 0.6 + t * 0.25, 0]} m={{ palette: PAL.slate, foil: 0.95, seed: 99 }} foilPhase={t * 0.35} />
               </Detail.Provider>
             </RefDepth.Provider>
           </World>

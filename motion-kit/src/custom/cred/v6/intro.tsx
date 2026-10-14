@@ -11,6 +11,7 @@ import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
 import { ENGRAVE, Headline, M, PAL } from "./kit.tsx";
 import { fit, useCopy } from "./copy.tsx";
+import { leafGeo, rnd, tube, type P3 } from "./geo.ts";
 
 /**
  * v6.5 opening, rebuilt shot for shot against the reference's first 8 seconds (docs/research/cred-v65-reference-compare.md):
@@ -82,7 +83,7 @@ const Pen: React.FC<{ G: number }> = ({ G }) => {
       const k = Math.min(1, (G - s.at) / s.dur);
       // straight while the pen runs, then the line takes its wave (the reference's first stroke bends after it lands)
       const amp = 15 * expoOut(ramp(G, s.at + s.dur * 0.45, s.at + s.dur + 14));
-      const pts = trim(penPts(s.y, s.len, amp, G * 1.6 + s.y * 2.1), 0, expoOut(k));
+      const pts = trim(penPts(s.y, s.len, amp, G * 3.2 + s.y * 2.1), 0, expoOut(k));
       if (pts.length < 2) continue;
       const n = pts.length;
       const o = getStroke(pts.map(([px, py], i) => [px, py, 0.55 + 0.45 * Math.sin((Math.PI * (i + 0.5)) / n)]), { size: s.size * 5.6, thinning: 0.55, smoothing: 0.4, streamline: 0.1, simulatePressure: false, start: { taper: 0 }, end: { taper: 90 } });
@@ -101,7 +102,7 @@ const DISC = { cx: 210, cy: 830 };
 const discR = (G: number) => 900 + 1900 * (1 - expoOut(ramp(G, 84, 112)));
 
 /** Everything 2D behind the bough, for any take frame G (G beyond the intro is the settled end state). */
-export const Ground: React.FC<{ G: number }> = ({ G }) => {
+export const Ground: React.FC<{ G: number; fine?: number }> = ({ G, fine = 1 }) => {
   const R = discR(G);
   const wash = ramp(G, 86, 108);
   const ring = circle(DISC.cx, DISC.cy, R, 160);
@@ -111,7 +112,7 @@ export const Ground: React.FC<{ G: number }> = ({ G }) => {
         <PaperFibre color="#ecece8" vignette={0.28 - 0.18 * ramp(G, 60, 110)} />
         {G < FIELD_AT ? <Pen G={G} /> : null}
         {G >= FIELD_AT ? (
-          <Field f={G} pitch={21} lambda={112} amp={6} speed={2.2} width={1.7} color="#7f817b" angle={-2} reveal={0.3 + 0.36 * expoOut(ramp(G, FIELD_AT, FIELD_AT + 40))} ragged={170} noiseAmp={0.3} clip={G >= 84 ? ring : undefined} />
+          <Field f={G} pitch={21 * fine} lambda={112 * fine} amp={6 * fine} speed={6} width={1.7 * fine} color="#7f817b" angle={-2} reveal={0.3 + 0.36 * expoOut(ramp(G, FIELD_AT, FIELD_AT + 40))} ragged={170} noiseAmp={0.3} clip={G >= 84 ? ring : undefined} />
         ) : null}
         {wash > 0 ? (
           <AbsoluteFill
@@ -122,7 +123,7 @@ export const Ground: React.FC<{ G: number }> = ({ G }) => {
             }}
           >
             <AbsoluteFill style={{ background: "linear-gradient(115deg, #e9ecc4 0%, #dbe6b2 38%, #c4d99a 72%, #b3cf8c 100%)" }} />
-            <Field f={G} pitch={14} lambda={160} amp={3} speed={1.2} width={1.1} color="#a7b884" opacity={0.55} />
+            <Field f={G} pitch={14 * fine} lambda={160 * fine} amp={3 * fine} speed={3.5} width={1.1 * fine} color="#a7b884" opacity={0.55} />
             <AbsoluteFill style={{ background: "radial-gradient(ellipse 60% 70% at 70% 30%, rgba(255,250,215,0.55), rgba(255,250,215,0) 70%)" }} />
             <svg width={W} height={H} style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", opacity: 0.5 }}>
               <filter id="wash-mottle" x="0" y="0" width="100%" height="100%">
@@ -139,49 +140,6 @@ export const Ground: React.FC<{ G: number }> = ({ G }) => {
 };
 
 // ---- the bough: a hand-built engraved branch with flowering twigs ---------------------------------------------------------
-type P3 = [number, number, number];
-const rnd = (i: number, s = 1) => {
-  const x = Math.sin(i * 127.1 + s * 311.7) * 43758.5453;
-  return x - Math.floor(x);
-};
-
-/** A tube along a smooth path, radius tapering from r0 to r1, with a little knotted swelling along the way. */
-const tube = (path: P3[], r0: number, r1: number, segments = 160, radial = 20, knots = 0) => {
-  const curve = new THREE.CatmullRomCurve3(path.map((p) => new THREE.Vector3(...p)), false, "centripetal");
-  const g = new THREE.TubeGeometry(curve, segments, 1, radial, false);
-  const pos = g.getAttribute("position") as THREE.BufferAttribute;
-  for (let i = 0; i <= segments; i++) {
-    const t = i / segments;
-    const c = curve.getPointAt(t);
-    const r = (r0 + (r1 - r0) * t) * (1 + knots * (0.5 + 0.5 * Math.sin(t * 37)) * Math.pow(Math.sin(t * 9.3), 8));
-    for (let j = 0; j <= radial; j++) {
-      const k = i * (radial + 1) + j;
-      const v = new THREE.Vector3(pos.getX(k), pos.getY(k), pos.getZ(k)).sub(c);
-      // bark is never round: a slight ridged cross-section
-      const a = (j / radial) * Math.PI * 2;
-      v.normalize().multiplyScalar(r * (1 + 0.05 * Math.sin(a * 5 + t * 14)));
-      pos.setXYZ(k, c.x + v.x, c.y + v.y, c.z + v.z);
-    }
-  }
-  g.computeVertexNormals();
-  return { g, curve };
-};
-
-/** A leaf along +y with a midrib fold, wavy margin and a curl. */
-const leafGeo = (len: number, w: number, fold = 0.3, wave = 0.03, curl = 0.2, seg = 22) => {
-  const g = new THREE.PlaneGeometry(w, len, 10, seg);
-  const p = g.getAttribute("position") as THREE.BufferAttribute;
-  for (let i = 0; i < p.count; i++) {
-    const x = p.getX(i), y = p.getY(i) + len / 2;
-    const t = y / len;
-    const half = (w / 2) * Math.pow(Math.max(0, Math.sin(Math.PI * Math.min(1, t * 1.02))), 0.8) * (1 - 0.2 * t);
-    const u = x / (w / 2);
-    p.setXYZ(i, u * half + wave * Math.sin(t * 20 + u) * Math.abs(u) * half * 3, y, -fold * Math.abs(u * half) + curl * t * t * len);
-  }
-  g.computeVertexNormals();
-  return g;
-};
-
 /** A rounded petal along +y: a narrow claw at the base opening to a broad, ruffled, cupped blade. */
 const petalGeo = (len: number, w: number, cup = 0.12, ruffle = 0.012) => {
   const g = new THREE.PlaneGeometry(w, len, 14, 16);
@@ -337,18 +295,22 @@ const pop = (u: number, at: number, len = 16) => {
 };
 
 /** The rewards world (3D only). u is the v6 timeline; framing 0 wide, 1 close on the fox (from the step, and on the card). */
-export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing }) => {
+export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = ({ u, framing, fine = 1 }) => {
   const t = u / 24;
   const cut = framing ?? (u >= STEP ? 1 : 0);
   const sweep = expoOut(ramp(u, 8, 36));
   const fs = foxS(u);
   const fox = onBough(fs);
   const stop = onBough(S_STOP).p;
-  const cam = cut === 0
-    ? { pos: [0.9 - u * 0.004, 1.05, 6.5 - u * 0.006] as P3, target: [0.45 - u * 0.002, 0.9, 0] as P3, fov: 36 }
+  const du = u - 150;
+  const cam = cut === 2
+    ? // the card's print: the flowering top-right twig under the loupe's focus, the fox along the bottom edge
+      { pos: [0.3 - du * 0.004, 2.1, 5.6] as P3, target: [0.25 - du * 0.004, 2.0, 0] as P3, fov: 44 }
+    : cut === 0
+    ? { pos: [1.4 - u * 0.012, 1.0 + u * 0.002, 6.9 - u * 0.014] as P3, target: [0.75 - u * 0.009, 0.9, 0] as P3, fov: 36 }
     : (() => {
         const fx = u < 150 ? stop[0] : 0.6 * fox.p[0] + 0.4 * stop[0];
-        return { pos: [fx + 1.0 - (u - STEP) * 0.004, stop[1] + 0.85, stop[2] + 3.5 - (u - STEP) * 0.004] as P3, target: [fx - 0.15, stop[1] + 0.5, stop[2]] as P3, fov: 32 };
+        return { pos: [fx + 1.3 - (u - STEP) * 0.011, stop[1] + 0.85, stop[2] + 3.7 - (u - STEP) * 0.008] as P3, target: [fx - 0.1 - (u - STEP) * 0.004, stop[1] + 0.5, stop[2]] as P3, fov: 32 };
       })();
   const clip = u < STEP ? "Run" : u < 150 ? "Survey" : "Walk";
   const clipT = u < STEP ? t : u < 150 ? (u - STEP) / 24 : (u - 150) / 24;
@@ -359,7 +321,7 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
     <World aa>
       <Cam {...cam} />
       <RefDepth.Provider value={6}>
-        <Detail.Provider value={ENGRAVE}>
+        <Detail.Provider value={{ ...ENGRAVE, periodScale: fine }}>
           <group position={[3.8 * (1 - sweep), -2.6 * (1 - sweep), 0.4 * (1 - sweep)]} rotation={[0, 0, -0.12 * (1 - sweep)]}>
             <EMesh g={BOUGH.g} m={green as never} />
             {TWIGS.map((tw, i) => {
@@ -378,7 +340,7 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
             {CLUSTERS.map((c, i) => {
               const g = pop(u, c.u, 16);
               if (g <= 0) return null;
-              const sway = 0.04 * Math.sin(t * 1.1 + i * 2.1);
+              const sway = 0.07 * Math.sin(t * 1.4 + i * 2.1);
               return (
                 <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g}>
                   {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i, follow: 0.6, wobble: 0.6 }} double /> : null}
@@ -401,11 +363,12 @@ export const Bough: React.FC<{ u: number; framing?: number }> = ({ u, framing })
   );
 };
 
-/** The rewards world with its settled ground, as the card prints it (u on the v6 timeline). */
-export const RewardsWorld: React.FC<{ F: number; framing?: number }> = ({ F, framing }) => (
+/** The rewards world with its settled ground, as the card prints it (u on the v6 timeline). `fine` < 1 engraves it
+ * finer, so the loupe's 3x push still lands on line work at the film's own pitch instead of magnified blobs. */
+export const RewardsWorld: React.FC<{ F: number; framing?: number; fine?: number }> = ({ F, framing, fine }) => (
   <AbsoluteFill>
-    <Ground G={F + INTRO} />
-    <Bough u={F} framing={framing} />
+    <Ground G={F + INTRO} fine={fine} />
+    <Bough u={F} framing={framing} fine={fine} />
   </AbsoluteFill>
 );
 
