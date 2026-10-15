@@ -108,10 +108,10 @@ def main():
 
     score = CRED_SCORE
     if s.get("key") and s["key"] != "D":
-        cues = json.load(open(os.path.join(ROOT, "public/custom/cred-v6/cues.json")))
+        cues = json.load(open(os.path.join(ROOT, "public/custom/cred-v6/sound.json")))
         cues["key"] = s["key"]
-        json.dump(cues, open(os.path.join(out, "cues.json"), "w"), indent=1)
-        subprocess.run([sys.executable, "-I", os.path.join(HERE, "score_to_picture.py"), os.path.join(out, "cues.json"), "--out", os.path.join(out, "score")], check=True)
+        json.dump(cues, open(os.path.join(out, "sound.json"), "w"), indent=1)
+        subprocess.run([sys.executable, "-I", os.path.join(HERE, "sound.py"), os.path.join(out, "sound.json"), "--out", os.path.join(out, "score")], check=True)
         score = f"cred-film/{slug}/score.wav"
 
     copy = {

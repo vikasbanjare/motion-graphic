@@ -1,0 +1,406 @@
+{
+ "title": "CRED v6.5 (unofficial spec work)",
+ "fps": 24,
+ "frames": 816,
+ "genre": "cinematic",
+ "bpm": 92,
+ "key": "D",
+ "sections": [
+  {
+   "from": 0,
+   "to": 104,
+   "energy": 0.15
+  },
+  {
+   "from": 104,
+   "to": 246,
+   "energy": 0.45
+  },
+  {
+   "from": 246,
+   "to": 346,
+   "energy": 0.55
+  },
+  {
+   "from": 346,
+   "to": 372,
+   "energy": 0.35,
+   "drop": true
+  },
+  {
+   "from": 372,
+   "to": 480,
+   "energy": 0.7
+  },
+  {
+   "from": 480,
+   "to": 580,
+   "energy": 0.75
+  },
+  {
+   "from": 580,
+   "to": 657,
+   "energy": 0.4,
+   "drop": true
+  },
+  {
+   "from": 657,
+   "to": 741,
+   "energy": 0.85
+  },
+  {
+   "from": 741,
+   "to": 816,
+   "energy": 0.3
+  }
+ ],
+ "events": [
+  {
+   "at": 12,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": -0.07
+  },
+  {
+   "at": 19,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": -0.17
+  },
+  {
+   "at": 25,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": 0.04
+  },
+  {
+   "at": 31,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": -0.28
+  },
+  {
+   "at": 36,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": 0.14
+  },
+  {
+   "at": 41,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": 0.25
+  },
+  {
+   "at": 46,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": -0.37
+  },
+  {
+   "at": 51,
+   "fx": "rustle",
+   "sec": 0.35,
+   "gain": 0.7,
+   "pan": 0.35
+  },
+  {
+   "at": 64,
+   "fx": "air",
+   "sec": 0.5,
+   "gain": 0.8
+  },
+  {
+   "at": 86,
+   "fx": "swell",
+   "sec": 0.9,
+   "gain": 0.7
+  },
+  {
+   "at": 100,
+   "fx": "air",
+   "sec": 0.9,
+   "gain": 0.9,
+   "pan": 0.5
+  },
+  {
+   "at": 104,
+   "fx": "rustle",
+   "sec": 1.2,
+   "gain": 0.6,
+   "pan": 0.4
+  },
+  {
+   "at": 116,
+   "fx": "pluck",
+   "gain": 0.5,
+   "pan": 0.5
+  },
+  {
+   "at": 120,
+   "fx": "pluck",
+   "gain": 0.5,
+   "pan": 0.6
+  },
+  {
+   "at": 122,
+   "fx": "pluck",
+   "gain": 0.5,
+   "pan": -0.6
+  },
+  {
+   "at": 126,
+   "fx": "pluck",
+   "gain": 0.5,
+   "pan": -0.3
+  },
+  {
+   "at": 130,
+   "fx": "pluck",
+   "gain": 0.5,
+   "pan": 0.2
+  },
+  {
+   "at": 176,
+   "fx": "shimmer",
+   "sec": 1.2,
+   "gain": 0.6
+  },
+  {
+   "at": 130,
+   "fx": "steps",
+   "sec": 2.6,
+   "rate": 3.4,
+   "surface": "wood",
+   "gain": 0.5,
+   "pan": 0.3
+  },
+  {
+   "at": 246,
+   "fx": "swell",
+   "sec": 0.8,
+   "gain": 0.8
+  },
+  {
+   "at": 248,
+   "fx": "air",
+   "sec": 1.0,
+   "gain": 0.6
+  },
+  {
+   "at": 303,
+   "fx": "hit",
+   "big": 0.6,
+   "gain": 0.9
+  },
+  {
+   "at": 305,
+   "fx": "shimmer",
+   "sec": 1.6,
+   "gain": 0.5
+  },
+  {
+   "at": 372,
+   "fx": "hit",
+   "big": 0.7,
+   "gain": 0.9
+  },
+  {
+   "at": 374,
+   "fx": "wind",
+   "sec": 4.4,
+   "gain": 0.6
+  },
+  {
+   "at": 396,
+   "fx": "air",
+   "sec": 0.8,
+   "gain": 0.5,
+   "pan": 0.6
+  },
+  {
+   "at": 408,
+   "fx": "air",
+   "sec": 0.8,
+   "gain": 0.5,
+   "pan": 0.3
+  },
+  {
+   "at": 420,
+   "fx": "air",
+   "sec": 0.8,
+   "gain": 0.5,
+   "pan": 0.7
+  },
+  {
+   "at": 432,
+   "fx": "hit",
+   "big": 0.35,
+   "gain": 0.6
+  },
+  {
+   "at": 452,
+   "fx": "swell",
+   "sec": 1.1,
+   "gain": 0.7
+  },
+  {
+   "at": 480,
+   "fx": "hit",
+   "big": 0.8,
+   "gain": 0.9
+  },
+  {
+   "at": 482,
+   "fx": "swell",
+   "sec": 1.6,
+   "gain": 0.5
+  },
+  {
+   "at": 538,
+   "fx": "air",
+   "sec": 0.7,
+   "gain": 0.7,
+   "pan": -0.4
+  },
+  {
+   "at": 542,
+   "fx": "shimmer",
+   "sec": 1.4,
+   "gain": 0.5
+  },
+  {
+   "at": 505,
+   "fx": "clink",
+   "gain": 0.6,
+   "pan": -0.5
+  },
+  {
+   "at": 517,
+   "fx": "clink",
+   "gain": 0.6,
+   "pan": -0.2
+  },
+  {
+   "at": 530,
+   "fx": "clink",
+   "gain": 0.6,
+   "pan": 0.2
+  },
+  {
+   "at": 555,
+   "fx": "clink",
+   "gain": 0.6,
+   "pan": 0.5
+  },
+  {
+   "at": 580,
+   "fx": "hit",
+   "big": 0.6,
+   "gain": 0.85
+  },
+  {
+   "at": 581,
+   "fx": "air",
+   "sec": 0.5,
+   "gain": 0.8,
+   "pan": -0.6
+  },
+  {
+   "at": 582,
+   "fx": "hum",
+   "sec": 3.0,
+   "gain": 0.6
+  },
+  {
+   "at": 584,
+   "fx": "drip",
+   "sec": 2.6,
+   "rate": 2.2,
+   "gain": 0.4
+  },
+  {
+   "at": 602,
+   "fx": "shimmer",
+   "sec": 1.6,
+   "gain": 0.75
+  },
+  {
+   "at": 616,
+   "fx": "hit",
+   "big": 0.3,
+   "gain": 0.5
+  },
+  {
+   "at": 640,
+   "fx": "swell",
+   "sec": 0.7,
+   "gain": 0.8
+  },
+  {
+   "at": 657,
+   "fx": "hit",
+   "big": 0.7,
+   "gain": 0.9
+  },
+  {
+   "at": 667,
+   "fx": "air",
+   "sec": 0.6,
+   "gain": 0.6,
+   "pan": -0.4
+  },
+  {
+   "at": 669,
+   "fx": "air",
+   "sec": 0.6,
+   "gain": 0.6,
+   "pan": 0.4
+  },
+  {
+   "at": 702,
+   "fx": "clink",
+   "gain": 0.8
+  },
+  {
+   "at": 705,
+   "fx": "pluck",
+   "gain": 0.5
+  },
+  {
+   "at": 711,
+   "fx": "pluck",
+   "gain": 0.5
+  },
+  {
+   "at": 717,
+   "fx": "pluck",
+   "gain": 0.5
+  },
+  {
+   "at": 726,
+   "fx": "swell",
+   "sec": 0.6,
+   "gain": 0.8
+  },
+  {
+   "at": 741,
+   "fx": "hit",
+   "big": 1.0,
+   "gain": 1.0
+  },
+  {
+   "at": 743,
+   "fx": "shimmer",
+   "sec": 2.4,
+   "gain": 0.6
+  }
+ ]
+}
