@@ -6,6 +6,7 @@ import { useV6Fonts } from "./v6/LookTest.tsx";
 import { CardTake, MATCH, OPEN, ProductsTake, ShellTake, TravelTake } from "./v6/scenes.tsx";
 import { INTRO, RewardsTake } from "./v6/intro.tsx";
 import { Outro } from "./v6/outro.tsx";
+import { Iris, irisOpen } from "./v6/kit.tsx";
 import { CopyProvider, CRED_COPY, type FilmCopy } from "./v6/copy.tsx";
 
 /**
@@ -14,6 +15,12 @@ import { CopyProvider, CRED_COPY, type FilmCopy } from "./v6/copy.tsx";
  * loupe vignette, serif headlines top-centre, scale-step cuts on the mix's onsets. UNOFFICIAL SPEC WORK.
  */
 export const CRED_V6_FRAMES = T.end + INTRO;
+
+/** The next world opens out of the loupe that closed on the shell (local frames of its Sequence). */
+const IrisIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const f = useCurrentFrame();
+  return <Iris r={irisOpen(f, 2, 20, 520)} cy={600}>{children}</Iris>;
+};
 
 /** The lockup keeps breathing: a slow push so the final hold never reads as a freeze. */
 const Drift: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -43,7 +50,9 @@ export const CredCardV6: React.FC<{ copy?: FilmCopy; score?: string }> = ({ copy
         <ShellTake from={T.card} />
       </Sequence>
       <Sequence from={T.studio + INTRO} durationInFrames={T.lockup - T.studio} name="outro: the card on a white set drops into the phone; push into the dark screen">
-        <Outro from={T.studio} />
+        <IrisIn>
+          <Outro from={T.studio} />
+        </IrisIn>
       </Sequence>
       <Sequence from={T.lockup - 6 + INTRO} durationInFrames={T.end - T.lockup + 6} name="lockup (official logo file); overlaps the push so no frame is dead black">
         <Drift>

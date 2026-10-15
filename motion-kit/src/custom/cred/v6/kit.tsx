@@ -85,3 +85,22 @@ export const Mottle: React.FC<{ tint: [number, number, number]; amount?: number;
     <rect width="100%" height="100%" filter={`url(#mottle${seed})`} />
   </svg>
 );
+
+/**
+ * The loupe as a transition (the reference's grammar): content seen through a soft-edged circle of radius r px on a
+ * near-black stage, with a dark rim. r >= 2300 shows the full frame. Worlds change by a hard cut inside the lens, then
+ * the lens opens; or the lens closes on a subject before the next cut.
+ */
+export const Iris: React.FC<{ r: number; cx?: number; cy?: number; children: React.ReactNode }> = ({ r, cx = 960, cy = 540, children }) => {
+  if (r >= 2300) return <AbsoluteFill>{children}</AbsoluteFill>;
+  const m = `radial-gradient(circle ${Math.max(1, r)}px at ${cx}px ${cy}px, #000 ${Math.max(0, r - 90)}px, rgba(0,0,0,0) ${r}px)`;
+  return (
+    <AbsoluteFill style={{ background: "#070908" }}>
+      <AbsoluteFill style={{ WebkitMaskImage: m, maskImage: m }}>{children}</AbsoluteFill>
+      <AbsoluteFill style={{ background: `radial-gradient(circle ${Math.max(1, r)}px at ${cx}px ${cy}px, rgba(7,9,8,0) 72%, rgba(7,9,8,0.55) 92%, rgba(7,9,8,0) 100%)` }} />
+    </AbsoluteFill>
+  );
+};
+export const easeIO = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+/** Lens radius for an opening between frames a and b (from the loupe size to the full frame). */
+export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * easeIO(Math.min(1, Math.max(0, (f - a) / (b - a))));

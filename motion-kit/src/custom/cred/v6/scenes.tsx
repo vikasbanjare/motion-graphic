@@ -9,7 +9,7 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { polyD, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE_FINE, Headline, Holo, Lens, M, Mottle, PAL } from "./kit.tsx";
+import { ENGRAVE_FINE, Headline, Holo, Iris, Lens, M, Mottle, PAL, easeIO, irisOpen } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
 import { RewardsWorld } from "./intro.tsx";
 import { blob, leafGeo, rnd, type P3 } from "./geo.ts";
@@ -84,7 +84,7 @@ const Strip: React.FC<{ w: number; h: number; phase: number; F: number; font: nu
 /** The card's print: the rewards world, greened like a note, with the official logo. */
 const Print: React.FC<{ F: number }> = ({ F }) => (
   <AbsoluteFill>
-    <RewardsWorld F={F} framing={2} fine={0.55} />
+    {F < T.macro ? <RewardsWorld key="wide" F={F} framing={1} /> : <RewardsWorld key="loupe" F={F} framing={2} fine={0.55} />}
     <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 }} />
   </AbsoluteFill>
 );
@@ -109,13 +109,13 @@ const FOCUS = { x: 1520, y: 570 };
  * breathing, then pushes into the foil strip while turning it level. The print keeps living (the fox never stops).
  */
 const cardPose = (F: number) => {
-  const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
+  const k = easeIO(ramp(F, T.reveal, T.reveal + 34));
   const t = (F - T.reveal) / 24;
   const s0 = 1 - 0.24 * k + 0.035 * t; // the card fills the loupe, as the reference's note does
   const rx0 = 38 * k + 4 * Math.sin(t * 1.3) * k;
   const rz0 = -9 * k + 3 * t * k;
   const ty0 = -30 * k + 8 * Math.sin(t * 0.9) * k;
-  const z = easeInOut(ramp(F, T.macro - 18, T.push + 4));
+  const z = F >= T.macro ? 1 : 0; // hard cut on the beat into the lens close-up (the reference cuts, it does not push)
   const drift = Math.max(0, F - (T.push + 4)) * 0.012;
   return {
     s: lerp(s0, 3.0, z) + drift,
@@ -131,7 +131,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const copy = useCopy();
   const p = cardPose(F);
-  const k = expoOut(ramp(F, T.reveal, T.reveal + 22));
+  const k = easeIO(ramp(F, T.reveal, T.reveal + 34));
   const head = expoOut(ramp(F, T.reveal + 18, T.reveal + 32)) * (1 - ramp(F, T.macro - 16, T.macro - 4));
   return (
     <AbsoluteFill style={{ background: "#0a0c0b" }}>
@@ -158,19 +158,6 @@ export const band = (F: number) => {
 };
 
 /** The two foil edges of the split strip, riding outward with the band. */
-export const FoilEdges: React.FC<{ F: number }> = ({ F }) => {
-  const b = band(F);
-  if (!b.on || b.o >= 1) return null;
-  const th = 14 + 30 * (1 - b.o);
-  const ph = (F - T.reveal) / 70;
-  return (
-    <AbsoluteFill style={{ pointerEvents: "none" }}>
-      <Holo phase={ph} style={{ left: 0, right: 0, top: b.top - th, height: th, mixBlendMode: "normal", opacity: 1, boxShadow: "0 -6px 24px rgba(0,0,0,0.25)" }} />
-      <Holo phase={ph + 0.3} style={{ left: 0, right: 0, top: b.bottom, height: th, mixBlendMode: "normal", opacity: 1, boxShadow: "0 6px 24px rgba(0,0,0,0.25)" }} />
-    </AbsoluteFill>
-  );
-};
-
 // ---- 3. travel: a hotel at dusk, flights arcing over the globe --------------------------------------------------
 /** The lantern's beam: a soft cone of light from the lamp that sweeps across the sky, "lighting the way" (the
  * reference sweeps a lighthouse beam; this is the same device on our own subject). */
@@ -288,7 +275,6 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const copy = useCopy();
   const t = F / 24;
-  const b = band(F);
   const cut = step(F, [336]);
   const cam = cut === 0
     ? { pos: [-0.8 + (F - T.swap) * 0.018, 1.35, 8.4] as [number, number, number], target: [0.2, 1.45, -2] as [number, number, number], fov: 36 }
@@ -303,7 +289,8 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const S = lerp(mag, GLOBE_TO_FLOOR, d) + 0.004 * Math.max(0, F - MATCH);
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
-      <AbsoluteFill style={{ clipPath: b.o < 1 ? `inset(${b.top}px 0px ${H - b.bottom}px 0px)` : undefined }}>
+      <AbsoluteFill style={{ opacity: F >= OPEN ? 1 : 0 }}>
+      <Iris r={irisOpen(F, OPEN + 6, OPEN + 24)}>
         <AbsoluteFill style={{ transformOrigin: `${G.cx}px ${G.cy}px`, transform: `translate(${(W / 2 - G.cx) * d}px, ${(H / 2 - G.cy) * d}px) scale(${S})` }}>
           <Paper color="#d6d0ea" grain={0.35} />
           <Mottle tint={[0.66, 0.62, 0.84]} seed={4} />
@@ -338,8 +325,8 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
             <Headline text={copy.claim2.head} sub={copy.claim2.sub} grad={["#26238a", "#5a4fc0", "#2a6aa0"]} t={expoOut(ramp(F, T.tilt + 6, T.tilt + 20))} size={fit(copy.claim2.head, 76, 1500)} top={130} />
           </AbsoluteFill>
         ) : null}
+      </Iris>
       </AbsoluteFill>
-      <FoilEdges F={F} />
     </LookCtx.Provider>
   );
 };
@@ -474,7 +461,8 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const cols = Array.from({ length: 10 }, (_, i) => (i / 10) * Math.PI * 2 + 0.31);
   return (
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
-      <AbsoluteFill style={{ opacity: ramp(F, MATCH - 4, MATCH + 4), clipPath: `circle(${941 * (1 + 0.004 * Math.max(0, F - MATCH) / GLOBE_TO_FLOOR) + 1500 * Math.pow(ramp(F, MATCH + 2, MATCH + 20), 1.6)}px at 50% 50%)` }}>
+      <AbsoluteFill style={{ opacity: F >= MATCH ? 1 : 0 }}>
+      <Iris r={irisOpen(F, MATCH + 8, MATCH + 26)}>
         <Paper color="#f1d9c6" grain={0.35} />
         <Mottle tint={[0.86, 0.66, 0.56]} seed={5} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
@@ -527,28 +515,11 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
             <Headline text={copy.claim3.head} sub={copy.claim3.sub} grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} size={fit(copy.claim3.head, 92, 1500)} top={140} />
           </>
         ) : null}
+      </Iris>
       </AbsoluteFill>
     </LookCtx.Provider>
   );
 };
-
-// ---- mosaic: the reference's pixel-block dissolve, in our palette ----------------------------------------------------
-const MC = 16, MR = 9, TW = W / MC, TH = H / MR;
-const TILE_AT = Array.from({ length: MC * MR }, (_, i) => 0.62 * rnd(i, 211) + 0.38 * ((i % MC) / (MC - 1)));
-/** Mask (data-URL SVG) showing the tiles whose time has come at progress p, and the tiles flashing in colour. */
-const mosaic = (p: number) => {
-  const rects = TILE_AT.map((at, i) => (p >= at ? `<rect x="${(i % MC) * TW}" y="${Math.floor(i / MC) * TH}" width="${TW + 0.5}" height="${TH + 0.5}"/>` : "")).join("");
-  const mask = `url("data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${rects}</svg>`)}")`;
-  const flash = TILE_AT.map((at, i) => ({ i, k: (p - at) / 0.14 })).filter((x) => x.k > 0 && x.k < 1);
-  return { mask, flash };
-};
-const Flash: React.FC<{ tiles: { i: number; k: number }[]; colors: string[] }> = ({ tiles, colors }) => (
-  <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
-    {tiles.map(({ i, k }) => (
-      <rect key={i} x={(i % MC) * TW} y={Math.floor(i / MC) * TH} width={TW + 0.5} height={TH + 0.5} fill={colors[i % colors.length]} opacity={0.8 * (1 - k)} />
-    ))}
-  </svg>
-);
 
 // ---- 5. the seabed: rocks and kelp that fill the frame, as the reference's deep is full to its edges ----------------
 const ROCKS = Array.from({ length: 11 }, (_, i) => {
@@ -615,7 +586,6 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const t = F / 24;
   const k = ramp(F, T.card, T.card + 20);
-  const mz = mosaic(k * 1.16);
   const cut = step(F, [520]);
   // the dive: the camera falls into the shell's iridescence, which becomes the card's foil stripe
   const dive = ramp(F, T.whip - 14, T.studio);
@@ -634,7 +604,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   );
   return (
     <LookCtx.Provider value={look("#dfe4e0", "#58636a")}>
-      <AbsoluteFill style={k < 1 ? { WebkitMaskImage: mz.mask, maskImage: mz.mask, WebkitMaskSize: "100% 100%", maskSize: "100% 100%" } : undefined}>
+      <Iris r={2300 - (2300 - 520) * easeIO(ramp(F, T.whip - 16, T.studio))} cy={600}>
         <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: "50% 74%" }}>
           <Paper color="#dfe4e0" grain={0.35} />
           <Mottle tint={[0.66, 0.72, 0.7]} seed={6} />
@@ -664,12 +634,7 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
             </RefDepth.Provider>
           </World>
         </AbsoluteFill>
-        {/* the iridescence floods the frame */}
-        <AbsoluteFill style={{ opacity: ramp(F, T.whip - 6, T.studio - 2) }}>
-          <Holo phase={0.35 + 0.4 * Math.sin((F - T.card) / 14)} style={{ inset: 0, mixBlendMode: "normal", opacity: 1, transform: `scale(${1 + 0.02 * Math.max(0, F - (T.whip - 6))})` }} />
-        </AbsoluteFill>
-      </AbsoluteFill>
-      {k < 1 ? <Flash tiles={mz.flash} colors={["#c3cbc8", "#e3d7fb", "#9fb0b4", "#f0d9cb"]} /> : null}
+      </Iris>
     </LookCtx.Provider>
   );
 };

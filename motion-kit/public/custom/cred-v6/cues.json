@@ -207,12 +207,6 @@
    "gain": 0.6
   },
   {
-   "at": 296,
-   "fx": "riser",
-   "until": 372,
-   "gain": 0.8
-  },
-  {
    "at": 372,
    "fx": "impact",
    "big": 0.6,
@@ -437,6 +431,24 @@
    "fx": "impact",
    "big": 1.0,
    "gain": 0.9
+  },
+  {
+   "at": 303,
+   "fx": "impact",
+   "big": 0.5,
+   "gain": 0.7
+  },
+  {
+   "at": 303,
+   "fx": "tick",
+   "freq": 2400,
+   "gain": 0.6
+  },
+  {
+   "at": 280,
+   "fx": "riser",
+   "until": 303,
+   "gain": 0.6
   }
  ]
 }
