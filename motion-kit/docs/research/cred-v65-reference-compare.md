@@ -51,3 +51,18 @@ fix the largest gap, commit.
 | 2 | The pixel-mosaic dissolve and mottled grounds were missing | Mosaic into the shell world in our palette; mottled paper |
 | 2 | Lanterns floated; an endless floor looked like a game | Cut-out rock islands, as the reference stands its lighthouse on a rock |
 | 3 | Products was a casual three-quarter view | A frontal temple: framing columns, guilloche rosette wall, holographic glass panels over plinths |
+| 4 | The user: "not even 70% close"; transitions were dissolves, mosaics and floods the reference never uses | Hard cuts on the beat inside a persistent loupe; iris opens and closes; lens-edge sweep; mosaic and flood removed |
+| 5 | The user: trees and fox "still look 3D"; the travel hotel shot didn't work | Flat plate with an inked contour (`ENGRAVE_FLAT`); travel rebuilt as an engraved hot-air balloon (fox in the basket) over a globe |
+| 6 | The user: jerks between scenes; sampled stills hid them | `tools/jerk_qa.py` on every frame: eased the bough's expo-out, kept the lens through cuts, started the crane and iris on the cut, fixed a black flash before the lockup, slowed the phone push |
+| 7–9 | The intro still didn't read like the reference | Frame-matched side by side: thin parallel S-wave pen bundle with a pull-back, a bold field, grey paper, a close bough with dark hatched olive bark and lavender edge clusters |
+| 10 | The temple was too sparse | Rosette wall panels, framing columns, a row of plinths with glass panels |
+| 11 | The score was thin | Cinematic score (92 BPM, D) with an event per cut, from `public/custom/cred-v6/sound.json` |
+
+## The final cut
+
+The user cut round 11 in an editor (`showcase/cred-v65/`): the pen-stroke opening trimmed to 0.8 s, the earlier
+three-quarter colonnade used for products, and their own music and effects at −14 LUFS. Read against round 11
+frame by frame, everything else is the render, cut for cut.
+
+Still weak, honestly: the fox is a low-poly model, and the blossoms read as clusters, not single flowers. Both
+need better source models, not more shader work.

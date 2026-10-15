@@ -1,4 +1,4 @@
-# Transition library (all used in CRED v6.4)
+# Transition library (CRED v6.4 and v6.5)
 
 Each entry says when to use it, how it is built, and how it failed before it worked.
 
@@ -13,3 +13,21 @@ Each entry says when to use it, how it is built, and how it failed before it wor
 | **Drop into a device** | Product → app mockup | The object tilts back (up to 55° at mid-drop), shrinks to the UI slot's width and lands in it; the device rises from below at the same time | Start the drop while the object is still turning, so the hand-over never stops |
 | **Push into the screen** | Mockup → logo lockup | The screen dims, then the camera scale accelerates into it (`1 + 9 t^2`). The lockup sequence starts about 6 frames early on top | Without the overlap you get 3–4 identical black frames |
 | **Scale-step cut** | Inside a world, on a beat | A hard cut to a tighter or looser framing of the same scene; the camera keeps drifting on both sides | Put it exactly on a beat of the cue sheet |
+
+## Added in v6.5: the reference's own grammar
+
+The reference film never dissolves. Every change is a hard cut on the beat, or something optical (the lens) or
+physical (a creature) passing across the frame. v6.5 dropped its mosaic, foil flood and strip split for these.
+
+| Transition | Use when | How it is built | Watch for |
+|---|---|---|---|
+| **Persistent loupe + hard cut** | Several close-ups in a row (card → print macro) | A soft dark radial mask fades in once and stays; inside it, hard cut on the beat to the next framing (`z = F >= T.macro ? 1 : 0`) | Never fade the lens out before the cut: users saw it as a blink |
+| **Iris open** | Into a new world from the lens | `Iris` in `v6/kit.tsx`; radius from `irisOpen(f, a, b)` = r0 + (2300 − r0)(0.5 − 0.5 cos πt), starting the frame after the cut | Start it on the cut, sine-eased. A hold then a snap read as a lurch in `jerk_qa` |
+| **Iris close** | Leaving a world on its hero (the shell's shimmer) | The same mask, radius 2300 → 520 over the last 16 frames, then hard cut; the next shot opens its own iris | Keep the subject moving inside the closing circle |
+| **Lens-edge sweep** | A cut inside one world (temple wide → frontal) | `LensSweep`: a soft black disc passes left to right; the cut happens behind its darkest point | It must cover the whole frame at the cut frame |
+| **Creature wipe** | Hiding a cut or crossing the words | A fish (or bird) very close to camera, fast (`{x0: -3.4, v: 14, z: 4.2, s: 2.4}`), crosses the frame | Close and fast, or it reads as a prop, not a wipe |
+| **Crane on the cut** | Globe → floor | The crane starts on the cut frame, `1 − (1 − t)^2` over 44 frames, while the iris opens | No hold before it starts |
+| **Pull-back from a field** | The opening | Pen strokes drawn one by one, then the camera scale eases out (1.4 → 1.04) as the field closes into a disc | Thin, parallel S-waves; thick crossing strokes read as scribble |
+
+Removed in v6.5, and why: the pixel mosaic and the foil flood (the reference has neither; they read as a
+template effect), the strip split-open (it needed a cut the beat didn't give), cross-dissolves anywhere.

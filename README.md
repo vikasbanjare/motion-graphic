@@ -27,6 +27,16 @@ Every video is built from tested scene templates. The AI writes the words and th
 animation code, so text doesn't overflow, timing doesn't drift and nothing flickers. An
 automatic check and a visual QA pass catch problems before anything is rendered.
 
+## Showcase: an engraved card launch film
+
+![CRED card spec film](showcase/cred-v65/preview.gif)
+
+A 32-second launch film for a credit card, in the engraved banknote style: real 3D models printed through a
+line-work shader, a pen-drawn opening, iris and loupe transitions, the card dropping into a phone. Unofficial spec
+work. The film, its storyboard, board frames and soundtrack are in [`showcase/cred-v65/`](showcase/cred-v65/);
+to make one like it for your own script, ask Claude for "a video like the CRED one" (the `cred-film` skill,
+`skills/cred-film/SKILL.md`).
+
 ## Three ways to start
 
 ### A. In your browser: Claude Code on the web (nothing to install)
