@@ -36,6 +36,6 @@ What I learned:
 
 Unofficial spec work, not affiliated with CRED or IndusInd Bank. 3D models used under CC-BY licences (credits in the repo).
 
-Process, storyboard and code: github.com/vikasbanjare/motion-graphic
+Process, storyboard and code: github.com/vikasbanjare/inkline-Motion-Graphic
 
 #MotionDesign #ClaudeCode #Remotion #ThreeJS #CreativeCoding #AI
