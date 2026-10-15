@@ -104,3 +104,14 @@ export const Iris: React.FC<{ r: number; cx?: number; cy?: number; children: Rea
 export const easeIO = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 /** Lens radius for an opening between frames a and b (from the loupe size to the full frame). */
 export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * easeIO(Math.min(1, Math.max(0, (f - a) / (b - a))));
+
+/** The loupe's edge sweeping across the frame (the reference wipes by moving its lens): a soft black disc passes left
+ * to right between frames a and b; the shot under it should change at the midpoint, when the centre is covered. */
+export const LensSweep: React.FC<{ f: number; a: number; b: number }> = ({ f, a, b }) => {
+  if (f < a || f > b) return null;
+  const p = easeIO((f - a) / (b - a));
+  const R = 1500, x = -R - 200 + p * (1920 + 2 * R + 400), y = 540 + 120 * (p - 0.5);
+  return (
+    <AbsoluteFill style={{ background: `radial-gradient(circle ${R}px at ${x}px ${y}px, #070908 ${R - 260}px, rgba(7,9,8,0.75) ${R - 120}px, rgba(7,9,8,0) ${R}px)` }} />
+  );
+};

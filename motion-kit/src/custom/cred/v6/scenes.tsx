@@ -9,7 +9,7 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { polyD, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, pop, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE_FINE, Headline, Holo, Iris, Lens, M, Mottle, PAL, easeIO, irisOpen } from "./kit.tsx";
+import { ENGRAVE_FINE, Headline, Holo, Iris, Lens, LensSweep, M, Mottle, PAL, easeIO, irisOpen } from "./kit.tsx";
 import { T } from "../v5/looks.ts";
 import { RewardsWorld } from "./intro.tsx";
 import { blob, leafGeo, rnd, type P3 } from "./geo.ts";
@@ -516,6 +516,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
             <Headline text={copy.claim3.head} sub={copy.claim3.sub} grad={["#8a2a1e", "#c2553c", "#7a3a8a"]} t={expoOut(ramp(F, T.products + 42, T.products + 56))} size={fit(copy.claim3.head, 92, 1500)} top={140} />
           </>
         ) : null}
+        <LensSweep f={F} a={438} b={454} />
       </Iris>
       </AbsoluteFill>
     </LookCtx.Provider>
@@ -597,6 +598,8 @@ export const ShellTake: React.FC<{ from: number }> = ({ from }) => {
   const fish = useMemo(
     () => [
       ...Array.from({ length: 7 }, (_, i) => ({ x0: -7.5 + ((i * 2.3) % 5), v: 0.55 + 0.12 * ((i * 7) % 3), y: 0.35 + ((i * 5) % 3) * 0.28, z: -2.2 - (i % 3) * 0.9, ph: i * 1.7, s: 1.0 + 0.2 * (i % 2) })),
+      // one close to the lens, crossing the frame right after the cut in (a natural wipe)
+      { x0: -3.4, v: 8, y: 1.7, z: 4.2, ph: 0, s: 2.4 },
       // two in front, at the height of the value, crossing it mid-shot
       { x0: -4.6, v: 0.9, y: 2.25, z: 1.2, ph: 0.4, s: 0.9 },
       { x0: -6.2, v: 0.95, y: 2.55, z: 0.6, ph: 2.2, s: 0.75 },
