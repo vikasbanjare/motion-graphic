@@ -106,7 +106,7 @@ export const Iris: React.FC<{ r: number; cx?: number; cy?: number; children: Rea
 };
 export const easeIO = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 /** Lens radius for an opening between frames a and b (from the loupe size to the full frame). */
-export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * (1 - Math.pow(1 - Math.min(1, Math.max(0, (f - a) / (b - a))), 2.2));
+export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * (0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, (f - a) / (b - a))))); // even sine ease: no hold, no snap
 
 /** The loupe's edge sweeping across the frame (the reference wipes by moving its lens): a soft black disc passes left
  * to right between frames a and b; the shot under it should change at the midpoint, when the centre is covered. */

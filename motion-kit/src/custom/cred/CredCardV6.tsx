@@ -19,7 +19,13 @@ export const CRED_V6_FRAMES = T.end + INTRO;
 /** The next world opens out of the loupe that closed on the shell (local frames of its Sequence). */
 const IrisIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const f = useCurrentFrame();
-  return <Iris r={irisOpen(f, 0, 18, 520)} cy={600}>{children}</Iris>;
+  return <Iris r={irisOpen(f, 0, 26, 520)} cy={600}>{children}</Iris>;
+};
+
+/** Fades its children in over the first frames of their Sequence (the lockup over the end of the phone push). */
+const FadeIn: React.FC<{ frames: number; children: React.ReactNode }> = ({ frames, children }) => {
+  const f = useCurrentFrame();
+  return <AbsoluteFill style={{ opacity: Math.min(1, (f + 1) / frames) }}>{children}</AbsoluteFill>;
 };
 
 /** The lockup keeps breathing: a slow push so the final hold never reads as a freeze. */
@@ -55,9 +61,11 @@ export const CredCardV6: React.FC<{ copy?: FilmCopy; score?: string }> = ({ copy
         </IrisIn>
       </Sequence>
       <Sequence from={T.lockup - 6 + INTRO} durationInFrames={T.end - T.lockup + 6} name="lockup (official logo file); overlaps the push so no frame is dead black">
-        <Drift>
-          <Lockup logo={copy.logo} line={copy.lockup} />
-        </Drift>
+        <FadeIn frames={6}>
+          <Drift>
+            <Lockup logo={copy.logo} line={copy.lockup} />
+          </Drift>
+        </FadeIn>
       </Sequence>
       <Audio src={staticFile(score)} />
     </AbsoluteFill>
