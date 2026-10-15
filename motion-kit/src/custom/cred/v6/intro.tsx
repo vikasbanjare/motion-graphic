@@ -43,10 +43,15 @@ const PaperFibre: React.FC<{ color: string; vignette: number }> = ({ color, vign
         <feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.49  0 0 0 0 0.45  0 0 0 -2.2 1.05" />
       </filter>
       <rect width="100%" height="100%" filter="url(#fib-grain)" />
-      <rect width="100%" height="100%" filter="url(#fib-fibre)" opacity={0.16} />
-      <radialGradient id="fib-vig" cx="50%" cy="48%" r="72%">
-        <stop offset="45%" stopColor="#000" stopOpacity={0} />
-        <stop offset="100%" stopColor="#3a3830" stopOpacity={vignette} />
+      <filter id="fib-mottle" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves={4} seed={5} />
+        <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.55  0 0 0 0 0.54  0 0 0 -1.4 1.0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#fib-fibre)" opacity={0.04} />
+      <rect width="100%" height="100%" filter="url(#fib-mottle)" opacity={0.14} />
+      <radialGradient id="fib-vig" cx="50%" cy="50%" r="80%">
+        <stop offset="35%" stopColor="#000" stopOpacity={0} />
+        <stop offset="100%" stopColor="#4a4a48" stopOpacity={vignette} />
       </radialGradient>
       <rect width="100%" height="100%" fill="url(#fib-vig)" />
     </svg>
@@ -55,21 +60,21 @@ const PaperFibre: React.FC<{ color: string; vignette: number }> = ({ color, vign
 
 /** The opening strokes: y (px), length (fraction of the width), start frame, draw length (frames), weight. */
 const STROKES = [
-  { y: 512, len: 0.46, at: 12, dur: 24, size: 1.9 },
-  { y: 470, len: 0.3, at: 19, dur: 20, size: 1.7 },
-  { y: 556, len: 0.62, at: 25, dur: 24, size: 1.8 },
-  { y: 430, len: 0.38, at: 31, dur: 20, size: 1.5 },
-  { y: 598, len: 0.24, at: 36, dur: 16, size: 1.4 },
-  { y: 640, len: 0.52, at: 41, dur: 20, size: 1.5 },
-  { y: 392, len: 0.2, at: 46, dur: 14, size: 1.3 },
-  { y: 682, len: 0.34, at: 51, dur: 14, size: 1.3 },
+  { y: 520, len: 0.42, at: 12, dur: 26, size: 0.95, amp: 56, lam: 920, ph: 0 },
+  { y: 478, len: 0.24, at: 19, dur: 20, size: 0.85, amp: 52, lam: 920, ph: 18 },
+  { y: 562, len: 0.58, at: 25, dur: 26, size: 0.9, amp: 58, lam: 920, ph: -14 },
+  { y: 436, len: 0.33, at: 31, dur: 20, size: 0.8, amp: 48, lam: 920, ph: 30 },
+  { y: 604, len: 0.2, at: 36, dur: 16, size: 0.75, amp: 54, lam: 920, ph: -26 },
+  { y: 646, len: 0.47, at: 41, dur: 22, size: 0.8, amp: 50, lam: 920, ph: 8 },
+  { y: 394, len: 0.18, at: 46, dur: 14, size: 0.7, amp: 44, lam: 920, ph: 40 },
+  { y: 688, len: 0.3, at: 51, dur: 16, size: 0.7, amp: 46, lam: 920, ph: -36 },
 ];
 const FIELD_AT = 64;
 
-const penPts = (y: number, len: number, amp: number, phase: number): Pt[] =>
+const penPts = (y: number, len: number, amp: number, phase: number, lam = 520): Pt[] =>
   Array.from({ length: 90 }, (_, i) => {
     const x = -60 + (i / 89) * (W * len + 60);
-    return [x, y + amp * Math.sin(((x + phase) / 520) * Math.PI * 2)] as Pt;
+    return [x, y + amp * Math.sin(((x + phase) / lam) * Math.PI * 2)] as Pt;
   });
 
 const Pen: React.FC<{ G: number }> = ({ G }) => {
@@ -82,8 +87,8 @@ const Pen: React.FC<{ G: number }> = ({ G }) => {
       if (G < s.at) continue;
       const k = Math.min(1, (G - s.at) / s.dur);
       // straight while the pen runs, then the line takes its wave (the reference's first stroke bends after it lands)
-      const amp = 15 * expoOut(ramp(G, s.at + s.dur * 0.45, s.at + s.dur + 14));
-      const pts = trim(penPts(s.y, s.len, amp, G * 3.2 + s.y * 2.1), 0, expoOut(k));
+      const amp = s.amp * expoOut(ramp(G, s.at + s.dur * 0.35, s.at + s.dur + 18));
+      const pts = trim(penPts(s.y, s.len, amp, s.ph + G * 2.4, s.lam), 0, expoOut(k));
       if (pts.length < 2) continue;
       const n = pts.length;
       const o = getStroke(pts.map(([px, py], i) => [px, py, 0.55 + 0.45 * Math.sin((Math.PI * (i + 0.5)) / n)]), { size: s.size * 5.6, thinning: 0.55, smoothing: 0.4, streamline: 0.1, simulatePressure: false, start: { taper: 0 }, end: { taper: 90 } });
@@ -109,10 +114,10 @@ export const Ground: React.FC<{ G: number; fine?: number }> = ({ G, fine = 1 }) 
   return (
     <LookCtx.Provider value={look("#ebebe7", "#3a3a3e")}>
       <AbsoluteFill>
-        <PaperFibre color="#ecece8" vignette={0.28 - 0.18 * ramp(G, 60, 110)} />
+        <PaperFibre color="#e6e6e4" vignette={0.3 - 0.2 * ramp(G, 60, 110)} />
         {G < FIELD_AT ? <Pen G={G} /> : null}
         {G >= FIELD_AT ? (
-          <Field f={G} pitch={21 * fine} lambda={112 * fine} amp={6 * fine} speed={6} width={1.7 * fine} color="#7f817b" angle={-2} reveal={0.3 + 0.36 * expoOut(ramp(G, FIELD_AT, FIELD_AT + 40))} ragged={170} noiseAmp={0.3} clip={G >= 84 ? ring : undefined} />
+          <Field f={G} pitch={30 * fine} lambda={300 * fine} amp={15 * fine} speed={6} width={2.5 * fine} color="#4f504c" angle={-2} reveal={0.3 + 0.36 * expoOut(ramp(G, FIELD_AT, FIELD_AT + 40))} ragged={170} noiseAmp={0.3} clip={G >= 84 ? ring : undefined} />
         ) : null}
         {wash > 0 ? (
           <AbsoluteFill
@@ -165,7 +170,7 @@ const blossom = (s: number) => {
     p.rotateZ((k / 5) * Math.PI * 2);
     petals.push(p);
   }
-  const eye = new THREE.SphereGeometry(0.04 * s, 12, 10);
+  const eye = new THREE.SphereGeometry(0.026 * s, 12, 10);
   eye.translate(0, 0, 0.03 * s);
   return { petals: mergeGeometries(petals)!, eye };
 };
@@ -270,25 +275,23 @@ const kink = (path: P3[], seed: number): P3[] =>
 const TWIG_G = TWIGS.map((t, i) => tube(kink(t.path, 70 + i), t.r[0] * 0.38, t.r[1] * 0.5, 80, 10).g);
 /** Flower clusters: position, blossom count, spread, pop-in frame (u), leaves. */
 const CLUSTERS: { at: P3; n: number; spread: number; u: number; leaves: number }[] = [
-  { at: [2.6, 2.45, 0.2], n: 16, spread: 0.5, u: 20, leaves: 5 },
-  { at: [2.05, 1.65, 0.05], n: 8, spread: 0.32, u: 24, leaves: 3 },
-  { at: [-3.15, 2.05, -0.3], n: 15, spread: 0.5, u: 24, leaves: 5 },
+  { at: [2.6, 2.45, 0.2], n: 16, spread: 0.55, u: 20, leaves: 5 },
+  { at: [-3.15, 2.05, -0.3], n: 15, spread: 0.55, u: 24, leaves: 5 },
   { at: [-2.5, 1.6, -0.4], n: 7, spread: 0.3, u: 28, leaves: 3 },
-  { at: [1.65, -1.2, 1.45], n: 14, spread: 0.45, u: 26, leaves: 5 },
-  { at: [-1.0, 1.15, -0.65], n: 7, spread: 0.3, u: 30, leaves: 3 },
-  { at: [-1.75, 0.85, 0.1], n: 10, spread: 0.36, u: 32, leaves: 4 },
-  { at: [3.4, -0.3, 1.2], n: 12, spread: 0.42, u: 18, leaves: 4 },
-  { at: [-2.9, 0.85, 0.0], n: 9, spread: 0.34, u: 34, leaves: 3 },
+  { at: [1.65, -1.2, 1.45], n: 14, spread: 0.5, u: 26, leaves: 5 },
+  { at: [3.4, -0.3, 1.2], n: 12, spread: 0.45, u: 18, leaves: 4 },
+  // the reference's big mass of blossom low on the left, in front of the bough
+  { at: [-2.3, 0.75, 0.9], n: 16, spread: 0.6, u: 22, leaves: 4 },
 ];
 const CLUSTER_G = CLUSTERS.map((c, i) => cluster(c.n, c.spread, 300 + i * 7, c.leaves));
 
 /** Fox along the bough (arc length s, right to left): runs in, stops among the flowers at the cut, looks around. */
 const STEP = 96; // the scale-step to the close shot (u); the fox stops here
 const S_STOP = 0.5;
-const FOX = 1.25;
+const FOX = 1.6;
 const LEN = BOUGH.curve.getLength();
-const RUN = 0.0486 / LEN; // arc fraction per frame: the clip's own run speed at this size, so the feet don't slide
-const WALK = 0.022 / LEN;
+const RUN = (0.0486 * FOX) / 1.25 / LEN; // arc fraction per frame: the clip's own run speed at this size, so the feet don't slide
+const WALK = (0.022 * FOX) / 1.25 / LEN;
 const foxS = (u: number) => (u < STEP ? S_STOP - RUN * (STEP - u) : u < 150 ? S_STOP : S_STOP + WALK * (u - 150));
 const onBough = (s: number) => {
   const c = BOUGH.curve;
@@ -316,16 +319,16 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
     ? // the card's print: the flowering top-right twig under the loupe's focus, the fox along the bottom edge
       { pos: [0.3 - du * 0.004, 2.1, 5.6] as P3, target: [0.25 - du * 0.004, 2.0, 0] as P3, fov: 44 }
     : cut === 0
-    ? { pos: [1.4 - u * 0.012, 1.0 + u * 0.002, 6.9 - u * 0.014] as P3, target: [0.75 - u * 0.009, 0.9, 0] as P3, fov: 36 }
+    ? { pos: [1.2 - u * 0.012, 1.0 + u * 0.002, 5.9 - u * 0.012] as P3, target: [0.6 - u * 0.009, 0.95, 0] as P3, fov: 36, roll: -0.1 }
     : (() => {
         const fx = u < 150 ? stop[0] : 0.6 * fox.p[0] + 0.4 * stop[0];
         return { pos: [fx + 1.3 - (u - STEP) * 0.011, stop[1] + 0.85, stop[2] + 3.7 - (u - STEP) * 0.008] as P3, target: [fx - 0.1 - (u - STEP) * 0.004, stop[1] + 0.5, stop[2]] as P3, fov: 32 };
       })();
   const clip = u < STEP ? "Run" : u < 150 ? "Survey" : "Walk";
   const clipT = u < STEP ? t : u < 150 ? (u - STEP) / 24 : (u - 150) / 24;
-  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1 };
+  const green = { palette: [["#26400c", 0], ["#5d7f24", 0.4], ["#b9cf88", 0.78], ["#eef3dc", 1]] as typeof PAL.green, seed: 31, map: barkTex, mapAmt: 0.75, ambient: 0.06, keyAmt: 0.72, wrap: 0.5, toneGamma: 1.35, hatch: 0.7, hatchT: 0.42 };
   // the reference's blossoms are pale lavender cut with violet line, not solid purple
-  const bloom = [["#3b2290", 0], ["#7f5fd6", 0.38], ["#c8b4f3", 0.74], ["#f1eafd", 1]] as typeof PAL.violet;
+  const bloom = [["#4b1fa0", 0], ["#9364dc", 0.34], ["#c09cf0", 0.7], ["#ecdffd", 1]] as typeof PAL.violet;
   return (
     <World aa>
       <Cam {...cam} />
@@ -358,10 +361,10 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
               if (g <= 0) return null;
               const sway = 0.07 * Math.sin(t * 1.4 + i * 2.1);
               return (
-                <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g}>
+                <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g * 1.3}>
                   {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i }} double /> : null}
-                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, foil: i === 0 ? 0.2 : 0 }} double />
-                  <EMesh g={CLUSTER_G[i].eyes} m={{ palette: PAL.violet, seed: 90 + i, albedo: 0.2 }} />
+                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, foil: i === 0 ? 0.2 : 0, ambient: 0.16, keyAmt: 0.8, wrap: 0.5 }} double />
+                  <EMesh g={CLUSTER_G[i].eyes} m={{ palette: bloom, seed: 90 + i, albedo: 0.55 }} />
                 </group>
               );
             })}
@@ -395,7 +398,7 @@ export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
   const copy = useCopy();
   // the paper breathes in while the pen works, then the scale-step lands on the field and keeps a slow push
   // after the step it eases out to exactly 1 at the card hand-over, so the card's print matches the frame
-  const s = G < FIELD_AT ? 1.07 - 0.05 * ramp(G, 12, FIELD_AT) : 1.035 - 0.035 * ramp(G, FIELD_AT, 150 + INTRO);
+  const s = G < FIELD_AT ? 1.4 - 0.36 * (1 - Math.pow(1 - ramp(G, 12, FIELD_AT), 1.6)) : 1.035 - 0.035 * ramp(G, FIELD_AT, 150 + INTRO);
   const head = G >= 176 ? expoOut(ramp(G, 176, 192)) : 0;
   return (
     <AbsoluteFill>
