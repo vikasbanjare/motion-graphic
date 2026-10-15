@@ -232,10 +232,12 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const tiltX = (10 - 4 * drift) * (1 - drop) + 55 * Math.sin(Math.PI * drop), tiltY = (-16 + 12 * drift) * (1 - drop);
   const handed = F >= 606; // the card now lives inside the phone's screen
   // 3. the screen goes dark and the camera pushes into it
-  const dark = ramp(F, 630, 638);
-  const push = ramp(F, 634, T.lockup);
+  const dark = ramp(F, 622, 632);
+  const push = ramp(F, 624, T.lockup); // ~0.9 s: a dive, not a jump
   // a slow continuous push from the moment the phone lands, so the hold never freezes
-  const z = (1 + 0.08 * ramp(F, 590, 640)) * (1 + 9 * push * push);
+  // ease in and out of the push so the hand-over to the lockup has no lurch
+  const pe = push * push * (3 - 2 * push);
+  const z = (1 + 0.08 * ramp(F, 590, 640)) * (1 + 6 * pe);
   return (
     <AbsoluteFill style={{ background: "radial-gradient(ellipse 70% 60% at 50% 45%, #ffffff, #ececea 70%, #e2e2df)" }}>
       {/* the white set is engraved too: a fine line field and a faint rosette behind the phone (no flat white) */}
@@ -267,10 +269,10 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
           </>
         ) : null}
         {F >= 604 ? (
-          <>
+          <div style={{ opacity: 1 - ramp(F, 616, 626) }}>
             <Words text={copy.outro.left} F={F} at={606} align="right" x={W / 2 + PW / 2 + 70} />
             <Words text={copy.outro.right} F={F} at={614} align="left" x={W / 2 + PW / 2 + 70} />
-          </>
+          </div>
         ) : null}
       </AbsoluteFill>
       {/* the shell's iridescence resolving into the stripe */}
