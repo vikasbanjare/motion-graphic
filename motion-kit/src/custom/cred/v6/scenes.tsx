@@ -141,7 +141,7 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
           <CardFace F={F} holo={(F - T.reveal) / 70} copy={1 - ramp(F, OPEN - 2, OPEN + 6)} on={easeIO(ramp(F, T.reveal + 4, T.reveal + 26))} />
         </div>
       </AbsoluteFill>
-      <AbsoluteFill style={{ opacity: easeIO(ramp(F, T.reveal + 2, T.reveal + 20)) * (1 - ramp(F, 252, 272)) }}>
+      <AbsoluteFill style={{ opacity: easeIO(ramp(F, T.reveal + 2, T.reveal + 20)) }}>
         <Lens r={0.62 + 0.4 * (1 - k)} soft={0.3} />
       </AbsoluteFill>
       {F < T.reveal + 12 ? <Headline text={copy.claim1.head} sub={copy.claim1.sub} grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={1 - ramp(F, T.reveal, T.reveal + 10)} size={fit(copy.claim1.head, 92, 1500)} /> : null}
@@ -160,32 +160,6 @@ export const band = (F: number) => {
 
 /** The two foil edges of the split strip, riding outward with the band. */
 // ---- 3. travel: a hotel at dusk, flights arcing over the globe --------------------------------------------------
-/** The lantern's beam: a soft cone of light from the lamp that sweeps across the sky, "lighting the way" (the
- * reference sweeps a lighthouse beam; this is the same device on our own subject). */
-const Beam: React.FC<{ F: number; x: number; y: number }> = ({ F, x, y }) => {
-  const on = expoOut(ramp(F, 300, 322));
-  if (on <= 0) return null;
-  const a = (-14 + 22 * Math.sin((F - 300) / 38)) * (Math.PI / 180);
-  const L = 2600, half = 0.2 * on;
-  const p1: Pt = [x + L * Math.cos(a - half), y + L * Math.sin(a - half)];
-  const p2: Pt = [x + L * Math.cos(a + half), y + L * Math.sin(a + half)];
-  return (
-    <svg width={W} height={H} style={{ position: "absolute", inset: 0, mixBlendMode: "screen", opacity: 0.85 * on }}>
-      <defs>
-        <radialGradient id="beam-g" gradientUnits="userSpaceOnUse" cx={x} cy={y} r={L}>
-          <stop offset="0" stopColor="#fffbe6" stopOpacity={0.95} />
-          <stop offset="0.45" stopColor="#e9e2ff" stopOpacity={0.45} />
-          <stop offset="1" stopColor="#d6d0ea" stopOpacity={0} />
-        </radialGradient>
-        <filter id="beam-soft"><feGaussianBlur stdDeviation={10} /></filter>
-      </defs>
-      <path d={`M${x},${y} L${p1[0]},${p1[1]} L${p2[0]},${p2[1]} Z`} fill="url(#beam-g)" filter="url(#beam-soft)" />
-      <circle cx={x} cy={y} r={95} fill="#fffbe6" opacity={0.9} filter="url(#beam-soft)" />
-      <circle cx={x} cy={y} r={34} fill="#ffffff" opacity={0.95} />
-    </svg>
-  );
-};
-
 /** Great-circle arc between two lon/lat points, lifted off the globe, projected like <Globe> (orthographic). */
 const flightArc = (a: [number, number], b: [number, number], lon0: number, lat0: number, R: number, cx: number, cy: number): Pt[] => {
   const r = Math.PI / 180;
@@ -247,39 +221,94 @@ const Flights: React.FC<{ F: number; cx: number; cy: number; R: number; lon: num
 
 /**
  * 270-404. Revealed through the split foil strip (band(F) from the card take), already composed, then:
- *   flights arc out from India over the globe with planes riding the arcs; a hotel rises on the left, the lantern
- *   lights its door, the fox runs past. Leaves by a dive into the globe whose grid becomes the colonnade's floor.
+ *   flights arc out from India over the globe with planes riding the arcs; the fox rises in a balloon through the
+ *   clouds. Leaves by a dive into the globe whose grid becomes the colonnade's floor.
  */
 /** Frame where the centred globe matches the colonnade floor; floor radius seen from the overhead camera / globe radius. */
 export const MATCH = 384;
-/** The lantern's lamp (world units) and a projection to screen px with a take's camera, so 2D light can sit on it. */
-const LAMP_AT: [number, number, number] = [-4.76, 2.84, -2.1]; // solved from the lamp's spot in a rendered frame
-/** Rock islands under the lanterns: the reference stands its heroes on cut-out ground, not an endless floor. */
-const MOUNDS: { at: [number, number, number]; s: [number, number, number]; seed: number }[] = [
-  { at: [-3.3, -0.75, -2.4], s: [3.6, 1.1, 2.6], seed: 51 },
-  { at: [-0.9, -0.6, -6.2], s: [2.4, 0.8, 1.8], seed: 52 },
-  { at: [1.1, -0.55, -10.5], s: [2.0, 0.7, 1.5], seed: 53 },
-];
-const MOUND_G = MOUNDS.map((m) => blob(m.s[0], m.s[1], m.s[2], 0.18, m.seed, 40));
-
-const toScreen = (p: [number, number, number], c: { pos: [number, number, number]; target: [number, number, number]; fov: number }): Pt => {
-  const cam = new THREE.PerspectiveCamera(c.fov, W / H, 0.05, 800);
-  cam.position.set(...c.pos);
-  cam.lookAt(new THREE.Vector3(...c.target));
-  cam.updateMatrixWorld();
-  const v = new THREE.Vector3(...p).project(cam);
-  return [(v.x * 0.5 + 0.5) * W, (-v.y * 0.5 + 0.5) * H];
-};
 const GLOBE_TO_FLOOR = 941 / 340;
+/** The balloon: an engraved hot-air balloon (gored envelope, wicker basket, ropes) carrying the fox over the clouds. */
+const goreTex = (() => {
+  const c = document.createElement("canvas");
+  c.width = 1024;
+  c.height = 512;
+  const x = c.getContext("2d")!;
+  for (let k = 0; k < 16; k++) {
+    x.fillStyle = k % 2 ? "#e9e4f6" : "#9c93cf";
+    x.fillRect((k / 16) * 1024, 0, 1024 / 16 + 1, 512);
+  }
+  x.fillStyle = "#4a4696";
+  for (const y of [300, 318]) x.fillRect(0, y, 1024, 8); // a band round the waist
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  return t;
+})();
+const wickerTex = (() => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const x = c.getContext("2d")!;
+  x.fillStyle = "#e6e0f2";
+  x.fillRect(0, 0, 256, 256);
+  x.strokeStyle = "#4a4696";
+  x.lineWidth = 3;
+  for (let i = -256; i < 512; i += 16) {
+    x.beginPath(); x.moveTo(i, 0); x.lineTo(i + 128, 256); x.stroke();
+    x.beginPath(); x.moveTo(i + 128, 0); x.lineTo(i, 256); x.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.NoColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(4, 1);
+  return t;
+})();
+const ENVELOPE = (() => {
+  const c = new THREE.CatmullRomCurve3([[0.22, 0], [0.5, 0.35], [1.1, 1.0], [1.55, 1.9], [1.6, 2.5], [1.35, 3.1], [0.8, 3.55], [0, 3.72]].map(([r, y]) => new THREE.Vector3(r, y, 0)));
+  const g = new THREE.LatheGeometry(c.getPoints(48).map((p) => new THREE.Vector2(Math.max(0, p.x), p.y)), 64);
+  g.computeVertexNormals();
+  return g;
+})();
+const BASKET = new THREE.CylinderGeometry(0.42, 0.36, 0.55, 32, 1, false);
+const ROPES = [0, 1, 2, 3].map((k) => {
+  const a = (k / 4) * Math.PI * 2 + Math.PI / 4;
+  return new THREE.TubeGeometry(new THREE.LineCurve3(new THREE.Vector3(Math.cos(a) * 0.24, 0.02, Math.sin(a) * 0.24), new THREE.Vector3(Math.cos(a) * 0.4, -0.95, Math.sin(a) * 0.4)), 4, 0.015, 6, false);
+});
+const Balloon: React.FC<{ t: number }> = ({ t }) => (
+  <group>
+    <EMesh g={ENVELOPE} m={{ palette: PAL.indigo, seed: 61, map: goreTex, mapAmt: 0.9, foil: 0.25 } as never} live={{ foilPhase: t * 0.1 }} />
+    {ROPES.map((g, i) => (
+      <EMesh key={i} g={g} m={{ palette: PAL.indigo, seed: 62 + i }} />
+    ))}
+    <EMesh g={BASKET} m={{ palette: PAL.lilac, seed: 66, map: wickerTex, mapAmt: 0.9 } as never} pos={[0, -1.22, 0]} />
+    {/* the fox rides in the basket, looking out over the rim */}
+    <Rig url={M + "Fox.glb"} smooth size={0.85} pos={[0.0, -1.02, 0.08]} rot={[0, 1.1, 0]} clip="Survey" time={t} m={{ palette: PAL.violet, foil: 0.2 }} foilPhase={t * 0.2} />
+  </group>
+);
+/** Engraved clouds: flattened lumps drifting at three depths (the near ones cross the frame as wipes). */
+const CLOUDS: { g: THREE.BufferGeometry; x0: number; y: number; z: number; v: number }[] = [
+  // two small near clouds that cross low in the frame (natural wipes), mid clouds round the globe, far haze
+  { x: -7.5, y: -2.4, z: 2.6, w: 1.8, v: 0.07 },
+  { x: 6.5, y: -2.8, z: 2.2, w: 1.6, v: -0.06 },
+  { x: 1.6, y: -0.9, z: -2.0, w: 2.2, v: 0.02 },
+  { x: 4.6, y: 1.4, z: -3.2, w: 1.9, v: -0.018 },
+  { x: -4.8, y: 2.6, z: -4.5, w: 2.0, v: 0.012 },
+  { x: 0.2, y: 3.4, z: -8.0, w: 3.0, v: 0.008 },
+].map((c, i) => ({ g: blob(c.w, c.w * 0.32, c.w * 0.5, 0.25, 200 + i, 36), x0: c.x, y: c.y, z: c.z, v: c.v }));
+/** The balloon's position at take frame F: it rises from below the frame and drifts right, on the left of frame. */
+const balloonAt = (F: number): [number, number, number] => [-3.2 + (F - OPEN) * 0.005, -2.8 + 3.4 * (1 - (1 - ramp(F, OPEN - 4, MATCH - 20)) ** 1.6), 0];
 
 export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   const F = useCurrentFrame() + from;
   const copy = useCopy();
   const t = F / 24;
   const cut = step(F, [336]);
+  // wide: the balloon rises into frame among the clouds; the step lands closer on the fox in the basket
   const cam = cut === 0
-    ? { pos: [-0.8 + (F - T.swap) * 0.018, 1.35, 8.4] as [number, number, number], target: [0.2, 1.45, -2] as [number, number, number], fov: 36 }
-    : { pos: [-0.2 + (F - 336) * 0.018, 1.2, 7.2] as [number, number, number], target: [0.4, 1.65, -2] as [number, number, number], fov: 34 };
+    ? { pos: [-0.6 + (F - OPEN) * 0.01, 0.9 + (F - OPEN) * 0.012, 9.6] as [number, number, number], target: [-0.2 + (F - OPEN) * 0.008, 1.0 + (F - OPEN) * 0.012, 0] as [number, number, number], fov: 38 }
+    : (() => {
+        // the step lands on the basket: the fox looking out over the rim, the envelope rising out of frame
+        const b = balloonAt(F);
+        return { pos: [b[0] + 2.2, b[1] - 0.3, 4.4] as [number, number, number], target: [b[0] + 1.7, b[1] - 0.55, 0] as [number, number, number], fov: 34 };
+      })();
   const lon = 40 + 22 * ramp(F, T.swap, MATCH - 30) + 0.9 * Math.max(0, F - (MATCH - 30)); // keeps turning through the match
   const G = { cx: W * 0.7, cy: H * 0.6, R: 340 };
   // exit: the globe glides to frame centre and grows to the size of the colonnade's floor seen from above (MATCH)
@@ -302,24 +331,15 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
             <Cam {...cam} />
             <RefDepth.Provider value={7}>
               <Detail.Provider value={ENGRAVE_FINE}>
-                {MOUNDS.map((m, i) => (
-                  <EMesh key={`m${i}`} g={MOUND_G[i]} m={{ palette: PAL.indigo, seed: m.seed, follow: 0.25, angleDeg: 24, albedoNoise: 0.3, noiseScale: 6, atmos: 0.18 * i }} pos={m.at} />
+                {CLOUDS.map((c, i) => (
+                  <EMesh key={`c${i}`} g={c.g} m={{ palette: PAL.lilac, seed: 210 + i, atmos: c.z < -5 ? 0.45 : c.z < 0 ? 0.2 : 0, lift: 0.18 }} pos={[c.x0 + c.v * (F - OPEN), c.y, c.z]} />
                 ))}
-                <Rig url={M + "Lantern.glb"} size={4.2} pos={[-3.3, -0.3, -2.4]} rot={[0, -2.4, 0]} m={{ palette: PAL.indigo, foil: 0.5, seed: 40 }} foilPhase={t * 0.1} />
-                {/* a street of lanterns receding behind the hero: the way being lit */}
-                <Rig url={M + "Lantern.glb"} size={3.2} pos={[-0.9, -0.3, -6.2]} rot={[0, -2.2, 0]} m={{ palette: PAL.indigo, atmos: 0.35, seed: 42 }} />
-                <Rig url={M + "Lantern.glb"} size={2.8} pos={[1.1, -0.3, -10.5]} rot={[0, -2.0, 0]} m={{ palette: PAL.indigo, atmos: 0.55, seed: 43 }} />
-                {F >= T.swap ? <Rig url={M + "Fox.glb"} smooth size={1.5} pos={[-1.3 - (F - T.swap) * 0.06, -0.2, -2.0]} rot={[0, -Math.PI / 2 + 0.15, 0]} clip="Run" time={t} m={{ palette: PAL.indigo, foil: 0.25 }} foilPhase={t * 0.2} /> : null}
+                <group position={balloonAt(F)} rotation={[0, t * 0.12, 0.04 * Math.sin(t * 0.9)]}>
+                  <Balloon t={t} />
+                </group>
               </Detail.Provider>
             </RefDepth.Provider>
           </World>
-        </AbsoluteFill>
-        {/* the 3D layer is not under the globe's CSS zoom, so the beam sits beside it and leaves before the dive */}
-        <AbsoluteFill style={{ opacity: 1 - ramp(F, MATCH - 36, MATCH - 26) }}>
-          {(() => {
-            const p = toScreen(LAMP_AT, cam);
-            return <Beam F={F} x={p[0]} y={p[1]} />;
-          })()}
         </AbsoluteFill>
         {F > T.tilt ? (
           <AbsoluteFill style={{ opacity: 1 - ramp(F, MATCH - 30, MATCH - 18) }}>
@@ -444,7 +464,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   const copy = useCopy();
   const t = F / 24;
   // overhead (the ring of capitals, as the reference opens its temple), then the crane tilts down to eye level
-  const crane = expoOut(ramp(F, MATCH + 2, MATCH + 42));
+  const crane = 1 - (1 - ramp(F, MATCH, MATCH + 44)) ** 2;
   const cut = step(F, [446]);
   const orbit = 0.18 + (F - MATCH) * 0.003;
   const eye: [number, number, number] = [Math.sin(orbit) * 9.2, 2.4, Math.cos(orbit) * 9.2];

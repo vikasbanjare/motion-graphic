@@ -9,7 +9,7 @@ import { LookCtx, type Look } from "../../../ensemble/look.ts";
 import { circle, trim, type Pt } from "../../../ensemble/paths.ts";
 import { expoOut, ramp } from "../../../ensemble/score.ts";
 import { Rig } from "./rig.tsx";
-import { ENGRAVE_FINE, Headline, M, PAL } from "./kit.tsx";
+import { ENGRAVE_FLAT, Headline, M, PAL } from "./kit.tsx";
 import { fit, useCopy } from "./copy.tsx";
 import { blob, leafGeo, rnd, tube, type P3 } from "./geo.ts";
 
@@ -307,7 +307,7 @@ const pop = (u: number, at: number, len = 16) => {
 export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = ({ u, framing, fine = 1 }) => {
   const t = u / 24;
   const cut = framing ?? (u >= STEP ? 1 : 0);
-  const sweep = expoOut(ramp(u, 8, 36));
+  const sweep = (() => { const k = ramp(u, 6, 38); return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; })(); // ease in and out: no lurch at the start
   const fs = foxS(u);
   const fox = onBough(fs);
   const stop = onBough(S_STOP).p;
@@ -323,7 +323,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
       })();
   const clip = u < STEP ? "Run" : u < 150 ? "Survey" : "Walk";
   const clipT = u < STEP ? t : u < 150 ? (u - STEP) / 24 : (u - 150) / 24;
-  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1, follow: 0.1, angleDeg: 28, periodFrac: 0.0052, toneGamma: 1.3, wash: 0.25 };
+  const green = { palette: PAL.green, seed: 31, map: barkTex, mapAmt: 1 };
   // the reference's blossoms are pale lavender cut with violet line, not solid purple
   const bloom = [["#3b2290", 0], ["#7f5fd6", 0.38], ["#c8b4f3", 0.74], ["#f1eafd", 1]] as typeof PAL.violet;
   return (
@@ -331,7 +331,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
       <Cam {...cam} />
       {/* depth scale per framing: the close shot keeps the wide shot's line pitch instead of magnifying it */}
       <RefDepth.Provider value={cut === 0 ? 6.4 : cut === 1 ? 3.7 : 5.4}>
-        <Detail.Provider value={{ ...ENGRAVE_FINE, periodScale: fine }}>
+        <Detail.Provider value={{ ...ENGRAVE_FLAT, periodScale: fine }}>
           <group position={[3.8 * (1 - sweep), -2.6 * (1 - sweep), 0.4 * (1 - sweep)]} rotation={[0, 0, -0.12 * (1 - sweep)]}>
             <EMesh g={BOUGH.g} m={green as never} />
             <group position={[1.2 * (1 - pop(u, 4, 26)), 1.6 * (1 - pop(u, 4, 26)), 0]}>
@@ -348,7 +348,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
               return (
                 <group key={`t${i}`} position={[bx, by, bz]} rotation={[0, 0, sway]} scale={g}>
                   <group position={[-bx, -by, -bz]}>
-                    <EMesh g={TWIG_G[i]} m={{ palette: PAL.violet, seed: 40 + i, follow: 0.6 }} />
+                    <EMesh g={TWIG_G[i]} m={{ palette: PAL.violet, seed: 40 + i }} />
                   </group>
                 </group>
               );
@@ -359,8 +359,8 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
               const sway = 0.07 * Math.sin(t * 1.4 + i * 2.1);
               return (
                 <group key={`c${i}`} position={c.at} rotation={[sway * 0.5, 0, sway]} scale={g}>
-                  {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i, follow: 0.6, wobble: 0.6 }} double /> : null}
-                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, follow: 0.12, angleDeg: 35, periodFrac: 0.0042, wash: 0.4, foil: i === 0 ? 0.2 : 0 }} double />
+                  {CLUSTER_G[i].leaves ? <EMesh g={CLUSTER_G[i].leaves!} m={{ palette: PAL.green, seed: 60 + i }} double /> : null}
+                  <EMesh g={CLUSTER_G[i].petals} m={{ palette: bloom, seed: 80 + i, foil: i === 0 ? 0.2 : 0 }} double />
                   <EMesh g={CLUSTER_G[i].eyes} m={{ palette: PAL.violet, seed: 90 + i, albedo: 0.2 }} />
                 </group>
               );
@@ -369,7 +369,7 @@ export const Bough: React.FC<{ u: number; framing?: number; fine?: number }> = (
           {u >= 20 ? (
             <group position={fox.p} rotation={[0, fox.yaw, 0]}>
               <group rotation={[fox.pitch, 0, 0]}>
-                <Rig url={M + "Fox.glb"} size={FOX} clip={clip} time={clipT} smooth m={{ palette: PAL.violet, foil: 0.3, follow: 0.35, hatch: 0.7, wash: 0.3 }} foilPhase={t * 0.15} />
+                <Rig url={M + "Fox.glb"} size={FOX} clip={clip} time={clipT} smooth m={{ palette: PAL.violet, foil: 0.25 }} foilPhase={t * 0.15} />
               </group>
             </group>
           ) : null}

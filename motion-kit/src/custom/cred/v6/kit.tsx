@@ -17,6 +17,9 @@ export const PAL = {
 /** Engraving defaults for v6: near-horizontal wavy screen like the reference's intaglio, fine pitch. */
 export const ENGRAVE = { periodFrac: 0.0052, angleDeg: 12, wobble: 0.55, toneGamma: 1.15, hatch: 0.5, hatchT: 0.38, stipple: 0.4, follow: 0.3, detail: 0.2, edge: 0.9 };
 /** v6.5: the reference's plates hold a fine, even line at every distance, over a pale tint of the ink (not white). */
+/** v6.5 flat plate: the reference is hand engraving, not lit 3D. Flat tone (high ambient, little light falloff),
+ * parallel hatching at one angle, an inked contour, a pale tint between lines. */
+export const ENGRAVE_FLAT = { periodFrac: 0.0045, angleDeg: 32, wobble: 0.25, toneGamma: 1.0, hatch: 0.45, hatchT: 0.3, stipple: 0, follow: 0.06, detail: 0.15, edge: 0.4, ink: 0.9, wash: 0.3, ambient: 0.42, keyAmt: 0.6, wrap: 0.9, rim: 0, spec: 0 };
 export const ENGRAVE_FINE = { periodFrac: 0.0045, angleDeg: 14, wobble: 0.3, toneGamma: 1.22, hatch: 0.55, hatchT: 0.36, stipple: 0.2, follow: 0.22, detail: 0.12, edge: 0.9, wash: 0.12 };
 
 export const M = "custom/cred-v6/models/";
@@ -103,7 +106,7 @@ export const Iris: React.FC<{ r: number; cx?: number; cy?: number; children: Rea
 };
 export const easeIO = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 /** Lens radius for an opening between frames a and b (from the loupe size to the full frame). */
-export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * easeIO(Math.min(1, Math.max(0, (f - a) / (b - a))));
+export const irisOpen = (f: number, a: number, b: number, r0 = 640) => r0 + (2300 - r0) * (1 - Math.pow(1 - Math.min(1, Math.max(0, (f - a) / (b - a))), 2.2));
 
 /** The loupe's edge sweeping across the frame (the reference wipes by moving its lens): a soft black disc passes left
  * to right between frames a and b; the shot under it should change at the midpoint, when the centre is covered. */
