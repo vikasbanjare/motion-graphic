@@ -394,7 +394,8 @@ export const RewardsTake: React.FC<{ from: number }> = ({ from }) => {
   const u = G - INTRO;
   const copy = useCopy();
   // the paper breathes in while the pen works, then the scale-step lands on the field and keeps a slow push
-  const s = G < FIELD_AT ? 1.07 - 0.05 * ramp(G, 12, FIELD_AT) : 1.0 + 0.035 * ramp(G, FIELD_AT, 150 + INTRO);
+  // after the step it eases out to exactly 1 at the card hand-over, so the card's print matches the frame
+  const s = G < FIELD_AT ? 1.07 - 0.05 * ramp(G, 12, FIELD_AT) : 1.035 - 0.035 * ramp(G, FIELD_AT, 150 + INTRO);
   const head = G >= 176 ? expoOut(ramp(G, 176, 192)) : 0;
   return (
     <AbsoluteFill>

@@ -82,20 +82,20 @@ const Strip: React.FC<{ w: number; h: number; phase: number; F: number; font: nu
 };
 
 /** The card's print: the rewards world, greened like a note, with the official logo. */
-const Print: React.FC<{ F: number }> = ({ F }) => (
+const Print: React.FC<{ F: number; on: number }> = ({ F, on }) => (
   <AbsoluteFill>
     {F < T.macro ? <RewardsWorld key="wide" F={F} framing={1} /> : <RewardsWorld key="loupe" F={F} framing={2} fine={0.55} />}
-    <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 }} />
+    <AbsoluteFill style={{ background: "#2c8c62", mixBlendMode: "multiply", opacity: 0.55 * on }} />
   </AbsoluteFill>
 );
 
-const CardFace: React.FC<{ F: number; holo: number; copy: number }> = ({ F, holo, copy }) => (
+const CardFace: React.FC<{ F: number; holo: number; copy: number; on: number }> = ({ F, holo, copy, on }) => (
   <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, borderRadius: 64, overflow: "hidden", boxShadow: "0 0 0 10px #f2f6e8 inset" }}>
-    <Print F={F} />
+    <Print F={F} on={on} />
     <div style={{ position: "absolute", left: 1180, top: -400, transform: "rotate(68deg)", transformOrigin: "0 0" }}>
-      <Strip w={2200} h={96} phase={holo} F={F} font={30} copy={copy} />
+      <div style={{ opacity: on }}><Strip w={2200} h={96} phase={holo} F={F} font={30} copy={copy} /></div>
     </div>
-    <Img src={staticFile(useCopy().logo)} style={{ position: "absolute", left: 110, top: 90, height: 170, maxWidth: 560, objectFit: "contain", objectPosition: "left center" }} />
+    <Img src={staticFile(useCopy().logo)} style={{ opacity: on, position: "absolute", left: 110, top: 90, height: 170, maxWidth: 560, objectFit: "contain", objectPosition: "left center" }} />
   </div>
 );
 
@@ -138,12 +138,13 @@ export const CardTake: React.FC<{ from: number }> = ({ from }) => {
       <Field f={F} pitch={12} lambda={150} amp={4} speed={1.6} width={1.5} color="#2d4d3d" opacity={1} />
       <AbsoluteFill style={{ perspective: 1800 }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "0 0", transform: `translate(${W / 2}px, ${H / 2 + p.ty}px) scale(${p.s}) rotateX(${p.rx}deg) rotateZ(${p.rz}deg) translate(${-p.fx}px, ${-p.fy}px)` }}>
-          <CardFace F={F} holo={(F - T.reveal) / 70} copy={1 - ramp(F, OPEN - 2, OPEN + 6)} />
+          <CardFace F={F} holo={(F - T.reveal) / 70} copy={1 - ramp(F, OPEN - 2, OPEN + 6)} on={easeIO(ramp(F, T.reveal + 4, T.reveal + 26))} />
         </div>
       </AbsoluteFill>
-      <AbsoluteFill style={{ opacity: 1 - ramp(F, 252, 272) }}>
+      <AbsoluteFill style={{ opacity: easeIO(ramp(F, T.reveal + 2, T.reveal + 20)) * (1 - ramp(F, 252, 272)) }}>
         <Lens r={0.62 + 0.4 * (1 - k)} soft={0.3} />
       </AbsoluteFill>
+      {F < T.reveal + 12 ? <Headline text={copy.claim1.head} sub={copy.claim1.sub} grad={["#3b23a0", "#6a4fd0", "#2f7a4a"]} t={1 - ramp(F, T.reveal, T.reveal + 10)} size={fit(copy.claim1.head, 92, 1500)} /> : null}
       {head > 0 ? <Headline text={copy.card.head} sub={copy.card.sub} grad={["#d9f6e4", "#ffffff", "#b8f0d0"]} t={head} size={fit(copy.card.head, 60, 1500)} top={70} /> : null}
     </AbsoluteFill>
   );
