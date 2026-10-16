@@ -1,0 +1,182 @@
+{
+ "seconds": 20.0,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "N01",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "air_riser",
+   "anchor_t": 0.05,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N02",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 2.4,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N03",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_clink",
+   "anchor_t": 3.45,
+   "align": "start",
+   "over_bed_lu": -4.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N04",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 5.4,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N05",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "sparkle",
+   "anchor_t": 6.55,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N06",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 8.6,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N07",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 2.2
+   },
+   "anchor": "jet_pass",
+   "anchor_t": 9.6,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N08",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 11.5,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N09",
+   "sfx": "desk_bell",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "desk_bell",
+   "anchor_t": 12.2,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N10",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "whip",
+   "anchor_t": 13.8,
+   "align": "peak",
+   "over_bed_lu": -9.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N11",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "low_wash",
+   "anchor_t": 16.4,
+   "align": "start",
+   "over_bed_lu": -8.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N12",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "paper_flick",
+   "anchor_t": 17.6,
+   "align": "start",
+   "over_bed_lu": -7.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N13",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "glass_shimmer",
+   "anchor_t": 18.6,
+   "align": "start",
+   "over_bed_lu": -6.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "N14",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "chord_bloom",
+   "anchor_t": 19.0,
+   "align": "start",
+   "over_bed_lu": -2.0,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  }
+ ]
+}

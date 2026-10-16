@@ -1,0 +1,270 @@
+{
+ "_about": "CRED card v4 cue sheet: every sound belongs to a visible event (CredCardV4.tsx, 24 fps).",
+ "seconds": 25.05,
+ "lufs": -14.0,
+ "music": {
+  "file": "score.wav",
+  "gain_db": -2
+ },
+ "cues": [
+  {
+   "id": "W01",
+   "sfx": "pen_scribble",
+   "params": {
+    "dur": 0.95
+   },
+   "anchor": "pen draws the card (f4-28)",
+   "anchor_t": 0.15,
+   "align": "start",
+   "over_bed_lu": -4,
+   "floor_lufs": -30,
+   "pan": 0.0
+  },
+  {
+   "id": "W02",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "engraving sweeps in (f24)",
+   "anchor_t": 1.0,
+   "align": "start",
+   "over_bed_lu": -9,
+   "floor_lufs": -34,
+   "pan": 0.0
+  },
+  {
+   "id": "W03",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "card slides right for its name (f56-80)",
+   "anchor_t": 2.45,
+   "align": "peak",
+   "over_bed_lu": -9,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W04",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "hard cut into the loupe close-up (f124)",
+   "anchor_t": 5.1,
+   "align": "start",
+   "over_bed_lu": -4,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W05",
+   "sfx": "glass_shimmer",
+   "params": {
+    "notes_hz": [
+     2489.0,
+     3136.0,
+     3729.0,
+     4978.0
+    ]
+   },
+   "anchor": "foil band catches the light",
+   "anchor_t": 5.85,
+   "align": "start",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W06",
+   "sfx": "whip_pair",
+   "params": {},
+   "anchor": "push-through and lens swap",
+   "anchor_t": 8.76,
+   "align": "end",
+   "over_bed_lu": -10,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W07",
+   "sfx": "air_riser",
+   "params": {
+    "dur": 0.8
+   },
+   "anchor": "route map tilts up into the globe world",
+   "anchor_t": 10.6,
+   "align": "peak",
+   "over_bed_lu": -12,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W08",
+   "sfx": "jet_pass",
+   "params": {
+    "dur": 2.2
+   },
+   "anchor": "plane crosses the globe world",
+   "anchor_t": 11.0,
+   "align": "start",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W09",
+   "sfx": "desk_bell",
+   "params": {
+    "root_hz": 1244.5,
+    "dur": 1.2
+   },
+   "anchor": "hotel bell",
+   "anchor_t": 11.45,
+   "align": "start",
+   "over_bed_lu": -10,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W10",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "cut to the products shelf (f298)",
+   "anchor_t": 12.38,
+   "align": "peak",
+   "over_bed_lu": -9,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W11",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "coin lands on the camera",
+   "anchor_t": 12.58,
+   "align": "start",
+   "over_bed_lu": -5,
+   "floor_lufs": -40.0,
+   "pan": -0.45
+  },
+  {
+   "id": "W12",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "coin lands on the watch",
+   "anchor_t": 12.82,
+   "align": "start",
+   "over_bed_lu": -6,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W13",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "coin lands on the vase",
+   "anchor_t": 13.06,
+   "align": "start",
+   "over_bed_lu": -6,
+   "floor_lufs": -40.0,
+   "pan": 0.45
+  },
+  {
+   "id": "W14",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.3
+   },
+   "anchor": "card sweeps back in (f370)",
+   "anchor_t": 15.5,
+   "align": "peak",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W15",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.5
+   },
+   "anchor": "lens closes on the fee tag",
+   "anchor_t": 16.28,
+   "align": "start",
+   "over_bed_lu": -4,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W16",
+   "sfx": "glass_shimmer",
+   "params": {},
+   "anchor": "print card turns into the real card",
+   "anchor_t": 20.07,
+   "align": "start",
+   "over_bed_lu": -7,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W17",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "lights out, lockup (f526)",
+   "anchor_t": 21.92,
+   "align": "start",
+   "over_bed_lu": -1,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W18",
+   "sfx": "end_bell",
+   "params": {
+    "dur": 1.2
+   },
+   "anchor": "logo and name settle",
+   "anchor_t": 23.1,
+   "align": "start",
+   "over_bed_lu": -11,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W19",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "print strips flip off the card",
+   "anchor_t": 20.08,
+   "align": "start",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": -0.4
+  },
+  {
+   "id": "W20",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "print strips flip off the card",
+   "anchor_t": 20.42,
+   "align": "start",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": 0.0
+  },
+  {
+   "id": "W21",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "print strips flip off the card",
+   "anchor_t": 20.78,
+   "align": "start",
+   "over_bed_lu": -8,
+   "floor_lufs": -40.0,
+   "pan": 0.4
+  }
+ ]
+}

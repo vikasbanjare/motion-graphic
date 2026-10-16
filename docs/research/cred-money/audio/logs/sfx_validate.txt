@@ -1,0 +1,20 @@
+recipe         | REF dur  band(5-95%)    flat  attack width    | OURS dur  band(5-95%)    flat  attack width
+pen_scribble   | 3.27s   904-10508Hz  0.96  0.26s -120.0       | 3.24s  1723-10680Hz  0.93  0.69s -120.0
+whip           | 0.29s  2842-12360Hz  0.93  0.05s -120.0       | 0.24s  2929-14083Hz  0.98  0.03s  -25.6
+reverse_swell  | 1.06s    43-  560Hz  0.57  0.23s   +1.2       | 0.81s    43-  947Hz  0.61  0.41s   +1.7
+lens_swell     | 0.45s    86-  904Hz  0.83  0.01s   +0.1       | 0.24s    43-  947Hz  0.98  0.10s  -20.2
+glass_shimmer  | 1.67s  2067- 3144Hz  0.30  0.12s -120.0       | 1.19s  2067- 4177Hz  0.50  0.51s   +0.9
+sparkle        | 0.73s  2110-12532Hz  0.90  0.06s -120.0       | 0.64s  2110-15202Hz  0.92  0.52s  -12.3
+bird_chirps    | 1.24s  3144- 3661Hz  0.40  0.71s -120.0       | 1.21s  3144- 3661Hz  0.41  0.44s  -10.1
+wing_flutter   | 0.50s  7364-14298Hz  0.99  0.19s -120.0       | 0.35s  7666-15633Hz  0.98  0.11s  -12.6
+foghorn        | 2.92s    86-  474Hz  0.93  0.66s -120.0       | 2.42s    86-  388Hz  0.87  0.67s  -21.9
+rising_tone    | 1.23s   215-  517Hz  0.80  0.39s -120.0       | 0.97s   301-  474Hz  0.63  0.31s  -18.2
+air_riser      | 0.54s  5125-11111Hz  0.91  0.18s -120.0       | 0.64s  5340-13738Hz  0.98  0.15s  -15.2
+low_wash       | 1.04s   258- 1938Hz  0.77  0.82s -120.0       | 0.91s   345- 2541Hz  0.95  0.44s  -10.3
+splash         | 0.62s   345- 2369Hz  0.52  0.48s -120.0       | 0.55s   474- 4264Hz  0.92  0.01s  -12.3
+  return _methods._mean(a, axis=axis, dtype=dtype,
+  ret = ret.dtype.type(ret / rcount)
+  fm=(fr>max(lo,200))&(fr<min(hi,12000)); a=np.sqrt(sp[fm]); flat=np.exp(np.mean(np.log(a+1e-12)))/a.mean()
+drop_impact    | 0.73s    43-   86Hz  nan  0.39s  -16.1        | 0.82s    43-  129Hz  nan  0.02s -120.0
+end_bell       | 0.92s  1421- 5039Hz  0.80  0.06s   -3.7       | 1.58s  1507- 3919Hz  0.05  0.02s  -20.2
+end_riser      | 1.00s  4005- 6804Hz  0.48  0.49s -120.0       | 0.57s  4307- 8958Hz  0.88  0.34s  -15.2

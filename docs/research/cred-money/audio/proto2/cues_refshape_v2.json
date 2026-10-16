@@ -1,0 +1,389 @@
+{
+ "seconds": 69.06,
+ "lufs": -16.9,
+ "music": {
+  "file": "score_refshape.wav",
+  "gain_db": 0
+ },
+ "cues": [
+  {
+   "id": "C01",
+   "sfx": "pen_scribble",
+   "params": {
+    "dur": 3.43
+   },
+   "anchor": "first line draws (0.375) +0.25 s",
+   "anchor_t": 0.62,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -29,
+   "pan": 0
+  },
+  {
+   "id": "C02",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "after 0.25 s silence; blooms into music entry",
+   "anchor_t": 4.3,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -27,
+   "pan": 0
+  },
+  {
+   "id": "C02b",
+   "sfx": "air_bed",
+   "params": {
+    "dur": 5.0
+   },
+   "anchor": "nature scene air bed (ref 5.31-10.29)",
+   "anchor_t": 5.31,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C03",
+   "sfx": "wing_flutter",
+   "params": {},
+   "anchor": "small creature enters",
+   "anchor_t": 7.24,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C04",
+   "sfx": "bird_chirps",
+   "params": {},
+   "anchor": "creature settles (perched)",
+   "anchor_t": 8.24,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C05",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.45
+   },
+   "anchor": "lens edge enters 9.67 (onset +0.02)",
+   "anchor_t": 9.69,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C06",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 1.63
+   },
+   "anchor": "holographic band in close-up",
+   "anchor_t": 14.32,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C07",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.23
+   },
+   "anchor": "whip 1 cut 18.792: plateau 18.70-18.93 straddles the cut",
+   "anchor_t": 18.7,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C08",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.22
+   },
+   "anchor": "whip 1 answer plateau 19.08-19.30",
+   "anchor_t": 19.08,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C09",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.13
+   },
+   "anchor": "whip 2 cut 20.417: first plateau 20.32-20.45",
+   "anchor_t": 20.32,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C09b",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.31
+   },
+   "anchor": "whip 2 second plateau 20.49-20.80",
+   "anchor_t": 20.49,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C10",
+   "sfx": "air_riser",
+   "params": {},
+   "anchor": "reveal 21.88",
+   "anchor_t": 21.97,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C11",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.03
+   },
+   "anchor": "foreground wipe 27.21",
+   "anchor_t": 27.06,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C12",
+   "sfx": "foghorn",
+   "params": {
+    "dur": 2.96
+   },
+   "anchor": "coast scene",
+   "anchor_t": 33.34,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C13",
+   "sfx": "gull_cries",
+   "params": {},
+   "anchor": "coast scene",
+   "anchor_t": 34.0,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C14",
+   "sfx": "rising_tone",
+   "params": {},
+   "anchor": "cut 35.75",
+   "anchor_t": 35.72,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C15",
+   "sfx": "submerge",
+   "params": {},
+   "anchor": "dissolve to underwater 38.96 (onset +0.08)",
+   "anchor_t": 39.04,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C16",
+   "sfx": "glass_shimmer",
+   "params": {
+    "dur": 0.9,
+    "notes_hz": [
+     3733,
+     4337,
+     4811,
+     5301
+    ]
+   },
+   "anchor": "shell closes (pearl glint 42.58-43.5; partials 3.7-5.3 kHz)",
+   "anchor_t": 42.58,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C17",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.24,
+    "click": true
+   },
+   "anchor": "whip 3 cut 46.958: plateau ends 46.91 (-0.05)",
+   "anchor_t": 46.91,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C18",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.26
+   },
+   "anchor": "whip 3 answer 47.04-47.30 (+0.08 after cut)",
+   "anchor_t": 47.04,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C19",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.245,
+    "click": true
+   },
+   "anchor": "whip 4 cut 48.292: plateau ends 48.267 (-0.025)",
+   "anchor_t": 48.267,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C20",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "whip 5 cut 49.625: plateau ends 49.55 (-0.075)",
+   "anchor_t": 49.55,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C21",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "glint on held hero",
+   "anchor_t": 50.3,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C22",
+   "sfx": "drop_impact",
+   "params": {},
+   "anchor": "score drop 2 downbeat (music event, no cut)",
+   "anchor_t": 52.088,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C23",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.583
+   },
+   "anchor": "object slides into phone",
+   "anchor_t": 56.152,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C24",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "logo ring ripple 61.83 (bloom onset 61.88, peak 62.23)",
+   "anchor_t": 61.88,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C25",
+   "sfx": "end_riser",
+   "params": {},
+   "anchor": "after logo fade (66.75)",
+   "anchor_t": 67.16,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  },
+  {
+   "id": "C26",
+   "sfx": "end_bell",
+   "params": {},
+   "anchor": "bell chord from 66.92 (after last 808 at 66.81)",
+   "anchor_t": 66.92,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60,
+   "floor_lufs": -40,
+   "pan": 0
+  }
+ ]
+}

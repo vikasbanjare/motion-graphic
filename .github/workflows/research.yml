@@ -1,0 +1,267 @@
+# Reference-video research. Crawls the sites in research/sites.txt for videos (research/crawl.py),
+# then downloads every new link (research/links.txt + the crawl) on GitHub's runners,
+# measures each video (cuts, shot length, motion, a 10 fps motion curve, colours, tempo) and
+# makes contact sheets for frame-by-frame review. Results accumulate on the research-results
+# branch: re-running a link replaces that video's record, other videos are kept.
+#
+# This repository is public, so frames of other people's videos are never committed in readable
+# form: contact sheets are encrypted to research/research-key.pub.pem and only the holder of the
+# private key can open them. Measurements (numbers only) are plain JSON and CSV. Videos are never
+# stored.
+#
+# Optional secret YT_COOKIES (a Netscape cookies.txt export) lets yt-dlp pass YouTube's bot check.
+name: Research videos
+
+on:
+  push:
+    branches: [claude/youthful-darwin-n1lt7l]
+    paths: [research/links.txt, research/sites.txt, research/crawl.py, research/fetch.sh, research/vimeo_config.py, research/browser_grab.py, research/frames.py]
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "Re-measure links that already have results"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-videos
+  cancel-in-progress: false
+
+env:
+  PER_SHARD: 20
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    outputs:
+      shards: ${{ steps.split.outputs.shards }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Crawl sites for videos
+        run: |
+          mkdir -p plan
+          : > plan/found.tsv
+          if grep -qv '^\s*\(#\|$\)' research/sites.txt 2>/dev/null; then
+            python3 research/crawl.py research/sites.txt --max-pages 4000 --delay 0.3 > plan/found.tsv
+          fi
+          echo "$(grep -c . plan/found.tsv) videos found on crawled sites"
+      - id: split
+        env:
+          ALL: ${{ inputs.all }}
+        run: |
+          # This run's list: research/links.txt plus what the crawl found, one per line
+          # ("url" or "url<TAB>referer"), without links that already have measurements
+          # on research-results (unless re-measuring everything).
+          { grep -v '^\s*$' research/links.txt; cat plan/found.tsv; } | awk -F'\t' '!seen[$1]++' > plan/all.txt
+          : > plan/done.txt
+          : > plan/has-data.txt
+          if [ "${ALL:-false}" != true ] && git fetch -q origin research-results 2>/dev/null; then
+            # Done = has measurements AND per-frame features.
+            git ls-tree --name-only FETCH_HEAD data/ | sed 's|data/||' | cut -c1-8 | sort -u > plan/has-data.txt
+            git ls-tree --name-only FETCH_HEAD frames/ 2>/dev/null | sed 's|frames/||' | cut -c1-8 | sort -u > plan/has-frames.txt
+            comm -12 plan/has-data.txt plan/has-frames.txt > plan/done.txt
+          fi
+          while IFS= read -r line; do
+            id=$(printf '%s' "${line%%$'\t'*}" | xargs | tr -d '\n' | sha1sum | cut -c1-8)
+            grep -qx "$id" plan/done.txt || printf '%s\n' "$line"
+          done < plan/all.txt > plan/links.txt
+          n=$(grep -c . plan/links.txt || true)
+          count=$(( (n + PER_SHARD - 1) / PER_SHARD ))
+          echo "shards=$(python3 -c "import json; print(json.dumps(list(range($count))))")" >> "$GITHUB_OUTPUT"
+          echo "$(grep -c . plan/all.txt) links, $(grep -c . plan/done.txt) already measured, $n to fetch in $count shards"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan
+          path: plan/
+          retention-days: 3
+
+  measure:
+    needs: plan
+    if: needs.plan.outputs.shards != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        shard: ${{ fromJson(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: motion-kit/package-lock.json
+
+      - name: Tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pipx install "yt-dlp[default,curl-cffi]"
+          yt-dlp --version
+          # Headless Chromium for players that refuse plain requests (research/browser_grab.py).
+          python3 -m pip install --quiet --break-system-packages numpy playwright
+          python3 -m playwright install --with-deps chromium >/dev/null && echo "BROWSER_GRAB=1" >> "$GITHUB_ENV" || echo "playwright unavailable"
+
+
+      - name: Install
+        working-directory: motion-kit
+        run: npm ci --no-audit --no-fund
+
+      - name: Download
+        env:
+          YT_COOKIES: ${{ secrets.YT_COOKIES }}
+        run: |
+          s=${{ matrix.shard }}
+          if [ -n "$YT_COOKIES" ]; then printf '%s\n' "$YT_COOKIES" > "$RUNNER_TEMP/cookies.txt"; export YT_COOKIES_FILE="$RUNNER_TEMP/cookies.txt"; fi
+          grep . "$RUNNER_TEMP/plan/links.txt" | sed -n "$(( s * PER_SHARD + 1 )),$(( (s + 1) * PER_SHARD ))p" > "$RUNNER_TEMP/shard.txt"
+          bash research/fetch.sh "$RUNNER_TEMP/shard.txt" "$RUNNER_TEMP/videos" "out/failures/s$s.txt" "out/failures/s$s.map.tsv"
+          rm -f "$RUNNER_TEMP/cookies.txt"
+
+      - name: Measure
+        run: |
+          if ls "$RUNNER_TEMP"/videos/*.mp4 >/dev/null 2>&1; then
+            node motion-kit/scripts/research.mjs "$RUNNER_TEMP/videos" --out "$GITHUB_WORKSPACE/out/data/s${{ matrix.shard }}"
+          fi
+
+      - name: Per-frame features
+        run: |
+          if ls "$RUNNER_TEMP"/videos/*.mp4 >/dev/null 2>&1; then
+            python3 research/frames.py "$RUNNER_TEMP/videos" out/frames
+          fi
+
+      - name: Contact sheets
+        run: |
+          # Only videos without sheets yet (a backfill re-downloads measured videos for frames).
+          mkdir -p "$RUNNER_TEMP/new"
+          for f in "$RUNNER_TEMP"/videos/*.mp4; do
+            [ -e "$f" ] || continue
+            grep -qx "$(basename "$f" | cut -c1-8)" "$RUNNER_TEMP/plan/has-data.txt" 2>/dev/null || ln -s "$f" "$RUNNER_TEMP/new/"
+          done
+          bash research/sheets.sh "$RUNNER_TEMP/new" out/sheets
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: out/
+          retention-days: 3
+          if-no-files-found: ignore
+
+  publish:
+    needs: measure
+    if: always()
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: shard-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/out
+
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan
+
+      - name: Switch to research-results
+        run: |
+          cp research/research-key.pub.pem "$RUNNER_TEMP/key.pub.pem"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Continue an existing results branch; start fresh if there is none or it predates urls.tsv.
+          if git fetch -q origin research-results && git cat-file -e FETCH_HEAD:urls.tsv 2>/dev/null; then
+            git checkout -q -B research-results FETCH_HEAD
+          else
+            git checkout -q --orphan research-results
+            git rm -rq --cached . >/dev/null
+            git clean -fdq
+            echo "FRESH=1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Add this run's results
+        run: |
+          OUT="$RUNNER_TEMP/out"
+          RUN=${GITHUB_RUN_ID}
+          mkdir -p data sheets failures frames
+          # Measurements: one JSON per video; a re-run of the same link replaces its file.
+          find "$OUT/data" -name '*.json' -exec cp {} data/ \; 2>/dev/null || true
+          # Per-frame features (numbers only): one gzipped CSV per video.
+          find "$OUT/frames" -name '*.csv.gz' -exec cp {} frames/ \; 2>/dev/null || true
+          # id → url map, merged and de-duplicated.
+          cat urls.tsv "$OUT"/failures/*.map.tsv 2>/dev/null | sort -u -k1,1 > urls.tsv.new || true
+          mv urls.tsv.new urls.tsv
+          # This run's failures (latest run wins for failures-latest.txt).
+          cat "$OUT"/failures/*.txt 2>/dev/null > "failures/run-$RUN.txt" || true
+          cat "$OUT"/failures/*.log 2>/dev/null > "failures/run-$RUN.log" || true
+          cp "failures/run-$RUN.txt" failures-latest.txt
+          # Videos found by crawling research/sites.txt (url, page it was found on), merged.
+          cat discovered.tsv "$RUNNER_TEMP/plan/found.tsv" 2>/dev/null | awk -F'\t' 'NF && !seen[$1]++' > discovered.tsv.new || true
+          mv discovered.tsv.new discovered.tsv
+          # Contact sheets: AES-256 with a one-off key, the key itself sealed to the research public key.
+          if [ -d "$OUT/sheets" ]; then
+            key=$(openssl rand -hex 32)
+            tar -C "$OUT" -cf - sheets | openssl enc -aes-256-cbc -pbkdf2 -salt -pass "pass:$key" -out "sheets/run-$RUN.tar.enc"
+            printf '%s' "$key" | openssl pkeyutl -encrypt -pubin -inkey "$RUNNER_TEMP/key.pub.pem" -pkeyopt rsa_padding_mode:oaep -out "sheets/run-$RUN.key.enc"
+            unset key
+            split -b 90m -d "sheets/run-$RUN.tar.enc" "sheets/run-$RUN.tar.enc.part"
+            rm "sheets/run-$RUN.tar.enc"
+          fi
+          # Summary table rebuilt from every record so far.
+          python3 - <<'PY'
+          import csv, glob, json, os
+          urls = dict(line.rstrip("\n").split("\t", 1) for line in open("urls.tsv") if "\t" in line) if os.path.exists("urls.tsv") else {}
+          cols = ["id", "url", "file", "duration", "width", "height", "shots", "avgShot", "motion", "bpm", "brightness", "energy", "theme", "motionStyle", "pace", "transition", "palette"]
+          rows = []
+          for p in sorted(glob.glob("data/*.json")):
+              j = json.load(open(p))
+              vid = os.path.basename(p)[:8]
+              s = j.get("suggestion", {})
+              rows.append({
+                  "id": vid, "url": urls.get(vid, ""), "file": j.get("file"), "duration": j.get("duration"),
+                  "width": j.get("size", {}).get("width"), "height": j.get("size", {}).get("height"),
+                  "shots": len(j.get("cuts", [])) + 1, "avgShot": j.get("avgShot"), "motion": j.get("motion"), "bpm": j.get("bpm"),
+                  "brightness": j.get("brightness"), "energy": j.get("energy"), "theme": s.get("theme"), "motionStyle": s.get("motion"),
+                  "pace": s.get("pace"), "transition": s.get("transition"),
+                  "palette": " ".join(p["hex"] for p in j.get("palette", [])[:5]),
+              })
+          with open("summary.csv", "w", newline="") as f:
+              w = csv.DictWriter(f, fieldnames=cols)
+              w.writeheader()
+              w.writerows(rows)
+          print(f"{len(rows)} videos in summary.csv")
+          PY
+          {
+            echo "# Research results"
+            echo
+            echo "Built by .github/workflows/research.yml from research/links.txt. Runs accumulate here."
+            echo
+            echo "- summary.csv: one row per video (size, shots, average shot, motion, tempo, palette, suggested style)"
+            echo "- data/<id>-*.json: full measurements per video, including a 10 fps motion curve"
+            echo "- frames/<id>-*.csv.gz: one row per frame at 10 fps (t, luma, contrast, dark, light, sat, hue, hue_share, colorful, edges, motion, cut); see research/frames.py"
+            echo "- urls.tsv: video id to source link"
+            echo "- discovered.tsv: videos found by crawling research/sites.txt, with the page each was on"
+            echo "- failures/: links each run could not download, with the downloader's errors"
+            echo "- sheets/run-*: encrypted contact sheets (2 frames per second), readable only with the research private key"
+          } > README.md
+
+      - name: Push
+        run: |
+          git add -A .
+          git commit -qm "Research results: run ${GITHUB_RUN_ID} (${GITHUB_SHA::7})" || { echo "nothing new"; exit 0; }
+          if [ "${FRESH:-0}" = 1 ]; then git push -qf origin research-results; else git push -q origin research-results; fi

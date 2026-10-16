@@ -1,0 +1,76 @@
+{
+  "_recipe": {
+    "title": "Style: editorial serif",
+    "when": "Cream paper, a serif headline, one red accent: the Memoir / Conveo / Lovable research-brand look for reports, essays, research tools and premium B2B.",
+    "beats": [
+      "Thesis: one sentence in serif with the key phrase in the accent.",
+      "Tension: the problem as three short dimming lines.",
+      "Evidence: one real number with its source as the kicker.",
+      "Comparison: old way vs new way.",
+      "Voice: one real quote from a customer or expert.",
+      "Close: the promise as a quiet link; logo."
+    ],
+    "copyTips": [
+      "Measured on 8 editorial references: 5 of 8 are light (cream / off-white) and 0 of 8 are dark. Keep the paper warm, never pure white.",
+      "Exactly one accent colour, a warm red or orange around #DE351F, used for one phrase per scene.",
+      "Serif for statements, sans for labels and numbers. Tiny tracked labels (kicker plain) carry the structure.",
+      "Every number needs a source in the kicker (\"Survey of 2,000 teams, 2026\").",
+      "Calm motion and fades: the references cut rarely and let lines appear word by word."
+    ]
+  },
+  "format": "landscape",
+  "theme": "editorial",
+  "motion": "calm",
+  "pace": "relaxed",
+  "transition": "fade",
+  "brand": { "name": "[BRAND]", "accent": "#DE351F" },
+  "look": { "bg": "#F2EDE4", "displayFont": "Instrument Serif", "bodyFont": "Inter", "background": "paper", "grain": true, "corners": "sharp", "ctaStyle": "link", "kicker": "plain" },
+  "scenes": [
+    {
+      "type": "title",
+      "say": "[THE THESIS IN ONE SENTENCE].",
+      "kicker": "[SECTION LABEL]",
+      "headline": "[THE THESIS WITH ONE *KEY PHRASE*]"
+    },
+    {
+      "type": "list",
+      "say": "[PROBLEM ONE]. [PROBLEM TWO]. [PROBLEM THREE].",
+      "style": "lines",
+      "items": ["[PROBLEM ONE]", "[PROBLEM TWO]", "[PROBLEM THREE]"]
+    },
+    {
+      "type": "stat",
+      "say": "[THE NUMBER IN WORDS] [WHAT IT MEASURES].",
+      "kicker": "[SOURCE, YEAR]",
+      "value": "[64]%",
+      "label": "[WHAT IT *MEASURES*]"
+    },
+    {
+      "type": "compare",
+      "say": "The old way: [OLD WAY]. With [BRAND]: [NEW WAY].",
+      "title": "[THE CHOICE]",
+      "left": { "label": "[OLD WAY]", "items": ["[OLD ONE]", "[OLD TWO]"] },
+      "right": { "label": "[BRAND]", "items": ["[NEW ONE]", "[NEW TWO]"] }
+    },
+    {
+      "type": "quote",
+      "say": "[THE QUOTE, WORD FOR WORD].",
+      "quote": "[A REAL QUOTE WITH ONE *KEY PHRASE*]",
+      "author": "[NAME]",
+      "role": "[ROLE, COMPANY]"
+    },
+    {
+      "type": "cta",
+      "say": "[THE CLOSING PROMISE]. Read more at [WEBSITE].",
+      "kicker": "[THE CLOSING PROMISE].",
+      "action": "Read the report",
+      "handle": "[WEBSITE]",
+      "style": "link"
+    },
+    {
+      "type": "logo",
+      "name": "[BRAND]",
+      "tagline": "[TAGLINE]"
+    }
+  ]
+}

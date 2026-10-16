@@ -1,0 +1,17 @@
+{
+  "name": "motion-graphic",
+  "description": "Motion graphics by describing them: the motion-kit engine and its motion-director skill.",
+  "owner": {
+    "name": "vikasbanjare",
+    "url": "https://github.com/vikasbanjare"
+  },
+  "plugins": [
+    {
+      "name": "motion-kit",
+      "source": "./",
+      "description": "Describe a video in plain English, Hindi or Hinglish and get a finished motion graphic (MP4 + cover image). Sets up the engine in your folder on first use.",
+      "category": "design",
+      "tags": ["video", "motion-graphics", "reels", "remotion"]
+    }
+  ]
+}

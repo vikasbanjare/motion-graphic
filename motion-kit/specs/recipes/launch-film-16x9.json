@@ -1,0 +1,84 @@
+{
+  "_recipe": {
+    "title": "Launch film 16:9",
+    "when": "Calm ElevenLabs / Apple-style launch film (35-50s) for an AI, audio, SaaS or design product.",
+    "beats": [
+      "Hook: the orb breathes in, \"Meet [PRODUCT].\" plus the promise. Quiet confidence, no shouting.",
+      "Rhythm: three short kinetic lines: input, action, result.",
+      "Demo: a real prompt typed into the product, the cursor clicks, the result appears.",
+      "Feel it: the waveform plays while the line lights up word by word.",
+      "Proof: one hard number (speed, accuracy, scale) with a meter.",
+      "Range: three capabilities as big dimming lines (no cards).",
+      "Who it's for: the audiences, one line.",
+      "CTA: the closing promise as a headline, then a quiet \"Try [PRODUCT] →\" link.",
+      "Logo: silent sign-off with name and tagline."
+    ],
+    "copyTips": [
+      "Light type and one blue accent: put *accent* on the product name or the single word that matters, never on two things in one beat.",
+      "The demo prompt must be something a real user would type (under ~80 characters) and the result must be what the product really returns.",
+      "No sound product? Replace the wave beat with a second prompt demo or a list with style \"lines\"; keep the calm rhythm.",
+      "Say every number as words (\"seventy-five milliseconds\"); the screen shows \"75ms\".",
+      "Night version: --theme studio-dark. Vertical cut for Reels: --format reel (it stays under 60s)."
+    ]
+  },
+  "format": "landscape",
+  "theme": "studio",
+  "motion": "calm",
+  "pace": "relaxed",
+  "scenes": [
+    {
+      "type": "orb",
+      "say": "Meet [PRODUCT]. [THE ONE-LINE PROMISE], made for the way you already work.",
+      "headline": "Meet *[PRODUCT]*.",
+      "sub": "[THE ONE-LINE PROMISE]"
+    },
+    {
+      "type": "kinetic",
+      "say": "[STEP ONE]. [STEP TWO]. [THE RESULT], instantly.",
+      "lines": ["[STEP ONE].", "[STEP TWO].", "[THE RESULT], *instantly*."]
+    },
+    {
+      "type": "prompt",
+      "say": "Describe what you want in plain words, press generate, and [PRODUCT] builds it for you in seconds.",
+      "label": "Describe it",
+      "prompt": "[A REAL REQUEST A USER WOULD TYPE]",
+      "button": "Generate",
+      "result": "[WHAT COMES BACK]",
+      "resultKind": "text"
+    },
+    {
+      "type": "wave",
+      "say": "Every detail lands exactly where you want it, every single time.",
+      "label": "[OUTPUT] · [STYLE]",
+      "tags": ["[TAG ONE]", "[TAG TWO]"]
+    },
+    {
+      "type": "stat",
+      "say": "[SEVENTY-FIVE] milliseconds from your idea to the finished result.",
+      "kicker": "[METRIC]",
+      "value": "[75]ms",
+      "label": "from idea to *result*"
+    },
+    {
+      "type": "list",
+      "say": "[CAPABILITY ONE]. [CAPABILITY TWO]. [CAPABILITY THREE].",
+      "style": "lines",
+      "items": ["[CAPABILITY ONE]", "[CAPABILITY TWO]", "[CAPABILITY THREE]"]
+    },
+    {
+      "type": "title",
+      "say": "Built for [AUDIENCE ONE], [AUDIENCE TWO], and everyone in between.",
+      "kicker": "Built for",
+      "headline": "[AUDIENCE ONE], [AUDIENCE TWO]",
+      "sub": "and *everyone* in between"
+    },
+    {
+      "type": "cta",
+      "say": "[THE CLOSING PROMISE]. Try [PRODUCT] today.",
+      "kicker": "[THE CLOSING PROMISE].",
+      "action": "Try [PRODUCT]",
+      "handle": "[WEBSITE]"
+    },
+    { "type": "logo", "name": "[PRODUCT]", "tagline": "[TAGLINE]" }
+  ]
+}

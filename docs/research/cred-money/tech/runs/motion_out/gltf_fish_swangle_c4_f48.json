@@ -1,0 +1,79 @@
+{
+  "source": "../runs/motion_in/gltf_fish_swangle_c4_f48.mp4",
+  "file": "gltf_fish_swangle_c4_f48.mp4",
+  "duration": 2,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2,
+  "motion": 0.002,
+  "palette": [
+    {
+      "hex": "#F6EDF3",
+      "share": 0.887
+    },
+    {
+      "hex": "#746B94",
+      "share": 0.037
+    },
+    {
+      "hex": "#9589AB",
+      "share": 0.032
+    },
+    {
+      "hex": "#B6AAC5",
+      "share": 0.015
+    },
+    {
+      "hex": "#D4CADA",
+      "share": 0.014
+    },
+    {
+      "hex": "#544A7B",
+      "share": 0.014
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#F6EDF3"
+    },
+    "why": [
+      "a cut every 2.0 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained picture → theme \"clean\"",
+      "its canvas is #F6EDF3 (89% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.002,
+    0.002,
+    0.003,
+    0.002,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.001,
+    0.002,
+    0.002,
+    0.002,
+    0.001,
+    0.001,
+    0.002,
+    0.002
+  ]
+}

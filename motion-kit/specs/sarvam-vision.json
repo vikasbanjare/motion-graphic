@@ -1,0 +1,121 @@
+{
+  "_note": "Spec ad (unofficial) for Sarvam Vision 2.1, landscape for LinkedIn / Facebook / YouTube. Facts: Sarvam's launch post (x.com/SarvamAI/status/2103113064338149439) and press (analyticsindiamag.com, zeebiz.com): live since 24 Sep 2026; structured extraction, complex tables, Indic handwritten recognition; English + 22 Indian languages; olmOCR-Bench 87.3 (state of the art, Sarvam-reported). Brand: logo = official files (user's sarvam_logo_pack), wordmark shown alone. Colours measured from the named swatches in Sarvam's brand video (Brand_Video_1.mp4, 3.6 s): Sarvam Orange #D5630E, Sarvam Blue #373AC0, Sarvam White #FAFAFA; ink #141414 from the logomark file; sunrise gradient from the same frame, dusk gradient from the end card (43 s). Video-measured values can drift a few points: replace with the brand book's hex codes when available. Type: Instrument Serif (display) + Plus Jakarta Sans (body) as stand-ins for the brand's serif / sans until the font files arrive. Tagline 'AI for all, from India' is Sarvam's own line from the brand video.",
+  "format": "landscape",
+  "theme": "clean",
+  "motion": "smooth",
+  "pace": "normal",
+  "brand": {
+    "name": "Sarvam",
+    "accent": "#D5630E",
+    "accent2": "#373AC0",
+    "logo": "brand/sarvam/wordmark-light.svg",
+    "exact": true
+  },
+  "audio": {
+    "sfx": true,
+    "voiceover": "voice/sarvam-vision.mp3",
+    "timing": "voice/sarvam-vision.timing.json",
+    "music": "music/sarvam-vision-bed.mp3",
+    "musicStart": 0.333,
+    "musicVolume": 0.14,
+    "beats": "music/sarvam-vision-bed.beats.json"
+  },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "say": "India still writes by hand. In twenty two languages.",
+      "lines": [
+        "India still",
+        "writes *by hand.*",
+        "In 22 languages."
+      ],
+      "bg": "gradient"
+    },
+    {
+      "type": "title",
+      "say": "And every form gets typed in again, one field at a time.",
+      "headline": "Every form, ~~typed in again~~.",
+      "sub": "One field at a time."
+    },
+    {
+      "type": "prompt",
+      "say": "Now, Sarvam Vision two point one reads the whole form for you.",
+      "label": "Sarvam Vision 2.1",
+      "prompt": "Scanned Hindi application form, handwritten",
+      "button": "Extract",
+      "result": "Name · Address · Amount → structured data",
+      "bg": "inverse"
+    },
+    {
+      "type": "list",
+      "say": "Forms. Complex tables. Even handwriting.",
+      "title": "It reads",
+      "items": [
+        "Forms",
+        "Complex tables",
+        "*Indic handwriting*"
+      ],
+      "style": "lines"
+    },
+    {
+      "type": "stat",
+      "say": "In English, and in twenty two Indian languages too.",
+      "value": "22",
+      "label": "Indian languages, *plus English*"
+    },
+    {
+      "type": "stat",
+      "say": "State of the art on olmOCR-Bench, at eighty seven point three.",
+      "kicker": "olmOCR-Bench",
+      "value": "87.3",
+      "label": "*state of the art* (Sarvam-reported)"
+    },
+    {
+      "type": "cta",
+      "say": "Sarvam Vision two point one. Live now.",
+      "kicker": "Sarvam Vision 2.1 is *live*",
+      "action": "sarvam.ai",
+      "sub": "Forms, tables and handwriting.",
+      "style": "link",
+      "bg": "gradient2"
+    },
+    {
+      "type": "logo",
+      "name": "Sarvam",
+      "wordmark": true,
+      "bg": "gradient2",
+      "tagline": "AI for all, from India"
+    }
+  ],
+  "look": {
+    "displayFont": "Instrument Serif",
+    "bodyFont": "Plus Jakarta Sans",
+    "uppercase": false,
+    "bg": "#FAFAFA",
+    "text": "#373AC0",
+    "background": "plain",
+    "grain": false,
+    "gradient": [
+      "#A9480C",
+      "#CF5B0D",
+      "#F37311",
+      "#FA9130",
+      "#F7AD60",
+      "#D8C2B5",
+      "#CFDAF7",
+      "#F1F5FD"
+    ],
+    "gradient2": [
+      "#E2A478",
+      "#CEB7B6",
+      "#B1B8DB",
+      "#899CD1",
+      "#5B73AC",
+      "#364E87",
+      "#203460",
+      "#1B233F",
+      "#151921"
+    ],
+    "gradientText": "#141414"
+  }
+}

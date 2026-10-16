@@ -1,0 +1,169 @@
+{
+ "final_column_crimson4": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.4,
+   "black": 0.298,
+   "white": 0.913,
+   "toneGamma": 1.05,
+   "periodFrac": 0.0069
+  },
+  "levels_info": {
+   "render_q": [
+    0.162,
+    0.436,
+    0.683
+   ],
+   "ref_T": [
+    0.034,
+    0.484,
+    0.927
+   ]
+  },
+  "ref": "columns"
+ },
+ "final_stilllife_crimson4": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.4,
+   "black": 0.205,
+   "white": 0.764,
+   "toneGamma": 0.744
+  },
+  "levels_info": {
+   "render_q": [
+    0.224,
+    0.405,
+    0.723
+   ],
+   "ref_T": [
+    0.034,
+    0.484,
+    0.927
+   ]
+  },
+  "ref": "columns"
+ },
+ "final_stilllife_mint4": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.4,
+   "black": 0.07,
+   "white": 0.725,
+   "toneGamma": 0.63
+  },
+  "levels_info": {
+   "render_q": [
+    0.224,
+    0.405,
+    0.723
+   ],
+   "ref_T": [
+    0.235,
+    0.671,
+    0.998
+   ]
+  },
+  "ref": "lighthouse"
+ },
+ "final_coin_forest": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.65,
+   "black": 0.35,
+   "white": 0.689,
+   "toneGamma": 1.65,
+   "periodFrac": 0.0105,
+   "aa": 2.0,
+   "covGamma": 1.0
+  },
+  "levels_info": {
+   "render_q": [
+    0.385,
+    0.571,
+    0.668
+   ],
+   "ref_T": [
+    0.104,
+    0.555,
+    0.94
+   ]
+  },
+  "ref": "green_rock"
+ },
+ "final_sphere_lavender4": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.4,
+   "black": 0.184,
+   "white": 1.039,
+   "toneGamma": 1.599
+  },
+  "levels_info": {
+   "render_q": [
+    0.213,
+    0.715,
+    0.976
+   ],
+   "ref_T": [
+    0.034,
+    0.484,
+    0.927
+   ]
+  },
+  "ref": "columns"
+ },
+ "final_card_violet": {
+  "params": {
+   "wobble": 0.7,
+   "detail": 0.25,
+   "segLen": 4.0,
+   "segJitter": 0.35,
+   "segWidth": 0.3,
+   "segGap": 0.2,
+   "fill": 0.4,
+   "black": 0.0,
+   "white": 1.0,
+   "toneGamma": 1.2,
+   "periodFrac": 0.0077
+  },
+  "levels_info": {
+   "render_q": [
+    0.331,
+    0.41,
+    0.48
+   ],
+   "ref_T": [
+    0.181,
+    0.399,
+    0.983
+   ]
+  },
+  "ref": "flowers"
+ }
+}

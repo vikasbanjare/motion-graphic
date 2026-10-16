@@ -1,0 +1,28 @@
+pen scribble foley             0.70   1.25   4.05 dur 3.35 att 0.56 rel 2.79 rise  70.8dB pan +0.0 side-mid -169.9
+low swell into music           5.18   5.33   5.61 dur 0.43 att 0.15 rel 0.28 rise  60.0dB pan -0.5 side-mid  +1.3
+hi air band (scene bed)        5.56   7.34  10.30 dur 4.74 att 1.78 rel 2.96 rise  26.4dB pan -1.9 side-mid  +4.6
+wing flutter ticks             7.24   7.43   7.64 dur 0.41 att 0.19 rel 0.22 rise  11.8dB pan -0.6 side-mid  -1.4
+bird chirps                    8.23   8.96   9.51 dur 1.28 att 0.73 rel 0.55 rise  32.8dB pan -1.1 side-mid -11.7
+lens swell                     9.87  10.12  10.20 dur 0.33 att 0.25 rel 0.08 rise  30.3dB pan -1.7 side-mid  -0.4
+glass shimmer partials        14.32  15.16  15.95 dur 1.63 att 0.84 rel 0.79 rise  19.0dB pan +1.4 side-mid  -3.4
+whip A1                       18.64  18.76  18.86 dur 0.21 att 0.11 rel 0.10 rise  16.8dB pan -0.1 side-mid -17.5
+whip A2                       19.07  19.32  19.36 dur 0.29 att 0.25 rel 0.04 rise  20.7dB pan -0.2 side-mid -18.2
+whip B                        20.29  20.33  20.76 dur 0.46 att 0.04 rel 0.42 rise  23.4dB pan -0.5 side-mid  -8.3
+air riser                     21.67  21.97  22.46 dur 0.79 att 0.30 rel 0.49 rise  39.1dB pan -0.0 side-mid  +0.6
+column wipe texture           27.06  27.90  28.09 dur 1.02 att 0.83 rel 0.19 rise  16.3dB pan -0.4 side-mid  -1.2
+lighthouse low hum            33.34  34.51  36.30 dur 2.96 att 1.17 rel 1.79 rise  33.2dB pan -0.2 side-mid -14.7
+gull chirps                   35.56  35.69  35.83 dur 0.28 att 0.13 rel 0.14 rise  24.0dB pan -0.4 side-mid  -8.6
+rising tone                   35.15  35.72  36.40 dur 1.25 att 0.57 rel 0.67 rise  28.4dB pan +0.7 side-mid  -6.6
+underwater swell              39.50  39.53  39.58 dur 0.08 att 0.04 rel 0.05 rise  15.7dB pan -0.4 side-mid  -5.8
+pearl shimmer                 42.63  42.97  43.50 dur 0.86 att 0.34 rel 0.53 rise  30.2dB pan +0.3 side-mid  -7.9
+pre-breakdown swell           43.82  43.86  43.90 dur 0.08 att 0.04 rel 0.05 rise  16.1dB pan -1.4 side-mid  -9.8
+whip C1                       46.58  46.71  46.98 dur 0.40 att 0.13 rel 0.27 rise  47.9dB pan +0.0 side-mid -26.9
+whip C2                       47.04  47.28  47.32 dur 0.28 att 0.25 rel 0.04 rise  16.5dB pan -0.0 side-mid -33.8
+whip D                        47.93  48.07  48.60 dur 0.67 att 0.14 rel 0.53 rise  57.4dB pan +0.0 side-mid -19.2
+whip E                        49.25  49.50  49.65 dur 0.40 att 0.25 rel 0.15 rise  41.5dB pan -0.1 side-mid  +0.3
+seal sparkle                  50.25  50.35  50.97 dur 0.72 att 0.11 rel 0.61 rise  28.7dB pan +0.3 side-mid -10.0
+drop-2 impact                 51.42  51.48  51.75 dur 0.33 att 0.06 rel 0.27 rise  61.6dB pan -0.1 side-mid -28.1
+whip F (bill to phone)        56.12  56.42  57.02 dur 0.90 att 0.30 rel 0.60 rise  23.5dB pan -0.1 side-mid  -7.5
+logo shimmer swell            61.77  62.37  62.78 dur 1.00 att 0.60 rel 0.41 rise  16.5dB pan -0.9 side-mid  -5.9
+end riser                     66.22  67.16  67.40 dur 1.18 att 0.94 rel 0.24 rise  45.1dB pan +0.6 side-mid  +3.0
+end bell ring                 66.92  67.12  67.17 dur 0.25 att 0.20 rel 0.05 rise  10.6dB pan -1.7 side-mid  +3.9

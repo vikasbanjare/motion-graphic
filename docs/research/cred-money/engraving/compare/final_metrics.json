@@ -1,0 +1,335 @@
+{
+ "final_stilllife_crimson4": {
+  "reference_t": 24.5,
+  "reference": "columns scene (crimson/peach)",
+  "full_frame": {
+   "period_ref": 2.48,
+   "period_ours": 2.34,
+   "period_ratio": 0.941,
+   "angle_ref": 51.3,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.729,
+   "luma_emd": 16.53,
+   "mean_ref": 164.6,
+   "mean_ours": 181.1,
+   "edge_density_ref": 0.2051,
+   "edge_density_ours": 0.0777,
+   "edge_ratio": 0.379,
+   "hp_std_ref": 22.35,
+   "hp_std_ours": 12.09,
+   "line_energy_ref": 0.025,
+   "line_energy_ours": 0.101,
+   "mod_shape_corr": 0.978,
+   "mod_amp_ratio": 0.688,
+   "dE_quantile_colours": 12.0
+  },
+  "region": {
+   "period_ref": 2.48,
+   "period_ours": 2.34,
+   "period_ratio": 0.941,
+   "angle_ref": 38.7,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.683,
+   "luma_emd": 25.62,
+   "mean_ref": 155.1,
+   "mean_ours": 180.3,
+   "edge_density_ref": 0.2321,
+   "edge_density_ours": 0.1157,
+   "edge_ratio": 0.499,
+   "hp_std_ref": 21.14,
+   "hp_std_ours": 15.38,
+   "line_energy_ref": 0.06,
+   "line_energy_ours": 0.108,
+   "mod_shape_corr": 0.895,
+   "mod_amp_ratio": 0.562,
+   "dE_quantile_colours": 15.32
+  },
+  "region_boxes": {
+   "ours": [
+    70,
+    70,
+    250,
+    250
+   ],
+   "ref": [
+    0,
+    60,
+    180,
+    240
+   ]
+  }
+ },
+ "final_stilllife_mint4": {
+  "reference_t": 33.5,
+  "reference": "lighthouse scene (mint)",
+  "full_frame": {
+   "period_ref": 2.0,
+   "period_ours": 2.34,
+   "period_ratio": 1.168,
+   "angle_ref": 45.0,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.698,
+   "luma_emd": 10.73,
+   "mean_ref": 196.2,
+   "mean_ours": 201.2,
+   "edge_density_ref": 0.1122,
+   "edge_density_ours": 0.0536,
+   "edge_ratio": 0.478,
+   "hp_std_ref": 14.87,
+   "hp_std_ours": 8.36,
+   "line_energy_ref": 0.121,
+   "line_energy_ours": 0.097,
+   "mod_shape_corr": 0.96,
+   "mod_amp_ratio": 0.481,
+   "dE_quantile_colours": 7.57
+  },
+  "region": {
+   "period_ref": 2.0,
+   "period_ours": 2.34,
+   "period_ratio": 1.168,
+   "angle_ref": 45.0,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.603,
+   "luma_emd": 15.24,
+   "mean_ref": 192.8,
+   "mean_ours": 203.8,
+   "edge_density_ref": 0.1636,
+   "edge_density_ours": 0.0738,
+   "edge_ratio": 0.451,
+   "hp_std_ref": 18.53,
+   "hp_std_ours": 9.7,
+   "line_energy_ref": 0.109,
+   "line_energy_ours": 0.105,
+   "mod_shape_corr": 0.77,
+   "mod_amp_ratio": 0.506,
+   "dE_quantile_colours": 9.66
+  },
+  "region_boxes": {
+   "ours": [
+    70,
+    70,
+    250,
+    250
+   ],
+   "ref": [
+    150,
+    100,
+    330,
+    280
+   ]
+  }
+ },
+ "final_coin_forest": {
+  "reference_t": 47.5,
+  "reference": "lens close-up (forest green)",
+  "full_frame": {
+   "period_ref": 3.81,
+   "period_ours": 3.77,
+   "period_ratio": 0.99,
+   "angle_ref": 44.4,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.581,
+   "luma_emd": 39.49,
+   "mean_ref": 151.2,
+   "mean_ours": 189.8,
+   "edge_density_ref": 0.2109,
+   "edge_density_ours": 0.0966,
+   "edge_ratio": 0.458,
+   "hp_std_ref": 23.76,
+   "hp_std_ours": 21.48,
+   "line_energy_ref": 0.141,
+   "line_energy_ours": 0.093,
+   "mod_shape_corr": -0.012,
+   "mod_amp_ratio": 1.217,
+   "dE_quantile_colours": 17.87
+  },
+  "region": {
+   "period_ref": 3.79,
+   "period_ours": 3.79,
+   "period_ratio": 1.0,
+   "angle_ref": 44.7,
+   "angle_ours": 44.7,
+   "hist_intersection": 0.815,
+   "luma_emd": 15.34,
+   "mean_ref": 124.6,
+   "mean_ours": 139.6,
+   "edge_density_ref": 0.3638,
+   "edge_density_ours": 0.3524,
+   "edge_ratio": 0.969,
+   "hp_std_ref": 35.95,
+   "hp_std_ours": 38.12,
+   "line_energy_ref": 0.137,
+   "line_energy_ours": 0.094,
+   "mod_shape_corr": 0.645,
+   "mod_amp_ratio": 0.9,
+   "dE_quantile_colours": 5.72
+  },
+  "region_boxes": {
+   "ours": [
+    230,
+    110,
+    410,
+    290
+   ],
+   "ref": [
+    170,
+    40,
+    350,
+    220
+   ]
+  }
+ },
+ "final_sphere_lavender4": {
+  "reference_t": 29.5,
+  "reference": "turtle/seabed scene (lavender)",
+  "full_frame": {
+   "period_ref": 6.24,
+   "period_ours": 2.34,
+   "period_ratio": 0.376,
+   "angle_ref": 55.9,
+   "angle_ours": 44.8,
+   "hist_intersection": 0.264,
+   "luma_emd": 39.06,
+   "mean_ref": 165.8,
+   "mean_ours": 204.1,
+   "edge_density_ref": 0.1048,
+   "edge_density_ours": 0.0877,
+   "edge_ratio": 0.837,
+   "hp_std_ref": 14.62,
+   "hp_std_ours": 12.71,
+   "line_energy_ref": 0.017,
+   "line_energy_ours": 0.134,
+   "mod_shape_corr": 0.83,
+   "mod_amp_ratio": 1.073,
+   "dE_quantile_colours": 16.44
+  },
+  "region": {
+   "period_ref": 6.05,
+   "period_ours": 2.34,
+   "period_ratio": 0.386,
+   "angle_ref": 54.6,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.781,
+   "luma_emd": 9.96,
+   "mean_ref": 139.8,
+   "mean_ours": 148.1,
+   "edge_density_ref": 0.2498,
+   "edge_density_ours": 0.3208,
+   "edge_ratio": 1.284,
+   "hp_std_ref": 21.31,
+   "hp_std_ours": 23.26,
+   "line_energy_ref": 0.024,
+   "line_energy_ours": 0.119,
+   "mod_shape_corr": -0.755,
+   "mod_amp_ratio": 0.708,
+   "dE_quantile_colours": 5.52
+  },
+  "region_boxes": {
+   "ours": [
+    240,
+    90,
+    420,
+    270
+   ],
+   "ref": [
+    0,
+    180,
+    180,
+    360
+   ]
+  }
+ },
+ "final_card_violet": {
+  "reference_t": 6.0,
+  "reference": "flower collage (violet)",
+  "full_frame": {
+   "period_ref": 2.78,
+   "period_ours": 2.76,
+   "period_ratio": 0.995,
+   "angle_ref": 51.4,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.748,
+   "luma_emd": 13.76,
+   "mean_ref": 183.9,
+   "mean_ours": 195.3,
+   "edge_density_ref": 0.1895,
+   "edge_density_ours": 0.1029,
+   "edge_ratio": 0.543,
+   "hp_std_ref": 21.89,
+   "hp_std_ours": 18.06,
+   "line_energy_ref": 0.109,
+   "line_energy_ours": 0.128,
+   "mod_shape_corr": 0.719,
+   "mod_amp_ratio": 1.03,
+   "dE_quantile_colours": 32.11
+  },
+  "region": {
+   "period_ref": 2.78,
+   "period_ours": 2.76,
+   "period_ratio": 0.995,
+   "angle_ref": 51.4,
+   "angle_ours": 45.0,
+   "hist_intersection": 0.733,
+   "luma_emd": 8.74,
+   "mean_ref": 175.6,
+   "mean_ours": 171.8,
+   "edge_density_ref": 0.236,
+   "edge_density_ours": 0.2548,
+   "edge_ratio": 1.08,
+   "hp_std_ref": 22.61,
+   "hp_std_ours": 28.65,
+   "line_energy_ref": 0.093,
+   "line_energy_ours": 0.148,
+   "mod_shape_corr": 0.972,
+   "mod_amp_ratio": 0.996,
+   "dE_quantile_colours": 14.25
+  },
+  "region_boxes": {
+   "ours": [
+    230,
+    150,
+    410,
+    330
+   ],
+   "ref": [
+    0,
+    40,
+    180,
+    220
+   ]
+  }
+ },
+ "final_column_crimson4": {
+  "reference_t": 23.0,
+  "reference": "left column shaft, columns scene",
+  "region": {
+   "period_ref": 2.48,
+   "period_ours": 2.47,
+   "period_ratio": 0.996,
+   "angle_ref": 38.7,
+   "angle_ours": 44.8,
+   "hist_intersection": 0.771,
+   "luma_emd": 6.82,
+   "mean_ref": 122.7,
+   "mean_ours": 117.7,
+   "edge_density_ref": 0.3178,
+   "edge_density_ours": 0.3432,
+   "edge_ratio": 1.08,
+   "hp_std_ref": 25.33,
+   "hp_std_ours": 28.26,
+   "line_energy_ref": 0.07,
+   "line_energy_ours": 0.059,
+   "mod_shape_corr": 0.833,
+   "mod_amp_ratio": 0.662,
+   "dE_quantile_colours": 4.22,
+   "phase_rms_ref": 0.16,
+   "phase_rms_ours": 0.145,
+   "coherence_ref": 0.617,
+   "coherence_ours": 0.641,
+   "orient_coh_ref": 0.554,
+   "orient_coh_ours": 0.558,
+   "angle_std_ref": 14.8,
+   "angle_std_ours": 12.9
+  }
+ }
+}

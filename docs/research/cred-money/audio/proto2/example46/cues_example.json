@@ -1,0 +1,319 @@
+{
+ "seconds": 46,
+ "lufs": -14,
+ "music": {
+  "file": "score46.wav",
+  "gain_db": 0
+ },
+ "cues": [
+  {
+   "id": "Q01",
+   "sfx": "pen_scribble",
+   "params": {
+    "dur": 2.523
+   },
+   "anchor": "draw_open @ frame 10 (first engraved line of the card draws)",
+   "anchor_t": 0.543,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60.0,
+   "floor_lufs": -26.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q02",
+   "sfx": "reverse_swell",
+   "params": {
+    "dur": 1.6
+   },
+   "anchor": "reveal @ frame 138 (duotone engraved world blooms in)",
+   "anchor_t": 4.8,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": -60.0,
+   "floor_lufs": -22.6,
+   "pan": 0.0
+  },
+  {
+   "id": "Q03",
+   "sfx": "air_bed",
+   "params": {
+    "dur": 5.5
+   },
+   "anchor": "nature_bed @ frame 186 (engraved world holds)",
+   "anchor_t": 5.5,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -60.0,
+   "floor_lufs": -39.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q04",
+   "sfx": "paper_flick",
+   "params": {},
+   "anchor": "online_shopping @ frame 216 (receipt/shopping object flicks in)",
+   "anchor_t": 7.53,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -6.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q05",
+   "sfx": "lens_swell",
+   "params": {
+    "dur": 0.45
+   },
+   "anchor": "lens_arrive @ frame 270 (lens slides over the card)",
+   "anchor_t": 9.02,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 0.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q06",
+   "sfx": "glass_shimmer",
+   "params": {
+    "notes_hz": [
+     2489.0,
+     3136.0,
+     3729.0,
+     4978.0
+    ]
+   },
+   "anchor": "card_foil @ frame 344 (holographic foil band)",
+   "anchor_t": 12.127,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -10.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q07",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "whip_cut @ frame 438 (whip to fee vignette)",
+   "anchor_t": 14.55,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -13.0,
+   "floor_lufs": -26.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q08",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.26
+   },
+   "anchor": "whip_cut (paired) @ frame 438",
+   "anchor_t": 14.68,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -13.0,
+   "floor_lufs": -46,
+   "pan": 0.0
+  },
+  {
+   "id": "Q09",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "whip_cut @ frame 486 (whip to the card)",
+   "anchor_t": 16.15,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -13.0,
+   "floor_lufs": -26.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q10",
+   "sfx": "card_clink",
+   "params": {},
+   "anchor": "card_set_down @ frame 510 (zero joining fee: card settles)",
+   "anchor_t": 17.55,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -10.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q11",
+   "sfx": "air_riser",
+   "params": {},
+   "anchor": "camera_pullback_reveal @ frame 549 (pull back; drop lands mid-shot at 18.94)",
+   "anchor_t": 18.16,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -26.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q12",
+   "sfx": "jet_pass",
+   "params": {},
+   "anchor": "flights @ frame 618 (engraved plane crosses)",
+   "anchor_t": 20.8,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -9.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q13",
+   "sfx": "low_wash",
+   "params": {
+    "dur": 1.03
+   },
+   "anchor": "foreground_wipe @ frame 702 (foreground wipe to hotel)",
+   "anchor_t": 23.34,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -5.5,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q14",
+   "sfx": "desk_bell",
+   "params": {},
+   "anchor": "hotels @ frame 744 (desk bell)",
+   "anchor_t": 24.8,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -7.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q15",
+   "sfx": "rising_tone",
+   "params": {},
+   "anchor": "riser_into_cut @ frame 816 (cut to store)",
+   "anchor_t": 27.17,
+   "align": "peak",
+   "offset": 0.0,
+   "over_bed_lu": -1.5,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q16",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "store_products @ frame 840 (2,000+ products glint)",
+   "anchor_t": 28.55,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -12.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q17",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "whip_cut @ frame 957 (breakdown whip 1)",
+   "anchor_t": 31.85,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -5.0,
+   "floor_lufs": -26.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q18",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.25,
+    "click": true
+   },
+   "anchor": "whip_cut @ frame 1008 (breakdown whip 2 to hero card)",
+   "anchor_t": 33.55,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -5.0,
+   "floor_lufs": -26.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q19",
+   "sfx": "sparkle",
+   "params": {},
+   "anchor": "glint @ frame 1014 (hero card settles)",
+   "anchor_t": 34.35,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -1.5,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q20",
+   "sfx": "whip",
+   "params": {
+    "dur": 0.58
+   },
+   "anchor": "object_slide_text @ frame 1110 (card slides into phone + line)",
+   "anchor_t": 37.01,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -15.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q21",
+   "sfx": "chord_bloom",
+   "params": {},
+   "anchor": "logo_bloom @ frame 1182 (logo ring expands)",
+   "anchor_t": 39.45,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": 2.0,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q22",
+   "sfx": "end_bell",
+   "params": {},
+   "anchor": "end_button @ frame 1290 (logo fade starts)",
+   "anchor_t": 43.92,
+   "align": "start",
+   "offset": 0.0,
+   "over_bed_lu": -12.5,
+   "floor_lufs": -46.0,
+   "pan": 0.0
+  },
+  {
+   "id": "Q23",
+   "sfx": "end_riser",
+   "params": {},
+   "anchor": "end_button (paired) @ frame 1290",
+   "anchor_t": 44.16,
+   "align": "end",
+   "offset": 0.0,
+   "over_bed_lu": -27.0,
+   "floor_lufs": -46,
+   "pan": 0.0
+  }
+ ]
+}

@@ -1,0 +1,2 @@
+# Sites the research workflow crawls for videos (research/crawl.py), one start URL per line.
+https://www.motiondesignawards.com/

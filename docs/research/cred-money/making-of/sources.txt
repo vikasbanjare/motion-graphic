@@ -1,0 +1,45 @@
+# Sources log (making-of research) -- 2026-10-10
+FILM IDENTITY
+- YouTube "The more you know | CRED money" https://www.youtube.com/watch?v=itmN_N2Hh7U (desc: "Good financial habits don't thrive in a vacuum. They grow with awareness, analysis, and reflection...")
+- CRED LinkedIn post of the film, 2024-07-25T05:23Z https://www.linkedin.com/posts/credapp_the-more-you-know-cred-money-activity-7222109244546768896-za5O
+- Launch press: TechCrunch 2024-07-24 https://techcrunch.com/2024/07/24/cred-launches-personal-finance-manager-for-indias-affluent/ ; Business Standard 2024-07-24; Entrackr 2024-07
+MAKERS (in-house CRED design/motion)
+- Abhinav Verma (Motion Design, CRED) 2024-07-25: "Work of Art. Really delighted to pull this off as a team with Akash Malya, for CRED Money launch. Website is insane. https://cred.club/money" https://www.linkedin.com/posts/abhinav-verma-0a8607112_work-of-art-really-delighted-to-pull-this-activity-7222153140479934464-fMIS
+- Akash Malya "3D and Motion Design at CRED"; Behance be.net/skyslash; IG @akash.aep; personal work "Animated and rendered in Blender. Simulations done in Embergen. 2D motion / post-work done in After Effects." https://www.linkedin.com/posts/akash-malya-806627169_3dart-blendercommunity-motiongraphics-activity-7455122101193068544-Qy4L
+- Harish Sivaramakrishnan (Head of Design and Marketing, CRED) launch post 2024-07-25 https://www.linkedin.com/posts/hsivaramakrishnan_we-set-out-to-build-the-most-beautifully-activity-7222167011739496448-82FS
+- Anoop Kumar post "take a good look at your money with CRED money." (commenter asks "What effect did you apply on the money?") https://www.linkedin.com/posts/chanoopkumar_take-a-good-look-at-your-money-with-cred-activity-7222260471683325952-SmhK
+- Saptarshi Prakash appreciation post describing art direction (wavy line patterns, paper texture, hologram-like security thread, zooming into note, turtle underwater, lighthouse) https://www.linkedin.com/posts/saptarshipr_details-design-activity-7222550430285803520-dEX5
+- comment there (Vishnu V S) links Farzi titles as likely inspiration: https://lnkd.in/gPWgCUQe -> https://www.motiondesignawards.com/project/1177/farzi-opening-title-sequence ; another commenter: "Reminded me of Scam 2003 title sequence" (Vijay Verma post comments) https://www.linkedin.com/posts/realvjy_cred-design-interaction-activity-7222183331965067264-fGeC
+- Figma community "Cred Money Animation" by Abhiek Biswas: "playground to explore the note masking animation from the CRED money landing page" https://www.figma.com/community/file/1398650664656358720/cred-money-animation
+- Framer recreation of CRED Money scroll animation (Siddharth Vij) https://www.linkedin.com/posts/siddharthvij7_we-recreated-this-scroll-animation-for-bricx-activity-7238147938424610816-eC6j
+PRECEDENTS (engraving look in motion)
+- Farzi titles: Plexus Motion (dir Yashoda Parthasarthy) + Improper Design & Animation (Mehr Chatterjee, Aditya Dutta): "Monuments, patterns and emblems from real notes were faithfully redrawn by hand"; "3D Note Burning" by Viraj S Patil et al. https://improper.tv/work/farzi/ ; IG https://www.instagram.com/reel/CoeyOBto0SM/ ("Each frame was painstakingly drawn... We started by studying scanned Indian currency")
+- Varo Bank "It's Your Money" (Scholar, dir Will Johnson & Michael Tavarez, CG sup Brice Linane; 3D generalists + Flame compositing; agency Serviceplan US): "reimagining communities and everyday people in the engraving style of currency" https://helloscholar.com/project/varo-bank-its-your-money
+BRAND
+- CRED web CSS declares @font-face gilroy (400/500/600/700): https://web-assets.cred.club/v2/_next/static/css/eacb8193bb5962f6.css
+- NeoPOP (CRED open-source design system) typography types: heading / body / serif-heading / caps; caps letter-spacing 2px (>8px), serif-heading 0.2px, line-height 1.25: https://raw.githubusercontent.com/CRED-CLUB/neopop-web/main/src/utils/index.ts
+- CRED "Design Mafia" credits on CRED garage (brand design, creative and motion design teams): https://www.linkedin.com/posts/hsivaramakrishnan_building-cred-garage-has-been-an-incredible-activity-7113087507600179200-IRGr
+ENGRAVING TECHNIQUE
+- Spoon Graphics money effect (6 wavy line screens, 1-6pt, thresholds 80..180, 0/90/45 deg): https://blog.spoongraphics.co.uk/tutorials/create-realistic-money-effect-photoshop
+- Texturelabs Engraved Money Effect (Hard Mix texture; sun rays = Halftone Pattern Line size 12 contrast 50 + Polar Coordinates): https://texturelabs.org/tutorials/engraved-money-effect/
+- sjvnnings Godot money engraving shader (MIT), adapted from Texturelabs: https://github.com/sjvnnings/godot-money-engraving-shader (shader_source/shader_money_engraving.shader; params fill_size 100, wavelength 34, amplitude 0.025, ripple 10 / 5deg, levels 0.1-0.9, opacity 0.88, gradient #1C2B28 -> #F0F2D8)
+- Workbench Tutorial 90 Engraving (AE: Venetian Blinds lines + image at 50%, blur, Brightness/Contrast crush; + halftone noise): https://workbench.tv/tutorials/2017-09-29_Engraving/
+- Vayce engraving tool (line density, contour flow, edge etching, ink/paper): https://vayce.app/tools/engraving-effect/
+- Ocean Quigley Blender Eevee hatching/engraving shaders: https://lesterbanks.com/2020/11/how-to-create-hatching-shaders-for-eevee/
+- Ostromoukhov 1999 Digital Facial Engraving (SIGGRAPH): https://dl.acm.org/doi/pdf/10.1145/311535.311604
+- Freudenberg, Masuch, Strothotte 2002 Real-time halftoning: http://www.eecs.umich.edu/courses/eecs498-2/papers/freudenberg-rth-2002.pdf
+- Praun et al. 2001 Real-time hatching (tonal art maps): https://dl.acm.org/doi/abs/10.1145/383259.383328
+- Leister 1994 Computer generated copper plates: https://onlinelibrary.wiley.com/doi/abs/10.1111/1467-8659.1310069
+FOIL
+- simeydotme/pokemon-cards-css (GPL-3.0; concept only): https://github.com/simeydotme/pokemon-cards-css (regular-holo: repeating-linear-gradient 110deg rainbow + 1px scanlines, background-blend overlay, mix-blend color-dodge, brightness 1.1 contrast 1.1 saturate 1.2; sunpillar hsl(2,100%,73%) (53,100%,69%) (93,100%,69%) (176,100%,76%) (228,100%,74%) (283,100%,73%))
+- three.js iridescence chunk (MIT; Belcour & Barla 2017): https://raw.githubusercontent.com/mrdoob/three.js/dev/src/renderers/shaders/ShaderChunk/iridescence_fragment.glsl.js ; paper https://dl.acm.org/doi/abs/10.1145/3072959.3073620
+- 4rknova foil sticker (concept; code all-rights-reserved): https://www.4rknova.com/blog/2025/08/30/foil-sticker
+- BlendSwap thin film node (CC0; offset RGB sines): https://blendswap.com/blend/21348
+- AE iridescent: Fractal Noise -> Colorama (Adobe community): https://community.adobe.com/t5/after-effects-discussions/colour-change-iridescent-gradient-animation/m-p/9997454
+LENS
+- Mattrunks magnifying glass (shape-layer loupe + zoomed precomp + position expression): https://mattrunks.com/en/tutorials/after-effects/magnifying-glass
+- Magnify / Optics Compensation / CC Lens discussions: https://community.adobe.com/t5/after-effects-discussions/adjustment-layer-magnify-and-bulge-effects-keeps-moving-with-the-camera/m-p/12153529 ; https://aescripts.com/learn/create-a-magnifying-lenses-effect
+ASSETS reachable (GitHub raw)
+- three.js examples/models/gltf Flamingo/Stork/Parrot/Horse (model by mirada from ro.me; licence not stated in repo)
+- KhronosGroup glTF-Sample-Assets: MaterialsVariantsShoe (c) 2021 Shopify CC-BY 4.0; IridescenceLamp (c) 2022 Wayfair CC-BY 4.0; ChronographWatch CC-BY 4.0
+- scikit-image bundled photos: rocket.jpg (SpaceX, public domain), coffee.png (CC0 Rachel Michetti)

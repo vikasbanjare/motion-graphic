@@ -1,0 +1,63 @@
+{
+  "_recipe": {
+    "title": "Style: kinetic manifesto",
+    "when": "Type-only brand statement or teaser: one phrase per beat on black, hard cuts, a struck-out word, a highlighted word, the name last.",
+    "beats": [
+      "Hook: the old belief, with the word that's wrong struck out.",
+      "Manifesto: four to six short phrases, one per beat, each filling the frame.",
+      "Turn: one quiet line with a highlighter on the key word.",
+      "Reveal: the name, alone.",
+      "CTA and logo."
+    ],
+    "copyTips": [
+      "Measured on 44 kinetic-type references: median 4.4 s per shot; the fast ones cut every 1-2 s on the beat. Use --pace fast with music that has a clear beat (npm run music snaps cuts to it).",
+      "One idea per line, 1-4 words. If a line needs a comma, split it.",
+      "Contrast in size beats contrast in colour: tiny line, giant line, tiny line.",
+      "Use one mark per scene: *accent*, ==highlight== or ~~strike~~, never two.",
+      "Light version: --theme clean (black type on white) reads like the Jitter / Base44 films."
+    ]
+  },
+  "format": "reel",
+  "theme": "mono",
+  "motion": "snappy",
+  "pace": "fast",
+  "transition": "cut",
+  "look": { "displayFont": "Inter", "displayWeight": 800, "background": "plain", "grain": true },
+  "audio": { "sfxPack": "punchy" },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "They told you [OLD BELIEF]. Wrong.",
+      "setup": "They told you:",
+      "strike": "[OLD BELIEF]",
+      "punch": "*Wrong.*"
+    },
+    {
+      "type": "kinetic",
+      "say": "[PHRASE ONE]. [PHRASE TWO]. [PHRASE THREE]. [PHRASE FOUR].",
+      "lines": ["[PHRASE ONE].", "[PHRASE TWO].", "[PHRASE THREE].", "[PHRASE *FOUR*]."]
+    },
+    {
+      "type": "title",
+      "say": "[THE TURN, ONE QUIET LINE].",
+      "headline": "[THE TURN WITH ONE ==KEY== WORD]"
+    },
+    {
+      "type": "title",
+      "say": "This is [PRODUCT].",
+      "kicker": "This is",
+      "headline": "*[PRODUCT]*"
+    },
+    {
+      "type": "cta",
+      "say": "[ACTION]. [WHERE].",
+      "action": "[ACTION]",
+      "sub": "[WHERE]",
+      "handle": "@[HANDLE]"
+    },
+    {
+      "type": "logo",
+      "name": "[PRODUCT]"
+    }
+  ]
+}

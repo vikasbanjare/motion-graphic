@@ -1,0 +1,31 @@
+{
+  "_note": "Original subjects for the CRED IndusInd RuPay film (travel: flights + hotels; shopping: products; rewards). Deliberately NOT the reference film's subjects (no hummingbird, turtle, lighthouse, pearl shell, banknote).",
+  "requests": [
+    {"source": "khronos", "names": ["BarramundiFish", "Lantern", "Avocado", "WaterBottle", "Corset", "GlassVaseFlowers", "SheenChair", "ToyCar", "AntiqueCamera"]},
+
+    {"source": "polyhaven", "res": "1k", "ids": ["lion_head", "carved_wooden_elephant", "brass_diya_lantern", "vintage_pocket_watch", "pocket_watch", "seadogs_compass", "vintage_suitcase", "treasure_chest", "mantel_clock_01", "Camera_01", "brass_vase_01", "tea_set_01", "ornate_mirror_01", "horse_statue_01", "marble_bust_01", "CashRegister_01", "dutch_ship_large_01", "vintage_telephone_wall_clock", "flower_gazania", "food_pomegranate_01"]},
+
+    {"source": "si3d", "q": "Wright Flyer", "max": 1},
+    {"source": "si3d", "q": "Spirit of St. Louis", "max": 1},
+    {"source": "si3d", "q": "Cher Ami", "max": 1},
+    {"source": "si3d", "q": "Conus", "max": 2},
+    {"source": "si3d", "q": "globe", "max": 2},
+    {"source": "si3d", "q": "telescope", "max": 1},
+
+    {"source": "met", "q": "peacock", "departmentId": 9, "max": 6, "scan": 200},
+    {"source": "met", "q": "elephant", "departmentId": 9, "max": 6, "scan": 200},
+    {"source": "met", "q": "lotus", "max": 6, "scan": 200},
+    {"source": "met", "q": "hot air balloon", "departmentId": 9, "max": 6, "scan": 200},
+    {"source": "met", "q": "astrolabe", "max": 4, "scan": 100},
+    {"source": "met", "q": "celestial globe", "max": 4, "scan": 100},
+    {"source": "met", "q": "Mughal coin", "departmentId": 14, "max": 6, "scan": 200},
+    {"source": "met", "q": "casket", "departmentId": 12, "max": 4, "scan": 200},
+    {"source": "met", "q": "ornament engraving", "departmentId": 9, "medium": "Engraving", "max": 8, "scan": 300},
+
+    {"source": "cleveland", "q": "peacock engraving", "max": 5, "scan": 100},
+    {"source": "cleveland", "q": "elephant", "type": "Print", "max": 5, "scan": 100},
+    {"source": "cleveland", "q": "balloon", "type": "Print", "max": 5, "scan": 100},
+    {"source": "cleveland", "q": "ornament", "type": "Print", "max": 8, "scan": 200},
+    {"source": "cleveland", "q": "coin India", "max": 5, "scan": 100}
+  ]
+}

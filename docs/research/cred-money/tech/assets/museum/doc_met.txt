@@ -1,0 +1,824 @@
+### Latest Updates
+
+September 4, 2026
+
+A new paginated search endpoint is available at
+
+```
+/public/collection/v1.1/search
+```
+
+. It accepts the same filters as the existing search endpoint and adds two parameters for paging through results:
+
+* offset: the zero-based index of the first result to return (default 0).
+* limit: the number of results to return per page (default 100, maximum 500).
+
+The existing
+
+```
+/public/collection/v1/search
+```
+
+endpoint is deprecated and will be retired on October 1, 2026. Until then it is unchanged: it still returns every matching Object ID in a single response. Please migrate to
+
+```
+/v1.1
+```
+
+before that date, and see Migrating from /v1/search for what changes and what to do if you rely on retrieving every matching Object ID in one request. To retrieve a full list of Object IDs (for example, every object with an image), use the
+
+```
+/objects
+```
+
+endpoint or the Open Access dataset.
+
+November 17, 2020
+
+The following search filters have been added to the search endpoint:
+
+* title: search against the title field.
+* tags: search for objects using the subject keyword tags field.
+
+November 4, 2020
+
+The following metadata are now available in the API:
+
+* measurements: measurements of a given work, broken down into elements, where available.
+
+For more information about the Metropolitan Museum of Art Collection API, please visit our Open Access Github page https://github.com/metmuseum/openaccess.
+
+The use of the Metropolitan Museum of Art Collection API is subject to these terms and conditions.
+
+Issues regarding this API can be emailed to openaccess@metmuseum.org.
+
+## The Metropolitan Museum of Art Collection API
+
+The Metropolitan Museum of Art presents over 5,000 years of art from around the world for everyone to experience and enjoy. The Museum lives in two iconic sites in New York City—The Met Fifth Avenue and The Met Cloisters. Millions of people also take part in The Met experience online.
+
+Since it was founded in 1870, The Met has always aspired to be more than a treasury of rare and beautiful objects. Every day, art comes alive in the Museum’s galleries and through its exhibitions and events, revealing both new ideas and unexpected connections across time and across cultures.
+
+The Metropolitan Museum of Art provides select datasets of information on more than 470,000 artworks in its Collection for unrestricted commercial and noncommercial use. To the extent possible under law, The Metropolitan Museum of Art has waived all copyright and related or neighboring rights to this dataset using the Creative Commons Zero license. This work is published from the United States of America. These select datasets are now available for use in any media without permission or fee; they also include identifying data for artworks under copyright. The datasets support the search, use, and interaction with the Museum’s collection.
+
+The Met’s Open Access datasets are available through our API. The API (RESTful web service in JSON format) gives access to all of The Met’s Open Access data and to corresponding high resolution images (JPEG format) that are in the public domain.
+
+## Access to the API
+
+At this time, we do not require API users to register or obtain an API key to use the service. Please limit request rate to 80 requests per second.
+
+## Endpoints
+
+There are API endpoints available for the following elements:
+
+* Objects: A listing of all valid Object IDs available for access.
+* Object: A record for an object, containing all open access data about that object, including its image (if the image is available under Open Access)
+* Departments: A listing of all valid departments, with their department ID and the department display name
+* Search: A listing of all Object IDs for objects that contain the search query within the object’s data
+
+## Objects
+
+```
+GET /public/collection/v1/objects
+```
+
+returns a listing of all valid Object IDs available to use
+
+| Parameter | Format | Notes |
+| --- | --- | --- |
+| ``` metadataDate ``` | datetime e.g. YYYY-MM-DD | Returns any objects with updated data after this date |
+| ``` departmentIds ``` | integers that correspond to department IDs e.g. 1 or 3|9|12, delimited with the | character | Returns any objects in a specific department |
+
+### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects
+```
+```
+
+### Response
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| ``` total ``` | int | The total number of publicly-available objects |
+| ``` objectIDs ``` | int array | [] | An array containing the object ID of publicly-available object |
+
+##### Example
+
+###### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects
+```
+```
+
+###### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=1
+```
+```
+
+###### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=3|9|12
+```
+```
+
+###### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects?metadataDate=2018-10-22
+```
+```
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects?metadataDate=2018-10-22&departmentIds=3|9|12
+```
+```
+
+## Object
+
+```
+GET /public/collection/v1/objects/[objectID]
+```
+
+returns a record for an object, containing all open access data about that object, including its image (if the image is available under Open Access)
+
+| Parameter | Format | Notes |
+| --- | --- | --- |
+| ``` objectID ``` | 0-9 | The unique Object ID for an object |
+
+### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/objects/[objectID]
+```
+```
+
+### Response
+
+| Field | Type | Notes | Example(s) |
+| --- | --- | --- | --- |
+| ``` objectID ``` | int | Identifying number for each artwork (unique, can be used as key field) | 437133 |
+| ``` isHighlight ``` | boolean | When "true" indicates a popular and important artwork in the collection | Vincent van Gogh's "Wheat Field with Cypresses" |
+| ``` accessionNumber ``` | string | Identifying number for each artwork (not always unique) | "67.241" |
+| ``` accessionYear ``` | string | Year the artwork was acquired. | "1921" |
+| ``` isPublicDomain ``` | boolean | When "true" indicates an artwork in the Public Domain | Vincent van Gogh's "Wheat Field with Cypresses" |
+| ``` primaryImage ``` | string | URL to the primary image of an object in JPEG format | "https://images.metmuseum.org/CRDImages/ep/original/DT1567.jpg" |
+| ``` primaryImageSmall ``` | string | URL to the lower-res primary image of an object in JPEG format | "https://images.metmuseum.org/CRDImages/ep/web-large/DT1567.jpg" |
+| ``` additionalImages ``` | array | An array containing URLs to the additional images of an object in JPEG format | ["https://images.metmuseum.org/CRDImages/ep/original/LC-EP\_1993\_132\_suppl\_CH-004.jpg", "https://images.metmuseum.org/CRDImages/ep/original/LC-EP\_1993\_132\_suppl\_CH-003.jpg", "https://images.metmuseum.org/CRDImages/ep/original/LC-EP\_1993\_132\_suppl\_CH-002.jpg", "https://images.metmuseum.org/CRDImages/ep/original/LC-EP\_1993\_132\_suppl\_CH-001.jpg"] |
+| ``` constituents ``` | array | An array containing the constituents associated with an object, with the constituent's role, name, ULAN URL, Wikidata URL, and gender, when available (currently contains female designations only). | [{"constituentID": 161708,"role": "Artist","name": "Louise Bourgeois","constituentULAN\_URL": "http://vocab.getty.edu/page/ulan/500057350","constituentWikidata\_URL": "https://www.wikidata.org/wiki/Q159409","gender": "Female"}] |
+| ``` department ``` | string | Indicates The Met's curatorial department responsible for the artwork | "Egyptian Art" |
+| ``` objectName ``` | string | Describes the physical type of the object | "Dress", "Painting", "Photograph", or "Vase" |
+| ``` title ``` | string | Title, identifying phrase, or name given to a work of art | "Wheat Field with Cypresses" |
+| ``` culture ``` | string | Information about the culture, or people from which an object was created | "Afghan", "British", "North African" |
+| ``` period ``` | string | Time or time period when an object was created | "Ming dynasty (1368-1644)", "Middle Bronze Age" |
+| ``` dynasty ``` | string | Dynasty (a succession of rulers of the same line or family) under which an object was created | "Kingdom of Benin", "Dynasty 12" |
+| ``` reign ``` | string | Reign of a monarch or ruler under which an object was created | "Amenhotep III", "Darius I", "Louis XVI" |
+| ``` portfolio ``` | string | A set of works created as a group or published as a series. | "Birds of America", "The Hudson River Portfolio", "Speculum Romanae Magnificentiae" |
+| ``` artistRole ``` | string | Role of the artist related to the type of artwork or object that was created | "Artist for Painting", "Designer for Dress" |
+| ``` artistPrefix ``` | string | Describes the extent of creation or describes an attribution qualifier to the information given in the artistRole field | "In the Style of", "Possibly by", "Written in French by" |
+| ``` artistDisplayName ``` | string | Artist name in the correct order for display | "Vincent van Gogh" |
+| ``` artistDisplayBio ``` | string | Nationality and life dates of an artist, also includes birth and death city when known. | "Dutch, Zundert 1853–1890 Auvers-sur-Oise" |
+| ``` artistSuffix ``` | string | Used to record complex information that qualifies the role of a constituent, e.g. extent of participation by the Constituent (verso only, and followers) | "verso only" |
+| ``` artistAlphaSort ``` | string | Used to sort artist names alphabetically. Last Name, First Name, Middle Name, Suffix, and Honorific fields, in that order. | "Gogh, Vincent van" |
+| ``` artistNationality ``` | string | National, geopolitical, cultural, or ethnic origins or affiliation of the creator or institution that made the artwork | "Spanish"; "Dutch"; "French, born Romania" |
+| ``` artistBeginDate ``` | string | Year the artist was born | "1840" |
+| ``` artistEndDate ``` | string | Year the artist died | "1926" |
+| ``` artistGender ``` | string | Gender of the artist (currently contains female designations only) | "female" |
+| ``` artistWikidata_URL ``` | string | Wikidata URL for the artist | "https://www.wikidata.org/wiki/Q694774" |
+| ``` artistULAN_URL ``` | string | ULAN URL for the artist | "https://vocab.getty.edu/page/ulan/500003169" |
+| ``` objectDate ``` | string | Year, a span of years, or a phrase that describes the specific or approximate date when an artwork was designed or created | "1865–67", "19th century", "ca. 1796" |
+| ``` objectBeginDate ``` | int | Machine readable date indicating the year the artwork was started to be created | 1867, 1100, -900 |
+| ``` objectEndDate ``` | int | Machine readable date indicating the year the artwork was completed (may be the same year or different year than the objectBeginDate) | 1888, 1100, -850 |
+| ``` medium ``` | string | Refers to the materials that were used to create the artwork | "Oil on canvas", "Watercolor", "Gold" |
+| ``` dimensions ``` | string | Size of the artwork or object | "16 x 20 in. (40.6 x 50.8 cm)" |
+| ``` dimensionsParsed ``` | float | Size of the artwork or object in centimeters, parsed | [{"element":"Sheet","dimensionType":"Height","dimension":51},{"element":"Plate","dimensionType":"Height","dimension":47.5},{"element":"Sheet","dimensionType":"Width","dimension":72.8},{"element":"Plate","dimensionType":"Width","dimension":62.5}] |
+| ``` measurements ``` | array | Array of elements, each with a name, description, and set of measurements. Spatial measurements are in centimeters; weights are in kg. | [ { "elementName": "Overall", "elementDescription": "Temple proper", "elementMeasurements": { "Height": 640.0813, "Length": 1249.6825, "Width": 640.0813 } } ] |
+| ``` creditLine ``` | string | Text acknowledging the source or origin of the artwork and the year the object was acquired by the museum. | "Robert Lehman Collection, 1975" |
+| ``` geographyType ``` | string | Qualifying information that describes the relationship of the place catalogued in the geography fields to the object that is being catalogued | "Made in", "From", "Attributed to" |
+| ``` city ``` | string | City where the artwork was created | "New York", "Paris", "Tokyo" |
+| ``` state ``` | string | State or province where the artwork was created, may sometimes overlap with County | "Alamance", "Derbyshire", "Brooklyn" |
+| ``` county ``` | string | County where the artwork was created, may sometimes overlap with State | "Orange County", "Staffordshire", "Brooklyn" |
+| ``` country ``` | string | Country where the artwork was created or found | "China", "France", "India" |
+| ``` region ``` | string | Geographic location more specific than country, but more specific than subregion, where the artwork was created or found (frequently null) | "Bohemia", "Midwest", "Southern" |
+| ``` subregion ``` | string | Geographic location more specific than Region, but less specific than Locale, where the artwork was created or found (frequently null) | "Malqata", "Deir el-Bahri", "Valley of the Kings" |
+| ``` locale ``` | string | Geographic location more specific than subregion, but more specific than locus, where the artwork was found (frequently null) | "Tomb of Perneb", "Temple of Hatshepsut", "Palace of Ramesses II" |
+| ``` locus ``` | string | Geographic location that is less specific than locale, but more specific than excavation, where the artwork was found (frequently null) | "1st chamber W. wall"; "Burial C 2, In coffin"; "Pit 477" |
+| ``` excavation ``` | string | The name of an excavation. The excavation field usually includes dates of excavation. | "MMA excavations, 1923–24"; "Khashaba excavations, 1910–11"; "Carnarvon excavations, 1912" |
+| ``` river ``` | string | River is a natural watercourse, usually freshwater, flowing toward an ocean, a lake, a sea or another river related to the origins of an artwork (frequently null) | "Mississippi River", "Nile River", "River Thames" |
+| ``` classification ``` | string | General term describing the artwork type. | "Basketry", "Ceramics", "Paintings" |
+| ``` rightsAndReproduction ``` | string | Credit line for artworks still under copyright. | "© 2018 Estate of Pablo Picasso / Artists Rights Society (ARS), New York" |
+| ``` linkResource ``` | string | URL to object's page on metmuseum.org | "https://www.metmuseum.org/art/collection/search/547802" |
+| ``` metadataDate ``` | datetime | Date metadata was last updated | 2018-10-17T10:24:43.197Z |
+| ``` repository ``` | string | "Metropolitan Museum of Art, New York, NY" |
+| ``` objectURL ``` | string | URL to object's page on metmuseum.org | "https://www.metmuseum.org/art/collection/search/547802" |
+| ``` tags ``` | array | An array of subject keyword tags associated with the object and their respective AAT URL | [{"term": "Abstraction","AAT\_URL": "http://vocab.getty.edu/page/aat/300056508","Wikidata\_URL": "https://www.wikidata.org/wiki/Q162150"}] |
+| ``` objectWikidata_URL ``` | string | Wikidata URL for the object | "https://www.wikidata.org/wiki/Q432253" |
+| ``` isTimelineWork ``` | boolean | Whether the object is on the Timeline of Art History website | true |
+| ``` GalleryNumber ``` | string | Gallery number, where available | "131" |
+
+##### Example
+
+## Departments
+
+```
+GET /public/collection/v1/departments
+```
+
+returns a listing of all departments
+
+### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/departments
+```
+```
+
+### Response
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| ``` departments ``` | array | [] | An array containing the JSON objects that contain each department's departmentId and display name. The departmentId is to be used as a query parameter on the `/objects` endpoint |
+| ``` departmentId ``` | int | - | Department ID as an integer. The departmentId is to be used as a query parameter on the `/objects` endpoint |
+| ``` displayName ``` | string | - | Display name for a department |
+
+##### Example
+
+###### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/departments
+```
+```
+
+## Search
+
+```
+GET /public/collection/v1/search
+```
+
+returns a listing of all Object IDs for objects that contain the search query within the object’s data
+
+> Deprecated. This endpoint will be retired on October 1, 2026.
+>
+> Please migrate to
+>
+> ```
+> /public/collection/v1.1/search
+> ```
+>
+> , which accepts the same filter parameters and adds
+>
+> ```
+> offset
+> ```
+>
+> /
+>
+> ```
+> limit
+> ```
+>
+> paging. Until October 1, 2026 this endpoint continues to behave exactly as documented below, returning the entire result set in a single response.
+>
+> If you use this endpoint to retrieve every matching Object ID in one request, read Migrating from /v1/search first:
+>
+> ```
+> /v1.1
+> ```
+>
+> is paginated and returns the first 100 results by default, and there are better endpoints for full enumeration.
+
+| Parameter | Format | Notes |
+| --- | --- | --- |
+| ``` q ``` | Search term e.g. sunflowers | Returns a listing of all Object IDs for objects that contain the search query within the object’s data |
+| ``` isHighlight ``` | Boolean, true or false. Case sensitive. | Returns objects that match the query and are designated as highlights. Highlights are selected works of art from The Met Museum’s permanent collection representing different cultures and time periods. |
+| ``` title ``` | Boolean, true or false. Case sensitive. | Returns objects that match the query, specifically searching against the title field for objects. |
+| ``` tags ``` | Boolean, true or false. Case sensitive. | Returns objects that match the query, specifically searching against the subject keyword tags field for objects. |
+| ``` departmentId ``` | Integer | Returns objects that are a part of a specific department. For a list of departments and department IDs, refer to our /department endpoint: https://collectionapi.metmuseum.org/public/collection/v1/departments |
+| ``` isOnView ``` | Boolean, true or false. Case Sensitive. | Returns objects that match the query and are on view in the museum. |
+| ``` artistOrCulture ``` | Boolean, true or false. Case Sensitive. | Returns objects that match the query, specifically searching against the artist name or culture field for objects. |
+| ``` medium ``` | String, with multiple values separated by the | operator. Case Sensitive. | Returns objects that match the query and are of the specified medium or object type. Examples include: "Ceramics", "Furniture", "Paintings", "Sculpture", "Textiles", etc. |
+| ``` hasImages ``` | Boolean, true or false. Case sensitive. | Returns objects that match the query and have images. |
+| ``` geoLocation ``` | String, with multiple values separated by the | operator. Case Sensitive. | Returns objects that match the query and the specified geographic location. Examples include: "Europe", "France", "Paris", "China", "New York", etc. |
+| ``` dateBegin and dateEnd ``` | Integer. You must use both dateBegin and dateEnd | Returns objects that match the query and fall between the dateBegin and dateEnd parameters. Examples include: dateBegin=1700&dateEnd=1800 for objects from 1700 A.D. to 1800 A.D., dateBegin=-100&dateEnd=100 for objects between 100 B.C. to 100 A.D. |
+
+### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search
+```
+```
+
+### Response
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| ``` total ``` | int | The total number of publicly-available objects |
+| ``` objectIDs ``` | int array | [] | An array containing the object ID of publicly-available object |
+
+##### Example
+
+###### Query Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?q=sunflowers
+```
+```
+
+###### Is Highlight Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=sunflowers
+```
+```
+
+###### Department ID Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?departmentId=6&q=cat
+```
+```
+
+For a list of department IDs, refer to our
+
+```
+/departments
+```
+
+endpoint:
+
+```
+https://collectionapi.metmuseum.org/public/collection/v1/departments
+```
+
+###### Is On View Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?isOnView=true&q=sunflower
+```
+```
+
+###### Artist or Culture Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?artistOrCulture=true&q=french
+```
+```
+
+###### Medium Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?medium=Quilts|Silk|Bedcovers&q=quilt
+```
+```
+
+###### Has Images Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=Auguste Renoir
+```
+```
+
+###### Geolocation Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?geoLocation=France&q=flowers
+```
+```
+
+###### Date Range Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1/search?dateBegin=1700&dateEnd=1800&q=African
+```
+```
+
+## Search (v1.1)
+
+```
+GET /public/collection/v1.1/search
+```
+
+returns a paginated listing of Object IDs for objects that contain the search query within the object’s data. It accepts all of the same filter parameters as
+
+```
+/v1/search
+```
+
+(
+
+```
+q
+```
+
+,
+
+```
+isHighlight
+```
+
+,
+
+```
+title
+```
+
+,
+
+```
+tags
+```
+
+,
+
+```
+departmentId
+```
+
+,
+
+```
+isOnView
+```
+
+,
+
+```
+artistOrCulture
+```
+
+,
+
+```
+medium
+```
+
+,
+
+```
+hasImages
+```
+
+,
+
+```
+geoLocation
+```
+
+,
+
+```
+dateBegin
+```
+
+/
+
+```
+dateEnd
+```
+
+), and adds the following pagination parameters:
+
+| Parameter | Format | Notes |
+| --- | --- | --- |
+| ``` offset ``` | Integer | The zero-based index of the first Object ID to return. Defaults to 0 (the first page). Use together with  ``` limit ```  to page through results. |
+| ``` limit ``` | Integer | The number of Object IDs to return per page. Defaults to 100; values above 500 are capped at 500. The sum of  ``` offset ```  and  ``` limit ```  may not exceed 10,000, so only the first 10,000 results of a query are reachable. |
+
+Requests without
+
+```
+offset
+```
+
+/
+
+```
+limit
+```
+
+return the first page (the first 100 results), not the entire result set. The
+
+```
+total
+```
+
+field reports the full number of matching objects across all pages. To retrieve every matching Object ID, either page through the results with
+
+```
+offset
+```
+
+/
+
+```
+limit
+```
+
+, or use the
+
+```
+/objects
+```
+
+endpoint or the Open Access dataset for full enumeration.
+
+### Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1.1/search?q=sunflowers
+```
+```
+
+### Response
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| ``` total ``` | int | The total number of publicly-available objects that match the query, across all pages |
+| ``` objectIDs ``` | int array | [] | An array containing the Object IDs for the requested page of results (controlled by  ``` offset ```  and  ``` limit ```  ) |
+
+##### Example
+
+###### Pagination Request
+
+```
+```
+https://collectionapi.metmuseum.org/public/collection/v1.1/search?q=cat&offset=100&limit=50
+```
+```
+
+## Migrating from /v1/search
+
+```
+/public/collection/v1/search
+```
+
+will be retired on October 1, 2026. Requests after that date
+will no longer be served. This section covers what to change.
+
+### If you page through results or only need the top matches
+
+Switch the path from
+
+```
+/v1/search
+```
+
+to
+
+```
+/v1.1/search
+```
+
+and keep your existing query string. Every
+filter parameter is accepted unchanged (
+
+```
+q
+```
+
+,
+
+```
+isHighlight
+```
+
+,
+
+```
+title
+```
+
+,
+
+```
+tags
+```
+
+,
+
+```
+departmentId
+```
+
+,
+
+```
+isOnView
+```
+
+,
+
+```
+artistOrCulture
+```
+
+,
+
+```
+medium
+```
+
+,
+
+```
+hasImages
+```
+
+,
+
+```
+geoLocation
+```
+
+,
+
+```
+dateBegin
+```
+
+/
+
+```
+dateEnd
+```
+
+), and
+the response keeps the same
+
+```
+{ total, objectIDs }
+```
+
+shape.
+
+The one behavior change to plan for:
+
+```
+/v1.1
+```
+
+returns the first 100 Object IDs by default, not the
+entire result set.
+
+```
+total
+```
+
+still reports the full number of matches, so use it to drive paging
+with
+
+```
+offset
+```
+
+and
+
+```
+limit
+```
+
+.
+
+### If you rely on receiving every matching Object ID in one response
+
+This is the case that needs the most attention, and it is common for requests like
+
+```
+?hasImages=true
+```
+
+.
+
+```
+/v1.1
+```
+
+cannot return an unbounded result set:
+
+```
+offset
+```
+
++
+
+```
+limit
+```
+
+may not exceed
+10,000, so only the first 10,000 results of any query are reachable through search. Choose one of:
+
+* The Open Access dataset is the best option for bulk work. It is a CSV of the entire open-access collection, updated regularly, and needs no API requests at all.
+* ```
+  /public/collection/v1/objects
+  ```
+
+  returns every valid Object ID in the collection and accepts
+
+  ```
+  metadataDate
+  ```
+
+  and
+
+  ```
+  departmentIds
+  ```
+
+  . Use it when you want the full ID list rather than a filtered search.
+* Page through
+
+  ```
+  /v1.1/search
+  ```
+
+  with
+
+  ```
+  offset
+  ```
+
+  /
+
+  ```
+  limit
+  ```
+
+  when your query matches fewer than 10,000 objects.
+
+### Other differences worth knowing
+
+* ```
+  /v1.1
+  ```
+
+  does not require
+
+  ```
+  q
+  ```
+
+  . Filter-only requests such as
+
+  ```
+  /v1.1/search?hasImages=true&departmentId=11
+  ```
+
+  work as expected. On
+
+  ```
+  /v1
+  ```
+
+  , a request with filters but no
+
+  ```
+  q
+  ```
+
+  parameter returns an error.
+* Result counts and ordering differ between the two endpoints.
+
+  ```
+  /v1.1
+  ```
+
+  runs on a different search backend, so for the same query the set of matches and their relevance order will not be identical to
+
+  ```
+  /v1
+  ```
+
+  . Expect broadly similar but not equal results, particularly for artist-name queries. Compare on your own queries before cutting over.
+* ```
+  total
+  ```
+
+  is exact on both endpoints, so it remains safe to use for paging arithmetic and for displaying a result count.
+
+### Questions
+
+If none of the options above fit your use case, please open an issue on the Open Access repository and describe what you are building so we can advise before October 1, 2026.

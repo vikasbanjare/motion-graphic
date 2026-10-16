@@ -1,0 +1,98 @@
+import { createContext, useContext, useMemo } from "react";
+import { contentBox, textFloor, unit, type Format } from "./formats.ts";
+import type { ScenePlan, VideoPlan } from "./plan.ts";
+import { contrast, type Theme } from "./themes.ts";
+import type { MotionTokens } from "./tokens.ts";
+
+export type SceneEnv = {
+  plan: VideoPlan;
+  scene: ScenePlan;
+  theme: Theme;
+  format: Format;
+  m: MotionTokens;
+  /** Typography unit (1 at 1080 short side). */
+  u: number;
+  /** Where scene content is laid out: the safe zone, minus room for the camera push (and watermark). */
+  box: ReturnType<typeof contentBox>;
+  /** Smallest readable text for this format (px). Small labels never go below `comfortable`. */
+  floor: ReturnType<typeof textFloor>;
+  /** Colours for this scene, after the scene's `bg` override. */
+  c: Theme["colors"];
+  landscape: boolean;
+};
+
+/** Stage's slow camera push-in: content scales from 1 to 1 + CAMERA_PUSH over a scene. */
+export const CAMERA_PUSH = 0.035;
+
+/** Height kept free at the top of the safe zone for the brand watermark. */
+export const watermarkSpace = (format: Format) => textFloor(format).comfortable * 1.8;
+
+/**
+ * The safe zone shrunk around its centre so that content filling it still
+ * ends inside the safe zone at the end of the push-in.
+ */
+export const layoutBox = (format: Format, watermark = false) => {
+  const safe = contentBox(format);
+  const top = watermark ? watermarkSpace(format) : 0;
+  const b = { ...safe, top: safe.top + top, height: safe.height - top };
+  const k = 1 / (1 + CAMERA_PUSH);
+  const width = b.width * k;
+  const height = b.height * k;
+  return { left: b.left + (b.width - width) / 2, top: b.top + (b.height - height) / 2, width, height };
+};
+
+export const PlanContext = createContext<VideoPlan | null>(null);
+/** QA mode: draws safe zones and flags text that had to overflow its slot. */
+export const QaContext = createContext(false);
+export const SceneContext = createContext<ScenePlan | null>(null);
+
+export const useEnv = (): SceneEnv => {
+  const plan = useContext(PlanContext);
+  const scene = useContext(SceneContext);
+  if (!plan || !scene) throw new Error("useEnv() must be used inside a scene");
+  // Same objects every frame, so scenes can memoise layout on them.
+  return useMemo(() => {
+    const { theme, format } = plan;
+    return {
+      plan,
+      scene,
+      theme,
+      format,
+      m: plan.motion,
+      u: unit(format),
+      box: layoutBox(format, Boolean(plan.spec.brand.watermark && plan.spec.brand.handle)),
+      floor: textFloor(format),
+      c: sceneColors(theme, scene.scene.bg),
+      landscape: format.width > format.height,
+    };
+  }, [plan, scene]);
+};
+
+/** The stops behind a "gradient" / "gradient2" scene, or null when the look has none. */
+export const sceneGradient = (theme: Theme, bg?: string): string[] | null =>
+  bg === "gradient" || bg === "gradient2" ? (theme.gradients?.[bg] ?? null) : null;
+
+/**
+ * "accent" scenes flip to a full-colour background; "inverse" swaps light/dark; "gradient" /
+ * "gradient2" sit on the look's brand sky, with text in whichever of the theme's text, canvas or
+ * accent colours reads best on the middle of the sky (where the text sits).
+ */
+export const sceneColors = (theme: Theme, bg?: "default" | "accent" | "inverse" | "gradient" | "gradient2"): Theme["colors"] => {
+  const c = theme.colors;
+  const stops = sceneGradient(theme, bg);
+  if (stops) {
+    const mid = stops.slice(Math.floor(stops.length * 0.3), Math.ceil(stops.length * 0.7) || 1);
+    const worst = (x: string) => Math.min(...mid.map((s) => contrast(x, s)));
+    const pinned = theme.gradients?.[bg === "gradient" ? "gradientText" : "gradient2Text"];
+    const text = pinned ?? [c.text, c.bg, c.accent, "#FFFFFF", "#000000"].reduce((a, b) => (worst(b) > worst(a) ? b : a));
+    const base = stops[Math.floor(stops.length / 2)];
+    return { ...c, bg: base, surface: text + "14", line: text + "33", text, muted: text + "CC", accent: text, onAccent: base, mark: text, onMark: base };
+  }
+  if (bg === "accent") {
+    return { ...c, bg: c.accent, surface: c.onAccent + "14", line: c.onAccent + "33", text: c.onAccent, muted: c.onAccent + "CC", accent: c.onAccent, onAccent: c.accent, mark: c.onAccent, onMark: c.accent };
+  }
+  if (bg === "inverse") {
+    return { ...c, bg: c.text, surface: c.bg + "14", line: c.bg + "33", text: c.bg, muted: c.bg + "B3" };
+  }
+  return c;
+};

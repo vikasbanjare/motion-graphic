@@ -1,0 +1,80 @@
+{
+  "_recipe": {
+    "title": "Real estate / food showcase",
+    "when": "Calm, magazine-style showcase of a home, plot, café, restaurant or boutique stay.",
+    "beats": [
+      "Hook: where it is (kicker, shown but not spoken, so the line lands fast) + one evocative line.",
+      "Atmosphere: three sensory details as kinetic lines (light, view, smell, taste).",
+      "The details: four facts as tiles (size, rooms, amenity, location / dish, seating, timing).",
+      "Price: \"starting at\" with the real number and what it includes.",
+      "Proof: a resident's or guest's real review (stars only if they gave them).",
+      "Visit: day, time and address, the frame people screenshot.",
+      "CTA: a quiet \"Book a visit →\" / \"Reserve a table →\" link."
+    ],
+    "copyTips": [
+      "Food version: kicker = area, lines = taste / smell / sound, tiles = signature dishes + seating + hours, price = \"for two\", CTA = \"Reserve a table\".",
+      "Property: carpet area, configuration, possession date, price and any RERA number must come from the developer or agent. Never round a price down.",
+      "Write the atmosphere lines as images, not adjectives: \"Sunlight till six.\" beats \"Very bright.\" Reviews ≤ 12 words, or the beat runs past 7s.",
+      "Stars only if the review had them: add \"rating\" (1-5) to the quote and end its say with the same number (\"Ananya, five stars.\").",
+      "Have photos? Replace beat 2 or 3 with \"image\" scenes (files in public/images/, \"move\": \"in\") and keep the captions to 2-5 words.",
+      "Editorial (cream paper, serif) feels premium. Budget / family places: --theme clean. Festive openings: --theme desi."
+    ]
+  },
+  "format": "reel",
+  "theme": "editorial",
+  "motion": "smooth",
+  "pace": "normal",
+  "brand": { "name": "[PLACE NAME]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "title",
+      "say": "Some places just feel different.",
+      "kicker": "[AREA], [CITY]",
+      "headline": "Some places *feel* different."
+    },
+    {
+      "type": "kinetic",
+      "say": "[DETAIL ONE]. [DETAIL TWO]. [DETAIL THREE].",
+      "lines": ["[DETAIL ONE].", "[DETAIL TWO].", "*[DETAIL THREE]*."]
+    },
+    {
+      "type": "grid",
+      "say": "The details: [FACT ONE], [FACT TWO], [FACT THREE] and [FACT FOUR].",
+      "title": "The details",
+      "items": [
+        { "icon": "📐", "label": "[FACT ONE]", "sub": "[CONTEXT]" },
+        { "icon": "🛏️", "label": "[FACT TWO]", "sub": "[CONTEXT]" },
+        { "icon": "🌿", "label": "[FACT THREE]", "sub": "[CONTEXT]" },
+        { "icon": "📍", "label": "[FACT FOUR]", "sub": "[CONTEXT]" }
+      ]
+    },
+    {
+      "type": "stat",
+      "say": "Starting at [ONE POINT TWO] crore, [WHAT'S INCLUDED].",
+      "kicker": "Starting at",
+      "value": "₹[1.2] Cr",
+      "label": "[WHAT'S INCLUDED]"
+    },
+    {
+      "type": "quote",
+      "say": "[A REAL REVIEW FROM A RESIDENT OR GUEST.] [NAME], [RESIDENT OR GUEST].",
+      "quote": "[A REAL REVIEW FROM A *RESIDENT OR GUEST*.]",
+      "author": "[NAME]",
+      "role": "[RESIDENT OR GUEST]"
+    },
+    {
+      "type": "title",
+      "say": "Visit us: [DAY], [TIME], at [ADDRESS]. See you there.",
+      "kicker": "Visit us",
+      "headline": "[DAY] · *[TIME]*",
+      "sub": "[ADDRESS]"
+    },
+    {
+      "type": "cta",
+      "say": "Come see it yourself. Book a visit today.",
+      "kicker": "Come see it *yourself*.",
+      "action": "Book a visit",
+      "handle": "@[HANDLE]"
+    }
+  ]
+}

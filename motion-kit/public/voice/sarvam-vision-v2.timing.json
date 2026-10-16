@@ -1,0 +1,265 @@
+{
+ "source": "cast",
+ "words": [
+  {
+   "text": "Introducing",
+   "startMs": 0.0,
+   "endMs": 716.8
+  },
+  {
+   "text": "Sarvam",
+   "startMs": 716.8,
+   "endMs": 1135.0
+  },
+  {
+   "text": "Vision",
+   "startMs": 1135.0,
+   "endMs": 1553.1
+  },
+  {
+   "text": "two",
+   "startMs": 1553.1,
+   "endMs": 1792.0
+  },
+  {
+   "text": "point",
+   "startMs": 1792.0,
+   "endMs": 2150.5
+  },
+  {
+   "text": "one.",
+   "startMs": 2150.5,
+   "endMs": 2449.1
+  },
+  {
+   "text": "Built",
+   "startMs": 2709.1,
+   "endMs": 3044.5
+  },
+  {
+   "text": "to",
+   "startMs": 3044.5,
+   "endMs": 3212.2
+  },
+  {
+   "text": "read",
+   "startMs": 3212.2,
+   "endMs": 3491.6
+  },
+  {
+   "text": "India's",
+   "startMs": 3491.6,
+   "endMs": 3938.8
+  },
+  {
+   "text": "documents.",
+   "startMs": 3938.8,
+   "endMs": 4553.6
+  },
+  {
+   "text": "Forms.",
+   "startMs": 4813.6,
+   "endMs": 5293.6
+  },
+  {
+   "text": "Complex",
+   "startMs": 5293.6,
+   "endMs": 5842.2
+  },
+  {
+   "text": "tables.",
+   "startMs": 5842.2,
+   "endMs": 6390.8
+  },
+  {
+   "text": "Even",
+   "startMs": 6390.8,
+   "endMs": 6733.7
+  },
+  {
+   "text": "handwriting.",
+   "startMs": 6733.7,
+   "endMs": 7625.1
+  },
+  {
+   "text": "Upload",
+   "startMs": 7885.1,
+   "endMs": 8260.3
+  },
+  {
+   "text": "a",
+   "startMs": 8260.3,
+   "endMs": 8367.5
+  },
+  {
+   "text": "handwritten",
+   "startMs": 8367.5,
+   "endMs": 9010.7
+  },
+  {
+   "text": "page,",
+   "startMs": 9010.7,
+   "endMs": 9332.3
+  },
+  {
+   "text": "and",
+   "startMs": 9332.3,
+   "endMs": 9546.7
+  },
+  {
+   "text": "get",
+   "startMs": 9546.7,
+   "endMs": 9761.1
+  },
+  {
+   "text": "structured",
+   "startMs": 9761.1,
+   "endMs": 10350.7
+  },
+  {
+   "text": "data",
+   "startMs": 10350.7,
+   "endMs": 10618.7
+  },
+  {
+   "text": "back.",
+   "startMs": 10618.7,
+   "endMs": 10940.3
+  },
+  {
+   "text": "In",
+   "startMs": 12020.2,
+   "endMs": 12188.9
+  },
+  {
+   "text": "English,",
+   "startMs": 12188.9,
+   "endMs": 12694.9
+  },
+  {
+   "text": "and",
+   "startMs": 12694.9,
+   "endMs": 12919.8
+  },
+  {
+   "text": "twenty",
+   "startMs": 12919.8,
+   "endMs": 13313.4
+  },
+  {
+   "text": "two",
+   "startMs": 13313.4,
+   "endMs": 13538.3
+  },
+  {
+   "text": "Indian",
+   "startMs": 13538.3,
+   "endMs": 13931.9
+  },
+  {
+   "text": "languages.",
+   "startMs": 13931.9,
+   "endMs": 14550.4
+  },
+  {
+   "text": "And",
+   "startMs": 14810.4,
+   "endMs": 15042.4
+  },
+  {
+   "text": "it's",
+   "startMs": 15042.4,
+   "endMs": 15332.3
+  },
+  {
+   "text": "state",
+   "startMs": 15332.3,
+   "endMs": 15680.3
+  },
+  {
+   "text": "of",
+   "startMs": 15680.3,
+   "endMs": 15854.3
+  },
+  {
+   "text": "the",
+   "startMs": 15854.3,
+   "endMs": 16086.3
+  },
+  {
+   "text": "art",
+   "startMs": 16086.3,
+   "endMs": 16318.3
+  },
+  {
+   "text": "on",
+   "startMs": 16318.3,
+   "endMs": 16492.3
+  },
+  {
+   "text": "olmOCR-Bench,",
+   "startMs": 16492.3,
+   "endMs": 17304.2
+  },
+  {
+   "text": "at",
+   "startMs": 17304.2,
+   "endMs": 17478.2
+  },
+  {
+   "text": "eighty",
+   "startMs": 17478.2,
+   "endMs": 17884.2
+  },
+  {
+   "text": "seven",
+   "startMs": 17884.2,
+   "endMs": 18232.1
+  },
+  {
+   "text": "point",
+   "startMs": 18232.1,
+   "endMs": 18580.1
+  },
+  {
+   "text": "three.",
+   "startMs": 18580.1,
+   "endMs": 18986.1
+  },
+  {
+   "text": "Sarvam",
+   "startMs": 19246.1,
+   "endMs": 19721.4
+  },
+  {
+   "text": "Vision",
+   "startMs": 19721.4,
+   "endMs": 20196.7
+  },
+  {
+   "text": "two",
+   "startMs": 20196.7,
+   "endMs": 20468.3
+  },
+  {
+   "text": "point",
+   "startMs": 20468.3,
+   "endMs": 20875.8
+  },
+  {
+   "text": "one.",
+   "startMs": 20875.8,
+   "endMs": 21215.3
+  },
+  {
+   "text": "Live",
+   "startMs": 21215.3,
+   "endMs": 21554.8
+  },
+  {
+   "text": "now.",
+   "startMs": 21554.8,
+   "endMs": 21894.3
+  }
+ ]
+}

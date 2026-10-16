@@ -1,0 +1,26 @@
+{
+ "lens_peach": {
+  "median_dE": 10.7,
+  "p90_dE": 44.0
+ },
+ "columns_terracotta": {
+  "median_dE": 8.4,
+  "p90_dE": 19.8
+ },
+ "turtle_lavender": {
+  "median_dE": 2.3,
+  "p90_dE": 11.2
+ },
+ "lighthouse_mint": {
+  "median_dE": 4.1,
+  "p90_dE": 14.1
+ },
+ "seabed_grey": {
+  "median_dE": 2.4,
+  "p90_dE": 7.1
+ },
+ "money_seal_lens": {
+  "median_dE": 8.3,
+  "p90_dE": 26.4
+ }
+}

@@ -1,0 +1,740 @@
+[
+ {
+  "name": "flower_purple_L",
+  "t": 6.0,
+  "x": 20,
+  "y": 60,
+  "peaks": [
+   {
+    "period_px": 2.76,
+    "angle": 52.0,
+    "energy_frac": 0.236
+   },
+   {
+    "period_px": 2.75,
+    "angle": 54.6,
+    "energy_frac": 0.186
+   }
+  ]
+ },
+ {
+  "name": "flower_purple_L2",
+  "t": 6.0,
+  "x": 60,
+  "y": 140,
+  "peaks": [
+   {
+    "period_px": 2.76,
+    "angle": 38.0,
+    "energy_frac": 0.146
+   },
+   {
+    "period_px": 2.78,
+    "angle": 45.9,
+    "energy_frac": 0.117
+   }
+  ]
+ },
+ {
+  "name": "flower_purple_R",
+  "t": 6.0,
+  "x": 380,
+  "y": 10,
+  "peaks": [
+   {
+    "period_px": 6.99,
+    "angle": 125.0,
+    "energy_frac": 0.029
+   },
+   {
+    "period_px": 6.13,
+    "angle": 163.3,
+    "energy_frac": 0.037
+   }
+  ]
+ },
+ {
+  "name": "leaf_green_L",
+  "t": 6.0,
+  "x": 0,
+  "y": 30,
+  "peaks": [
+   {
+    "period_px": 6.04,
+    "angle": 19.3,
+    "energy_frac": 0.032
+   },
+   {
+    "period_px": 6.69,
+    "angle": 19.9,
+    "energy_frac": 0.022
+   }
+  ]
+ },
+ {
+  "name": "leaf_green_branch",
+  "t": 6.0,
+  "x": 330,
+  "y": 90,
+  "peaks": [
+   {
+    "period_px": 5.77,
+    "angle": 14.3,
+    "energy_frac": 0.054
+   },
+   {
+    "period_px": 6.99,
+    "angle": 125.0,
+    "energy_frac": 0.016
+   }
+  ]
+ },
+ {
+  "name": "leaf_green_branch2",
+  "t": 6.0,
+  "x": 420,
+  "y": 190,
+  "peaks": [
+   {
+    "period_px": 2.7,
+    "angle": 37.7,
+    "energy_frac": 0.114
+   },
+   {
+    "period_px": 2.74,
+    "angle": 45.9,
+    "energy_frac": 0.069
+   }
+  ]
+ },
+ {
+  "name": "bird_body",
+  "t": 8.0,
+  "x": 280,
+  "y": 200,
+  "peaks": [
+   {
+    "period_px": 6.98,
+    "angle": 169.0,
+    "energy_frac": 0.078
+   },
+   {
+    "period_px": 6.9,
+    "angle": 175.4,
+    "energy_frac": 0.07
+   }
+  ]
+ },
+ {
+  "name": "bird_wing",
+  "t": 8.0,
+  "x": 380,
+  "y": 100,
+  "peaks": [
+   {
+    "period_px": 6.46,
+    "angle": 169.8,
+    "energy_frac": 0.045
+   },
+   {
+    "period_px": 6.85,
+    "angle": 164.5,
+    "energy_frac": 0.027
+   }
+  ]
+ },
+ {
+  "name": "paper_guilloche",
+  "t": 6.0,
+  "x": 140,
+  "y": 40,
+  "peaks": [
+   {
+    "period_px": 6.9,
+    "angle": 166.0,
+    "energy_frac": 0.266
+   },
+   {
+    "period_px": 6.86,
+    "angle": 159.6,
+    "energy_frac": 0.202
+   }
+  ]
+ },
+ {
+  "name": "note_flower",
+  "t": 11.0,
+  "x": 170,
+  "y": 30,
+  "peaks": [
+   {
+    "period_px": 6.83,
+    "angle": 46.1,
+    "energy_frac": 0.036
+   },
+   {
+    "period_px": 6.75,
+    "angle": 71.6,
+    "energy_frac": 0.037
+   }
+  ]
+ },
+ {
+  "name": "note_leaf",
+  "t": 11.0,
+  "x": 330,
+  "y": 20,
+  "peaks": [
+   {
+    "period_px": 6.91,
+    "angle": 3.1,
+    "energy_frac": 0.038
+   },
+   {
+    "period_px": 5.73,
+    "angle": 15.6,
+    "energy_frac": 0.057
+   }
+  ]
+ },
+ {
+  "name": "note_building",
+  "t": 11.0,
+  "x": 150,
+  "y": 240,
+  "peaks": [
+   {
+    "period_px": 4.9,
+    "angle": 163.3,
+    "energy_frac": 0.12
+   },
+   {
+    "period_px": 6.98,
+    "angle": 162.6,
+    "energy_frac": 0.043
+   }
+  ]
+ },
+ {
+  "name": "lens_green_bark",
+  "t": 17.5,
+  "x": 450,
+  "y": 10,
+  "peaks": [
+   {
+    "period_px": 6.92,
+    "angle": 128.4,
+    "energy_frac": 0.087
+   },
+   {
+    "period_px": 6.09,
+    "angle": 154.7,
+    "energy_frac": 0.129
+   }
+  ]
+ },
+ {
+  "name": "lens_green_flat",
+  "t": 17.5,
+  "x": 250,
+  "y": 240,
+  "peaks": [
+   {
+    "period_px": 6.88,
+    "angle": 173.8,
+    "energy_frac": 0.036
+   },
+   {
+    "period_px": 6.5,
+    "angle": 152.8,
+    "energy_frac": 0.064
+   }
+  ]
+ },
+ {
+  "name": "coin_top_view",
+  "t": 19.5,
+  "x": 150,
+  "y": 80,
+  "peaks": [
+   {
+    "period_px": 5.55,
+    "angle": 176.3,
+    "energy_frac": 0.08
+   },
+   {
+    "period_px": 6.98,
+    "angle": 162.6,
+    "energy_frac": 0.036
+   }
+  ]
+ },
+ {
+  "name": "col_L",
+  "t": 23.0,
+  "x": 8,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 2.49,
+    "angle": 52.1,
+    "energy_frac": 0.163
+   },
+   {
+    "period_px": 2.51,
+    "angle": 49.8,
+    "energy_frac": 0.125
+   }
+  ]
+ },
+ {
+  "name": "col_base",
+  "t": 23.0,
+  "x": 20,
+  "y": 280,
+  "peaks": [
+   {
+    "period_px": 2.48,
+    "angle": 39.1,
+    "energy_frac": 0.057
+   },
+   {
+    "period_px": 2.51,
+    "angle": 45.8,
+    "energy_frac": 0.051
+   }
+  ]
+ },
+ {
+  "name": "col_R",
+  "t": 23.0,
+  "x": 560,
+  "y": 200,
+  "peaks": [
+   {
+    "period_px": 2.59,
+    "angle": 90.0,
+    "energy_frac": 0.072
+   },
+   {
+    "period_px": 2.39,
+    "angle": 107.4,
+    "energy_frac": 0.054
+   }
+  ]
+ },
+ {
+  "name": "plinth",
+  "t": 23.0,
+  "x": 230,
+  "y": 290,
+  "peaks": [
+   {
+    "period_px": 2.39,
+    "angle": 72.1,
+    "energy_frac": 0.081
+   },
+   {
+    "period_px": 2.39,
+    "angle": 107.9,
+    "energy_frac": 0.076
+   }
+  ]
+ },
+ {
+  "name": "stele",
+  "t": 25.5,
+  "x": 270,
+  "y": 60,
+  "peaks": [
+   {
+    "period_px": 6.09,
+    "angle": 178.6,
+    "energy_frac": 0.024
+   },
+   {
+    "period_px": 2.56,
+    "angle": 90.6,
+    "energy_frac": 0.019
+   }
+  ]
+ },
+ {
+  "name": "col_L2",
+  "t": 25.5,
+  "x": 0,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 2.78,
+    "angle": 37.5,
+    "energy_frac": 0.097
+   },
+   {
+    "period_px": 2.76,
+    "angle": 34.9,
+    "energy_frac": 0.075
+   }
+  ]
+ },
+ {
+  "name": "turtle_shell",
+  "t": 29.5,
+  "x": 250,
+  "y": 240,
+  "peaks": [
+   {
+    "period_px": 6.47,
+    "angle": 16.1,
+    "energy_frac": 0.046
+   },
+   {
+    "period_px": 6.41,
+    "angle": 22.1,
+    "energy_frac": 0.043
+   }
+  ]
+ },
+ {
+  "name": "turtle_head",
+  "t": 29.5,
+  "x": 330,
+  "y": 190,
+  "peaks": [
+   {
+    "period_px": 6.92,
+    "angle": 0.0,
+    "energy_frac": 0.081
+   },
+   {
+    "period_px": 6.24,
+    "angle": 1.4,
+    "energy_frac": 0.12
+   }
+  ]
+ },
+ {
+  "name": "seabed_L",
+  "t": 29.5,
+  "x": 0,
+  "y": 260,
+  "peaks": [
+   {
+    "period_px": 6.99,
+    "angle": 55.0,
+    "energy_frac": 0.022
+   },
+   {
+    "period_px": 6.96,
+    "angle": 42.8,
+    "energy_frac": 0.02
+   }
+  ]
+ },
+ {
+  "name": "coral",
+  "t": 29.5,
+  "x": 20,
+  "y": 180,
+  "peaks": [
+   {
+    "period_px": 6.92,
+    "angle": 90.0,
+    "energy_frac": 0.025
+   },
+   {
+    "period_px": 5.0,
+    "angle": 73.0,
+    "energy_frac": 0.038
+   }
+  ]
+ },
+ {
+  "name": "seabed_R",
+  "t": 29.5,
+  "x": 450,
+  "y": 296,
+  "peaks": [
+   {
+    "period_px": 5.14,
+    "angle": 169.6,
+    "energy_frac": 0.093
+   },
+   {
+    "period_px": 5.52,
+    "angle": 172.6,
+    "energy_frac": 0.079
+   }
+  ]
+ },
+ {
+  "name": "lh_rock",
+  "t": 33.5,
+  "x": 30,
+  "y": 240,
+  "peaks": [
+   {
+    "period_px": 2.0,
+    "angle": 41.5,
+    "energy_frac": 0.086
+   },
+   {
+    "period_px": 1.99,
+    "angle": 39.6,
+    "energy_frac": 0.065
+   }
+  ]
+ },
+ {
+  "name": "lh_tower",
+  "t": 33.5,
+  "x": 180,
+  "y": 120,
+  "peaks": [
+   {
+    "period_px": 1.99,
+    "angle": 39.6,
+    "energy_frac": 0.138
+   },
+   {
+    "period_px": 1.98,
+    "angle": 37.8,
+    "energy_frac": 0.099
+   }
+  ]
+ },
+ {
+  "name": "lh_rock2",
+  "t": 33.5,
+  "x": 100,
+  "y": 280,
+  "peaks": [
+   {
+    "period_px": 2.0,
+    "angle": 49.1,
+    "energy_frac": 0.114
+   },
+   {
+    "period_px": 2.02,
+    "angle": 50.8,
+    "energy_frac": 0.088
+   }
+  ]
+ },
+ {
+  "name": "lh_hills",
+  "t": 33.5,
+  "x": 500,
+  "y": 296,
+  "peaks": [
+   {
+    "period_px": 1.99,
+    "angle": 95.8,
+    "energy_frac": 0.022
+   },
+   {
+    "period_px": 1.99,
+    "angle": 84.2,
+    "energy_frac": 0.024
+   }
+  ]
+ },
+ {
+  "name": "lh_sky",
+  "t": 33.5,
+  "x": 350,
+  "y": 40,
+  "peaks": [
+   {
+    "period_px": 2.0,
+    "angle": 90.0,
+    "energy_frac": 0.058
+   },
+   {
+    "period_px": 2.06,
+    "angle": 89.5,
+    "energy_frac": 0.103
+   }
+  ]
+ },
+ {
+  "name": "lh_tower_close",
+  "t": 36.5,
+  "x": 300,
+  "y": 280,
+  "peaks": [
+   {
+    "period_px": 6.92,
+    "angle": 0.0,
+    "energy_frac": 0.065
+   },
+   {
+    "period_px": 6.24,
+    "angle": 1.4,
+    "energy_frac": 0.097
+   }
+  ]
+ },
+ {
+  "name": "sea_rock",
+  "t": 41.0,
+  "x": 30,
+  "y": 280,
+  "peaks": [
+   {
+    "period_px": 6.98,
+    "angle": 79.0,
+    "energy_frac": 0.063
+   },
+   {
+    "period_px": 6.9,
+    "angle": 85.4,
+    "energy_frac": 0.058
+   }
+  ]
+ },
+ {
+  "name": "sea_shell_outer",
+  "t": 41.0,
+  "x": 420,
+  "y": 200,
+  "peaks": [
+   {
+    "period_px": 6.03,
+    "angle": 105.0,
+    "energy_frac": 0.056
+   },
+   {
+    "period_px": 6.91,
+    "angle": 3.1,
+    "energy_frac": 0.022
+   }
+  ]
+ },
+ {
+  "name": "sea_coral",
+  "t": 41.0,
+  "x": 100,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 6.89,
+    "angle": 156.2,
+    "energy_frac": 0.076
+   },
+   {
+    "period_px": 6.21,
+    "angle": 157.2,
+    "energy_frac": 0.097
+   }
+  ]
+ },
+ {
+  "name": "fish_koi",
+  "t": 41.0,
+  "x": 20,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 6.63,
+    "angle": 79.6,
+    "energy_frac": 0.053
+   },
+   {
+    "period_px": 6.92,
+    "angle": 18.9,
+    "energy_frac": 0.03
+   }
+  ]
+ },
+ {
+  "name": "green_rock",
+  "t": 47.5,
+  "x": 250,
+  "y": 60,
+  "peaks": [
+   {
+    "period_px": 3.81,
+    "angle": 42.0,
+    "energy_frac": 0.22
+   },
+   {
+    "period_px": 4.01,
+    "angle": 39.9,
+    "energy_frac": 0.141
+   }
+  ]
+ },
+ {
+  "name": "green_rock2",
+  "t": 47.5,
+  "x": 180,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 3.81,
+    "angle": 42.0,
+    "energy_frac": 0.273
+   },
+   {
+    "period_px": 3.68,
+    "angle": 39.2,
+    "energy_frac": 0.196
+   }
+  ]
+ },
+ {
+  "name": "green_floor",
+  "t": 47.5,
+  "x": 300,
+  "y": 280,
+  "peaks": [
+   {
+    "period_px": 5.44,
+    "angle": 176.3,
+    "energy_frac": 0.222
+   },
+   {
+    "period_px": 5.0,
+    "angle": 175.5,
+    "energy_frac": 0.157
+   }
+  ]
+ },
+ {
+  "name": "money_paper",
+  "t": 52.0,
+  "x": 330,
+  "y": 150,
+  "peaks": [
+   {
+    "period_px": 5.31,
+    "angle": 85.2,
+    "energy_frac": 0.051
+   },
+   {
+    "period_px": 6.72,
+    "angle": 94.5,
+    "energy_frac": 0.03
+   }
+  ]
+ },
+ {
+  "name": "money_note_shell",
+  "t": 53.0,
+  "x": 120,
+  "y": 140,
+  "peaks": [
+   {
+    "period_px": 6.3,
+    "angle": 9.9,
+    "energy_frac": 0.133
+   },
+   {
+    "period_px": 6.23,
+    "angle": 4.2,
+    "energy_frac": 0.094
+   }
+  ]
+ }
+]

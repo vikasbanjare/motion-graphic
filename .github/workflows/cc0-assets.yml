@@ -1,0 +1,46 @@
+# CC0 asset fetch: Claude adds assets/requests/<name>.json and pushes; GitHub's open network downloads
+# matching CC0 / public-domain models, HDRIs and images (research/assets/fetch_cc0.py) and publishes
+# them to the cc0-assets branch under assets/<name>/ with a SOURCES.md licence table. These are CC0 /
+# public domain, so they are committed in readable form.
+name: CC0 assets
+
+on:
+  push:
+    branches: [claude/youthful-darwin-n1lt7l]
+    paths: [assets/requests/*.json, research/assets/fetch_cc0.py]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cc0-assets
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 2
+      - name: Fetch
+        run: |
+          mkdir -p "$RUNNER_TEMP/out"
+          for req in assets/requests/*.json; do
+            name=$(basename "$req" .json)
+            python3 research/assets/fetch_cc0.py "$req" --out "$RUNNER_TEMP/out/$name" || echo "::warning::fetch failed for $name"
+          done
+      - name: Publish to cc0-assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q origin cc0-assets; then git checkout -q -B cc0-assets FETCH_HEAD; else git checkout -q --orphan cc0-assets; git rm -rq --cached . >/dev/null; git clean -fdq; fi
+          mkdir -p assets
+          cp -r "$RUNNER_TEMP"/out/* assets/ 2>/dev/null || true
+          git add -A assets
+          git commit -qm "CC0 assets: run ${GITHUB_RUN_ID}" || { echo "nothing new"; exit 0; }
+          for i in 1 2 3 4; do git push -q origin cc0-assets && break; sleep $((2**i)); git pull -q --rebase origin cc0-assets || true; done

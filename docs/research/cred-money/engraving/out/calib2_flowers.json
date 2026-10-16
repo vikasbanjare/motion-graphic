@@ -1,0 +1,844 @@
+{
+ "flowers": [
+  {
+   "J": 0.455,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.181,
+    "emd": 5.24,
+    "hp": 0.87,
+    "edge": 0.94,
+    "le": 1.0
+   }
+  },
+  {
+   "J": 0.4556,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.75,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.174,
+    "emd": 4.61,
+    "hp": 0.81,
+    "edge": 0.97,
+    "le": 0.98
+   }
+  },
+  {
+   "J": 0.462,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.134,
+    "emd": 5.91,
+    "hp": 0.83,
+    "edge": 0.99,
+    "le": 0.94
+   }
+  },
+  {
+   "J": 0.4634,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.188,
+    "emd": 4.85,
+    "hp": 0.85,
+    "edge": 0.95,
+    "le": 1.02
+   }
+  },
+  {
+   "J": 0.4657,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.129,
+    "emd": 5.38,
+    "hp": 0.78,
+    "edge": 1.0,
+    "le": 0.94
+   }
+  },
+  {
+   "J": 0.4733,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.142,
+    "emd": 4.63,
+    "hp": 0.75,
+    "edge": 0.95,
+    "le": 1.01
+   }
+  },
+  {
+   "J": 0.4807,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.2,
+    "emd": 5.48,
+    "hp": 0.83,
+    "edge": 0.99,
+    "le": 0.99
+   }
+  },
+  {
+   "J": 0.4817,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 2.2,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.178,
+    "emd": 6.58,
+    "hp": 0.9,
+    "edge": 0.98,
+    "le": 0.97
+   }
+  },
+  {
+   "J": 0.4835,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 2.2,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.147,
+    "emd": 4.67,
+    "hp": 0.74,
+    "edge": 0.96,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.4836,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.16,
+    "emd": 4.54,
+    "hp": 0.82,
+    "edge": 1.14,
+    "le": 0.99
+   }
+  },
+  {
+   "J": 0.4855,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.199,
+    "emd": 5.22,
+    "hp": 0.85,
+    "edge": 0.96,
+    "le": 1.02
+   }
+  },
+  {
+   "J": 0.4869,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.45,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.138,
+    "emd": 4.71,
+    "hp": 0.75,
+    "edge": 0.94,
+    "le": 0.97
+   }
+  },
+  {
+   "J": 0.4878,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.6,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.179,
+    "emd": 6.72,
+    "hp": 0.9,
+    "edge": 0.98,
+    "le": 0.95
+   }
+  },
+  {
+   "J": 0.49,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.22,
+    "emd": 5.45,
+    "hp": 0.92,
+    "edge": 0.92,
+    "le": 0.99
+   }
+  },
+  {
+   "J": 0.4919,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.205,
+    "emd": 6.13,
+    "hp": 0.88,
+    "edge": 0.98,
+    "le": 0.98
+   }
+  },
+  {
+   "J": 0.493,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.159,
+    "emd": 6.13,
+    "hp": 0.82,
+    "edge": 0.94,
+    "le": 1.0
+   }
+  },
+  {
+   "J": 0.4936,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.241,
+    "emd": 5.27,
+    "hp": 0.96,
+    "edge": 1.08,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.5019,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.158,
+    "emd": 4.23,
+    "hp": 0.69,
+    "edge": 0.97,
+    "le": 1.01
+   }
+  },
+  {
+   "J": 0.5043,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.175,
+    "emd": 5.87,
+    "hp": 0.91,
+    "edge": 1.1,
+    "le": 0.93
+   }
+  },
+  {
+   "J": 0.5054,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 2.2,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.173,
+    "emd": 5.99,
+    "hp": 0.81,
+    "edge": 1.0,
+    "le": 0.95
+   }
+  },
+  {
+   "J": 0.507,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.6,
+    "cov_gamma": 1.6,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.234,
+    "emd": 6.23,
+    "hp": 0.94,
+    "edge": 0.94,
+    "le": 1.01
+   }
+  },
+  {
+   "J": 0.5095,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.164,
+    "emd": 6.5,
+    "hp": 0.93,
+    "edge": 1.07,
+    "le": 0.89
+   }
+  },
+  {
+   "J": 0.5129,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.75,
+    "cov_gamma": 2.2,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.184,
+    "emd": 7.59,
+    "hp": 0.9,
+    "edge": 1.0,
+    "le": 0.96
+   }
+  },
+  {
+   "J": 0.5177,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 2.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.219,
+    "emd": 4.69,
+    "hp": 0.85,
+    "edge": 1.06,
+    "le": 1.07
+   }
+  },
+  {
+   "J": 0.519,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.45,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.198,
+    "emd": 6.8,
+    "hp": 0.93,
+    "edge": 0.93,
+    "le": 0.96
+   }
+  },
+  {
+   "J": 0.519,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.6,
+    "cov_gamma": 1.6,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.166,
+    "emd": 7.48,
+    "hp": 0.88,
+    "edge": 1.0,
+    "le": 0.92
+   }
+  },
+  {
+   "J": 0.5195,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.175,
+    "emd": 5.58,
+    "hp": 0.78,
+    "edge": 0.96,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.5197,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.75,
+    "cov_gamma": 2.2,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.247,
+    "emd": 6.05,
+    "hp": 0.94,
+    "edge": 0.95,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.5197,
+   "params": {
+    "dmax": 1.0,
+    "t_hi": 0.6,
+    "cov_gamma": 2.2,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.14,
+    "emd": 5.05,
+    "hp": 0.71,
+    "edge": 0.97,
+    "le": 0.95
+   }
+  },
+  {
+   "J": 0.5204,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.265,
+    "emd": 6.4,
+    "hp": 1.02,
+    "edge": 1.04,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.5212,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.261,
+    "emd": 6.17,
+    "hp": 1.0,
+    "edge": 1.08,
+    "le": 1.03
+   }
+  },
+  {
+   "J": 0.5216,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.159,
+    "emd": 4.76,
+    "hp": 0.77,
+    "edge": 0.91,
+    "le": 1.06
+   }
+  },
+  {
+   "J": 0.5232,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.75,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.165,
+    "emd": 4.69,
+    "hp": 0.88,
+    "edge": 1.17,
+    "le": 0.89
+   }
+  },
+  {
+   "J": 0.5235,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.75,
+    "cov_gamma": 1.6,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.206,
+    "emd": 6.14,
+    "hp": 0.87,
+    "edge": 0.93,
+    "le": 0.98
+   }
+  },
+  {
+   "J": 0.5247,
+   "params": {
+    "dmax": 0.6,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.203,
+    "emd": 5.98,
+    "hp": 0.97,
+    "edge": 1.12,
+    "le": 0.9
+   }
+  },
+  {
+   "J": 0.5256,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 2.0,
+    "skew": 0.5,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.21,
+    "emd": 4.25,
+    "hp": 0.75,
+    "edge": 1.01,
+    "le": 1.05
+   }
+  },
+  {
+   "J": 0.5261,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.8,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.149,
+    "emd": 5.2,
+    "hp": 0.7,
+    "edge": 0.97,
+    "le": 0.99
+   }
+  },
+  {
+   "J": 0.5265,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.65,
+    "tone_gamma": 1.0,
+    "aa": 1.0,
+    "skew": 0.0,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.15,
+    "emd": 6.6,
+    "hp": 0.87,
+    "edge": 1.08,
+    "le": 0.9
+   }
+  },
+  {
+   "J": 0.5277,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.45,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 1.1,
+    "detail": 0.2
+   },
+   "parts": {
+    "curve": 0.175,
+    "emd": 7.22,
+    "hp": 0.91,
+    "edge": 0.96,
+    "le": 0.91
+   }
+  },
+  {
+   "J": 0.5299,
+   "params": {
+    "dmax": 0.8,
+    "t_hi": 0.6,
+    "cov_gamma": 1.0,
+    "fill": 0.5,
+    "tone_gamma": 1.33,
+    "aa": 1.0,
+    "skew": 0.5,
+    "k": 0.9,
+    "detail": 0.4
+   },
+   "parts": {
+    "curve": 0.179,
+    "emd": 6.17,
+    "hp": 0.91,
+    "edge": 1.07,
+    "le": 0.88
+   }
+  }
+ ]
+}

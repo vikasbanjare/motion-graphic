@@ -1,0 +1,10 @@
+[["flower_purple_L",6.0,20,60],["flower_purple_L2",6.0,60,140],["flower_purple_R",6.0,380,10],["leaf_green_L",6.0,0,30],["leaf_green_branch",6.0,330,90],["leaf_green_branch2",6.0,420,190],
+ ["bird_body",8.0,280,200],["bird_wing",8.0,380,100],["paper_guilloche",6.0,140,40],
+ ["note_flower",11.0,170,30],["note_leaf",11.0,330,20],["note_building",11.0,150,240],
+ ["lens_green_bark",17.5,450,10],["lens_green_flat",17.5,250,240],
+ ["coin_top_view",19.5,150,80],["col_L",23.0,8,150],["col_base",23.0,20,280],["col_R",23.0,560,200],["plinth",23.0,230,290],["stele",25.5,270,60],["col_L2",25.5,0,150],
+ ["turtle_shell",29.5,250,240],["turtle_head",29.5,330,190],["seabed_L",29.5,0,260],["coral",29.5,20,180],["seabed_R",29.5,450,296],
+ ["lh_rock",33.5,30,240],["lh_tower",33.5,180,120],["lh_rock2",33.5,100,280],["lh_hills",33.5,500,296],["lh_sky",33.5,350,40],["lh_tower_close",36.5,300,280],
+ ["sea_rock",41.0,30,280],["sea_shell_outer",41.0,420,200],["sea_coral",41.0,100,150],["fish_koi",41.0,20,150],
+ ["green_rock",47.5,250,60],["green_rock2",47.5,180,150],["green_floor",47.5,300,280],
+ ["money_paper",52.0,330,150],["money_note_shell",53.0,120,140]]

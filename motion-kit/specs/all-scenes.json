@@ -1,0 +1,123 @@
+{
+  "format": "reel",
+  "theme": "midnight",
+  "brand": {
+    "handle": "@studio.glow"
+  },
+  "scenes": [
+    {
+      "type": "kinetic",
+      "lines": [
+        "Stop scrolling.",
+        "Your skin",
+        "deserves *better*."
+      ]
+    },
+    {
+      "type": "title",
+      "kicker": "New launch",
+      "headline": "Glow serum ==2.0==",
+      "sub": "Vitamin C + niacinamide, made for Indian summers."
+    },
+    {
+      "type": "stat",
+      "kicker": "Clinically tested",
+      "value": "92%",
+      "label": "saw brighter skin in 2 weeks"
+    },
+    {
+      "type": "compare",
+      "title": "Why switch?",
+      "left": {
+        "label": "Regular serums",
+        "items": [
+          "Sticky finish",
+          "Fades in heat"
+        ]
+      },
+      "right": {
+        "label": "Glow 2.0",
+        "items": [
+          "Absorbs in 10s",
+          "Sweat-proof"
+        ]
+      }
+    },
+    {
+      "type": "list",
+      "title": "How to use",
+      "items": [
+        "Cleanse your face",
+        "2 drops, morning & night",
+        "Follow with *sunscreen*"
+      ],
+      "style": "numbers"
+    },
+    {
+      "type": "grid",
+      "title": "Made without",
+      "items": [
+        {
+          "icon": "🧪",
+          "label": "Parabens"
+        },
+        {
+          "icon": "🌸",
+          "label": "Fragrance"
+        },
+        {
+          "icon": "🐰",
+          "label": "Animal testing"
+        },
+        {
+          "icon": "🌿",
+          "label": "Harsh alcohol"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Customer rating",
+      "unit": "%",
+      "bars": [
+        {
+          "label": "Glow 2.0",
+          "value": 96
+        },
+        {
+          "label": "Brand X",
+          "value": 71
+        },
+        {
+          "label": "Brand Y",
+          "value": 64
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "quote": "My dark spots faded in *three weeks*. Never going back.",
+      "author": "Priya S.",
+      "role": "Verified buyer, Pune",
+      "rating": 5
+    },
+    {
+      "type": "chat",
+      "label": "DM us",
+      "prompt": "Kya yeh oily skin ke liye theek hai?",
+      "reply": "Haan! Oil-free formula ✅"
+    },
+    {
+      "type": "cta",
+      "kicker": "Launch offer ends Sunday",
+      "action": "Shop now",
+      "sub": "Use code *GLOW20* for 20% off",
+      "handle": "@studio.glow"
+    },
+    {
+      "type": "logo",
+      "name": "Studio Glow",
+      "tagline": "Skincare for real weather"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+frames 2158 max 0.312 mean 0.002 frac>0.5 0.0

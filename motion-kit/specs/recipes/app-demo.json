@@ -1,0 +1,73 @@
+{
+  "_recipe": {
+    "title": "App demo",
+    "when": "An app, SaaS or AI tool doing its main job: input, result, extras, download. Under 30s.",
+    "beats": [
+      "Hook: the job and how few steps it takes, on screen at frame 0.",
+      "Demo 1: a real input typed into the app; cursor clicks; the result appears.",
+      "Demo 2: ask the assistant / support a real question, show the real answer.",
+      "Extras: three more things it does, as checks.",
+      "Proof: store rating or user count that counts up.",
+      "CTA: a big download button (overrides the theme's quiet link), store + handle."
+    ],
+    "copyTips": [
+      "The demo prompt and reply must be real app output; copy them from the app, don't invent them.",
+      "Keep the typed prompt under ~80 characters so the typing never drags.",
+      "Studio-dark looks like a modern app UI at night. Light UI apps: --theme clean. Developer tools: --theme neon.",
+      "Rating or downloads only if the user gives the number and source (\"4.8 on the App Store\").",
+      "The CTA kicker carries price and platforms (\"Free on iOS & Android\", \"₹199/month on web\"); the button stays two words."
+    ]
+  },
+  "format": "reel",
+  "theme": "studio-dark",
+  "motion": "smooth",
+  "pace": "normal",
+  "brand": { "name": "[APP]", "handle": "@[HANDLE]" },
+  "scenes": [
+    {
+      "type": "title",
+      "say": "[THE JOB] in [THREE] taps. Watch.",
+      "kicker": "[APP]",
+      "headline": "[THE JOB] in *[3] taps*."
+    },
+    {
+      "type": "prompt",
+      "say": "Type what you need, tap [BUTTON], and [APP] gives you the result right away.",
+      "label": "[INPUT LABEL]",
+      "prompt": "[A REAL INPUT A USER TYPES]",
+      "button": "[BUTTON]",
+      "result": "[THE REAL RESULT]",
+      "resultKind": "text"
+    },
+    {
+      "type": "chat",
+      "say": "Stuck? Just ask, and [APP] answers in plain words, in seconds.",
+      "label": "You → [APP]",
+      "prompt": "[A REAL QUESTION]",
+      "reply": "[THE APP'S ANSWER]"
+    },
+    {
+      "type": "list",
+      "say": "It also does [EXTRA ONE], [EXTRA TWO] and [EXTRA THREE], all in one app.",
+      "title": "It also does",
+      "items": ["[EXTRA ONE]", "[EXTRA TWO]", "*[EXTRA THREE]*"],
+      "style": "checks"
+    },
+    {
+      "type": "stat",
+      "say": "Rated [FOUR POINT EIGHT] on [STORE] by real users.",
+      "kicker": "Rated",
+      "value": "[4.8]★",
+      "label": "on *[STORE]*"
+    },
+    {
+      "type": "cta",
+      "say": "[FREE ON IOS AND ANDROID]. Download it now, link in bio.",
+      "kicker": "[FREE ON IOS & ANDROID]",
+      "action": "Download now",
+      "sub": "Link in bio",
+      "handle": "@[HANDLE]",
+      "style": "button"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "_recipe": {
+    "title": "Style: dark gradient AI launch",
+    "when": "Black canvas, glowing gradient type and an orb: the ElevenLabs v3 / Scribe / Framer look for an AI model, API or developer launch.",
+    "beats": [
+      "Orb on black with the version name: light comes out of darkness.",
+      "Three short kinetic lines: what it is, what it does, why now.",
+      "Demo: a real prompt typed into the product; the result comes back (audio results get a waveform).",
+      "Benchmark: real results as bars, your bar in the accent.",
+      "One hard number with a meter.",
+      "Range: three capabilities as dimming lines.",
+      "CTA: one promise, a quiet link; logo."
+    ],
+    "copyTips": [
+      "Measured on 26 dark-premium references: 46% are one or two continuous shots and the median shot is 16.7 s. Don't cut often; move inside the frame.",
+      "Two accent colours that blend (blue→violet, pink→orange) set as brand.accent and brand.accent2; the theme turns them into the glow and the orb ramp.",
+      "Benchmark bars must be real published numbers with their source in the title; never round in your favour.",
+      "Say numbers as words in `say`; the screen shows the digits.",
+      "Sound: --sfx-pack digital, very low music; the references are nearly silent apart from the product's own audio."
+    ]
+  },
+  "format": "landscape",
+  "theme": "studio-dark",
+  "motion": "smooth",
+  "pace": "relaxed",
+  "transition": "fade",
+  "brand": { "name": "[PRODUCT]", "accent": "#7C6CFF", "accent2": "#3FB6FF" },
+  "look": { "displayFont": "Inter", "displayWeight": 300, "background": "spotlight", "grain": true, "ctaStyle": "link", "kicker": "pill" },
+  "audio": { "sfxPack": "digital" },
+  "scenes": [
+    {
+      "type": "orb",
+      "say": "Introducing [PRODUCT] [VERSION]. [THE ONE-LINE PROMISE].",
+      "kicker": "Introducing",
+      "headline": "*[PRODUCT] [VERSION]*",
+      "sub": "[THE ONE-LINE PROMISE]"
+    },
+    {
+      "type": "kinetic",
+      "say": "[WHAT IT IS]. [WHAT IT DOES]. [WHY IT MATTERS NOW].",
+      "lines": ["[WHAT IT IS].", "[WHAT IT DOES].", "[WHY IT *MATTERS*]."]
+    },
+    {
+      "type": "prompt",
+      "say": "Describe what you need in one plain sentence, and [PRODUCT] gives you [THE RESULT] in seconds.",
+      "label": "[INPUT LABEL]",
+      "prompt": "[A REAL PROMPT]",
+      "button": "Generate",
+      "result": "[THE REAL RESULT]",
+      "resultKind": "text"
+    },
+    {
+      "type": "bars",
+      "say": "On [BENCHMARK NAME], [PRODUCT] leads every model we tested.",
+      "title": "[BENCHMARK NAME] · [SOURCE]",
+      "unit": "%",
+      "bars": [
+        { "label": "[PRODUCT]", "value": 85.1 },
+        { "label": "[COMPETITOR ONE]", "value": 79.5 },
+        { "label": "[COMPETITOR TWO]", "value": 48.2 }
+      ],
+      "highlight": 0
+    },
+    {
+      "type": "stat",
+      "say": "[THE NUMBER IN WORDS] [WHAT IT MEASURES].",
+      "kicker": "[METRIC]",
+      "value": "[99]",
+      "label": "[WHAT IT *MEASURES*]"
+    },
+    {
+      "type": "list",
+      "say": "[CAPABILITY ONE]. [CAPABILITY TWO]. [CAPABILITY THREE].",
+      "style": "lines",
+      "items": ["[CAPABILITY ONE]", "[CAPABILITY TWO]", "[CAPABILITY THREE]"]
+    },
+    {
+      "type": "cta",
+      "say": "[THE CLOSING PROMISE]. Try it today.",
+      "kicker": "[THE CLOSING PROMISE].",
+      "action": "Try [PRODUCT]",
+      "handle": "[WEBSITE]",
+      "style": "link"
+    },
+    {
+      "type": "logo",
+      "name": "[PRODUCT]",
+      "tagline": "[TAGLINE]"
+    }
+  ]
+}

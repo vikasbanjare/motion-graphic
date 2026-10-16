@@ -1,0 +1,56 @@
+{
+  "format": "reel",
+  "theme": "midnight",
+  "brand": {
+    "handle": "@yourhandle"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "say": "Agency ka quote? Fifty thousand. Ab? Bas ek prompt.",
+      "setup": "Agency ka quote:",
+      "strike": "₹50,000",
+      "punch": "Ab? *Ek prompt.*"
+    },
+    {
+      "type": "list",
+      "say": "Agency mein do hafte. Freelancer pandrah hazaar se upar. Aur aapko reel kal chahiye.",
+      "title": "Motion video chahiye?",
+      "items": [
+        "Agency → 2 hafte ⏳",
+        "Freelancer → ₹15k+ 💸",
+        "Aapko chahiye → *kal* 😩"
+      ],
+      "style": "crosses"
+    },
+    {
+      "type": "title",
+      "say": "Solution: Claude plus Remotion. Aap bolo, Claude code likhta hai, video ban jaata hai.",
+      "kicker": "Solution",
+      "headline": "*Claude* + Remotion",
+      "sub": "Aap bolo. Claude code likhta hai. Video ban jaata hai."
+    },
+    {
+      "type": "chat",
+      "say": "Bas likho: thirty second ka reel banao, Hinglish mein, strong hook ke saath.",
+      "label": "You → Claude",
+      "prompt": "30 sec ka reel banao — AI tools pe, Hinglish mein, strong hook ke saath",
+      "reply": "Done ✅ Script, animation aur MP4 ready."
+    },
+    {
+      "type": "stat",
+      "say": "Aur haan, yeh video bhi aise hi bana hai. Hundred percent code.",
+      "kicker": "Yeh video bhi",
+      "value": "100%",
+      "label": "code · *0* After Effects"
+    },
+    {
+      "type": "cta",
+      "say": "Comment karo VIDEO, poora prompt DM mein bhejunga.",
+      "kicker": "Comment karo 👇",
+      "action": "VIDEO",
+      "sub": "Poora prompt DM mein bhejunga 🚀",
+      "handle": "@yourhandle"
+    }
+  ]
+}

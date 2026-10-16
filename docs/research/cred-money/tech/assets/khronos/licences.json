@@ -1,0 +1,1861 @@
+[
+ {
+  "name": "A Beautiful Game",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "video",
+   "extension"
+  ],
+  "summary": "Chess set using transmission and volume.",
+  "legal": "Original model: MaterialX Project (CC-BY-4.0); Conversion to glTF: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Alpha Blend Mode Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests alpha modes and settings.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Animated Colors Cube",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model demonstrates animating a base color with KHR_animation_pointer.",
+  "legal": "Everything: Ed Mackey (CC0-1.0)"
+ },
+ {
+  "name": "Animated Cube",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Same as 'Cube', but having a linear rotation animation.",
+  "legal": "Everything: Norbert Nopper (CC0-1.0)"
+ },
+ {
+  "name": "Animated Morph Cube",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Demonstrates a simple cube with two simple morph targets and an animation that transitions",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Animated Triangle",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "This sample is similar to the Triangle, but the node has a rotation property that is modif",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "AnimationPointerUVs",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests UV transform animations with KHR_animation_pointer.",
+  "legal": "3D asset and textures: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Anisotropy Barn Lamp",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Wayfair AnisotropyBarnLamp model using anisotropy, clearcoat, emissive_strength, transmiss",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Anisotropy Disc Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests the texturemap for KHR_materials_anisotropy.",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Anisotropy Rotation Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests rotational offsets for KHR_materials_anisotropy.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Anisotropy Strength Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests the strength parameter for KHR_materials_anisotropy.",
+  "legal": "Everything: Ed Mackey (CC0-1.0)"
+ },
+ {
+  "name": "Antique Camera",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-UX3D"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "issues"
+  ],
+  "summary": "Static model of old camera on a tripod. [Issues: non-Khronos mark]",
+  "legal": "Everything: Maximillan Kamps (CC0-1.0); UX3D logo: Non-copyrightable logo (LicenseRef-LegalMark-UX3D)"
+ },
+ {
+  "name": "Attenuation Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests the interactions between attenuation, thickness, and scale.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Avocado",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A natural object created with Core glTF 2.0",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Barramundi Fish",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A fish created with Core glTF 2.0",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Boom Box",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A common object with glowing front panel created with Core glTF 2.0.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Boom Box with Axes",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Shows X, Y, and Z axis default orientations.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Box",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "One mesh and one material. Start with this.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Box Animated",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Rotation and Translation Animations. Start with this to test animations.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Box with interleaved position and normal attributes",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Box example with interleaved position and normal attributes.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Box Textured",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Cesium"
+  ],
+  "tags": [
+   "core",
+   "issues",
+   "testing"
+  ],
+  "summary": "Box with a power-of-2 texture. [Issues: non-Khronos mark]",
+  "legal": "Everything: Cesium (CC-BY-4.0); Cesium logo: Non-copyrightable logo (LicenseRef-LegalMark-Cesium)"
+ },
+ {
+  "name": "Box Textured not 2^N",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Cesium"
+  ],
+  "tags": [
+   "core",
+   "issues",
+   "testing"
+  ],
+  "summary": "Box with a non-power-of-2 (NPOT) texture. Not all implementations support NPOT textures. [",
+  "legal": "Everything: Cesium (CC-BY-4.0); Cesium logo: Non-copyrightable logo (LicenseRef-LegalMark-Cesium)"
+ },
+ {
+  "name": "Box Vertex Colors",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A simple unit cube that uses vertex colors, stored in the `COLORS_0` attribute.",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Box With Spaces",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Box with URI-encoded spaces in the texture names used by a simple PBR material.",
+  "legal": "Everything: Ed Mackey (CC0-1.0); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "BrainStem",
+  "spdx": [
+   "LicenseRef-Poser-EULA"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Animations. Skins.",
+  "legal": "Everything: Keith Hunter (LicenseRef-Poser-EULA)"
+ },
+ {
+  "name": "Cameras",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A sample with two different camera objects",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Car Concept",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Concept car with Khronos logos and material variants",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); 3D Commerce logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Carbon Fibre Ball",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Example of anisotropy applied to a ball with a simulated carbon fiber surface.",
+  "legal": "Models and Textures: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Cesium Man",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Cesium"
+  ],
+  "tags": [
+   "core",
+   "issues",
+   "testing"
+  ],
+  "summary": "Textured. Animations. Skins. [Issues: non-Khronos mark]",
+  "legal": "Everything: Cesium (CC-BY-4.0); Cesium logo: Non-copyrightable logo (LicenseRef-LegalMark-Cesium)"
+ },
+ {
+  "name": "Cesium Milk Truck",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Cesium"
+  ],
+  "tags": [
+   "core",
+   "issues",
+   "testing"
+  ],
+  "summary": "Textured. Multiple nodes/meshes. Animations. [Issues: non-Khronos mark]",
+  "legal": "Everything: Cesium (CC-BY-4.0); Cesium logo: Non-copyrightable logo (LicenseRef-LegalMark-Cesium)"
+ },
+ {
+  "name": "Chair Damask Purplegold",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Use of sheen to create a high-end small seat (damask).",
+  "legal": "Models and Textures: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Chronograph Watch",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-DGG",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Wrist watch with Khronos logos and material variants",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); 3D Commerce logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); DGG logo: Copyrightable logo (LicenseRef-LegalMark-DGG)"
+ },
+ {
+  "name": "Clear Coat Car Paint",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model is a sphere using the glTF ClearCoat extension overtop a car paint base materia",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "KHR_materials_clearcoat Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_clearcoat extension is supported properly.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Clearcoat Wicker",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model is a sphere using the glTF ClearCoat to create a wicker material covered with a",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Commercial Refrigerator",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Commercial refrigerator with glass condensation, champagne bottles, and door animation.",
+  "legal": "Model and textures and all images in the README.md: Eric Chadwick (CC-BY-4.0); This work is based on 'Commercial Fridge' (https://sketchfab.com/3d-models/commercial-fridge-2174e1e4f1f24f1a95aa110ee060f473) by Sean Thomas (https://sketchfab.com/foon.) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/): Sean Thomas (CC-BY-4.0)"
+ },
+ {
+  "name": "Compare Alpha Coverage",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares alpha coverage methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Ambient Occlusion",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares without occlusion versus with occlusion.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Models: Polyhaven (CC0-1.0); Textures: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Anisotropy",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares without anisotropy vs. with anisotropy.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Base Color",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares base color methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Clearcoat",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares clearcoat methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Dispersion",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares dispersion methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Emissive Strength",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares emissive versus emissive plus emissive strength.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare IOR",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares IOR methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Iridescence",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares iridescence methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Metallic",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares metallic methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Normal",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares normal methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Roughness",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares roughness methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Sheen",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares sheen methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Specular",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares specular methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Transmission",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares transmission methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Compare Volume",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "extension",
+   "testing",
+   "pbrtest"
+  ],
+  "summary": "This model compares volume methods.",
+  "legal": "glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); Everything: Eric Chadwick and DGG (CC0-1.0)"
+ },
+ {
+  "name": "Corset",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A female fabric mannequin with a corset and a collar.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Cube",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A cube with non-smoothed faces.",
+  "legal": "Everything: Norbert Nopper (CC0-1.0)"
+ },
+ {
+  "name": "CubeVisibility",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "This model demonstrates the `KHR_node_visibility` extension and its interaction with `KHR_",
+  "legal": "Everything: Aaron Franke (CC0-1.0)"
+ },
+ {
+  "name": "Damaged Helmet",
+  "spdx": [
+   "CC-BY-4.0",
+   "CC-BY-NC-4.0"
+  ],
+  "tags": [
+   "core",
+   "showcase",
+   "testing",
+   "video"
+  ],
+  "summary": "Flight helmet with damage",
+  "legal": "Rebuild and conversion to glTF: ctxwing (CC-BY-4.0); Earlier version of model: theblueturtle_ (CC-BY-NC-4.0)"
+ },
+ {
+  "name": "Diffuse Transmission Plant",
+  "spdx": [
+   "CC-BY-4.0",
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Potted plant asset using Diffuse Transmission extension.",
+  "legal": "Materials and animation: Eric Chadwick (CC-BY-4.0); Original asset: Rico Cilliers (CC0-1.0)"
+ },
+ {
+  "name": "Diffuse Transmission Teacup",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "DiffuseTransmissionTeacup model using Diffuse Transmission extension.",
+  "legal": "Models and Textures: Polyhaven.com, and Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "DiffuseTransmissionTest",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "video",
+   "written",
+   "extension"
+  ],
+  "summary": "Test model for KHR_materials_diffuse_transmission extension.",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Directional Light",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "Verification of light calculations",
+  "legal": "Everything: Rickard Sahlin (CC0-1.0)"
+ },
+ {
+  "name": "Dispersion Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests the KHR_materials_dispersion extension.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Dragon Attenuation",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-Stanford-Graphics"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Dragon with background, using material variants, transmission, and volume.",
+  "legal": "Original dragon model: Stanford University Computer Graphics Laboratory (LicenseRef-Stanford-Graphics); Conversion and clean up: Morgan McGuire's Computer Graphics Archive (LicenseRef-Stanford-Graphics); Cloth backdrop: Adobe (CC0-1.0)"
+ },
+ {
+  "name": "Dragon Dispersion",
+  "spdx": [
+   "CC0-1.0",
+   "LicenseRef-Stanford-Graphics"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Dragon with background, using dispersion, transmission, and volume.",
+  "legal": "Original dragon model: Stanford University Computer Graphics Laboratory (LicenseRef-Stanford-Graphics); Conversion and clean up: Morgan McGuire's Computer Graphics Archive (LicenseRef-Stanford-Graphics); Cloth backdrop: Adobe (CC0-1.0)"
+ },
+ {
+  "name": "Duck",
+  "spdx": [
+   "SCEA"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "The COLLADA duck. One texture.",
+  "legal": "Everything: Sony (SCEA)"
+ },
+ {
+  "name": "Emissive Strength Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_emissive_strength extension is supported properly.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Environment Test",
+  "spdx": [
+   "LicenseRef-Adobe-Stock"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "A simple scene with metal and dielectric spheres that range between 0 and 1 roughness. Use",
+  "legal": "Everything: Adobe (LicenseRef-Adobe-Stock)"
+ },
+ {
+  "name": "Flight Helmet",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "testing"
+  ],
+  "summary": "Displayed flight helmet on a wooden stand.",
+  "legal": "Conversion from Maya: Gary Hsu (CC0-1.0)"
+ },
+ {
+  "name": "Fox",
+  "spdx": [
+   "CC-BY-4.0",
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Multiple animations cycles: Survey, Walk, Run.",
+  "legal": "Model: PixelMannen (CC0-1.0); Rigging & Animation: tomkranis (CC-BY-4.0); Conversion to glTF: @AsoboStudio and @scurest (CC-BY-4.0)"
+ },
+ {
+  "name": "GlamVelvetSofa",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "video",
+   "extension"
+  ],
+  "summary": "Sofa using material variants, sheen, and specular.",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Glass Broken Window",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "video",
+   "extension"
+  ],
+  "summary": "This asset demonstrates the combination of two transparency methods in glTF: KHR_materials",
+  "legal": "Entire asset: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Glass Hurricane Candle Holder",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "video",
+   "written",
+   "showcase",
+   "extension"
+  ],
+  "summary": "Glass holder using Materials Tranmission and Materials Volume extensions.",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Glass Vase with Flowers",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "video",
+   "extension"
+  ],
+  "summary": "This model compares transparency methods for representing glass in glTF: alphaMode:'BLEND'",
+  "legal": "Glass vase: Eric Chadwick (CC0-1.0); Flowers: Rico Cilliers (CC0-1.0)"
+ },
+ {
+  "name": "IORTestGrid",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Grid of spheres over a checkered backdrop to test IOR rendering.",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Interpolation Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A sample with three different animation interpolations",
+  "legal": "Everything: Khronos (CC0-1.0)"
+ },
+ {
+  "name": "IridescenceAbalone",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "A model of an abalone shell with highly iridescent interior.",
+  "legal": "Everything: Abby Crawford (CC-BY-4.0); Materials: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Iridescence Dielectric Spheres",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests KHR_materials_iridescence on a non-metallic material.",
+  "legal": "Everything: Khronos (CC0-1.0)"
+ },
+ {
+  "name": "Iridescence Lamp",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Wayfair Lamp model using transmission, volume, and KHR_materials_iridescence.",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Iridescence Metallic Spheres",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests KHR_materials_iridescence on a metallic material.",
+  "legal": "Everything: UX3D (CC0-1.0)"
+ },
+ {
+  "name": "Iridescence Suzanne",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Further tests KHR_materials_iridescence.",
+  "legal": "Initial version: Mathias Kanzler (CC0-1.0); Internal clean-up: Pascal Schoen (CC0-1.0)"
+ },
+ {
+  "name": "Iridescent Dish with Olives",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "video",
+   "extension"
+  ],
+  "summary": "Dish using transmission, volume, IOR, and specular. [Issues: non-Khronos mark]",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Lantern",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Old wooden street light.",
+  "legal": "Initial version: sbtron (CC0-1.0); Draco compression: Frank Galligan (CC0-1.0)"
+ },
+ {
+  "name": "LightVisibility",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "This model demonstrates the `KHR_node_visibility` extension and its interaction with `KHR_",
+  "legal": "Everything: Aaron Franke (CC0-1.0)"
+ },
+ {
+  "name": "Lamp with Punctual Lights",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Lamp using punctual lights.",
+  "legal": "Everything: DGG (CC-BY-4.0)"
+ },
+ {
+  "name": "MandarinOrange",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "Scattering of light through the tangerine using the glTF diffuse transmission extension is",
+  "legal": "Initial creation: zamdreamer (CC-BY-4.0); glTF PBR material: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Materials Variants Shoe",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "showcase",
+   "written"
+  ],
+  "summary": "A model of a shoe that illustrates use of the KHR_materials_variants extension with three ",
+  "legal": "Everthing: Shopify (CC-BY-4.0)"
+ },
+ {
+  "name": "Mesh Primitive Modes",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "An example that shows rendering modes that are supported for mesh primitives in glTF.",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Meshopt Cube Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests the KHR_meshopt_compression extension.",
+  "legal": "Everything: Arseny Kapoulkine (CC0-1.0)"
+ },
+ {
+  "name": "Metal-Rough Spheres",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests various metal and roughness values (texture mapped).",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Metal-Rough Spheres (textureless)",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests various metal and roughness values (textureless).",
+  "legal": "Everything: Krill Gavrilov (CC0-1.0); Everything: CAD Model generated by Draw Harness script using Open CASCADE Technology (CC0-1.0)"
+ },
+ {
+  "name": "Morph-Primitives Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests a morph target on multiple primitives.",
+  "legal": "Everything: ft-lab (CC-BY-4.0); DRACO compression: Frank Galligan (CC-BY-4.0)"
+ },
+ {
+  "name": "Morph Stress Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests up to 8 morph targets.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Mosquito In Amber",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Mosquito in amber by Sketchfab, using transmission, IOR, and volume.",
+  "legal": "Model: Loic Norgeot (CC-BY-4.0); Real-time refraction: Sketchfab (CC-BY-4.0)"
+ },
+ {
+  "name": "MultiUV Test",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "This model has two uv texture coordinates and tests a second set of texture coordinates.",
+  "legal": "Everything: Hilo 3D (CC-BY-4.0); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Multiple Scenes",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A simple glTF asset with two scenes. Each scene consists of one node with one mesh.",
+  "legal": "Everything: Public (CC0-1.0)"
+ },
+ {
+  "name": "Negative Scale Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "This model tests what happens when a glTF node has negative scaling.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "NodePerformanceTest",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "Node, mesh, primitive and texture count performance test",
+  "legal": "Everything: Jon Aspeheim (CC0-1.0)"
+ },
+ {
+  "name": "NodeVisibilityTest",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "A test for the KHR_node_visibility extension",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Normal-Tangent Mirror Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests an engine's ability to load supplied tangent vectors for a normal map.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Normal-Tangent Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests an engine's ability to automatically generate tangent vectors for a normal map.",
+  "legal": "Everything: Ed Mackey (CC0-1.0)"
+ },
+ {
+  "name": "Orientation Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests node translations and rotations.",
+  "legal": "Everything: Khronos (CC-BY-4.0)"
+ },
+ {
+  "name": "PlaysetLightTest",
+  "spdx": [
+   "CC-BY-NC-SA-4.0"
+  ],
+  "tags": [
+   "test"
+  ],
+  "summary": "A 3D scene with IKEA assets",
+  "legal": "Everything: Inter IKEA Systems B.V. (CC-BY-NC-SA-4.0)"
+ },
+ {
+  "name": "Point Light Intensity Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests KHR_lights_punctual intensity vs lamp color.",
+  "legal": "Everything: Ed Mackey (CC0-1.0)"
+ },
+ {
+  "name": "PotOfCoals",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Burnt copper pot with a clearcoat, containing emissive hot coals.",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Pot of Coals Animation Pointer",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Burnt copper pot with a clearcoat, containing emissive hot coals, and animated heat refrac",
+  "legal": "Model and textures: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); glTF logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Primitive Mode Normals Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "issues",
+   "testing"
+  ],
+  "summary": "Tests rendering of points, lines, and triangles with and without normals.",
+  "legal": "Everything: Unknown (CC0-1.0)"
+ },
+ {
+  "name": "Recursive Skeletons",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "issues"
+  ],
+  "summary": "Tests unusual skinning cases with reused meshes and recursive skeletons.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Rigged Figure",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Animations. Skins.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Rigged Simple",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Animations. Skins. Start with this to test skinning.",
+  "legal": "Everything: Cesium (CC-BY-4.0)"
+ },
+ {
+  "name": "Skull",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing"
+  ],
+  "summary": "Human skull model with subsurface scattering.",
+  "legal": "Everything: Vladimir Petkovic (CC0-1.0)"
+ },
+ {
+  "name": "SciFi Helmet",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Futuristic helmet",
+  "legal": "Everything: Michael Pavlovic (CC0-1.0); Conversion to glTF: Norbert Nopper (CC0-1.0)"
+ },
+ {
+  "name": "Sheen Chair",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "video",
+   "extension"
+  ],
+  "summary": "Chair using material variants and sheen.",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Sheen Cloth",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "video",
+   "extension"
+  ],
+  "summary": "Fabric example using sheen.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "SheenTestGrid",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Grid of spheres over a checkered backdrop to test Sheen rendering.",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Sheen Wood Leather Sofa",
+  "spdx": [
+   "CC-BY-4.0",
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Sofa asset using sheen, specular, and high-quality tiling textures.",
+  "legal": "Improvements: Eric Chadwick (CC-BY-4.0); Original asset: Fran Calvente (CC0-1.0)"
+ },
+ {
+  "name": "Simple Instancing",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "A simple example for the EXT_mesh_gpu_instancing extension.",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Simple Material",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "A simple glTF asset with a material",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Simple Meshes",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "A simple scene with two nodes, both containing the same mesh, namely a mesh with a single ",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Simple Morph",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A triangle with a morph animation applied",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Simple Skin",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "A simple example of vertex skinning in glTF",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Simple Sparse Accessor",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A simple mesh that uses sparse accessors",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC-BY-4.0)"
+ },
+ {
+  "name": "Simple Texture",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "A simple glTF asset with a texture",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "SpecGlossVsMetalRough",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_pbrSpecularGlossiness extension is supported properly.",
+  "legal": "Everything: Microsoft (CC-BY-4.0)"
+ },
+ {
+  "name": "Specular Silk Pouf",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Wayfair SpecularSilkPouf model using sheen and specular extensions.",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Specular Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_specular extension is supported correctly.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Sponza",
+  "spdx": [
+   "LicenseRef-CRYENGINE-Agreement"
+  ],
+  "tags": [
+   "core"
+  ],
+  "summary": "Building interior, often used to test lighting.",
+  "legal": "Everything: Crytek (LicenseRef-CRYENGINE-Agreement)"
+ },
+ {
+  "name": "Stained Glass Lamp",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "A real product, a Tiffany-style stained glass table lamp sold on the Wayfair website.",
+  "legal": "Everything: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Sunglasses Khronos",
+  "spdx": [
+   "CC-BY-4.0",
+   "LicenseRef-LegalMark-Khronos"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "Sunglasses with Khronos logos and iridescent lenses",
+  "legal": "Model and textures and all images in the README.md: Eric Chadwick (CC-BY-4.0); Khronos logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos); 3D Commerce logo: Non-copyrightable logo (LicenseRef-LegalMark-Khronos)"
+ },
+ {
+  "name": "Suzanne",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Blender's test model of the chimpanzee Suzanne.",
+  "legal": "Everything: Norbert Nopper (CC0-1.0)"
+ },
+ {
+  "name": "Texture Coordinate Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Shows how XYZ and UV positions relate to displayed geometry.",
+  "legal": "Everything: Ed Mackey (CC0-1.0)"
+ },
+ {
+  "name": "Texture Encoding Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "This asset tests that textures are sampled with correct transfer functions.",
+  "legal": "Everything: lexaknyazev (CC0-1.0)"
+ },
+ {
+  "name": "Texture Linear Interpolation Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests that linear texture interpolation is performed on linear values, i.e. after sRGB dec",
+  "legal": "Everything: lexaknyazev (CC0-1.0)"
+ },
+ {
+  "name": "Texture Settings Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests single/double-sided and various texturing modes.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Texture Transform Multi Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_texture_transform extension is supported for several inputs.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Texture Transform Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_texture_transform extension is supported for BaseColor.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Toy Car",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "showcase",
+   "video",
+   "extension"
+  ],
+  "summary": "Toy car example using transmission, clearcoat, and sheen.",
+  "legal": "Initial car model: Guido Odendahl (CC0-1.0); Extensions and scene composition: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Traffic Cone",
+  "spdx": [
+   "CC-BY-4.0",
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "A traffic cone demonstrating the KHR_materials_retroreflection extension, which simulates ",
+  "legal": "Original model and textures: hinndia (CC-BY-4.0); Asphalt 02 textures: Rob Tuytel (CC0-1.0)"
+ },
+ {
+  "name": "Transmission Order Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "This model tests the interactions between blend modes and transmission.",
+  "legal": "Everything but the cloth backdrop: Ed Mackey (CC0-1.0); Cloth backdrop: Adobe (CC0-1.0)"
+ },
+ {
+  "name": "Transmission Roughness Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests the interaction between roughness and IOR.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Transmission Test",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_transmission extension is supported properly.",
+  "legal": "Everything: Adobe (CC0-1.0)"
+ },
+ {
+  "name": "TransmissionThinwallTestGrid",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "extension"
+  ],
+  "summary": "Grid of spheres over a checkered backdrop to test Thinfilm and IOR rendering.",
+  "legal": "Everything: Eric Chadwick (CC0-1.0)"
+ },
+ {
+  "name": "Triangle",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "A very simple glTF asset: The basic structure is the same as in 'Triangle Without Indices'",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Triangle Without Indices",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "The simplest possible glTF asset: A single scene with a single node and a single mesh with",
+  "legal": "Everything: Marco Hutter (https://github.com/javagl/) (CC0-1.0)"
+ },
+ {
+  "name": "Two Sided Plane",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core"
+  ],
+  "summary": "A plane having the two sided material parameter enabled.",
+  "legal": "Everything: Norbert Nopper (CC0-1.0)"
+ },
+ {
+  "name": "USD Shader Ball for glTF",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "showcase",
+   "extension"
+  ],
+  "summary": "USD Shader Ball converted for glTF",
+  "legal": "Model and textures and all images in the README.md: Geometry and textures: Chris Rydalch; original specification and validation: Andr\u00e9 Mazzone; original scene, inspiration and consultation: Thomas Anagnostou; glTF conversion: Eric Chadwick (CC-BY-4.0)"
+ },
+ {
+  "name": "Unicode\u2764\u267bTest",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "A sample with Unicode characters in file, material, and mesh names",
+  "legal": "Everything: Viktor Kov\u00e1cs (CC0-1.0)"
+ },
+ {
+  "name": "Unlit Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "testing",
+   "extension"
+  ],
+  "summary": "Tests if the KHR_materials_unlit extension is supported properly.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Vertex Color Test",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "Tests if vertex colors are supported.",
+  "legal": "Everything: Ed Mackey (CC-BY-4.0)"
+ },
+ {
+  "name": "Virtual City",
+  "spdx": [
+   "LicenseRef-3DRT-Testing"
+  ],
+  "tags": [
+   "core",
+   "testing"
+  ],
+  "summary": "The 'Virtual City' model was graciously contributed by the folks at 3DRT.",
+  "legal": "Everything: 3DRT (LicenseRef-3DRT-Testing)"
+ },
+ {
+  "name": "Water Bottle",
+  "spdx": [
+   "CC0-1.0"
+  ],
+  "tags": [
+   "core",
+   "testing",
+   "written"
+  ],
+  "summary": "Basic metal/roughness water bottle.",
+  "legal": "Everything: Microsoft (CC0-1.0)"
+ },
+ {
+  "name": "Xmp Metadata Rounded Cube",
+  "spdx": [
+   "CC-BY-4.0"
+  ],
+  "tags": [
+   "extension",
+   "testing"
+  ],
+  "summary": "Test of the XMP metadata extension - KHR_xmp_json_ld.",
+  "legal": "Everything: Adam Morris (CC-BY-4.0)"
+ }
+]

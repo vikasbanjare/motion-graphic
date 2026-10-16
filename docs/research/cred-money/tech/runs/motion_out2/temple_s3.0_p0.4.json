@@ -1,0 +1,79 @@
+{
+  "source": "../runs/motion_in2/temple_s3.0_p0.4.mp4",
+  "file": "temple_s3.0_p0.4.mp4",
+  "duration": 2,
+  "size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cuts": [],
+  "avgShot": 2,
+  "motion": 0.027,
+  "palette": [
+    {
+      "hex": "#F3BD9E",
+      "share": 0.63
+    },
+    {
+      "hex": "#BA776C",
+      "share": 0.104
+    },
+    {
+      "hex": "#C78777",
+      "share": 0.104
+    },
+    {
+      "hex": "#D59984",
+      "share": 0.08
+    },
+    {
+      "hex": "#A4585A",
+      "share": 0.045
+    },
+    {
+      "hex": "#8B3945",
+      "share": 0.037
+    }
+  ],
+  "brightness": "light",
+  "energy": "medium",
+  "bpm": null,
+  "suggestion": {
+    "theme": "clean",
+    "motion": "smooth",
+    "pace": "normal",
+    "transition": "push",
+    "look": {
+      "bg": "#F3BD9E"
+    },
+    "why": [
+      "a cut every 2.0 s → pace \"normal\"",
+      "medium on-screen movement → \"smooth\" motion",
+      "→ \"push\" transitions",
+      "light, restrained picture → theme \"clean\"",
+      "its canvas is #F3BD9E (63% of the picture) → used as the background"
+    ]
+  },
+  "curveFps": 10,
+  "curve": [
+    0.02,
+    0.018,
+    0.019,
+    0.014,
+    0.018,
+    0.015,
+    0.016,
+    0.027,
+    0.026,
+    0.039,
+    0.03,
+    0.029,
+    0.038,
+    0.026,
+    0.038,
+    0.034,
+    0.046,
+    0.083,
+    0.067
+  ]
+}

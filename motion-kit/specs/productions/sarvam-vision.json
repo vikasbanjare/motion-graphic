@@ -1,0 +1,65 @@
+{
+  "_note": "Sarvam Vision 2.1 spec ad, free tier: English narrator, synthesized SFX and music. Brand assets pending (see the spec's _note).",
+  "spec": "specs/sarvam-vision.json",
+  "voices": {
+    "gapMs": 180,
+    "beats": [
+      {
+        "voice": "af_heart",
+        "speed": 1.06
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.11,
+        "under": [
+          {
+            "sfx": "typing",
+            "gain": 0.6
+          }
+        ]
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.06,
+        "speak": "Now, Sarvam Vision 2.1 reads the whole form for you.",
+        "before": [
+          {
+            "sfx": "riser",
+            "sec": 0.9,
+            "gain": 0.5
+          }
+        ],
+        "after": [
+          {
+            "sfx": "chime",
+            "gain": 0.6
+          }
+        ]
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.06
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.06,
+        "speak": "In English, and in 22 Indian languages too."
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.06,
+        "speak": "State of the art on olm O C R bench, at 87.3."
+      },
+      {
+        "voice": "af_heart",
+        "speed": 1.01,
+        "speak": "Sarvam Vision 2.1. Live now."
+      }
+    ]
+  },
+  "music": {
+    "mood": "tech",
+    "volume": 0.14,
+    "prompt": "Clean modern electronic product bed, soft pulse, gentle build at one third, calm resolved ending, no vocals"
+  }
+}

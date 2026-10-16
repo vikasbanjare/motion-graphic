@@ -1,0 +1,76 @@
+# Checks every pull request without rendering anything: types, lint, every example
+# spec, unit tests and the plugin packaging. Renders need a browser and minutes per
+# video; the spec checker and the tests cover the logic that decides them.
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  motion-kit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+        working-directory: motion-kit
+    steps:
+      - name: Check out
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: motion-kit/package-lock.json
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Type check
+        run: npx tsc -p .
+
+      - name: Lint
+        run: npx eslint src
+
+      - name: Check every spec and recipe
+        run: |
+          failed=0
+          for spec in specs/*.json specs/recipes/*.json; do
+            echo "::group::$spec"
+            node scripts/check.mjs "$spec" || { failed=1; echo "::error file=motion-kit/$spec::npm run check failed for $spec"; }
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      # The audio tests synthesise their signals with ffmpeg (and skip without it).
+      - name: Install ffmpeg
+        run: command -v ffmpeg || { sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg; }
+
+      # Node's own discovery (tests/**/*.test.mjs, scripts/test-*.mjs, ...) rather than
+      # `npm test`, so no test file is skipped because a glob in package.json missed it.
+      - name: Unit tests
+        run: node --test
+
+      - name: Plugin packaging
+        working-directory: .
+        run: node scripts/check-plugin.mjs
+
+      # Claude Code's own validator for the marketplace, the plugin manifest and the skill.
+      - name: Plugin manifests
+        working-directory: .
+        env:
+          CLAUDE_CODE: "@anthropic-ai/claude-code@2.1.293"
+        run: |
+          npx --yes "$CLAUDE_CODE" plugin validate . --strict
+          npx --yes "$CLAUDE_CODE" plugin validate .claude-plugin/plugin.json --strict
+          npx --yes "$CLAUDE_CODE" plugin validate skills --strict

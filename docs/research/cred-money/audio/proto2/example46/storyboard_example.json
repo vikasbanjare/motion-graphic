@@ -1,0 +1,31 @@
+{
+ "_note": "EXAMPLE ONLY: a plausible 46 s beat list for the CRED IndusInd RuPay card film to exercise the rules. Replace frames with the real storyboard. Facts used: 5% rewards on online shopping, zero joining fee, redeem on flights, hotels and 2,000+ products on CRED store.",
+ "fps": 30, "seconds": 46, "lufs": -14, "music": "score46.wav",
+ "beats": [
+  {"type": "draw_open", "frame": 10, "end_frame": 92, "label": "first engraved line of the card draws"},
+  {"type": "reveal", "frame": 138, "label": "duotone engraved world blooms in"},
+  {"type": "nature_bed", "frame": 186, "end_frame": 330, "label": "engraved world holds"},
+  {"type": "online_shopping", "frame": 216, "label": "receipt/shopping object flicks in"},
+  {"type": "text_entrance", "frame": 222, "label": "5% rewards on online shopping (no SFX by rule)"},
+  {"type": "lens_arrive", "frame": 270, "label": "lens slides over the card"},
+  {"type": "groove_in_cut", "frame": 344, "label": "hard cut into the foil close-up; groove started 0.2 s earlier"},
+  {"type": "card_foil", "frame": 344, "label": "holographic foil band"},
+  {"type": "whip_cut", "frame": 438, "answer": true, "label": "whip to fee vignette"},
+  {"type": "whip_cut", "frame": 486, "label": "whip to the card"},
+  {"type": "card_set_down", "frame": 510, "label": "zero joining fee: card settles"},
+  {"type": "text_entrance", "frame": 519, "label": "zero joining fee (no SFX)"},
+  {"type": "camera_pullback_reveal", "frame": 549, "label": "pull back; drop lands mid-shot at 18.94"},
+  {"type": "flights", "frame": 618, "label": "engraved plane crosses"},
+  {"type": "foreground_wipe", "frame": 702, "label": "foreground wipe to hotel"},
+  {"type": "hotels", "frame": 744, "label": "desk bell"},
+  {"type": "riser_into_cut", "frame": 816, "label": "cut to store"},
+  {"type": "store_products", "frame": 840, "label": "2,000+ products glint"},
+  {"type": "whip_cut", "frame": 957, "label": "breakdown whip 1"},
+  {"type": "whip_cut", "frame": 1008, "label": "breakdown whip 2 to hero card"},
+  {"type": "glint", "frame": 1014, "label": "hero card settles"},
+  {"type": "object_slide_text", "frame": 1110, "label": "card slides into phone + line"},
+  {"type": "logo_bloom", "frame": 1182, "label": "logo ring expands"},
+  {"type": "wordmark", "frame": 1206, "label": "wordmark on the outro hit (no SFX)"},
+  {"type": "end_button", "frame": 1290, "label": "logo fade starts"}
+ ]
+}

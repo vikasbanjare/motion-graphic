@@ -1,0 +1,36 @@
+grid fit: bpm=125.19 phase=0.293s  beat=0.4793s bar=1.9171s
+intro 6-12.9s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  X X x X . x X X X X X X x x X X   1.0 0.8 0.5 1.0 0.2 0.5 0.8 0.8 0.8 0.8 1.0 1.0 0.3 0.3 0.7 1.0
+  mid   x x X x X X X X x X X X X x x X   0.5 0.5 0.8 0.5 0.8 0.8 1.0 1.0 0.5 0.8 0.7 0.7 1.0 0.3 0.3 0.7
+  hat   . . . . . . x x x . X x x X x x   0.2 0.2 0.2 0.2 0.2 0.2 0.5 0.5 0.5 0.2 0.7 0.3 0.3 0.7 0.3 0.3
+A groove 13-29s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  x . X x X x x X X . x x x x x x   0.4 0.2 0.6 0.5 0.6 0.4 0.5 0.8 0.9 0.2 0.4 0.4 0.4 0.3 0.4 0.6
+  mid   . . . . . . x X . . . x . . . .   0.0 0.0 0.2 0.1 0.1 0.1 0.5 1.0 0.0 0.2 0.1 0.3 0.2 0.2 0.0 0.1
+  hat   . . . . x X . x . . . . . . . .   0.0 0.0 0.0 0.1 0.4 0.6 0.1 0.5 0.1 0.2 0.2 0.1 0.0 0.1 0.1 0.1
+B drop 29-44.3s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  x . x x x x X x X x x x x x . x   0.4 0.2 0.4 0.4 0.5 0.4 0.6 0.4 0.6 0.5 0.4 0.5 0.4 0.5 0.1 0.4
+  mid   . . . . . . . . . . . . . . . .   0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.2 0.1 0.0 0.1 0.0 0.0 0.0 0.0 0.0
+  hat   . . . . . . . . . . . . . . . .   0.0 0.0 0.0 0.1 0.0 0.1 0.0 0.0 0.1 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+breakdown 44.5-51.3s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  X . X . x . x x x x X X X X X X   0.7 0.2 0.8 0.2 0.5 0.2 0.5 0.5 0.5 0.5 1.0 0.7 0.7 0.7 1.0 1.0
+  mid   X . x . X . X x X x x x x x x x   0.7 0.2 0.5 0.2 0.8 0.2 0.8 0.5 0.8 0.5 0.3 0.3 0.3 0.3 0.3 0.3
+  hat   x x . . x . x . . . . X . . . x   0.3 0.5 0.0 0.2 0.5 0.2 0.5 0.2 0.2 0.2 0.0 0.7 0.0 0.0 0.0 0.3
+B2 drop 51.5-63.2s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  X x X x X x x x x x X x x . X X   0.8 0.3 0.7 0.5 0.7 0.5 0.5 0.5 0.5 0.5 0.8 0.5 0.6 0.3 0.8 0.7
+  mid   X X X X X X X . X X X x X X X .   1.0 1.0 1.0 0.7 0.8 1.0 1.0 0.2 0.8 0.8 0.8 0.5 1.0 0.9 0.8 0.0
+  hat   X X X x X x X . X X X x X X X .   1.0 0.7 1.0 0.5 1.0 0.5 1.0 0.0 1.0 1.0 1.0 0.3 0.9 0.9 1.0 0.0
+outro 63.4-67.5s  (16 steps per bar; step 0 = grid downbeat candidate)
+  kick  x x X x x X X X x x X X x x X X   0.3 0.5 1.0 0.5 0.5 1.0 1.0 1.0 0.5 0.5 1.0 1.0 0.5 0.5 1.0 0.7
+  mid   X X X X x X X x X x X X X X . x   0.7 1.0 1.0 1.0 0.5 1.0 1.0 0.5 1.0 0.5 1.0 1.0 1.0 1.0 0.0 0.3
+  hat   x x x x x x X x x x X x X x . .   0.3 0.5 0.5 0.5 0.5 0.5 1.0 0.5 0.5 0.5 1.0 0.5 1.0 0.5 0.0 0.0
+event   0.70s -> beat index   0.85  bar 0 beat 1.85
+event   4.05s -> beat index   7.84  bar 1 beat 4.84
+event   4.30s -> beat index   8.36  bar 2 beat 1.36
+event   6.00s -> beat index  11.91  bar 2 beat 4.91
+event  12.99s -> beat index  26.49  bar 6 beat 3.49
+event  29.00s -> beat index  59.90  bar 14 beat 4.90
+event  32.54s -> beat index  67.28  bar 16 beat 4.28
+event  44.40s -> beat index  92.03  bar 23 beat 1.03
+event  51.45s -> beat index 106.74  bar 26 beat 3.74
+event  63.30s -> beat index 131.46  bar 32 beat 4.46
+event  67.12s -> beat index 139.43  bar 34 beat 4.43

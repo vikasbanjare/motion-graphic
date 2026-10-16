@@ -1,0 +1,7 @@
+[["pen scribble foley",0.3,4.4,1000,15000,"foley"],["low swell into music",4.1,6.2,40,2000,"swell"],["hi air band (scene bed)",5.0,10.4,4300,6300,"bed"],
+["wing flutter ticks",6.9,7.8,7000,15000,"foley"],["bird chirps",8.0,9.8,3000,4600,"nature"],["lens swell",9.5,10.8,40,1200,"swell"],
+["glass shimmer partials",13.4,16.8,2900,3300,"shimmer"],["whip A1",18.3,18.86,3000,15000,"whoosh"],["whip A2",18.86,19.6,3000,15000,"whoosh"],["whip B",20.0,21.0,3000,15000,"whoosh"],
+["air riser",21.0,22.6,5000,15000,"riser"],["column wipe texture",26.3,28.2,300,3000,"texture"],["lighthouse low hum",32.0,36.3,60,300,"drone"],["gull chirps",33.2,36.0,1800,6500,"nature"],
+["rising tone",34.8,36.4,250,600,"riser"],["underwater swell",38.5,40.1,150,2500,"swell"],["pearl shimmer",40.8,43.5,5000,9500,"shimmer"],["pre-breakdown swell",43.0,44.4,150,2500,"swell"],
+["whip C1",46.3,46.98,3000,15000,"whoosh"],["whip C2",46.98,47.7,3000,15000,"whoosh"],["whip D",47.6,48.6,3000,15000,"whoosh"],["whip E",48.9,49.65,3000,15000,"whoosh"],["seal sparkle",49.6,51.1,4000,15000,"shimmer"],
+["drop-2 impact",50.8,52.3,30,150,"impact"],["whip F (bill to phone)",55.6,57.2,3000,15000,"whoosh"],["logo shimmer swell",61.0,63.0,2000,15000,"shimmer"],["end riser",66.0,67.4,4000,11000,"riser"],["end bell ring",66.6,69.06,3500,4200,"bell"]]
