@@ -19,7 +19,7 @@ export const CRED_V6_FRAMES = T.end + INTRO;
 /** The next world opens out of the loupe that closed on the shell (local frames of its Sequence). */
 const IrisIn: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const f = useCurrentFrame();
-  return <Iris r={irisOpen(f, 0, 26, 520)} cy={600}>{children}</Iris>;
+  return <Iris r={irisOpen(f, -1, 25, 520)} cy={600}>{children}</Iris>;
 };
 
 /** Fades its children in over the first frames of their Sequence (the lockup over the end of the phone push). */

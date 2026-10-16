@@ -320,7 +320,7 @@ export const TravelTake: React.FC<{ from: number }> = ({ from }) => {
   return (
     <LookCtx.Provider value={look("#d6d0ea", "#4a50a6")}>
       <AbsoluteFill style={{ opacity: F >= OPEN ? 1 : 0 }}>
-      <Iris r={irisOpen(F, OPEN + 1, OPEN + 28)}>
+      <Iris r={irisOpen(F, OPEN - 1, OPEN + 27)}>
         <AbsoluteFill style={{ transformOrigin: `${G.cx}px ${G.cy}px`, transform: `translate(${(W / 2 - G.cx) * d}px, ${(H / 2 - G.cy) * d}px) scale(${S})` }}>
           <Paper color="#d6d0ea" grain={0.35} />
           <Mottle tint={[0.66, 0.62, 0.84]} seed={4} />
@@ -483,7 +483,7 @@ export const ProductsTake: React.FC<{ from: number }> = ({ from }) => {
   return (
     <LookCtx.Provider value={look("#f1d9c6", "#ad503a")}>
       <AbsoluteFill style={{ opacity: F >= MATCH ? 1 : 0 }}>
-      <Iris r={irisOpen(F, MATCH + 1, MATCH + 28)}>
+      <Iris r={irisOpen(F, MATCH - 1, MATCH + 27)}>
         <Paper color="#f1d9c6" grain={0.35} />
         <Mottle tint={[0.86, 0.66, 0.56]} seed={5} />
         <Field f={F} pitch={12} lambda={130} amp={3} speed={1} width={1.1} color="#e2b9a2" opacity={0.9} />
