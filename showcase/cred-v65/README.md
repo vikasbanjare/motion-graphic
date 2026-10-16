@@ -10,6 +10,21 @@ unmodified. Every claim on screen is CRED's own published wording.
 
 ![preview](preview.gif)
 
+## v7: the same cut, with verified claims (use this one)
+
+`film-v7.mp4` is a fresh render conformed frame for frame to the cut below, with the same soundtrack. What changed:
+
+- **Claims:** every claim is now on the IndusInd Bank product page or cred.club/card (checked 16 Oct 2026):
+  - 5% back as CRED reward points on e-commerce*;
+  - UPI enabled;
+  - redeem on flights and hotels;
+  - 500+ CRED merchants;
+  - 1 point = ₹1.
+- **Dropped:** "zero joining fee / ₹0" (in press coverage only) and "2,000+ products" (on no official page).
+- **Fine print:** "*T&C apply · unofficial spec work" sits under the logo.
+- **Motion:** the iris opens no longer repeat a frame.
+- **Products shot:** the temple is slowed 16% with motion interpolation to fill the cut's 117-frame products shot.
+
 ## How this cut was made
 
 1. **The build.** Claude Code built the film in Remotion (React) with Three.js: real 3D models run through a
